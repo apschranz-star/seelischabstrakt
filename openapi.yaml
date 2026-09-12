@@ -1,0 +1,91 @@
+openapi: 3.1.0
+info:
+  title: seelischabstrakt shop API
+  version: "1.0"
+  description: Add, update or remove artworks in the seelischabstrakt shop. Changes go live within about a minute.
+servers:
+  - url: https://seelischabstrakt-art.netlify.app/api
+paths:
+  /works:
+    get:
+      operationId: listWorks
+      summary: List all works with id, title, size, price, availability
+      responses:
+        "200":
+          description: Works
+    post:
+      operationId: upsertWork
+      summary: Add a new work, update an existing one (send its id), or delete (action delete)
+      security:
+        - deskKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [add, update, delete]
+                  description: add (default when no id), update (needs id), delete (needs id)
+                id:
+                  type: string
+                  description: Existing work id, from listWorks
+                title:
+                  type: string
+                year:
+                  type: integer
+                w:
+                  type: number
+                  description: Width in cm
+                h:
+                  type: number
+                  description: Height in cm
+                medium:
+                  type: object
+                  properties:
+                    en: { type: string }
+                    de: { type: string }
+                caption:
+                  type: object
+                  description: One or two sentences shown under the work, in English and German
+                  properties:
+                    en: { type: string }
+                    de: { type: string }
+                price:
+                  type: number
+                  description: Price of the original in EUR
+                available:
+                  type: boolean
+                  description: false marks the original as sold
+                link:
+                  type: string
+                  description: Optional Stripe or PayPal payment link for the original
+                prints:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      size: { type: string, description: "e.g. 30 × 40" }
+                      price: { type: number }
+                      link: { type: string }
+                size:
+                  type: string
+                  enum: ["", wide, small]
+                  description: Grid size on the page
+                nomat:
+                  type: boolean
+                  description: true shows the photo without black frame and mat
+                imageUrl:
+                  type: string
+                  description: Public URL of a photo to download and attach (jpg, png, webp, under 6 MB)
+      responses:
+        "200":
+          description: Result with the saved work
+components:
+  securitySchemes:
+    deskKey:
+      type: apiKey
+      in: header
+      name: x-desk-key

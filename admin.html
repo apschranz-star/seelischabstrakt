@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>seelischabstrakt · Studio desk</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--bg:#F1EBE0;--ink:#171212;--mute:#6b5a55;--line:#cbbfae;--red:#8C1D1D;--frame:#0D0A0A;--ok:#2f6b3a;--warn:#a1541c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Courier Prime","Courier New",monospace}
+header{background:var(--frame);color:#EFE7D8;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+header b{font-size:17px}
+header .actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:700 13px "Courier Prime",monospace;padding:9px 14px;border:1px solid var(--frame);background:var(--frame);color:#EFE7D8;cursor:pointer}
+.btn.light{background:#EFE7D8;color:var(--frame)}
+.btn.red{background:var(--red);border-color:var(--red)}
+.btn.small{padding:5px 9px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,44%);gap:0;min-height:calc(100vh - 56px)}
+.editor{padding:18px 20px 80px;overflow:auto}
+.preview{border-left:6px solid var(--frame);position:sticky;top:56px;height:calc(100vh - 56px);background:#8C1D1D}
+.preview iframe{width:100%;height:100%;border:0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:8px 12px;border:1px solid var(--line);background:transparent;cursor:pointer;font:700 13px "Courier Prime",monospace}
+.tab[aria-selected="true"]{background:var(--frame);color:#EFE7D8;border-color:var(--frame)}
+section[hidden]{display:none}
+h2{font-size:18px;margin:0 0 6px}
+.hint{color:var(--mute);font-size:12px;margin:0 0 14px;max-width:70ch}
+fieldset{border:1px solid var(--line);padding:12px 14px;margin:0 0 14px;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));background:#fff}
+legend{font-weight:700;padding:0 6px}
+label{display:grid;gap:3px;font-size:12px;color:var(--mute)}
+label>span b{color:var(--ink)}
+input,select,textarea{font:14px "Courier Prime",monospace;padding:7px 8px;border:1px solid var(--line);background:#fff;color:var(--ink);width:100%}
+textarea{min-height:80px;resize:vertical}
+input[type=color]{padding:0;height:36px}
+input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
+.full{grid-column:1 / -1}
+.work-card{border:1px solid var(--line);background:#fff;margin-bottom:12px}
+.work-card summary{cursor:pointer;padding:10px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center;font-weight:700;list-style:none}
+.work-card summary::-webkit-details-marker{display:none}
+.work-card .body{padding:10px 14px 14px;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.thumb{width:72px;height:54px;object-fit:cover;background:#ddd;border:2px solid var(--frame)}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.prints-list{grid-column:1 / -1;display:grid;gap:6px}
+.print-row{display:grid;grid-template-columns:1fr 90px 1fr auto;gap:6px;align-items:center}
+.status{font-size:12px;color:var(--mute)}
+.status.ok{color:var(--ok)} .status.warn{color:var(--warn)}
+.drop{border:2px dashed var(--line);padding:12px;text-align:center;color:var(--mute);font-size:12px;background:#faf7f1}
+.drop.over{border-color:var(--red);color:var(--red)}
+.pill{font-size:11px;padding:2px 6px;border:1px solid var(--line);color:var(--mute)}
+.checklist li{margin-bottom:6px}
+@media (max-width:980px){ main{grid-template-columns:1fr} .preview{position:relative;height:70vh;top:0;border-left:0;border-top:6px solid var(--frame)} }
+</style>
+</head>
+<body>
+<header>
+  <b>seelischabstrakt · Studio desk</b>
+  <div class="actions">
+    <span class="status" id="status">Loading…</span>
+    <button class="btn light" id="btn-load">Load files…</button>
+    <button class="btn" id="btn-preview">Refresh preview</button>
+    <button class="btn light" id="btn-export">Download files</button>
+    <button class="btn red" id="btn-publish">Publish to site</button>
+  </div>
+</header>
+<input type="file" id="file-load" accept=".json" multiple hidden>
+<main>
+  <div class="editor">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="works">Works</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="design">Design</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="texts">Texts</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="shop">Shop and taxes</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="legal">Legal</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="publish">Publish</button>
+    </div>
+
+    <section id="tab-works">
+      <h2>Works</h2>
+      <p class="hint">One card per artwork. Drop a photo onto a card: it is resized to 1600 px, converted to JPG and downloaded with the right name; move that file into the img/ folder of the site. Prices in EUR without symbol. A payment link turns the button into a real checkout; empty means email enquiry.</p>
+      <div class="row" style="margin-bottom:12px"><button class="btn" id="add-work">+ Add work</button><span class="pill" id="count"></span></div>
+      <div id="works-list"></div>
+    </section>
+
+    <section id="tab-design" hidden>
+      <h2>Design</h2>
+      <p class="hint">Pick a preset or switch to custom and set every colour. Fonts are Google Fonts names, spelled exactly as on fonts.google.com (e.g. "Bricolage Grotesque", "Fraunces", "Space Mono"). Changes show in the preview immediately.</p>
+      <fieldset><legend>Preset and pattern</legend>
+        <label><span>Preset</span><select id="th-preset"><option value="carpet">carpet (red Bokhara)</option><option value="shawl">shawl (black paisley)</option><option value="paper">paper (light)</option><option value="gallery">gallery (near black)</option><option value="custom">custom</option></select></label>
+        <label><span>Pattern (custom only)</span><select id="th-pattern"><option value="gul">gul carpet</option><option value="paisley">paisley</option><option value="none">none</option></select></label>
+        <label><span>Hero layout</span><select id="th-hero"><option value="split">split</option><option value="stacked">stacked</option><option value="minimal">minimal</option></select></label>
+        <label><span>Grid density</span><select id="th-density"><option value="airy">airy</option><option value="normal">normal</option><option value="dense">dense</option></select></label>
+        <label><span>Frames with mat by default</span><input type="checkbox" id="th-frames"></label>
+        <label><span>Slight tilt on frames</span><input type="checkbox" id="th-tilt"></label>
+      </fieldset>
+      <fieldset id="colors"><legend>Colours (used when preset = custom)</legend></fieldset>
+      <fieldset><legend>Fonts</legend>
+        <label><span>Display (headlines)</span><input id="f-display"></label>
+        <label><span>Body (reading)</span><input id="f-body"></label>
+        <label><span>Mono (labels, prices)</span><input id="f-mono"></label>
+      </fieldset>
+    </section>
+
+    <section id="tab-texts" hidden>
+      <h2>Texts</h2>
+      <p class="hint">Every text on the page, in English and German. Leave the German empty and the English is shown.</p>
+      <fieldset><legend>Brand</legend>
+        <label><span>Site name</span><input data-path="brand.name"></label>
+        <label><span>Wordmark line 1</span><input data-path="brand.wordmarkTop"></label>
+        <label><span>Wordmark line 2</span><input data-path="brand.wordmarkBottom"></label>
+        <label><span>Motto</span><input data-path="brand.motto"></label>
+        <label><span>Artist</span><input data-path="brand.artist"></label>
+        <label><span>City line</span><input data-path="brand.city"></label>
+        <label><span>Instagram URL</span><input data-path="brand.instagram"></label>
+        <label><span>Contact email</span><input data-path="brand.email"></label>
+        <label><span>Personal site URL</span><input data-path="brand.personSite"></label>
+        <label><span>Default language</span><select data-path="brand.defaultLang"><option>en</option><option>de</option></select></label>
+      </fieldset>
+      <fieldset><legend>Hero</legend>
+        <label class="full"><span>Lead EN</span><textarea data-path="texts.heroLead.en"></textarea></label>
+        <label class="full"><span>Lead DE</span><textarea data-path="texts.heroLead.de"></textarea></label>
+        <label><span>Meta EN</span><input data-path="texts.heroMeta.en"></label><label><span>Meta DE</span><input data-path="texts.heroMeta.de"></label>
+        <label><span>Works kicker EN</span><input data-path="texts.worksKicker.en"></label><label><span>Works kicker DE</span><input data-path="texts.worksKicker.de"></label>
+      </fieldset>
+      <fieldset><legend>Prints</legend>
+        <label class="full"><span>Lead EN</span><textarea data-path="texts.printsLead.en"></textarea></label>
+        <label class="full"><span>Lead DE</span><textarea data-path="texts.printsLead.de"></textarea></label>
+        <div class="full" id="tiers"></div>
+      </fieldset>
+      <fieldset><legend>About</legend>
+        <label class="full"><span>Lead EN (HTML allowed, e.g. &lt;b&gt;)</span><input data-path="texts.aboutLead.en"></label>
+        <label class="full"><span>Lead DE</span><input data-path="texts.aboutLead.de"></label>
+        <label class="full"><span>Paragraphs EN (one per line)</span><textarea data-path="texts.aboutParagraphs.en" data-lines="1" style="min-height:140px"></textarea></label>
+        <label class="full"><span>Paragraphs DE (one per line)</span><textarea data-path="texts.aboutParagraphs.de" data-lines="1" style="min-height:140px"></textarea></label>
+        <div class="full" id="facts"></div>
+      </fieldset>
+      <fieldset><legend>Commissions and contact</legend>
+        <label class="full"><span>Commission intro EN</span><textarea data-path="texts.commission.intro.en"></textarea></label>
+        <label class="full"><span>Commission intro DE</span><textarea data-path="texts.commission.intro.de"></textarea></label>
+        <label class="full"><span>Steps EN (one per line)</span><textarea data-path="texts.commission.steps.en" data-lines="1"></textarea></label>
+        <label class="full"><span>Steps DE (one per line)</span><textarea data-path="texts.commission.steps.de" data-lines="1"></textarea></label>
+        <label class="full"><span>Contact intro EN</span><textarea data-path="texts.contactIntro.en"></textarea></label>
+        <label class="full"><span>Contact intro DE</span><textarea data-path="texts.contactIntro.de"></textarea></label>
+      </fieldset>
+    </section>
+
+    <section id="tab-shop" hidden>
+      <h2>Shop and taxes</h2>
+      <p class="hint">These values drive the price footnote, the Terms, the Shipping page and the US page. Kleinunternehmer on means no VAT is shown anywhere.</p>
+      <fieldset><legend>Money</legend>
+        <label><span>Currency</span><select data-path="commerce.currency"><option>EUR</option><option>USD</option><option>CHF</option><option>GBP</option></select></label>
+        <label><span>Kleinunternehmer (no VAT shown anywhere)</span><input type="checkbox" data-path="commerce.kleinunternehmer"></label>
+        <label><span>VAT originals %</span><input type="number" data-path="commerce.vatOriginals"></label>
+        <label><span>VAT prints %</span><input type="number" data-path="commerce.vatPrints"></label>
+        <label><span>Ship regions (comma separated)</span><input data-path="commerce.shipRegions" data-list="1"></label>
+        <label><span>Commission deposit link (Stripe)</span><input data-path="commerce.commissionLink"></label>
+      </fieldset>
+      <fieldset><legend>Payment and orders</legend>
+        <label><span>Payment method</span><select data-path="commerce.payment.method"><option value="revolut">Revolut order form</option><option value="stripe">Stripe links per work</option></select></label>
+        <label><span>Revolut link</span><input data-path="commerce.payment.revolutLink" placeholder="https://revolut.me/…"></label>
+        <label><span>Name shown to buyer</span><input data-path="commerce.payment.revolutName"></label>
+        <label><span>Confirmation within (hours)</span><input type="number" data-path="commerce.payment.confirmationHours"></label>
+        <label><span>Order delivery</span><select data-path="commerce.orders.provider"><option value="netlify">Netlify Forms (free, when hosted on Netlify)</option><option value="formspree">Formspree endpoint</option><option value="mailto">Buyer's email app</option></select></label>
+        <label><span>Formspree endpoint (if chosen)</span><input data-path="commerce.orders.endpoint" placeholder="https://formspree.io/f/xxxx"></label>
+        <label><span>Order notification email</span><input data-path="commerce.orders.notifyEmail"></label>
+        <p class="hint full">Netlify Forms: after the first deploy open your Netlify site → Forms → "order" → Notifications → add your email. Orders then arrive in your inbox with name, address, work and order number. Each order shows the buyer your Revolut link with the amount prefilled and asks them to write the order number in the transfer message.</p>
+      </fieldset>
+      <fieldset><legend>Shipping rates (EUR, added at checkout)</legend>
+        <label><span>Austria print</span><input type="number" data-path="commerce.shipping.rates.AT.print"></label><label><span>Austria original</span><input type="number" data-path="commerce.shipping.rates.AT.original"></label>
+        <label><span>EU print</span><input type="number" data-path="commerce.shipping.rates.EU.print"></label><label><span>EU original</span><input type="number" data-path="commerce.shipping.rates.EU.original"></label>
+        <label><span>UK print</span><input type="number" data-path="commerce.shipping.rates.UK.print"></label><label><span>UK original</span><input type="number" data-path="commerce.shipping.rates.UK.original"></label>
+        <label><span>CH print</span><input type="number" data-path="commerce.shipping.rates.CH.print"></label><label><span>CH original</span><input type="number" data-path="commerce.shipping.rates.CH.original"></label>
+        <label><span>US print</span><input type="number" data-path="commerce.shipping.rates.US.print"></label><label><span>US original</span><input type="number" data-path="commerce.shipping.rates.US.original"></label>
+        <label><span>Rest of world print</span><input type="number" data-path="commerce.shipping.rates.ROW.print"></label><label><span>Rest of world original</span><input type="number" data-path="commerce.shipping.rates.ROW.original"></label>
+        <label><span>Pickup city (free collection)</span><input data-path="commerce.shipping.pickupCity"></label>
+        <label><span>"New works" email signup on the page</span><input type="checkbox" data-path="commerce.notify.enabled"></label>
+      </fieldset>
+      <fieldset><legend>Shipping note</legend>
+        <label class="full"><span>EN</span><textarea data-path="commerce.shippingNote.en"></textarea></label>
+        <label class="full"><span>DE</span><textarea data-path="commerce.shippingNote.de"></textarea></label>
+        <label class="full"><span>US buyers note (EN)</span><textarea data-path="commerce.usNote.en"></textarea></label>
+      </fieldset>
+      <fieldset><legend>Analytics and cookies</legend>
+        <label><span>Analytics enabled (shows cookie banner)</span><input type="checkbox" data-path="commerce.analytics.enabled"></label>
+        <label><span>Provider name (shown in privacy policy)</span><input data-path="commerce.analytics.provider"></label>
+        <p class="hint full">Recommendation: keep analytics off, or use a cookieless tool like Plausible or Umami (then the banner is still shown for transparency). Google Analytics needs the banner and a longer privacy text.</p>
+      </fieldset>
+    </section>
+
+    <section id="tab-legal" hidden>
+      <h2>Legal</h2>
+      <p class="hint">Fill these once. The site builds Imprint, Privacy (GDPR + CCPA), Terms with withdrawal form, Shipping and taxes, US buyers and Accessibility pages from them, in both languages. The generated texts are templates: have the WKO or a lawyer confirm them before you take the first order.</p>
+      <fieldset><legend>Identity (Impressum)</legend>
+        <label><span>Legal name</span><input data-path="legal.legalName"></label>
+        <label><span>Trade name</span><input data-path="legal.tradeName"></label>
+        <label><span>Street</span><input data-path="legal.street"></label>
+        <label><span>ZIP and city</span><input data-path="legal.zipCity"></label>
+        <label><span>Country</span><input data-path="legal.country"></label>
+        <label><span>Email</span><input data-path="legal.email"></label>
+        <label><span>Phone (optional)</span><input data-path="legal.phone"></label>
+        <label><span>UID / VAT ID (optional)</span><input data-path="legal.uid"></label>
+        <label><span>Kleinunternehmer note (keep equal to Shop tab)</span><input type="checkbox" data-path="legal.kleinunternehmerNote"></label>
+        <label><span>Supervisory authority</span><input data-path="legal.regulator"></label>
+        <label><span>Chamber / membership</span><input data-path="legal.chamber"></label>
+        <label><span>Last updated (YYYY-MM-DD)</span><input data-path="legal.lastUpdated"></label>
+      </fieldset>
+      <fieldset><legend>Providers and policies</legend>
+        <label class="full"><span>Hosting provider</span><input data-path="legal.hosting"></label>
+        <label class="full"><span>Payment providers</span><input data-path="legal.payment"></label>
+        <label><span>Return days for prints</span><input type="number" data-path="legal.returnsDaysPrints"></label>
+        <label><span>Originals made to order exempt from withdrawal</span><input type="checkbox" data-path="legal.originalsMadeToOrderExempt"></label>
+      </fieldset>
+      <h2>Compliance checklist</h2>
+      <ul class="checklist hint">
+        <li>EU: Impressum complete (ECG § 5), Datenschutzerklärung (DSGVO Art 13), AGB with Widerrufsbelehrung and Muster-Widerrufsformular (FAGG), price incl. VAT and shipping shown before checkout (PAngV/PrAG), ODR link, button text "Buy" is unambiguous (§ 8 FAGG "zahlungspflichtig bestellen" is handled by Stripe's checkout button).</li>
+        <li>EU tax: originals 13 % / prints 20 % in Austria, or Kleinunternehmer up to 55.000 EUR turnover (2025 rules, check current threshold). Over 10.000 EUR EU distance sales per year: register for OSS in FinanzOnline.</li>
+        <li>EU accessibility: European Accessibility Act applies to e-commerce since 28.06.2025; Accessibility statement is generated.</li>
+        <li>US: no sales tax nexus as a foreign seller with low volume; state economic-nexus thresholds start at 100.000 USD per state, revisit if you approach that. CCPA/CPRA notice generated (you are far below the applicability thresholds, but the notice costs nothing). Customs: HTS 9701 artworks duty-free; state it.</li>
+        <li>Both: Stripe Tax can compute VAT/sales tax automatically once turned on in Stripe; Stripe also stores card data so you never touch it (PCI).</li>
+        <li>Before first sale: register the Gewerbe (Kunsthandel) or confirm the artist exemption with WKO, add the site to your Instagram bio, and put og.jpg into img/.</li>
+      </ul>
+    </section>
+
+    <section id="tab-publish" hidden>
+      <h2>Publish</h2>
+      <fieldset><legend>Direct publishing (phone or laptop)</legend>
+        <p class="hint full">One-time setup: create a free GitHub account and an empty repository, upload this folder into it, then in Netlify choose "Add new site → Import an existing project → GitHub" and pick the repository. From then on, every "Publish to site" here writes your photos and changes into GitHub and Netlify rebuilds the live site within about a minute. The token stays in this browser only.</p>
+        <label><span>GitHub user or organisation</span><input id="gh-owner" placeholder="a-schranz"></label>
+        <label><span>Repository</span><input id="gh-repo" placeholder="seelischabstrakt"></label>
+        <label><span>Branch</span><input id="gh-branch" value="main"></label>
+        <label class="full"><span>Fine-grained token (Contents: read and write, this repo only)</span><input id="gh-token" type="password" placeholder="github_pat_…"></label>
+        <p class="hint full">Create it at github.com → Settings → Developer settings → Personal access tokens → Fine-grained → Only select repositories → Repository permissions → Contents: Read and write. Copy it here once. <button class="btn small light" id="gh-forget" type="button">Forget token</button></p>
+        <div class="full status" id="gh-status"></div>
+      </fieldset>
+      <h2>Manual fallback</h2>
+      <ol class="hint" style="font-size:14px">
+        <li>Click "Download site.json + works.json" (top right). Two files land in your Downloads folder.</li>
+        <li>Move both into the site folder, replacing the old ones. Move any downloaded photos into the img/ folder.</li>
+        <li>Open your Netlify site, Deploys, and drag the whole site folder onto the page. Live in about a minute.</li>
+      </ol>
+      <p class="hint">This desk stores nothing on a server. Everything lives in the two JSON files and the img/ folder; back them up once in a while (a copy of the folder is a full backup of the shop).</p>
+      <p class="hint">Working locally: opening admin.html directly from disk cannot read the JSON files (browser rule), so use "Load files…" and pick site.json and works.json together. On the live site (yoursite.netlify.app/admin.html) they load automatically. The preview on the right always reflects your unsaved edits.</p>
+    </section>
+  </div>
+  <div class="preview"><iframe id="preview" src="index.html" title="Live preview"></iframe></div>
+</main>
+
+<script>
+let SITE=null, WORKS=[];
+const $=s=>document.querySelector(s);
+const status=(m,c="")=>{ const el=$("#status"); el.textContent=m; el.className="status "+c; };
+const get=(o,p)=>p.split(".").reduce((a,k)=>a?.[k],o);
+const set=(o,p,v)=>{ const ks=p.split("."); let cur=o; ks.slice(0,-1).forEach(k=>{ if(typeof cur[k]!=="object"||cur[k]===null) cur[k]={}; cur=cur[k]; }); cur[ks.at(-1)]=v; };
+const COLOR_KEYS=["ground","groundLine","groundDot","section2","section2Line","frame","mat","ink","ink2","mute","paper","paperInk","accent"];
+const PRESETS={carpet:{ground:"#8C1D1D",groundLine:"#3A0708",groundDot:"#5C0F10",section2:"#1A1210",section2Line:"#3B2118",frame:"#0D0A0A",mat:"#EFE7D8",ink:"#F3EBDE",ink2:"#E2CDBF",mute:"#C99E93",paper:"#F1EBE0",paperInk:"#171212",accent:"#F2B429"},shawl:{ground:"#1A1210",groundLine:"#3B2118",groundDot:"#7A1B1B",section2:"#8C1D1D",section2Line:"#3A0708",frame:"#0D0A0A",mat:"#EFE7D8",ink:"#F3EBDE",ink2:"#D9C9B8",mute:"#9E8578",paper:"#F1EBE0",paperInk:"#171212",accent:"#F2B429"},paper:{ground:"#EFE9DD",groundLine:"#D9D0C0",groundDot:"#C9BFAE",section2:"#1A1210",section2Line:"#3B2118",frame:"#151010",mat:"#FBF8F2",ink:"#1B1614",ink2:"#3F3530",mute:"#7A6C63",paper:"#FFFFFF",paperInk:"#171212",accent:"#8C1D1D"},gallery:{ground:"#141416",groundLine:"#222226",groundDot:"#2B2B30",section2:"#0D0D0F",section2Line:"#26262B",frame:"#050505",mat:"#F2F0EB",ink:"#F2F0EB",ink2:"#C9C6BF",mute:"#8A877F",paper:"#F5F3EE",paperInk:"#131315",accent:"#F2B429"}};
+
+/* tabs */
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{ document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",String(x===b))); document.querySelectorAll("section[id^=tab-]").forEach(s=>s.hidden = s.id!=="tab-"+b.dataset.tab); }));
+
+/* load */
+async function tryFetch(){
+  try{ const [s,w]=await Promise.all([fetch("site.json?v="+Date.now()).then(r=>r.json()),fetch("works.json?v="+Date.now()).then(r=>r.json())]); SITE=s; WORKS=w.works||[]; status("Loaded from site folder","ok"); boot(); }
+  catch(e){ status("Opened from disk: click Load files… and pick site.json and works.json","warn"); }
+}
+$("#btn-load").addEventListener("click",()=>$("#file-load").click());
+$("#file-load").addEventListener("change",async e=>{
+  for(const f of e.target.files){ const txt=await f.text(); try{ const j=JSON.parse(txt); if(j.works) WORKS=j.works; else if(j.brand) SITE=j; }catch(err){ status("Could not read "+f.name+": "+err.message,"warn"); return; } }
+  if(SITE&&WORKS){ status("Files loaded","ok"); boot(); } else status("Need both site.json and works.json","warn");
+});
+
+/* generic binding for site.json fields */
+function bindSite(){
+  document.querySelectorAll("[data-path]").forEach(el=>{
+    const p=el.dataset.path; const v=get(SITE,p);
+    if(el.type==="checkbox") el.checked=!!v;
+    else if(el.dataset.lines) el.value=Array.isArray(v)?v.join("\n"):(v||"");
+    else if(el.dataset.list) el.value=Array.isArray(v)?v.join(", "):(v||"");
+    else el.value=v??"";
+    el.oninput=()=>{ let val=el.type==="checkbox"?el.checked:el.value; if(el.type==="number") val=Number(val); if(el.dataset.lines) val=el.value.split("\n").map(x=>x.trim()).filter(Boolean); if(el.dataset.list) val=el.value.split(",").map(x=>x.trim()).filter(Boolean); set(SITE,p,val); preview(); };
+  });
+}
+/* design */
+function bindDesign(){
+  const th=SITE.theme; $("#th-preset").value=th.preset||"carpet"; $("#th-pattern").value=th.pattern||"gul";
+  $("#th-hero").value=th.layout?.heroStyle||"split"; $("#th-density").value=th.layout?.gridDensity||"normal";
+  $("#th-frames").checked=th.layout?.framesByDefault!==false; $("#th-tilt").checked=th.layout?.showTilt!==false;
+  $("#f-display").value=th.fonts?.display||""; $("#f-body").value=th.fonts?.body||""; $("#f-mono").value=th.fonts?.mono||"";
+  const box=$("#colors"); box.innerHTML="<legend>Colours (used when preset = custom)</legend>";
+  COLOR_KEYS.forEach(k=>{ const l=document.createElement("label"); l.innerHTML=`<span>${k}</span>`; const i=document.createElement("input"); i.type="color"; i.value=th.colors?.[k]||PRESETS.carpet[k]; i.oninput=()=>{ th.colors[k]=i.value; if(th.preset!=="custom"){ th.preset="custom"; $("#th-preset").value="custom"; } preview(); }; l.appendChild(i); box.appendChild(l); });
+  $("#th-preset").onchange=e=>{ th.preset=e.target.value; if(PRESETS[th.preset]){ th.colors=Object.assign({},PRESETS[th.preset]); th.pattern=th.preset==="carpet"?"gul":th.preset==="shawl"?"paisley":"none"; bindDesign(); } preview(); };
+  $("#th-pattern").onchange=e=>{ th.pattern=e.target.value; th.preset="custom"; $("#th-preset").value="custom"; preview(); };
+  $("#th-hero").onchange=e=>{ th.layout.heroStyle=e.target.value; preview(); };
+  $("#th-density").onchange=e=>{ th.layout.gridDensity=e.target.value; preview(); };
+  $("#th-frames").onchange=e=>{ th.layout.framesByDefault=e.target.checked; preview(); };
+  $("#th-tilt").onchange=e=>{ th.layout.showTilt=e.target.checked; preview(); };
+  ["display","body","mono"].forEach(k=>{ $("#f-"+k).oninput=e=>{ th.fonts[k]=e.target.value; preview(); }; });
+}
+/* tiers + facts */
+function bindTiers(){
+  const el=$("#tiers"); el.innerHTML="<b>Print tiers</b>";
+  (SITE.printTiers||[]).forEach((p,i)=>{ const r=document.createElement("div"); r.className="print-row"; r.innerHTML=`<input value="${p.size}" placeholder="30 × 40 cm"><input type="number" value="${p.price}"><input value="${p.paper||""}" placeholder="paper"><button class="btn small light">×</button>`; const [a,b,c,d]=r.children; a.oninput=()=>{p.size=a.value;preview();}; b.oninput=()=>{p.price=Number(b.value);preview();}; c.oninput=()=>{p.paper=c.value;preview();}; d.onclick=()=>{SITE.printTiers.splice(i,1);bindTiers();preview();}; el.appendChild(r); });
+  const add=document.createElement("button"); add.className="btn small"; add.textContent="+ tier"; add.onclick=()=>{SITE.printTiers.push({size:"",price:0,edition:25,paper:""});bindTiers();}; el.appendChild(add);
+}
+function bindFacts(){
+  const el=$("#facts"); el.innerHTML="<b>Facts (label / value, EN and DE)</b>";
+  (SITE.texts.facts||[]).forEach((f,i)=>{ const r=document.createElement("div"); r.className="print-row"; r.style.gridTemplateColumns="1fr 1fr 1fr 1fr auto"; r.innerHTML=`<input value="${f.label.en}" placeholder="label EN"><input value="${f.label.de||""}" placeholder="label DE"><input value="${f.value.en}" placeholder="value EN"><input value="${f.value.de||""}" placeholder="value DE"><button class="btn small light">×</button>`; const [a,b,c,d,x]=r.children; a.oninput=()=>{f.label.en=a.value;preview();}; b.oninput=()=>{f.label.de=b.value;preview();}; c.oninput=()=>{f.value.en=c.value;preview();}; d.oninput=()=>{f.value.de=d.value;preview();}; x.onclick=()=>{SITE.texts.facts.splice(i,1);bindFacts();preview();}; el.appendChild(r); });
+  const add=document.createElement("button"); add.className="btn small"; add.textContent="+ fact"; add.onclick=()=>{SITE.texts.facts.push({label:{en:"",de:""},value:{en:"",de:""}});bindFacts();}; el.appendChild(add);
+}
+
+/* works */
+function slug(s){ return s.toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+function renderWorks(){
+  const list=$("#works-list"); list.innerHTML=""; $("#count").textContent=WORKS.length+" works";
+  WORKS.forEach((w,i)=>{
+    const d=document.createElement("details"); d.className="work-card"; d.open = !!w._open;
+    d.innerHTML=`<summary><span class="row"><img class="thumb" alt="" src="${w._preview||w.img||""}"><span>${w.title||"(untitled)"} <span class="pill">${w.original?.available?"available":"sold"}</span> <span class="pill">${w.w}×${w.h}</span></span></span><span class="row"><button class="btn small light" data-a="up">↑</button><button class="btn small light" data-a="down">↓</button><button class="btn small light" data-a="dup">copy</button><button class="btn small red" data-a="del">delete</button></span></summary>`;
+    const body=document.createElement("div"); body.className="body";
+    const f=(label,val,type,on,cls="")=>{ const l=document.createElement("label"); if(cls) l.className=cls; l.innerHTML=`<span>${label}</span>`; const inp=type==="check"?Object.assign(document.createElement("input"),{type:"checkbox",checked:!!val}):type==="select"?document.createElement("select"):Object.assign(document.createElement(type==="area"?"textarea":"input"),{type:type||"text"}); if(type==="select"){ ["","wide","small"].forEach(o=>{const op=document.createElement("option");op.value=o;op.textContent=o||"normal";inp.appendChild(op);}); inp.value=val||""; } else if(type!=="check") inp.value=val??""; inp.oninput=()=>{ on(type==="check"?inp.checked:type==="number"?Number(inp.value):inp.value); preview(); }; l.appendChild(inp); return l; };
+    body.append(
+      f("Title",w.title,"text",v=>{w.title=v; if(!w.id||w.id.startsWith("w")) w.id=slug(v)||w.id;}),
+      f("Year",w.year,"number",v=>w.year=v),
+      f("Width cm",w.w,"number",v=>w.w=v), f("Height cm",w.h,"number",v=>w.h=v),
+      f("Medium EN",w.medium?.en,"text",v=>{w.medium=w.medium||{};w.medium.en=v;}),
+      f("Medium DE",w.medium?.de,"text",v=>{w.medium=w.medium||{};w.medium.de=v;}),
+      f("Caption EN (one or two sentences, shown under the label)",w.caption?.en,"area",v=>{w.caption=w.caption||{};w.caption.en=v;},"full"),
+      f("Caption DE",w.caption?.de,"area",v=>{w.caption=w.caption||{};w.caption.de=v;},"full"),
+      f("Photo file (img/…)",w.img,"text",v=>w.img=v||undefined),
+      f("Extra photos (img/… , comma separated: details, in room)",(w.images||[]).join(", "),"text",v=>w.images=v.split(",").map(x=>x.trim()).filter(Boolean)),
+      f("Alt text EN (what is in the picture)",w.alt?.en,"text",v=>{w.alt=w.alt||{};w.alt.en=v;}),
+      f("Grid size",w.size,"select",v=>w.size=v),
+      f("Tilt (deg, -1 to 1)",w.tilt??0,"number",v=>w.tilt=v),
+      f("No frame/mat (photo shows setting)",w.nomat,"check",v=>w.nomat=v),
+      f("Original available",w.original?.available,"check",v=>{w.original=w.original||{};w.original.available=v;}),
+      f("Original price EUR",w.original?.price,"number",v=>{w.original=w.original||{};w.original.price=v;}),
+      f("Original payment link",w.original?.link,"text",v=>{w.original=w.original||{};w.original.link=v;},"full")
+    );
+    const pl=document.createElement("div"); pl.className="prints-list"; const renderPrints=()=>{ pl.innerHTML="<b>Print sizes</b>"; (w.prints=w.prints||[]).forEach((p,j)=>{ const r=document.createElement("div"); r.className="print-row"; r.innerHTML=`<input value="${p.size||""}" placeholder="30 × 40"><input type="number" value="${p.price??""}" placeholder="EUR"><input value="${p.link||""}" placeholder="payment link"><button class="btn small light">×</button>`; const [a,b,c,x]=r.children; a.oninput=()=>{p.size=a.value;preview();}; b.oninput=()=>{p.price=Number(b.value);preview();}; c.oninput=()=>{p.link=c.value;preview();}; x.onclick=()=>{w.prints.splice(j,1);renderPrints();preview();}; pl.appendChild(r); }); const add=document.createElement("button"); add.className="btn small"; add.textContent="+ print size"; add.onclick=()=>{w.prints.push({size:"30 × 40",price:95,link:""});renderPrints();preview();}; pl.appendChild(add); }; renderPrints(); body.appendChild(pl);
+    const drop=document.createElement("div"); drop.className="drop full"; drop.innerHTML=`<div>${w._newFile?"New photo ready: "+w._newFile.name+" (publish to upload)":"Drop or choose a photo. It is resized and attached; Publish uploads it."}</div><div class="row" style="justify-content:center;margin-top:8px"><button class="btn small" type="button" data-p="pick">Choose photo</button><button class="btn small" type="button" data-p="cam">Take photo</button></div>`;
+    const fi=document.createElement("input"); fi.type="file"; fi.accept="image/*"; fi.hidden=true; fi.onchange=()=>handlePhoto(fi.files[0],w);
+    const cam=document.createElement("input"); cam.type="file"; cam.accept="image/*"; cam.setAttribute("capture","environment"); cam.hidden=true; cam.onchange=()=>handlePhoto(cam.files[0],w);
+    drop.querySelector("[data-p=pick]").onclick=e=>{e.stopPropagation();fi.click();}; drop.querySelector("[data-p=cam]").onclick=e=>{e.stopPropagation();cam.click();};
+    drop.ondragover=e=>{e.preventDefault();drop.classList.add("over");}; drop.ondragleave=()=>drop.classList.remove("over"); drop.ondrop=e=>{e.preventDefault();drop.classList.remove("over");handlePhoto(e.dataTransfer.files[0],w);}; body.append(drop,fi,cam);
+    d.appendChild(body); d.ontoggle=()=>w._open=d.open;
+    d.querySelectorAll("summary [data-a]").forEach(b=>b.onclick=e=>{ e.preventDefault(); const a=b.dataset.a; if(a==="del"&&confirm("Delete "+w.title+"?")) WORKS.splice(i,1); if(a==="up"&&i>0) [WORKS[i-1],WORKS[i]]=[WORKS[i],WORKS[i-1]]; if(a==="down"&&i<WORKS.length-1) [WORKS[i+1],WORKS[i]]=[WORKS[i],WORKS[i+1]]; if(a==="dup") WORKS.splice(i+1,0,JSON.parse(JSON.stringify({...w,id:w.id+"-2",title:w.title+" (copy)"}))); renderWorks(); preview(); });
+    list.appendChild(d);
+  });
+}
+$("#add-work").onclick=()=>{ WORKS.unshift({id:"new-"+Date.now(),title:"",year:new Date().getFullYear(),medium:{en:"",de:""},w:30,h:24,size:"",tilt:0,nomat:false,original:{price:0,available:true,link:""},prints:[],_open:true}); renderWorks(); };
+function handlePhoto(file,w){
+  if(!file) return; const img=new Image(); img.onload=()=>{ const max=1600, sc=Math.min(1,max/Math.max(img.width,img.height)); const cv=document.createElement("canvas"); cv.width=Math.round(img.width*sc); cv.height=Math.round(img.height*sc); cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
+    const name=(slug(w.title||w.id)||"work-"+Date.now())+".jpg"; cv.toBlob(b=>{ w.img="img/"+name; w._preview=cv.toDataURL("image/jpeg",.85); w._newFile={name,blob:b}; if(!w.w||!w.h){ w.w=Math.round(cv.width/40); w.h=Math.round(cv.height/40); } renderWorks(); preview(); status(`Photo attached (${Math.round(b.size/1024)} kB). Publish to upload.`,"ok"); },"image/jpeg",.86); URL.revokeObjectURL(img.src); };
+  img.src=URL.createObjectURL(file);
+}
+
+/* preview + export */
+function preview(){ const fr=$("#preview"); const works=WORKS.map(w=>w._preview?{...w,img:w._preview}:w); fr.contentWindow?.postMessage({type:"sa-preview",site:SITE,works},"*"); }
+$("#btn-preview").onclick=()=>{ $("#preview").src="index.html?v="+Date.now(); $("#preview").onload=()=>setTimeout(preview,300); };
+$("#btn-export").onclick=()=>{ const dl=(name,blob)=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; a.click(); }; dl("site.json",new Blob([JSON.stringify(SITE,null,2)],{type:"application/json"})); setTimeout(()=>dl("works.json",new Blob([JSON.stringify({works:cleanWorks()},null,2)],{type:"application/json"})),400); WORKS.filter(w=>w._newFile).forEach((w,i)=>setTimeout(()=>dl(w._newFile.name,w._newFile.blob),800+i*400)); status("Downloaded. Move the JSON files into the site folder and photos into img/, then redeploy.","ok"); };
+function cleanWorks(){ return WORKS.map(w=>{ const c={...w}; delete c._open; delete c._preview; delete c._newFile; return c; }); }
+
+/* ---------- GitHub publishing ---------- */
+const GH={ get owner(){return $("#gh-owner").value.trim();}, get repo(){return $("#gh-repo").value.trim();}, get branch(){return $("#gh-branch").value.trim()||"main";}, get token(){return $("#gh-token").value.trim();} };
+function ghLoad(){ const p=SITE.publish?.github||{}; $("#gh-owner").value=localStorage.getItem("gh-owner")||p.owner||""; $("#gh-repo").value=localStorage.getItem("gh-repo")||p.repo||""; $("#gh-branch").value=localStorage.getItem("gh-branch")||p.branch||"main"; $("#gh-token").value=localStorage.getItem("gh-token")||""; }
+["owner","repo","branch","token"].forEach(k=>$("#gh-"+k).addEventListener("input",()=>{ try{localStorage.setItem("gh-"+k,$("#gh-"+k).value.trim());}catch(e){} if(k!=="token"){ SITE.publish=SITE.publish||{github:{}}; SITE.publish.github[k]=$("#gh-"+k).value.trim(); } }));
+$("#gh-forget").onclick=()=>{ localStorage.removeItem("gh-token"); $("#gh-token").value=""; };
+const b64=blob=>new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(fr.result.split(",")[1]); fr.readAsDataURL(blob); });
+async function ghPut(path,contentB64,message){
+  const url=`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${path}`; const h={Authorization:`Bearer ${GH.token}`,Accept:"application/vnd.github+json","Content-Type":"application/json"};
+  let sha; const g=await fetch(url+`?ref=${GH.branch}`,{headers:h}); if(g.ok) sha=(await g.json()).sha;
+  const r=await fetch(url,{method:"PUT",headers:h,body:JSON.stringify({message,content:contentB64,branch:GH.branch,sha})});
+  if(!r.ok) throw new Error(`${path}: ${r.status} ${(await r.json()).message||""}`);
+}
+$("#btn-publish").onclick=async()=>{
+  if(!GH.owner||!GH.repo||!GH.token){ document.querySelector("[data-tab=publish]").click(); $("#gh-status").textContent="Fill in GitHub user, repository and token first."; $("#gh-status").className="status warn"; return; }
+  const st=$("#gh-status"); const btn=$("#btn-publish"); btn.disabled=true; st.className="status"; document.querySelector("[data-tab=publish]").click();
+  try{
+    const photos=WORKS.filter(w=>w._newFile); let n=0;
+    for(const w of photos){ st.textContent=`Uploading photo ${++n} of ${photos.length}…`; await ghPut(w.img, await b64(w._newFile.blob), `Add photo ${w._newFile.name}`); }
+    st.textContent="Writing works.json…"; await ghPut("works.json", btoa(unescape(encodeURIComponent(JSON.stringify({works:cleanWorks()},null,2)))), "Update works");
+    st.textContent="Writing site.json…"; await ghPut("site.json", btoa(unescape(encodeURIComponent(JSON.stringify(SITE,null,2)))), "Update site settings");
+    WORKS.forEach(w=>{ delete w._newFile; }); renderWorks();
+    st.textContent="Published. Netlify is rebuilding; the live site updates in about a minute."; st.className="status ok"; status("Published to GitHub","ok");
+  }catch(e){ st.textContent="Publish failed: "+e.message+". Check token permissions (Contents: read and write) and repository name."; st.className="status warn"; }
+  btn.disabled=false;
+};
+
+function boot(){ bindSite(); bindDesign(); bindTiers(); bindFacts(); renderWorks(); ghLoad(); $("#preview").onload=()=>setTimeout(preview,300); setTimeout(preview,800); }
+tryFetch();
+</script>
+</body>
+</html>

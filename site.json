@@ -1,0 +1,331 @@
+{
+  "_help": "Everything about the site except the products. Edit here or use admin.html. Colors are hex. Fonts are Google Fonts family names.",
+  "brand": {
+    "name": "seelischabstrakt",
+    "wordmarkTop": "seelisch",
+    "wordmarkBottom": "abstrakt",
+    "motto": "Multum in parvo.",
+    "artist": "Alexander Schranz",
+    "city": "Wien, 1180",
+    "instagram": "https://www.instagram.com/seelischabstrakt/",
+    "email": "hello@seelischabstrakt.at",
+    "personSite": "https://alexanderschranz.at",
+    "defaultLang": "en"
+  },
+  "theme": {
+    "preset": "carpet",
+    "_presets": "carpet | shawl | paper | gallery | custom. A preset fills colors and pattern; custom uses the values below as they are.",
+    "colors": {
+      "ground": "#8C1D1D",
+      "groundLine": "#3A0708",
+      "groundDot": "#5C0F10",
+      "section2": "#1A1210",
+      "section2Line": "#3B2118",
+      "frame": "#0D0A0A",
+      "mat": "#EFE7D8",
+      "ink": "#F3EBDE",
+      "ink2": "#E2CDBF",
+      "mute": "#C99E93",
+      "paper": "#F1EBE0",
+      "paperInk": "#171212",
+      "accent": "#F2B429"
+    },
+    "pattern": "gul",
+    "_patterns": "gul (Bokhara carpet) | paisley | none",
+    "fonts": {
+      "display": "Bricolage Grotesque",
+      "body": "Source Serif 4",
+      "mono": "Courier Prime"
+    },
+    "layout": {
+      "framesByDefault": true,
+      "showTilt": true,
+      "gridDensity": "normal",
+      "_gridDensity": "airy | normal | dense",
+      "heroStyle": "split",
+      "_heroStyle": "split | stacked | minimal"
+    }
+  },
+  "commerce": {
+    "currency": "EUR",
+    "pricesIncludeVat": true,
+    "vatOriginals": 13,
+    "vatPrints": 20,
+    "kleinunternehmer": true,
+    "shipRegions": [
+      "AT",
+      "EU",
+      "UK",
+      "CH",
+      "US"
+    ],
+    "shippingNote": {
+      "en": "Shipping is calculated at checkout. Within Austria 9 EUR for prints, originals insured by size. EU from 19 EUR. UK, CH and US: duties and import taxes are not included and are paid by the buyer on delivery.",
+      "de": "Versand wird im Checkout berechnet. Innerhalb Österreichs 9 EUR für Drucke, Originale versichert nach Größe. EU ab 19 EUR. UK, CH und USA: Zoll und Einfuhrabgaben sind nicht enthalten und werden vom Käufer bei Lieferung bezahlt."
+    },
+    "usNote": {
+      "en": "US buyers: prices are shown in EUR and converted by your card provider. No US sales tax is collected by the seller; import duties may apply on delivery (artworks under HTS 9701 are usually duty-free, but carriers may charge a brokerage fee).",
+      "de": ""
+    },
+    "commissionLink": "",
+    "analytics": {
+      "enabled": false,
+      "provider": "none",
+      "_note": "Set enabled true only if you add a tracking script. Then the cookie banner appears automatically."
+    },
+    "payment": {
+      "_help": "method: revolut (order form + your revolut.me link), or stripe (per-work payment links). Both can coexist: a work with its own link uses that link.",
+      "method": "revolut",
+      "revolutLink": "https://revolut.me/a_schranz",
+      "revolutName": "Alexander Schranz",
+      "bankTransferNote": {
+        "en": "",
+        "de": ""
+      },
+      "confirmationHours": 48
+    },
+    "orders": {
+      "_help": "Where order forms are sent. provider: netlify (free, works when hosted on Netlify), formspree (paste your https://formspree.io/f/xxxx endpoint), or mailto (opens the buyer's email app). netlify and formspree also email you automatically.",
+      "provider": "netlify",
+      "endpoint": "",
+      "notifyEmail": "hello@seelischabstrakt.at"
+    },
+    "shipping": {
+      "_help": "Flat rates in EUR by region, shown and added at checkout. region codes: AT, EU, UK, CH, US, ROW (rest of world). pickup 0 for collection in Vienna.",
+      "rates": {
+        "AT": {
+          "print": 9,
+          "original": 19
+        },
+        "EU": {
+          "print": 19,
+          "original": 39
+        },
+        "UK": {
+          "print": 29,
+          "original": 59
+        },
+        "CH": {
+          "print": 29,
+          "original": 59
+        },
+        "US": {
+          "print": 39,
+          "original": 89
+        },
+        "ROW": {
+          "print": 49,
+          "original": 119
+        }
+      },
+      "pickupCity": "Wien",
+      "countries": {
+        "AT": [
+          "Austria",
+          "Österreich"
+        ],
+        "EU": [
+          "Germany",
+          "Deutschland",
+          "Italy",
+          "Italia",
+          "France",
+          "Spain",
+          "España",
+          "Netherlands",
+          "Belgium",
+          "Czechia",
+          "Slovakia",
+          "Slovenia",
+          "Hungary",
+          "Poland",
+          "Portugal",
+          "Ireland",
+          "Denmark",
+          "Sweden",
+          "Finland",
+          "Croatia",
+          "Greece",
+          "Luxembourg",
+          "Romania",
+          "Bulgaria",
+          "Estonia",
+          "Latvia",
+          "Lithuania",
+          "Malta",
+          "Cyprus"
+        ],
+        "UK": [
+          "United Kingdom",
+          "UK",
+          "England",
+          "Scotland",
+          "Wales"
+        ],
+        "CH": [
+          "Switzerland",
+          "Schweiz",
+          "Liechtenstein"
+        ],
+        "US": [
+          "United States",
+          "USA",
+          "US"
+        ]
+      }
+    },
+    "notify": {
+      "enabled": true
+    }
+  },
+  "texts": {
+    "heroLead": {
+      "en": "Small paintings, drawings and heads from a Vienna flat. Originals on canvas, board and paper, framed the way they hang here, and a few numbered prints.",
+      "de": "Kleine Bilder, Zeichnungen und Köpfe aus einer Wiener Wohnung. Originale auf Leinwand, Karton und Papier, gerahmt wie sie hier hängen, dazu ein paar nummerierte Drucke."
+    },
+    "heroMeta": {
+      "en": "26 works and counting",
+      "de": "26 Arbeiten, es werden mehr"
+    },
+    "worksKicker": {
+      "en": "Originals and editions · hung on the carpet",
+      "de": "Originale und Editionen · am Teppich gehängt"
+    },
+    "printsLead": {
+      "en": "Each print is signed, numbered and shipped flat from Vienna. Editions are capped per size; when a size is gone it stays gone.",
+      "de": "Jeder Druck ist signiert, nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe begrenzt; was weg ist, bleibt weg."
+    },
+    "aboutLead": {
+      "en": "<b>Much in little.</b> Small formats, thick paint, faces that arrive uninvited.",
+      "de": "<b>Viel im Kleinen.</b> Kleine Formate, dicke Farbe, Gesichter, die ungefragt kommen."
+    },
+    "aboutParagraphs": {
+      "en": [
+        "seelischabstrakt is the studio name of Alexander Schranz, who paints in Vienna on the floor of his flat, on a red Bokhara carpet that has become the background of everything. The works are small because the room is small and because a thing that fits in two hands can carry more than it looks.",
+        "He came to paint through the workshop, not the academy. Three years as a floor layer in a family that has taught the trade for generations left a respect for surface, layer and material, and a habit of building up and sanding back until something holds. The heads, the impasto and the ink drawings all come from the same place: what is left when the day is over.",
+        "Originals are one-offs and leave the flat framed, with a signed certificate. Prints are made in small numbered editions, only of works that survive the move to paper."
+      ],
+      "de": [
+        "seelischabstrakt ist der Ateliername von Alexander Schranz, der in Wien am Boden seiner Wohnung malt, auf einem roten Buchara-Teppich, der zum Hintergrund von allem geworden ist. Die Arbeiten sind klein, weil das Zimmer klein ist und weil ein Ding, das in zwei Hände passt, mehr tragen kann, als es aussieht.",
+        "Zur Malerei kam er über die Werkstatt, nicht über die Akademie. Drei Jahre als Bodenleger in einer Familie, die das Handwerk seit Generationen lehrt, haben Respekt vor Oberfläche, Schicht und Material hinterlassen, und die Gewohnheit, aufzubauen und abzuschleifen, bis etwas hält. Die Köpfe, das Impasto und die Tuschezeichnungen kommen aus derselben Quelle: aus dem, was bleibt, wenn der Tag vorbei ist.",
+        "Originale sind Unikate und verlassen die Wohnung gerahmt, mit signiertem Zertifikat. Drucke entstehen in kleinen nummerierten Auflagen, nur von Arbeiten, die den Weg aufs Papier überstehen."
+      ]
+    },
+    "facts": [
+      {
+        "label": {
+          "en": "Studio",
+          "de": "Atelier"
+        },
+        "value": {
+          "en": "Wien, 1180",
+          "de": "Wien, 1180"
+        }
+      },
+      {
+        "label": {
+          "en": "Media",
+          "de": "Technik"
+        },
+        "value": {
+          "en": "Acrylic, oil stick, ink, mixed media",
+          "de": "Acryl, Ölkreide, Tusche, Mischtechnik"
+        }
+      },
+      {
+        "label": {
+          "en": "Ships to",
+          "de": "Versand nach"
+        },
+        "value": {
+          "en": "EU, UK, CH, US; worldwide on request",
+          "de": "EU, UK, CH, USA; weltweit auf Anfrage"
+        }
+      },
+      {
+        "label": {
+          "en": "Provenance",
+          "de": "Provenienz"
+        },
+        "value": {
+          "en": "Signed certificate with every original",
+          "de": "Signiertes Zertifikat bei jedem Original"
+        }
+      }
+    ],
+    "commission": {
+      "intro": {
+        "en": "A piece made for a specific wall, room and person. Sizes from 20 × 20 cm to 100 × 80 cm. Typical lead time four to eight weeks.",
+        "de": "Ein Stück für eine bestimmte Wand, einen Raum, einen Menschen. Größen von 20 × 20 cm bis 100 × 80 cm. Dauer meist vier bis acht Wochen."
+      },
+      "steps": {
+        "en": [
+          "You send a photo of the space and two or three works from this page you respond to.",
+          "We agree size, direction and price. A 30 percent deposit starts the work.",
+          "You see the piece at the halfway stage and can steer once.",
+          "Final payment on approval, then it ships framed, or you collect in Vienna."
+        ],
+        "de": [
+          "Du schickst ein Foto des Raums und zwei, drei Arbeiten von dieser Seite, die dich ansprechen.",
+          "Wir fixieren Größe, Richtung und Preis. Mit 30 Prozent Anzahlung beginnt die Arbeit.",
+          "Du siehst das Bild auf halbem Weg und kannst einmal nachsteuern.",
+          "Restzahlung bei Freigabe, dann Versand gerahmt oder Abholung in Wien."
+        ]
+      }
+    },
+    "contactIntro": {
+      "en": "Questions about a work, studio visits in Vienna, or prices for several pieces together. Replies usually within a day.",
+      "de": "Fragen zu einer Arbeit, Atelierbesuche in Wien oder Preise für mehrere Stücke gemeinsam. Antwort meist innerhalb eines Tages."
+    }
+  },
+  "printTiers": [
+    {
+      "size": "30 × 40 cm",
+      "price": 95,
+      "edition": 50,
+      "paper": "Hahnemühle Photo Rag 308 g"
+    },
+    {
+      "size": "50 × 70 cm",
+      "price": 190,
+      "edition": 25,
+      "paper": "Hahnemühle Photo Rag 308 g"
+    },
+    {
+      "size": "70 × 100 cm",
+      "price": 340,
+      "edition": 10,
+      "paper": "Hahnemühle Photo Rag 308 g"
+    }
+  ],
+  "legal": {
+    "_help": "Fill these in. They feed the Imprint, Privacy, Terms, Returns and Shipping pages in both languages. Nothing here is legal advice; have a lawyer or the WKO check the final texts.",
+    "legalName": "Alexander Schranz",
+    "tradeName": "seelischabstrakt",
+    "street": "Musterstraße 1/2",
+    "zipCity": "1180 Wien",
+    "country": "Österreich",
+    "email": "hello@seelischabstrakt.at",
+    "phone": "",
+    "uid": "",
+    "kleinunternehmerNote": true,
+    "regulator": "Magistrat der Stadt Wien",
+    "chamber": "Wirtschaftskammer Wien, Fachgruppe Kunsthandel",
+    "odrLink": "https://ec.europa.eu/consumers/odr",
+    "hosting": "Netlify, Inc., San Francisco, USA (EU data processing agreement, Standard Contractual Clauses)",
+    "payment": "Stripe Payments Europe Ltd., Dublin, Ireland; PayPal (Europe) S.à r.l. et Cie, S.C.A., Luxembourg",
+    "returnsDaysPrints": 14,
+    "originalsMadeToOrderExempt": true,
+    "usPrivacyContactSameAsEmail": true,
+    "lastUpdated": "2026-09-12",
+    "_kleinunternehmer": "commerce.kleinunternehmer is the single switch. true: prices are final, no VAT shown (Austrian small business, currently up to 55,000 EUR turnover). false: 13 % originals / 20 % prints are shown."
+  },
+  "publish": {
+    "_help": "Used by admin.html to publish directly from phone or laptop. Create a free GitHub repo, upload this folder, connect it to Netlify (Add new site, Import from Git). The token is stored only in your own browser.",
+    "github": {
+      "owner": "",
+      "repo": "",
+      "branch": "main"
+    }
+  }
+}

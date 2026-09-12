@@ -1,0 +1,1 @@
+img/ folder holds your photos. Example name: img/kopf-rot.jpg

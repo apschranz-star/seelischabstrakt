@@ -1,0 +1,242 @@
+{
+  "works": [
+    {
+      "id": "w01",
+      "title": "Kopf, rot",
+      "year": 2026,
+      "medium": {
+        "en": "Oil stick and acrylic on paper, framed",
+        "de": "Ölkreide und Acryl auf Papier, gerahmt"
+      },
+      "w": 30,
+      "h": 24,
+      "seed": 7,
+      "style": "gesture",
+      "size": "wide",
+      "tilt": -0.6,
+      "original": {
+        "price": 380,
+        "available": true,
+        "link": ""
+      },
+      "prints": [
+        {
+          "size": "30 × 40",
+          "price": 95,
+          "link": ""
+        }
+      ],
+      "caption": {
+        "en": "Red ground, white knife strokes, a head that would not sit still.",
+        "de": "Roter Grund, weiße Spachtelzüge, ein Kopf, der nicht sitzen wollte."
+      },
+      "images": []
+    },
+    {
+      "id": "w02",
+      "title": "Blau, gegittert",
+      "year": 2026,
+      "medium": {
+        "en": "Acrylic on canvas board, blue frame",
+        "de": "Acryl auf Malkarton, blauer Rahmen"
+      },
+      "w": 30,
+      "h": 40,
+      "seed": 19,
+      "style": "grid",
+      "size": "",
+      "tilt": 0.4,
+      "original": {
+        "price": 520,
+        "available": true,
+        "link": ""
+      },
+      "prints": [
+        {
+          "size": "30 × 40",
+          "price": 95,
+          "link": ""
+        },
+        {
+          "size": "50 × 70",
+          "price": 190,
+          "link": ""
+        }
+      ],
+      "caption": {
+        "en": "Blue on blue, cut by a grid. Framed in the same blue.",
+        "de": "Blau auf Blau, von einem Raster zerschnitten. Gerahmt im selben Blau."
+      },
+      "images": []
+    },
+    {
+      "id": "w03",
+      "title": "Auge",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic and tar on canvas",
+        "de": "Acryl und Teer auf Leinwand"
+      },
+      "w": 40,
+      "h": 30,
+      "seed": 31,
+      "style": "eye",
+      "size": "",
+      "tilt": -0.3,
+      "nomat": true,
+      "original": {
+        "price": 640,
+        "available": false,
+        "link": ""
+      },
+      "prints": [
+        {
+          "size": "50 × 70",
+          "price": 190,
+          "link": ""
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "w04",
+      "title": "Suffering is a choice",
+      "year": 2026,
+      "medium": {
+        "en": "Ink on paper",
+        "de": "Tusche auf Papier"
+      },
+      "w": 21,
+      "h": 15,
+      "seed": 44,
+      "style": "ink",
+      "size": "small",
+      "tilt": 0.8,
+      "nomat": true,
+      "original": {
+        "price": 180,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "Ink. Four minutes. The title came first.",
+        "de": "Tusche. Vier Minuten. Der Titel war zuerst da."
+      },
+      "images": []
+    },
+    {
+      "id": "w05",
+      "title": "Gesicht, Wachs",
+      "year": 2026,
+      "medium": {
+        "en": "Oil pastel on paper, natural frame",
+        "de": "Ölpastell auf Papier, Naturrahmen"
+      },
+      "w": 21,
+      "h": 30,
+      "seed": 52,
+      "style": "face",
+      "size": "small",
+      "tilt": -0.9,
+      "original": {
+        "price": 240,
+        "available": true,
+        "link": ""
+      },
+      "prints": [
+        {
+          "size": "30 × 40",
+          "price": 95,
+          "link": ""
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "w06",
+      "title": "Wirbel",
+      "year": 2025,
+      "medium": {
+        "en": "Impasto acrylic on mini canvas",
+        "de": "Acryl-Impasto auf Mini-Leinwand"
+      },
+      "w": 15,
+      "h": 15,
+      "seed": 63,
+      "style": "swirl",
+      "size": "small",
+      "tilt": 0.5,
+      "nomat": true,
+      "original": {
+        "price": 150,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "images": []
+    },
+    {
+      "id": "w07",
+      "title": "Spritzer, weiß",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic on board",
+        "de": "Acryl auf Platte"
+      },
+      "w": 40,
+      "h": 28,
+      "seed": 77,
+      "style": "splatter",
+      "size": "",
+      "tilt": 0.2,
+      "nomat": true,
+      "original": {
+        "price": 460,
+        "available": true,
+        "link": ""
+      },
+      "prints": [
+        {
+          "size": "50 × 70",
+          "price": 190,
+          "link": ""
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "w08",
+      "title": "Hände",
+      "year": 2026,
+      "medium": {
+        "en": "Mixed media on paper, framed",
+        "de": "Mischtechnik auf Papier, gerahmt"
+      },
+      "w": 30,
+      "h": 24,
+      "seed": 88,
+      "style": "gesture",
+      "size": "wide",
+      "tilt": -0.4,
+      "original": {
+        "price": 420,
+        "available": true,
+        "link": ""
+      },
+      "prints": [
+        {
+          "size": "30 × 40",
+          "price": 95,
+          "link": ""
+        },
+        {
+          "size": "50 × 70",
+          "price": 190,
+          "link": ""
+        }
+      ],
+      "images": []
+    }
+  ]
+}
