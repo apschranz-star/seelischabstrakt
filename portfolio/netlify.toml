@@ -1,4 +1,4 @@
-# alexanderschranz.at: static portfolio, no build. Netlify: base directory "portfolio", publish directory "portfolio".
+# alexanderschranz.netlify.app: static journal, no build. Netlify: base directory "portfolio", publish directory "portfolio".
 [build]
   publish = "."
   command = ""
@@ -10,7 +10,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://seelischabstrakt.netlify.app; connect-src 'self' https://seelischabstrakt.netlify.app; base-uri 'self'; form-action 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'"
 
 [[headers]]
   for = "/img/*"
