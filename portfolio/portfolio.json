@@ -176,13 +176,13 @@
     "items": [
       {
         "title": {
-          "en": "nobi, lead-sourcing engine",
-          "de": "nobi, Lead-Sourcing-Engine"
+          "en": "Lead-sourcing engine",
+          "de": "Lead-Sourcing-Engine"
         },
         "year": "2026",
         "role": {
-          "en": "Designed, built and maintained solo, Python and Streamlit",
-          "de": "Solo konzipiert, gebaut und gewartet, Python und Streamlit"
+          "en": "Designed, built and maintained solo, Python and Streamlit, in production use",
+          "de": "Solo konzipiert, gebaut und gewartet, Python und Streamlit, im Produktivbetrieb"
         },
         "summary": {
           "en": "Multi-agent pipeline for prospecting: geodata ingestion, ICP scoring, company-register verification, CRM deduplication and import, with a human review gate as the final instance. About twelve minutes of manual research removed per lead.",
@@ -298,13 +298,13 @@
     "paragraphs": {
       "en": [
         "I work in B2B sales and business development, currently in the Austrian and German energy market, and I build the AI tooling my own pipeline runs on.",
-        "In 2026 I booked 67 qualified enterprise meetings in four and a half months, every one of them self-generated from cold, across Austria and Germany. I was weekly number one in meetings booked in five of ten reports in a team of seven to eight, and never below second. Two of my own leads closed, including roughly one gigawatt hour of annual supply with a listed steel group, negotiated together with both co-CEOs.",
+        "In 2026 I booked 67 qualified enterprise meetings in four and a half months, every one of them self-generated from cold, across Austria and Germany. I was weekly number one in meetings booked in five of ten reports in a team of seven to eight, and never below second. Two of my own leads closed, including roughly one gigawatt hour of annual supply with a listed industrial group, negotiated together with both co-CEOs.",
         "Alongside the quota I designed and shipped four internal systems in Python: a multi-agent lead-sourcing engine, a geospatial qualification layer, an LLM outreach pipeline with a mandatory human review gate, and the team's operating knowledge base. The sourcing engine removed about twelve minutes of manual research per lead, valued internally at roughly seven hundred working hours.",
         "I am looking for a role where I can drive impact and proactive business growth: new business and expansion owned end to end, or applied AI and sales operations built as its own function. Ideally both, because that is where I am strongest."
       ],
       "de": [
         "Ich arbeite im B2B-Vertrieb und Business Development, derzeit im österreichischen und deutschen Energiemarkt, und baue die AI-Werkzeuge, mit denen meine eigene Pipeline läuft.",
-        "2026 habe ich 67 qualifizierte Enterprise-Meetings in viereinhalb Monaten gebucht, alle selbst aus der Kaltakquise, in Österreich und Deutschland. In fünf von zehn Wochenreports war ich Nummer eins bei gebuchten Meetings in einem Team von sieben bis acht, nie schlechter als Platz zwei. Zwei eigene Leads sind abgeschlossen, darunter rund eine Gigawattstunde Jahresliefervolumen mit einem börsennotierten Stahlkonzern, gemeinsam mit beiden Co-CEOs verhandelt.",
+        "2026 habe ich 67 qualifizierte Enterprise-Meetings in viereinhalb Monaten gebucht, alle selbst aus der Kaltakquise, in Österreich und Deutschland. In fünf von zehn Wochenreports war ich Nummer eins bei gebuchten Meetings in einem Team von sieben bis acht, nie schlechter als Platz zwei. Zwei eigene Leads sind abgeschlossen, darunter rund eine Gigawattstunde Jahresliefervolumen mit einem börsennotierten Industriekonzern, gemeinsam mit beiden Co-CEOs verhandelt.",
         "Parallel zur Quote habe ich vier interne Systeme in Python konzipiert und in den Produktivbetrieb gebracht: eine Multi-Agent-Lead-Sourcing-Engine, einen Geodaten-Layer zur Standortqualifizierung, eine LLM-Outreach-Pipeline mit verpflichtendem Human-Review-Gate und die operative Wissensbasis des Teams. Die Sourcing-Engine ersetzt rund zwölf Minuten Handrecherche pro Lead, intern bewertet mit etwa siebenhundert Arbeitsstunden.",
         "Ich suche eine Rolle, in der ich Wirkung erzielen und Wachstum aktiv treiben kann: Neukundengeschäft und Expansion end to end verantwortet, oder Applied AI und Sales Operations als eigene Funktion aufgebaut. Am liebsten beides, weil ich dort am stärksten bin."
       ]
@@ -359,12 +359,12 @@
       {
         "period": "2026",
         "role": {
-          "en": "Commercial Energy Advisor, sales development and business development",
+          "en": "Commercial energy advisor, sales development and business development",
           "de": "Commercial Energy Advisor, Sales Development und Business Development"
         },
         "org": {
-          "en": "nobile (NIG GmbH), Vienna",
-          "de": "nobile (NIG GmbH), Wien"
+          "en": "Austrian-German energy supplier, Vienna",
+          "de": "Österreichisch-deutscher Energieversorger, Wien"
         },
         "summary": {
           "en": "Outbound for industrial and commercial accounts in Austria and Germany. Since August 2026 responsible for the team's sales-development processes.",
@@ -423,7 +423,11 @@
         },
         "url": "mailto:a.p.schranz@icloud.com?subject=CV"
       }
-    ]
+    ],
+    "note": {
+      "en": "Company names and references on request. All figures verifiable against CRM and call records.",
+      "de": "Firmennamen und Referenzen auf Anfrage. Alle Zahlen gegen CRM- und Telefondaten belegbar."
+    }
   },
   "network": {
     "title": {
