@@ -13,7 +13,7 @@
     "defaultLang": "en"
   },
   "theme": {
-    "preset": "carpet",
+    "preset": "custom",
     "_presets": "carpet | shawl | paper | gallery | custom. A preset fills colors and pattern; custom uses the values below as they are.",
     "colors": {
       "ground": "#8C1D1D",
@@ -25,12 +25,12 @@
       "mat": "#EFE7D8",
       "ink": "#F3EBDE",
       "ink2": "#E2CDBF",
-      "mute": "#C99E93",
+      "mute": "#E3C2B8",
       "paper": "#F1EBE0",
       "paperInk": "#171212",
       "accent": "#F2B429"
     },
-    "pattern": "gul",
+    "pattern": "paisley",
     "_patterns": "gul (Bokhara carpet) | paisley | none",
     "fonts": {
       "display": "Bricolage Grotesque",
@@ -48,7 +48,10 @@
       "reveal": true,
       "worksLayout": "single",
       "_worksLayout": "grid | single"
-    }
+    },
+    "patternSvg": "img/carpet-tile.jpg",
+    "patternSize": "1100px 1100px",
+    "customCss": "body{background-image:linear-gradient(rgba(25,6,6,.42),rgba(25,6,6,.42)),url(img/carpet-tile.jpg);background-size:auto,1100px 1100px}"
   },
   "commerce": {
     "currency": "EUR",
@@ -184,20 +187,20 @@
   },
   "texts": {
     "heroLead": {
-      "en": "Small paintings, drawings and heads from a Vienna flat. Originals on canvas, board and paper, framed the way they hang here, and a few numbered prints.",
-      "de": "Kleine Bilder, Zeichnungen und Köpfe aus einer Wiener Wohnung. Originale auf Leinwand, Karton und Papier, gerahmt wie sie hier hängen, dazu ein paar nummerierte Drucke."
+      "en": "Small paintings, drawings and heads from a Vienna studio. Originals on canvas, board and paper, framed as they hang here, and a small number of numbered editions.",
+      "de": "Kleine Bilder, Zeichnungen und Köpfe aus einem Wiener Atelier. Originale auf Leinwand, Karton und Papier, gerahmt wie sie hier hängen, dazu wenige nummerierte Editionen."
     },
     "heroMeta": {
       "en": "First works online, more to come",
       "de": "Erste Werke online, weitere folgen"
     },
     "worksKicker": {
-      "en": "Originals and editions · hung on the carpet",
-      "de": "Originale und Editionen · am Teppich gehängt"
+      "en": "Originals and editions · staged on the carpet",
+      "de": "Originale und Editionen · inszeniert am Teppich"
     },
     "printsLead": {
-      "en": "Each print is signed, numbered and shipped flat from Vienna. Editions are capped per size; when a size is gone it stays gone.",
-      "de": "Jeder Druck ist signiert, nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe begrenzt; was weg ist, bleibt weg."
+      "en": "Each edition is signed and numbered and ships flat from Vienna. Editions are limited per size; a sold-out size will not be reprinted.",
+      "de": "Jede Edition ist signiert und nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe limitiert; eine ausverkaufte Größe wird nicht nachgedruckt."
     },
     "aboutLead": {
       "en": "<b>Much in little.</b> Fragments, surfaces, marks. The hand stays visible.",
@@ -254,51 +257,51 @@
       },
       {
         "label": {
-          "en": "Provenance",
-          "de": "Provenienz"
+          "en": "Certificate",
+          "de": "Zertifikat"
         },
         "value": {
-          "en": "Signed certificate with every original",
-          "de": "Signiertes Zertifikat bei jedem Original"
+          "en": "Signed certificate of authenticity with every original",
+          "de": "Signiertes Echtheitszertifikat bei jedem Original"
         }
       }
     ],
     "commission": {
       "intro": {
-        "en": "A piece made for a specific wall, room and person. Sizes from 20 × 20 cm to 100 × 80 cm. Typical lead time four to eight weeks.",
-        "de": "Ein Stück für eine bestimmte Wand, einen Raum, einen Menschen. Größen von 20 × 20 cm bis 100 × 80 cm. Dauer meist vier bis acht Wochen."
+        "en": "A work made for a specific wall, room and person. Sizes from 20 × 20 cm to 100 × 80 cm. Typical lead time four to eight weeks.",
+        "de": "Ein Werk für eine bestimmte Wand, einen Raum, einen Menschen. Größen von 20 × 20 cm bis 100 × 80 cm. Dauer meist vier bis acht Wochen."
       },
       "steps": {
         "en": [
           "You send a photo of the space and two or three works from this page you respond to.",
-          "We agree size, direction and price. A 30 percent deposit starts the work.",
-          "You see the piece at the halfway stage and can steer once.",
+          "We agree on size, direction and price. A 30 percent deposit starts the commission.",
+          "You see the work at the halfway stage and can steer once.",
           "Final payment on approval, then it ships framed, or you collect in Vienna."
         ],
         "de": [
-          "Du schickst ein Foto des Raums und zwei, drei Arbeiten von dieser Seite, die dich ansprechen.",
-          "Wir fixieren Größe, Richtung und Preis. Mit 30 Prozent Anzahlung beginnt die Arbeit.",
-          "Du siehst das Bild auf halbem Weg und kannst einmal nachsteuern.",
+          "Du schickst ein Foto des Raums und zwei, drei Werke von dieser Seite, die dich ansprechen.",
+          "Wir fixieren Größe, Richtung und Preis. Mit 30 Prozent Anzahlung beginnt die Ausführung.",
+          "Du siehst das Werk auf halbem Weg und kannst einmal nachsteuern.",
           "Restzahlung bei Freigabe, dann Versand gerahmt oder Abholung in Wien."
         ]
       }
     },
     "contactIntro": {
-      "en": "Questions about a work, studio visits in Vienna, or prices for several pieces together. Replies usually within a day.",
-      "de": "Fragen zu einer Arbeit, Atelierbesuche in Wien oder Preise für mehrere Stücke gemeinsam. Antwort meist innerhalb eines Tages."
+      "en": "Questions about a work, studio visits in Vienna, or prices for several works. Replies usually within a day.",
+      "de": "Fragen zu einem Werk, Atelierbesuche in Wien oder Preise für mehrere Werke. Antwort meist innerhalb eines Tages."
     },
     "empty": {
       "works": {
-        "en": "New works are on the way.",
-        "de": "Neue Werke kommen."
+        "en": "New works will be released soon.",
+        "de": "Neue Werke folgen in Kürze."
       },
       "filter": {
-        "en": "Nothing in this selection yet.",
-        "de": "In dieser Auswahl ist noch nichts."
+        "en": "Nothing in this selection at the moment.",
+        "de": "In dieser Auswahl gibt es derzeit nichts."
       },
       "prints": {
-        "en": "Print editions are in preparation.",
-        "de": "Druckeditionen sind in Vorbereitung."
+        "en": "Editions are in preparation.",
+        "de": "Editionen sind in Vorbereitung."
       }
     },
     "aboutImage": {
@@ -313,12 +316,49 @@
       }
     },
     "ui": {
+      "en": {
+        "nav.prints": "Editions",
+        "filter.print": "Editions",
+        "prints.title": "Editions",
+        "prints.kicker": "Giclée prints on archival paper",
+        "prints.empty": "Editions are in preparation.",
+        "hero.cta1": "View available works",
+        "footer.person": "About the artist",
+        "lbl.buyOriginal": "Acquire original",
+        "lbl.buyPrint": "Acquire edition",
+        "lbl.print": "Edition",
+        "lbl.chooseSize": "Edition size",
+        "comm.cta": "Enquire about a commission",
+        "contact.mail": "Send an email",
+        "notify.text": "A short note when a new work is released. No newsletter, no tracking.",
+        "works.empty": "New works will be released soon.",
+        "filter.empty": "Nothing in this selection at the moment.",
+        "trust": "Signed certificate of authenticity · Ships from Vienna · {d}-day returns on editions · Secure order, payment by Revolut",
+        "legal.us": "Buyers in the US"
+      },
       "de": {
         "nav.works": "Werke",
         "works.title": "Werke",
         "hero.cta1": "Verfügbare Werke",
-        "works.empty": "Neue Werke kommen.",
-        "notify.title": "Neue Werke per E-Mail"
+        "nav.prints": "Editionen",
+        "filter.print": "Editionen",
+        "prints.title": "Editionen",
+        "prints.kicker": "Giclée-Drucke auf Archivpapier",
+        "prints.empty": "Editionen sind in Vorbereitung.",
+        "nav.commission": "Auftragswerke",
+        "comm.title": "Auftragswerke",
+        "comm.cta": "Auftragswerk anfragen",
+        "footer.person": "Über den Künstler",
+        "lbl.buyOriginal": "Original erwerben",
+        "lbl.buyPrint": "Edition erwerben",
+        "lbl.print": "Edition",
+        "lbl.chooseSize": "Editionsgröße",
+        "notify.title": "Neue Werke per E-Mail",
+        "notify.text": "Eine kurze Nachricht, wenn ein neues Werk erscheint. Kein Newsletter, kein Tracking.",
+        "works.empty": "Neue Werke folgen in Kürze.",
+        "filter.empty": "In dieser Auswahl gibt es derzeit nichts.",
+        "trust": "Signiertes Echtheitszertifikat · Versand aus Wien · {d} Tage Rückgabe bei Editionen · Sichere Bestellung, Zahlung per Revolut",
+        "legal.us": "Käufer in den USA"
       }
     }
   },
