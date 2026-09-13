@@ -291,6 +291,17 @@
         "en": "Print editions are in preparation.",
         "de": "Druckeditionen sind in Vorbereitung."
       }
+    },
+    "aboutImage": {
+      "src": "img/alexander-schranz.jpg",
+      "alt": {
+        "en": "Alexander Schranz",
+        "de": "Alexander Schranz"
+      },
+      "caption": {
+        "en": "",
+        "de": ""
+      }
     }
   },
   "printTiers": [
