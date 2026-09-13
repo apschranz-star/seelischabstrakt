@@ -141,3 +141,21 @@ Until a link is set, the button opens an email to the address in site.json (bran
 ## Legal minimum for an Austrian shop
 
 Impressum (ECG § 5 and Mediengesetz § 25): name, address, email, and for a business the UID or a note that you are a Kleinunternehmer. Rücktrittsrecht 14 days for consumers on prints; originals made to order are exempt but say so. All of this is generated from the Legal tab in admin.html (Impressum, Datenschutz with DSGVO and CCPA, AGB with Widerrufsformular, Versand und Steuern, US buyers, Barrierefreiheit). The texts are templates: let the WKO or a lawyer confirm them before the first sale.
+
+## Alltag ohne Assistenten (Stand 13.09.2026)
+
+Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk, direkt am iPad. Einmalig im Tab Publish den GitHub-Token eintragen (Fine-grained, nur dieses Repo, Contents: Read and write). Der Token bleibt nur in deinem Browser.
+
+- Foto zu einem Werk: Tab Works, "Choose photo", dann oben "Publish to site". Eine Minute später live.
+- Verkauft: Tab Works, Häkchen "available" weg, Publish.
+- Preis, Titel, Technik, Caption: Tab Works, Feld ändern, Publish.
+- Neues Werk: Tab Works, "Add work", Felder füllen, Foto wählen, Publish. Oder seelischabstrakt.netlify.app/add am Handy, wenn die vier Environment variables in Netlify gesetzt sind (DESK_KEY, GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH).
+- Adresse, E-Mail, Telefon, UID: Tab Legal, Publish. Daraus entstehen Impressum, AGB, Datenschutz in beiden Sprachen.
+- Revolut Business statt privat: Tab Shop and taxes, Revolut-Link tauschen, Publish. Der Anbietername für die Rechtstexte steht im Tab Legal unter payment.
+- Umsatzsteuerpflicht: Tab Shop and taxes, Kleinunternehmer aus. Preise, AGB und Versandseite stellen sich um.
+- Bestellungen: Netlify, Forms, "order". E-Mail-Benachrichtigung unter Form notifications eintragen. Rechnung innerhalb von 48 Stunden selbst schicken, danach versenden.
+- Interessenten für neue Werke: Netlify, Forms, "notify", Liste exportieren.
+
+Wenn etwas nicht geht: Seite zeigt keine Werke, dann ist meist works.json oder site.json beschädigt; Datei in GitHub öffnen und in jsonlint.com prüfen. Desk meldet "Publish failed 401 oder 403": Token abgelaufen oder ohne Contents write, neuen Token erzeugen. Desk meldet 404: Repository-Name im Tab Publish prüfen. /add meldet 401: DESK_KEY in Netlify stimmt nicht mit dem eingegebenen Schlüssel überein.
+
+Für Textarbeit ohne Zugang zum Repo: ChatGPT oder Claude mit MAINTENANCE.md füttern, das Werk beschreiben, den JSON-Block in das Feld "Aus ChatGPT einfügen" auf /add kopieren.
