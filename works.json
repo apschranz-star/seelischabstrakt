@@ -15,7 +15,7 @@
       "size": "wide",
       "tilt": 0.4,
       "nomat": true,
-      "img": "img/enter-the-void.jpg",
+      "img": "img/enter-the-void-cut.jpg",
       "original": {
         "price": 4800,
         "available": true,
@@ -26,7 +26,9 @@
         "en": "A red eye, wide open, black running down from the lid. The pupil is not a point but an opening. You look in and the room behind it has no floor. The step inside is the whole picture.",
         "de": "Ein rotes Auge, weit offen, vom Lid rinnt Schwarz herunter. Die Pupille ist kein Punkt, sondern ein Eingang. Man schaut hinein, und der Raum dahinter hat keinen Boden. Der Schritt hinein ist das ganze Bild."
       },
-      "images": []
+      "images": [
+        "img/enter-the-void.jpg"
+      ]
     },
     {
       "id": "w12",
@@ -43,7 +45,7 @@
       "size": "",
       "tilt": -0.5,
       "nomat": true,
-      "img": "img/fear.jpg",
+      "img": "img/fear-cut.jpg",
       "original": {
         "price": 2600,
         "available": true,
@@ -54,7 +56,9 @@
         "en": "Paint as thick as a scab on the left, a narrow strip of open red on the right, and in the corner a black knot that will not come undone. Fear is small in size and takes up the whole canvas anyway.",
         "de": "Links Farbe, dick wie eine Kruste, rechts ein schmaler Streifen offenes Rot, in der Ecke ein schwarzer Knoten, der nicht aufgeht. Angst ist klein im Format und nimmt trotzdem die ganze Leinwand ein."
       },
-      "images": []
+      "images": [
+        "img/fear.jpg"
+      ]
     },
     {
       "id": "w10",
@@ -71,7 +75,7 @@
       "size": "wide",
       "tilt": -0.3,
       "nomat": true,
-      "img": "img/suffering-is-eternal.jpg",
+      "img": "img/suffering-is-eternal-cut.jpg",
       "original": {
         "price": 777,
         "available": true,
@@ -83,6 +87,7 @@
         "de": "Ein Kopf in einer Linie, aus dem Mund rinnt Schwarz. Der Titel steht darüber und ist wieder durchgestrichen."
       },
       "images": [
+        "img/suffering-is-eternal.jpg",
         "img/suffering-is-eternal-framed.jpg"
       ]
     }
