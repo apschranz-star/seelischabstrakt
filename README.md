@@ -144,7 +144,7 @@ Impressum (ECG § 5 and Mediengesetz § 25): name, address, email, and for a bus
 
 ## Alltag ohne Assistenten (Stand 13.09.2026)
 
-Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk, direkt am iPad. Einmalig im Tab Publish den GitHub-Token eintragen (Fine-grained, nur dieses Repo, Contents: Read and write). Der Token bleibt nur in deinem Browser.
+Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk, direkt am iPad. Der Desk fragt nach einem Passwort: Netlify, Environment variables, DESK_PASSWORD setzen (der Name im Anmeldefenster ist egal), danach Trigger deploy. Ohne die Variable bleibt der Desk gesperrt. Einmalig im Tab Publish den GitHub-Token eintragen (Fine-grained, nur dieses Repo, Contents: Read and write). Der Token bleibt nur in deinem Browser.
 
 - Foto zu einem Werk: Tab Works, "Choose photo", im Zuschneide-Fenster den Rahmen auf das Bild ziehen (Häkchen hält das Seitenverhältnis B × H), "Crop", dann oben "Publish to site". Eine Minute später live.
 - Verkauft: Tab Works, Häkchen "available" weg, Publish.
@@ -156,6 +156,8 @@ Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk
 - Umsatzsteuerpflicht: Tab Shop and taxes, Kleinunternehmer aus. Preise, AGB und Versandseite stellen sich um.
 - Bestellungen: Netlify, Forms, "order". E-Mail-Benachrichtigung unter Form notifications eintragen. Rechnung innerhalb von 48 Stunden selbst schicken, danach versenden.
 - Interessenten für neue Werke: Netlify, Forms, "notify", Liste exportieren.
+
+Desk meldet "locked" oder 503: DESK_PASSWORD fehlt in Netlify. Passwort ändern: Variable ändern, Trigger deploy, in Safari die gespeicherten Passwörter für die Seite löschen.
 
 Wenn etwas nicht geht: Seite zeigt keine Werke, dann ist meist works.json oder site.json beschädigt; Datei in GitHub öffnen und in jsonlint.com prüfen. Desk meldet "Publish failed 401 oder 403": Token abgelaufen oder ohne Contents write, neuen Token erzeugen. Desk meldet 404: Repository-Name im Tab Publish prüfen. /add meldet 401: DESK_KEY in Netlify stimmt nicht mit dem eingegebenen Schlüssel überein.
 

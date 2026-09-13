@@ -33,6 +33,9 @@ Atelier in Wien, kleine Formate, Teppich als Bühne, "Multum in parvo." Sätze k
 - Werke löschen, ohne dass Alexander es ausdrücklich sagt (verkauft = "available": false, nicht löschen).
 - Die Struktur von works.json oder site.json verändern.
 
+## Zugang zum Studio desk
+/desk und /admin.html sind durch die Funktion netlify/functions/desk.js geschützt. Das Passwort steht nur in der Netlify-Variable DESK_PASSWORD, nie im Repo. Schreib es nirgends hin.
+
 ## Wenn etwas kaputt ist
 Seite zeigt keine Werke: fast immer ein fehlendes Komma in works.json oder site.json. Datei durch einen JSON-Prüfer laufen lassen, Zeile korrigieren.
 /add oder die Action meldet 401: Desk-Schlüssel falsch (Netlify, Environment variables, DESK_KEY).
