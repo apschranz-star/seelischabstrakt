@@ -2,240 +2,240 @@
   "works": [
     {
       "id": "w01",
-      "title": "Kopf, rot",
-      "year": 2026,
+      "title": "Blooming Times",
+      "year": 2025,
       "medium": {
-        "en": "Oil stick and acrylic on paper, framed",
-        "de": "Ölkreide und Acryl auf Papier, gerahmt"
+        "en": "Medium on request",
+        "de": "Technik auf Anfrage"
       },
-      "w": 30,
-      "h": 24,
+      "w": 40,
+      "h": 50,
       "seed": 7,
       "style": "gesture",
       "size": "wide",
       "tilt": -0.6,
       "original": {
-        "price": 380,
+        "price": 2400,
         "available": true,
         "link": ""
       },
-      "prints": [
-        {
-          "size": "30 × 40",
-          "price": 95,
-          "link": ""
-        }
-      ],
+      "prints": [],
       "caption": {
-        "en": "Red ground, white knife strokes, a head that would not sit still.",
-        "de": "Roter Grund, weiße Spachtelzüge, ein Kopf, der nicht sitzen wollte."
+        "en": "A period of becoming visible again after years of holding things back. What looks like growth carries the weight of what came before.",
+        "de": "Eine Zeit, in der nach Jahren des Zurückhaltens wieder etwas sichtbar wird. Was nach Wachstum ausschaut, trägt trotzdem das Gewicht von früher.",
       },
       "images": []
     },
     {
       "id": "w02",
-      "title": "Blau, gegittert",
-      "year": 2026,
+      "title": "Void",
+      "year": 2023,
       "medium": {
-        "en": "Acrylic on canvas board, blue frame",
-        "de": "Acryl auf Malkarton, blauer Rahmen"
+        "en": "Medium on request",
+        "de": "Technik auf Anfrage"
       },
-      "w": 30,
-      "h": 40,
+      "w": 40,
+      "h": 50,
       "seed": 19,
       "style": "grid",
       "size": "",
       "tilt": 0.4,
       "original": {
-        "price": 520,
+        "price": 2800,
         "available": true,
         "link": ""
       },
-      "prints": [
-        {
-          "size": "30 × 40",
-          "price": 95,
-          "link": ""
-        },
-        {
-          "size": "50 × 70",
-          "price": 190,
-          "link": ""
-        }
-      ],
+      "prints": [],
       "caption": {
-        "en": "Blue on blue, cut by a grid. Framed in the same blue.",
-        "de": "Blau auf Blau, von einem Raster zerschnitten. Gerahmt im selben Blau."
+        "en": "The empty place left by fear, loss and everything that could not be said. Staying with it was part of getting through it.",
+        "de": "Der leere Raum, den Angst, Verlust und alles Ungesagte hinterlassen. Dort auszuhalten war ein Teil davon, da durchzukommen.",
       },
       "images": []
     },
     {
       "id": "w03",
-      "title": "Auge",
+      "title": "Summer Madness",
       "year": 2025,
       "medium": {
-        "en": "Acrylic and tar on canvas",
-        "de": "Acryl und Teer auf Leinwand"
+        "en": "Oil on canvas",
+        "de": "Öl auf Leinwand"
       },
-      "w": 40,
-      "h": 30,
+      "w": 10,
+      "h": 10,
       "seed": 31,
-      "style": "eye",
-      "size": "",
+      "style": "swirl",
+      "size": "small",
       "tilt": -0.3,
       "nomat": true,
       "original": {
-        "price": 640,
-        "available": false,
-        "link": ""
-      },
-      "prints": [
-        {
-          "size": "50 × 70",
-          "price": 190,
-          "link": ""
-        }
-      ],
-      "images": []
-    },
-    {
-      "id": "w04",
-      "title": "Suffering is a choice",
-      "year": 2026,
-      "medium": {
-        "en": "Ink on paper",
-        "de": "Tusche auf Papier"
-      },
-      "w": 21,
-      "h": 15,
-      "seed": 44,
-      "style": "ink",
-      "size": "small",
-      "tilt": 0.8,
-      "nomat": true,
-      "original": {
-        "price": 180,
+        "price": 950,
         "available": true,
         "link": ""
       },
       "prints": [],
       "caption": {
-        "en": "Ink. Four minutes. The title came first.",
-        "de": "Tusche. Vier Minuten. Der Titel war zuerst da."
+        "en": "A small canvas holding the heat, excess and restlessness of a summer that would not stay quiet.",
+        "de": "Eine kleine Leinwand mit der Hitze, dem Übermass und der Unruhe eines Sommers, der nicht ruhig bleiben wollte.",
+      },
+      "images": []
+    },
+    {
+      "id": "w04",
+      "title": "Remnants of the Past",
+      "year": 2025,
+      "medium": {
+        "en": "Oil on canvas",
+        "de": "Öl auf Leinwand"
+      },
+      "w": 20,
+      "h": 20,
+      "seed": 44,
+      "style": "gesture",
+      "size": "small",
+      "tilt": 0.8,
+      "nomat": true,
+      "original": {
+        "price": 1400,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "Fragments of old fear and old habits remain. They do not have to decide what comes next.",
+        "de": "Reste von alter Angst und alten Gewohnheiten bleiben. Sie müssen trotzdem nicht bestimmen, was als Nächstes kommt.",
       },
       "images": []
     },
     {
       "id": "w05",
-      "title": "Gesicht, Wachs",
-      "year": 2026,
-      "medium": {
-        "en": "Oil pastel on paper, natural frame",
-        "de": "Ölpastell auf Papier, Naturrahmen"
-      },
-      "w": 21,
-      "h": 30,
-      "seed": 52,
-      "style": "face",
-      "size": "small",
-      "tilt": -0.9,
-      "original": {
-        "price": 240,
-        "available": true,
-        "link": ""
-      },
-      "prints": [
-        {
-          "size": "30 × 40",
-          "price": 95,
-          "link": ""
-        }
-      ],
-      "images": []
-    },
-    {
-      "id": "w06",
-      "title": "Wirbel",
+      "title": "Pool Party",
       "year": 2025,
       "medium": {
-        "en": "Impasto acrylic on mini canvas",
-        "de": "Acryl-Impasto auf Mini-Leinwand"
+        "en": "Acrylic on paper",
+        "de": "Acryl auf Papier"
       },
-      "w": 15,
-      "h": 15,
-      "seed": 63,
-      "style": "swirl",
-      "size": "small",
-      "tilt": 0.5,
-      "nomat": true,
+      "w": 40,
+      "h": 50,
+      "seed": 52,
+      "style": "splatter",
+      "size": "wide",
+      "tilt": -0.9,
       "original": {
-        "price": 150,
+        "price": 2200,
         "available": true,
         "link": ""
       },
       "prints": [],
+      "caption": {
+        "en": "Joy without pretending everything is fine. A moment of colour, movement and letting go.",
+        "de": "Freude, ohne so zu tun, als wär alles in Ordnung. Ein Moment aus Farbe, Bewegung und Loslassen.",
+      },
+      "images": []
+    },
+    {
+      "id": "w06",
+      "title": "Fear",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic on canvas",
+        "de": "Acryl auf Leinwand"
+      },
+      "w": 40,
+      "h": 50,
+      "seed": 63,
+      "style": "eye",
+      "size": "wide",
+      "tilt": 0.5,
+      "nomat": true,
+      "original": {
+        "price": 2600,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "Fear used to set the limits. The work is about looking at it without handing it the wheel.",
+        "de": "Angst hat lange die Grenzen gesetzt. Es geht darum, sie anzuschauen, ohne ihr das Steuer zu überlassen.",
+      },
       "images": []
     },
     {
       "id": "w07",
-      "title": "Spritzer, weiß",
+      "title": "Enter the Void",
       "year": 2025,
       "medium": {
-        "en": "Acrylic on board",
-        "de": "Acryl auf Platte"
+        "en": "Acrylic on canvas",
+        "de": "Acryl auf Leinwand"
       },
-      "w": 40,
-      "h": 28,
+      "w": 50,
+      "h": 70,
       "seed": 77,
-      "style": "splatter",
-      "size": "",
+      "style": "grid",
+      "size": "wide",
       "tilt": 0.2,
       "nomat": true,
       "original": {
-        "price": 460,
+        "price": 4800,
         "available": true,
         "link": ""
       },
-      "prints": [
-        {
-          "size": "50 × 70",
-          "price": 190,
-          "link": ""
-        }
-      ],
+      "prints": [],
+      "caption": {
+        "en": "Entering the place that was once avoided. The void is no longer only an ending, but a space to move through.",
+        "de": "In den Ort hineingehen, den man früher gemieden hat. Das Nichts ist nicht mehr nur ein Ende, sondern ein Raum, durch den man durchgehen kann.",
+      },
       "images": []
     },
     {
       "id": "w08",
-      "title": "Hände",
-      "year": 2026,
+      "title": "Feeding",
+      "year": 2025,
       "medium": {
-        "en": "Mixed media on paper, framed",
-        "de": "Mischtechnik auf Papier, gerahmt"
+        "en": "Oil on paper",
+        "de": "Öl auf Papier"
       },
-      "w": 30,
-      "h": 24,
+      "w": 40,
+      "h": 50,
       "seed": 88,
       "style": "gesture",
       "size": "wide",
       "tilt": -0.4,
       "original": {
-        "price": 420,
+        "price": 2300,
         "available": true,
         "link": ""
       },
-      "prints": [
-        {
-          "size": "30 × 40",
-          "price": 95,
-          "link": ""
-        },
-        {
-          "size": "50 × 70",
-          "price": 190,
-          "link": ""
-        }
-      ],
+      "prints": [],
+      "caption": {
+        "en": "What we feed grows, including fear, anger and the parts of life we want to keep alive. The choice is made again and again.",
+        "de": "Was wir füttern, wächst, auch Angst, Wut und die Teile vom Leben, die wir am Leben halten wollen. Die Entscheidung fällt immer wieder neu.",
+      },
+      "images": []
+    },
+    {
+      "id": "w09",
+      "title": "Love is Fluid",
+      "year": 2025,
+      "medium": {
+        "en": "Medium on request",
+        "de": "Technik auf Anfrage"
+      },
+      "w": 40,
+      "h": 50,
+      "seed": 99,
+      "style": "swirl",
+      "size": "wide",
+      "tilt": 0.3,
+      "original": {
+        "price": 2500,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "Love changes shape when control is released. It can hurt, move and still remain part of life.",
+        "de": "Liebe verändert ihre Form, wenn Kontrolle losgelassen wird. Sie kann wehtun, sich bewegen und trotzdem Teil vom Leben bleiben.",
+      },
       "images": []
     }
   ]
