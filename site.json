@@ -323,8 +323,8 @@
   "publish": {
     "_help": "Used by admin.html to publish directly from phone or laptop. Create a free GitHub repo, upload this folder, connect it to Netlify (Add new site, Import from Git). The token is stored only in your own browser.",
     "github": {
-      "owner": "",
-      "repo": "",
+      "owner": "apschranz-star",
+      "repo": "seelischabstrakt",
       "branch": "main"
     }
   }
