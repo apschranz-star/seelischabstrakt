@@ -146,7 +146,7 @@ Impressum (ECG § 5 and Mediengesetz § 25): name, address, email, and for a bus
 
 Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk, direkt am iPad. Einmalig im Tab Publish den GitHub-Token eintragen (Fine-grained, nur dieses Repo, Contents: Read and write). Der Token bleibt nur in deinem Browser.
 
-- Foto zu einem Werk: Tab Works, "Choose photo", dann oben "Publish to site". Eine Minute später live.
+- Foto zu einem Werk: Tab Works, "Choose photo", im Zuschneide-Fenster den Rahmen auf das Bild ziehen (Häkchen hält das Seitenverhältnis B × H), "Crop", dann oben "Publish to site". Eine Minute später live.
 - Verkauft: Tab Works, Häkchen "available" weg, Publish.
 - Preis, Titel, Technik, Caption: Tab Works, Feld ändern, Publish.
 - Neues Werk: Tab Works, "Add work", Felder füllen, Foto wählen, Publish. Oder seelischabstrakt.netlify.app/add am Handy, wenn die vier Environment variables in Netlify gesetzt sind (DESK_KEY, GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH).

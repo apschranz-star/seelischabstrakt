@@ -6,6 +6,17 @@ body{margin:0;background:#8C1D1D;color:#EFE7D8;font:16px/1.5 "Courier Prime",mon
 h1{font-size:20px;margin:0}label{display:grid;gap:4px;font-size:12px;color:#6b5a55}input,textarea,select{font:16px "Courier Prime",monospace;padding:10px;border:1px solid #cbbfae;width:100%;box-sizing:border-box;background:#fff}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{font:700 15px "Courier Prime",monospace;padding:14px;border:0;background:#0D0A0A;color:#EFE7D8;width:100%;cursor:pointer}.btn.light{background:#EFE7D8;color:#0D0A0A;border:1px solid #0D0A0A}
 .shot{width:100%;aspect-ratio:4/3;object-fit:contain;background:#0D0A0A;display:none}.status{font-size:13px;color:#6b5a55;min-height:1.2em}.ok{color:#2f6b3a}.warn{color:#8C1D1D}
+.cropper{position:fixed;inset:0;background:rgba(10,6,6,.94);display:none;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;touch-action:none}
+.cropper[open]{display:flex}
+.cropper .stage{position:relative;max-width:100%;user-select:none;-webkit-user-select:none;line-height:0}
+.cropper .stage img{display:block;max-width:100%;max-height:calc(100vh - 170px);pointer-events:none}
+.cropper .box{position:absolute;border:2px solid #F2B429;box-shadow:0 0 0 9999px rgba(0,0,0,.55);cursor:move;touch-action:none;box-sizing:border-box}
+.cropper .h{position:absolute;width:30px;height:30px;background:#F2B429;border:2px solid #0D0A0A;border-radius:50%;touch-action:none;box-sizing:border-box}
+.cropper .h.nw{left:-16px;top:-16px}.cropper .h.ne{right:-16px;top:-16px}.cropper .h.sw{left:-16px;bottom:-16px}.cropper .h.se{right:-16px;bottom:-16px}
+.cropper .bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;color:#EFE7D8;font-size:12px}
+.cropper .bar label{display:flex;gap:6px;align-items:center;color:#EFE7D8}
+.cropper .bar .btn{width:auto;padding:10px 14px}
+.cropper p{margin:0;color:#C99E93;font-size:12px;text-align:center;max-width:60ch}
 </style></head><body>
 <form class="card" id="f">
   <h1>Neues Werk</h1>
@@ -25,12 +36,46 @@ h1{font-size:20px;margin:0}label{display:grid;gap:4px;font-size:12px;color:#6b5a
   <button class="btn" type="submit" id="go">Veröffentlichen</button>
   <div class="status" id="st"></div>
 </form>
+<div class="cropper" id="cropper" role="dialog" aria-modal="true" aria-label="Foto zuschneiden">
+  <div class="stage" id="crop-stage"><img id="crop-img" alt=""><div class="box" id="crop-box"><div class="h nw" data-h="nw"></div><div class="h ne" data-h="ne"></div><div class="h sw" data-h="sw"></div><div class="h se" data-h="se"></div></div></div>
+  <div class="bar"><label id="crop-lock-wrap"><input type="checkbox" id="crop-lock" checked> <span>Seitenverhältnis B × H halten</span></label><button class="btn" type="button" id="crop-ok">Zuschneiden</button><button class="btn light" type="button" id="crop-skip">Ganzes Foto</button><button class="btn light" type="button" id="crop-cancel">Abbrechen</button></div>
+  <p>Rahmen verschieben, an den Ecken ziehen. Auf das Bild selbst zuschneiden, wenn die Seite rahmt. Teppich und Rahmen im Foto lassen, wenn "Foto zeigt Setting" gewählt ist.</p>
+</div>
 <script>
 const $=s=>document.querySelector(s); let photo=null; try{ $("#key").value=localStorage.getItem("desk-key")||""; }catch(e){}
 $("#year").value=new Date().getFullYear();
 $("#cam").onclick=()=>$("#fcam").click(); $("#pick").onclick=()=>$("#fpick").click();
-async function load(file){ if(!file) return; const img=new Image(); img.onload=()=>{ const max=1600,sc=Math.min(1,max/Math.max(img.width,img.height)); const c=document.createElement("canvas"); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc); c.getContext("2d").drawImage(img,0,0,c.width,c.height); photo=c.toDataURL("image/jpeg",.86); $("#shot").src=photo; $("#shot").style.display="block"; if(!$("#w").value){ $("#w").value=30; $("#h").value=Math.round(30*c.height/c.width*2)/2; } URL.revokeObjectURL(img.src); }; img.src=URL.createObjectURL(file); }
-$("#fcam").onchange=e=>load(e.target.files[0]); $("#fpick").onchange=e=>load(e.target.files[0]);
+function cropPhoto(img,ratio){
+  return new Promise(resolve=>{
+    const ov=$("#cropper"), pic=$("#crop-img"), box=$("#crop-box"), lock=$("#crop-lock"), lockWrap=$("#crop-lock-wrap");
+    let r={x:0,y:0,w:0,h:0}, sw=0, sh=0; lockWrap.style.display=ratio?"flex":"none";
+    const locked=()=>ratio&&lock.checked;
+    const apply=()=>{ box.style.left=r.x+"px"; box.style.top=r.y+"px"; box.style.width=r.w+"px"; box.style.height=r.h+"px"; };
+    const reset=()=>{ sw=pic.clientWidth; sh=pic.clientHeight; let w=sw*.9, h=sh*.9; if(locked()){ if(w/h>ratio) w=h*ratio; else h=w/ratio; } r={x:(sw-w)/2,y:(sh-h)/2,w,h}; apply(); };
+    pic.onload=()=>{ ov.setAttribute("open",""); requestAnimationFrame(reset); }; pic.src=img.src; lock.onchange=reset;
+    const MIN=30; let drag=null;
+    const down=e=>{ e.preventDefault(); drag={mode:e.target.dataset.h||"move",sx:e.clientX,sy:e.clientY,r0:{...r}}; e.target.setPointerCapture?.(e.pointerId); };
+    const move=e=>{ if(!drag) return; e.preventDefault(); const dx=e.clientX-drag.sx, dy=e.clientY-drag.sy, o=drag.r0; let n={...o};
+      if(drag.mode==="move"){ n.x=Math.min(Math.max(0,o.x+dx),sw-o.w); n.y=Math.min(Math.max(0,o.y+dy),sh-o.h); }
+      else { const m=drag.mode; let x1=o.x, y1=o.y, x2=o.x+o.w, y2=o.y+o.h;
+        if(m.includes("w")) x1=Math.min(Math.max(0,o.x+dx),x2-MIN); if(m.includes("e")) x2=Math.max(Math.min(sw,o.x+o.w+dx),x1+MIN);
+        if(m.includes("n")) y1=Math.min(Math.max(0,o.y+dy),y2-MIN); if(m.includes("s")) y2=Math.max(Math.min(sh,o.y+o.h+dy),y1+MIN);
+        n={x:x1,y:y1,w:x2-x1,h:y2-y1};
+        if(locked()){ let w=n.w, h=w/ratio; if(h>n.h){ h=n.h; w=h*ratio; } if(m.includes("w")) n.x=x2-w; if(m.includes("n")) n.y=y2-h; n.w=w; n.h=h;
+          if(n.x<0) n.x=0; if(n.y<0) n.y=0; if(n.x+n.w>sw){ n.w=sw-n.x; n.h=n.w/ratio; } if(n.y+n.h>sh){ n.h=sh-n.y; n.w=n.h*ratio; } }
+      }
+      r=n; apply(); };
+    const up=()=>{ drag=null; };
+    box.onpointerdown=down; box.querySelectorAll(".h").forEach(h=>h.onpointerdown=down);
+    document.addEventListener("pointermove",move); document.addEventListener("pointerup",up); document.addEventListener("pointercancel",up);
+    const done=v=>{ document.removeEventListener("pointermove",move); document.removeEventListener("pointerup",up); document.removeEventListener("pointercancel",up); ov.removeAttribute("open"); pic.onload=null; pic.removeAttribute("src"); resolve(v); };
+    $("#crop-ok").onclick=()=>{ const k=img.naturalWidth/sw; const cv=document.createElement("canvas"); cv.width=Math.max(1,Math.round(r.w*k)); cv.height=Math.max(1,Math.round(r.h*k)); cv.getContext("2d").drawImage(img,Math.round(r.x*k),Math.round(r.y*k),cv.width,cv.height,0,0,cv.width,cv.height); done(cv); };
+    $("#crop-skip").onclick=()=>done(null); $("#crop-cancel").onclick=()=>done(undefined);
+    window.onresize=()=>{ if(ov.hasAttribute("open")) reset(); };
+  });
+}
+async function load(file){ if(!file) return; const img=new Image(); img.onload=async()=>{ const wv=Number($("#w").value), hv=Number($("#h").value); const cut=await cropPhoto(img,(wv&&hv)?wv/hv:null); if(cut===undefined){ URL.revokeObjectURL(img.src); return; } const src=cut||img; const W=cut?cut.width:img.naturalWidth, H=cut?cut.height:img.naturalHeight; const max=1600,sc=Math.min(1,max/Math.max(W,H)); const c=document.createElement("canvas"); c.width=Math.round(W*sc); c.height=Math.round(H*sc); c.getContext("2d").drawImage(src,0,0,c.width,c.height); photo=c.toDataURL("image/jpeg",.86); $("#shot").src=photo; $("#shot").style.display="block"; if(!$("#w").value){ $("#w").value=30; $("#h").value=Math.round(30*c.height/c.width*2)/2; } URL.revokeObjectURL(img.src); }; img.src=URL.createObjectURL(file); }
+$("#fcam").onchange=e=>{ load(e.target.files[0]); e.target.value=""; }; $("#fpick").onchange=e=>{ load(e.target.files[0]); e.target.value=""; };
 let pastedPrints=null;
 $("#paste").oninput=()=>{ const raw=$("#paste").value.trim(); if(!raw) { pastedPrints=null; return; } try{ const j=JSON.parse(raw.replace(/^```(json)?|```$/g,"").trim()); const w=j.work||j;
   if(w.title) $("#title").value=w.title; if(w.w) $("#w").value=w.w; if(w.h) $("#h").value=w.h; if(w.price!==undefined) $("#price").value=w.price; else if(w.original?.price!==undefined) $("#price").value=w.original.price; if(w.year) $("#year").value=w.year;
