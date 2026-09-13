@@ -111,6 +111,10 @@ body[data-density="dense"] .work{grid-column:span 3} body[data-density="dense"] 
 .buy .btn{padding:8px 12px;font-size:12px}
 .buy select{font:700 12px var(--f-mono);background:#fff;color:var(--paper-ink);border:1px solid #bfae9c;padding:7px 8px}
 .note{font-family:var(--f-mono);font-size:12px;color:var(--mute);margin-top:22px;max-width:70ch}
+/* soft reveal: elements slide up and fade in when they enter the viewport (theme.layout.reveal) */
+html.js body[data-reveal="on"] .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms);will-change:opacity,transform}
+html.js body[data-reveal="on"] .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){ html.js body[data-reveal="on"] .reveal{opacity:1;transform:none;transition:none} }
 .empty{display:block;width:100%;box-sizing:border-box;overflow-wrap:anywhere;font-family:var(--f-mono);font-size:15px;line-height:1.5;color:var(--ink-2);text-align:center;padding:48px 16px;border:1px dashed var(--mute);margin:0}
 
 .prints{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -347,6 +351,7 @@ footer .legal-links a{cursor:pointer;text-decoration:underline;background:none;b
 </div>
 
 <script>
+document.documentElement.classList.add("js");
 /* ============================================================
    Nothing to edit below. Content lives in site.json and works.json.
    Use admin.html to edit both without touching code.
@@ -477,8 +482,9 @@ function renderWorks(){
     const price=document.createElement("div"); price.className="price"; price.textContent=w.original?.available?fmt(w.original.price):(w.prints?.length?`${t("lbl.from")} ${fmt(Math.min(...w.prints.map(p=>p.price)))}`:t("lbl.sold"));
     const spec=document.createElement("div"); spec.className="spec"; spec.textContent=`${w.year} · ${L(w.medium)} · ${w.w} × ${w.h} cm`+(w.prints?.length?` · ${t("lbl.print")}: ${w.prints.map(p=>p.size).join(", ")}`:"");
     mat.addEventListener("click",()=>openLightbox(w,mat));
-    label.append(h3,price,spec); const capTxt=L(w.caption); if(capTxt){ const cap=document.createElement("p"); cap.className="cap"; cap.textContent=capTxt; label.appendChild(cap); } label.appendChild(buyControl(w)); art.append(framed,label); grid.appendChild(art);
+    label.append(h3,price,spec); const capTxt=L(w.caption); if(capTxt){ const cap=document.createElement("p"); cap.className="cap"; cap.textContent=capTxt; label.appendChild(cap); } label.appendChild(buyControl(w)); art.append(framed,label); art.classList.add("reveal"); art.style.setProperty("--d",((grid.children.length%3)*120)+"ms"); grid.appendChild(art);
   });
+  if(document.body.dataset.reveal==="on"&&revealIO) grid.querySelectorAll(".reveal:not(.in)").forEach(el=>revealIO.observe(el)); else if(document.body.dataset.reveal!=="on") grid.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
   if(!grid.children.length) showEmpty(WORKS.length?"filter":"works");
   structuredData();
 }
@@ -537,12 +543,23 @@ function applyCustom(){
   document.querySelectorAll("[data-filter]").forEach(b=>{ b.hidden=hide.has("filters")||SITE.theme?.layout?.comingSoon===true; });
   document.querySelectorAll("[data-lang]").forEach(b=>{ b.hidden=hide.has("lang"); });
 }
+let revealIO=null;
+function setupReveal(){
+  const on=SITE.theme?.layout?.reveal!==false; document.body.dataset.reveal=on?"on":"off";
+  if(!on){ document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in")); return; }
+  const stat=[".hero .wordmark",".hero .motto","#hero-lead",".hero-side .hero-meta",".hero-actions","#trust",".sec-head","#works-note",".prints-lead",".about .lead",".about .portrait",".about .body","#commission .card","#contact","#notify-form",".empty",".print-tier"];
+  document.querySelectorAll(stat.join(",")).forEach(el=>el.classList.add("reveal"));
+  const heroOrder=[".hero .wordmark",".hero .motto","#hero-lead",".hero-side .hero-meta",".hero-actions","#trust"]; heroOrder.forEach((sel,i)=>{ const el=document.querySelector(sel); if(el) el.style.setProperty("--d",(i*110)+"ms"); });
+  if(!("IntersectionObserver" in window)){ document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in")); return; }
+  if(!revealIO) revealIO=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); revealIO.unobserve(e.target); } }); },{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+  document.querySelectorAll(".reveal:not(.in)").forEach(el=>revealIO.observe(el));
+}
 function applyAll(){
   applyCustom();
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
-  renderSite(); renderWorks();
+  renderSite(); renderWorks(); setupReveal();
 }
 
 /* ---------- legal pages (templates, fill via site.json) ---------- */
