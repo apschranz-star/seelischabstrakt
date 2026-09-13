@@ -75,8 +75,8 @@ article{padding-block:0 0}
   .entry .head{grid-column:1 / 13}
   .entry .text{grid-column:1 / 8}
   .entry figure.block{grid-column:9 / 13}
-  .entry:nth-of-type(even) .text{grid-column:6 / 13}
-  .entry:nth-of-type(even) figure.block{grid-column:1 / 5;grid-row:2}
+  .entry.flip .text{grid-column:6 / 13}
+  .entry.flip figure.block{grid-column:1 / 5;grid-row:2}
   .entry figure.plate,.entry .quote,.entry .factbox.wide,.entry .folio-foot{grid-column:1 / 13}
 }
 .kicker{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
@@ -196,7 +196,7 @@ function entryHtml(e,i,total){
   const q=L(e.pullquote)?`<blockquote class="quote">${esc(L(e.pullquote))}</blockquote>`:"";
   return `<article id="${esc(e.id)}" class="rv">
     <div class="folio-top"><span>${lang==="de"?"Nr.":"No."} ${no}</span><span class="mid">${esc(L(e.kicker))}</span><span>${no} / ${ROMAN[total]||total}</span></div>
-    <div class="entry">
+    <div class="entry${i%2?" flip":""}">
       <div class="head"><p class="kicker">${esc(L(e.kicker))}</p><h2>${esc(L(e.title))}</h2>${L(e.standfirst)?`<p class="standfirst">${esc(L(e.standfirst))}</p>`:""}</div>
       ${f&&f.layout==="plate"?fig:""}
       <div class="text">${paras}</div>
