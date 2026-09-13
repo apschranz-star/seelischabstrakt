@@ -8,7 +8,7 @@
     "artist": "Alexander Schranz",
     "city": "Wien, 1180",
     "instagram": "https://www.instagram.com/seelischabstrakt/",
-    "email": "hello@seelischabstrakt.at",
+    "email": "a.p.schranz@icloud.com",
     "personSite": "https://alexanderschranz.at",
     "defaultLang": "en"
   },
@@ -88,7 +88,7 @@
       "_help": "Where order forms are sent. provider: netlify (free, works when hosted on Netlify), formspree (paste your https://formspree.io/f/xxxx endpoint), or mailto (opens the buyer's email app). netlify and formspree also email you automatically.",
       "provider": "netlify",
       "endpoint": "",
-      "notifyEmail": "hello@seelischabstrakt.at"
+      "notifyEmail": "a.p.schranz@icloud.com"
     },
     "shipping": {
       "_help": "Flat rates in EUR by region, shown and added at checkout. region codes: AT, EU, UK, CH, US, ROW (rest of world). pickup 0 for collection in Vienna.",
@@ -305,7 +305,7 @@
     "street": "Musterstraße 1/2",
     "zipCity": "1180 Wien",
     "country": "Österreich",
-    "email": "hello@seelischabstrakt.at",
+    "email": "a.p.schranz@icloud.com",
     "phone": "",
     "uid": "",
     "kleinunternehmerNote": true,
