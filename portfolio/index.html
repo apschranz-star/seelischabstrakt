@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alexander Schranz</title>
+<meta name="description" content="Alexander Schranz, painter in Vienna. Portfolio, projects and updates.">
+<link rel="canonical" href="https://alexanderschranz.at/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alexander Schranz">
+<meta property="og:image" content="img/alexander-schranz.jpg">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--bg:#fff;--fg:#000;--mute:#666;--line:#000;--soft:#e6e6e6;--f:"Inter Tight",Helvetica,Arial,sans-serif;--m:"JetBrains Mono","Courier New",monospace;--max:1180px}
+@media (prefers-color-scheme: dark){:root{--bg:#000;--fg:#fff;--mute:#9a9a9a;--line:#fff;--soft:#222}}
+html[data-theme="dark"]{--bg:#000;--fg:#fff;--mute:#9a9a9a;--line:#fff;--soft:#222}
+html[data-theme="light"]{--bg:#fff;--fg:#000;--mute:#666;--line:#000;--soft:#e6e6e6}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.5 var(--f);-webkit-font-smoothing:antialiased;padding-inline:clamp(18px,4vw,56px)}
+a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+a:hover{border-bottom-width:2px}
+img{max-width:100%;display:block;filter:grayscale(1) contrast(1.05);transition:filter .5s ease}
+img:hover{filter:grayscale(0)}
+.wrap{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:clamp(32px,6vw,110px);padding-block:clamp(28px,5vw,64px) 40px}
+aside{position:sticky;top:32px;align-self:start;display:grid;gap:26px}
+h1{font-weight:600;font-size:clamp(28px,3vw,40px);letter-spacing:-.03em;line-height:1;margin:0}
+.tag{margin:8px 0 0;color:var(--mute);font-size:15px}
+nav ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-family:var(--m);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+nav a{border:0;padding:2px 0;display:inline-block;position:relative}
+nav a::before{content:"";display:inline-block;width:0;height:1px;background:var(--fg);vertical-align:middle;margin-right:0;transition:width .25s ease,margin .25s ease}
+nav a.on::before,nav a:hover::before{width:18px;margin-right:8px}
+.links{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.tools button{background:none;border:1px solid var(--fg);color:var(--fg);font:inherit;padding:5px 9px;cursor:pointer}
+.tools button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+main{display:grid;gap:clamp(56px,8vw,120px)}
+section{scroll-margin-top:24px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:14px;margin-bottom:26px}
+.sec-h h2{margin:0;font-weight:600;font-size:clamp(22px,2.4vw,30px);letter-spacing:-.02em}
+.sec-h .n{font-family:var(--m);font-size:12px;color:var(--mute)}
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,320px);gap:clamp(24px,4vw,56px);align-items:start}
+.about .txt{display:grid;gap:16px;max-width:62ch;font-size:clamp(17px,1.4vw,20px);font-weight:300;line-height:1.55}
+.about .txt p{margin:0}
+.portrait{border:0}
+.facts{display:grid;gap:10px;margin:22px 0 0;padding:0;font-size:14px}
+.facts div{display:grid;grid-template-columns:110px 1fr;gap:12px;border-top:1px solid var(--soft);padding-top:8px}
+.facts dt{color:var(--mute);font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+.facts dd{margin:0}
+.intro{color:var(--mute);margin:0 0 22px;max-width:62ch}
+.art{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:26px 20px;list-style:none;margin:0;padding:0}
+.art li{display:grid;gap:8px}
+.art figure{margin:0;background:var(--soft);aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.art img{width:100%;height:100%;object-fit:contain}
+.art .t{font-weight:600;font-size:15px}
+.art .s{font-family:var(--m);font-size:11px;color:var(--mute);letter-spacing:.02em}
+.art .sold{text-decoration:line-through}
+.more{margin-top:26px;font-family:var(--m);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:grid;grid-template-columns:90px minmax(0,1fr);gap:16px;padding:18px 0;border-top:1px solid var(--soft)}
+.list li:first-child{border-top:0;padding-top:0}
+.list .y{font-family:var(--m);font-size:12px;color:var(--mute);padding-top:5px}
+.list h3{margin:0 0 4px;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.list .role{color:var(--mute);font-size:14px;margin:0 0 8px}
+.list p{margin:0;max-width:60ch}
+.list .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.list .tags span{font-family:var(--m);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--soft);padding:2px 7px;color:var(--mute)}
+.list img{margin-top:12px;max-width:520px;border:1px solid var(--soft)}
+.now{border:1px solid var(--fg);padding:18px 20px;max-width:62ch}
+.now .k{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.contact p{max-width:60ch;margin:0 0 14px}
+.contact .mail{font-size:clamp(20px,2.6vw,34px);font-weight:600;letter-spacing:-.02em;border-bottom-width:2px}
+footer{max-width:var(--max);margin:0 auto;border-top:1px solid var(--line);padding:18px 0 40px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--m);font-size:11px;letter-spacing:.04em;color:var(--mute)}
+footer a{border-bottom-color:var(--soft)}
+.empty{color:var(--mute);font-family:var(--m);font-size:13px;border:1px dashed var(--soft);padding:24px;text-align:center}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none} img{transition:none}}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr;gap:36px}
+  aside{position:static;grid-template-columns:1fr 1fr;align-items:start}
+  aside .head{grid-column:1 / -1}
+  .about{grid-template-columns:1fr}
+  .about .portrait{order:-1;max-width:320px}
+  .list li{grid-template-columns:1fr;gap:4px}
+}
+@media (max-width:480px){aside{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <div class="head"><h1 id="name"></h1><p class="tag" id="tagline"></p></div>
+    <nav aria-label="Sections"><ul id="nav"></ul></nav>
+    <ul class="links" id="links"></ul>
+    <div class="tools" id="tools"></div>
+  </aside>
+  <main id="main"></main>
+</div>
+<footer id="footer"></footer>
+<script>
+let D=null, lang="en";
+const L=v=>v==null?"":(typeof v==="string"?v:(v[lang]||v.en||v.de||""));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=s=>document.querySelector(s);
+const hasDe=o=>JSON.stringify(o).includes('"de":');
+function render(){
+  const p=D.profile; document.documentElement.lang=lang; document.title=D.seo?.title||p.name;
+  const md=document.querySelector('meta[name="description"]'); if(md&&D.seo?.description) md.content=L(D.seo.description);
+  $("#name").textContent=p.name; $("#tagline").textContent=L(p.tagline);
+  const sections=[];
+  const nav=(D.nav||[]).filter(n=>D[n.id]); $("#nav").innerHTML=nav.map(n=>`<li><a href="#${n.id}" data-nav="${n.id}">${esc(L(n.label))}</a></li>`).join("");
+  $("#links").innerHTML=(p.links||[]).map(l=>`<li><a href="${esc(l.url)}" ${/^https?:/.test(l.url)?'target="_blank" rel="noopener"':""}>${esc(L(l.label))}</a></li>`).join("");
+  const tools=[]; if(hasDe(D)) tools.push(`<button type="button" data-lang="en" aria-pressed="${lang==="en"}">EN</button><button type="button" data-lang="de" aria-pressed="${lang==="de"}">DE</button>`);
+  tools.push(`<button type="button" id="theme" aria-pressed="false">${lang==="de"?"Dunkel":"Dark"}</button>`); $("#tools").innerHTML=tools.join("");
+  let i=0; const num=()=>String(++i).padStart(2,"0");
+  const secs=[];
+  if(D.about){ const a=D.about; secs.push(`<section id="about" class="reveal"><div class="sec-h"><h2>${esc(L(a.title))}</h2><span class="n">${num()}</span></div>
+    <div class="about"><div><div class="txt">${(a.paragraphs?.[lang]||a.paragraphs?.en||[]).map(x=>`<p>${esc(x)}</p>`).join("")}</div>
+    ${a.facts?.length?`<dl class="facts">${a.facts.map(f=>`<div><dt>${esc(L(f.label))}</dt><dd>${esc(L(f.value))}</dd></div>`).join("")}</dl>`:""}</div>
+    ${p.portrait?`<img class="portrait" src="${esc(p.portrait)}" alt="${esc(p.portraitAlt||p.name)}" loading="lazy">`:""}</div></section>`); }
+  if(D.art){ const a=D.art; secs.push(`<section id="art" class="reveal"><div class="sec-h"><h2>${esc(L(a.title))}</h2><span class="n">${num()}</span></div>
+    ${a.intro?`<p class="intro">${esc(L(a.intro))}</p>`:""}<ul class="art" id="art-list"><li class="empty" style="grid-column:1/-1">…</li></ul>
+    ${a.shopUrl?`<p class="more"><a href="${esc(a.shopUrl)}" target="_blank" rel="noopener">${esc(L(a.cta)||"Shop")}</a></p>`:""}</section>`); }
+  if(D.projects){ const pr=D.projects; const items=(pr.items||[]).filter(x=>!x.draft);
+    secs.push(`<section id="projects" class="reveal"><div class="sec-h"><h2>${esc(L(pr.title))}</h2><span class="n">${num()}</span></div>
+    ${items.length?`<ul class="list">${items.map(x=>`<li><div class="y">${esc(x.year||"")}</div><div><h3>${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(L(x.title))}</a>`:esc(L(x.title))}</h3>${x.role?`<p class="role">${esc(L(x.role))}</p>`:""}${x.summary?`<p>${esc(L(x.summary))}</p>`:""}${x.image?`<img src="${esc(x.image)}" alt="" loading="lazy">`:""}${x.tags?.length?`<div class="tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</div></li>`).join("")}</ul>`:`<p class="empty">${lang==="de"?"Projekte folgen.":"Projects coming soon."}</p>`}</section>`); }
+  if(D.updates){ const u=D.updates; const items=(u.items||[]).filter(x=>!x.draft).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+    secs.push(`<section id="updates" class="reveal"><div class="sec-h"><h2>${esc(L(u.title))}</h2><span class="n">${num()}</span></div>
+    ${items.length?`<ul class="list">${items.map(x=>`<li><div class="y">${esc(x.date||"")}</div><div><p>${esc(L(x.text))}${x.url?` <a href="${esc(x.url)}" target="_blank" rel="noopener">→</a>`:""}</p></div></li>`).join("")}</ul>`:`<p class="empty">${lang==="de"?"Noch nichts.":"Nothing yet."}</p>`}</section>`); }
+  if(D.now?.text){ secs.push(`<div class="now reveal"><div class="k">${esc(L(D.now.title)||"Now")}</div>${esc(L(D.now.text))}</div>`); }
+  if(D.contact){ const c=D.contact; secs.push(`<section id="contact" class="contact reveal"><div class="sec-h"><h2>${esc(L(c.title))}</h2><span class="n">${num()}</span></div>${c.text?`<p>${esc(L(c.text))}</p>`:""}${p.email?`<a class="mail" href="mailto:${esc(p.email)}">${esc(p.email)}</a>`:""}</section>`); }
+  $("#main").innerHTML=secs.join("");
+  const f=D.footer||{}; $("#footer").innerHTML=`<span>${esc(L(f.text)).replace("{year}",new Date().getFullYear())}</span><span>${(f.links||[]).map(l=>`<a href="${esc(l.url)}">${esc(L(l.label))}</a>`).join(" · ")}</span>`;
+  document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{ lang=b.dataset.lang; try{localStorage.setItem("as-lang",lang)}catch(e){} render(); });
+  const th=$("#theme"); const cur=document.documentElement.dataset.theme; th.setAttribute("aria-pressed",String(cur==="dark")); th.onclick=()=>{ const next=document.documentElement.dataset.theme==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; try{localStorage.setItem("as-theme",next)}catch(e){} th.setAttribute("aria-pressed",String(next==="dark")); };
+  loadArt(); reveal(); spy();
+}
+async function loadArt(){
+  const a=D.art; const list=$("#art-list"); if(!a||!list) return;
+  try{ const r=await fetch(a.source,{cache:"no-store"}); if(!r.ok) throw new Error(r.status); const j=await r.json(); let works=(j.works||[]).filter(w=>w.img);
+    if(a.showSold===false) works=works.filter(w=>w.original?.available!==false); works=works.slice(0,a.max||8);
+    const base=a.imageBase||""; const abs=s=>/^https?:/.test(s)?s:base+s;
+    list.innerHTML=works.length?works.map(w=>{ const sold=w.original?.available===false; const url=(a.shopUrl||"")+"#works"; return `<li><a href="${esc(url)}" target="_blank" rel="noopener" style="border:0;display:contents"><figure><img src="${esc(abs(w.img))}" alt="${esc(w.title)}" loading="lazy"></figure><div class="t${sold?" sold":""}">${esc(w.title)}</div><div class="s">${esc(String(w.year||""))} · ${esc(L(w.medium))} · ${esc(String(w.w))} × ${esc(String(w.h))} cm${sold?` · ${lang==="de"?"verkauft":"sold"}`:""}</div></a></li>`; }).join(""):`<li class="empty" style="grid-column:1/-1">${lang==="de"?"Werke folgen.":"Works coming soon."}</li>`;
+    reveal();
+  }catch(e){ list.innerHTML=`<li class="empty" style="grid-column:1/-1">${lang==="de"?"Werke im Shop ansehen.":"See works in the shop."}</li>`; }
+}
+let io=null;
+function reveal(){ if(!("IntersectionObserver" in window)){ document.querySelectorAll(".reveal").forEach(e=>e.classList.add("in")); return; } io=io||new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{threshold:.08}); requestAnimationFrame(()=>document.querySelectorAll(".reveal:not(.in)").forEach(el=>io.observe(el))); }
+function spy(){ const links=[...document.querySelectorAll("[data-nav]")]; const secs=links.map(l=>document.getElementById(l.dataset.nav)).filter(Boolean); if(!secs.length) return;
+  const so=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.toggle("on",l.dataset.nav===e.target.id)); } }); },{rootMargin:"-30% 0px -60% 0px"}); secs.forEach(s=>so.observe(s)); }
+try{ const t=localStorage.getItem("as-theme"); if(t) document.documentElement.dataset.theme=t; }catch(e){}
+fetch("portfolio.json?v="+Date.now()).then(r=>r.json()).then(j=>{ D=j; const q=new URLSearchParams(location.search).get("lang"); let saved=null; try{saved=localStorage.getItem("as-lang")}catch(e){} const nav=(navigator.language||"").toLowerCase().startsWith("de")?"de":null; lang=q||saved||nav||j.profile?.defaultLang||"en"; if(!hasDe(j)) lang="en"; render(); })
+.catch(err=>{ $("#main").innerHTML=`<p class="empty">portfolio.json could not be read. Check for a missing comma (jsonlint.com). ${esc(err.message)}</p>`; });
+</script>
+</body>
+</html>

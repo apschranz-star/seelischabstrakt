@@ -1,0 +1,105 @@
+{
+  "_help": "Everything on alexanderschranz.at lives in this file. Text values can be a plain string or {\"en\": \"...\", \"de\": \"...\"}. Entries with \"draft\": true are hidden. Dates as YYYY-MM or YYYY-MM-DD.",
+  "profile": {
+    "name": "Alexander Schranz",
+    "tagline": {"en": "Painter, builder of small things. Vienna.", "de": "Maler, Erbauer kleiner Dinge. Wien."},
+    "location": "Vienna, Austria",
+    "email": "a.p.schranz@icloud.com",
+    "portrait": "img/alexander-schranz.jpg",
+    "portraitAlt": "Alexander Schranz, black and white portrait",
+    "links": [
+      {"label": "seelischabstrakt, the shop", "url": "https://seelischabstrakt.netlify.app/"},
+      {"label": "Instagram", "url": "https://www.instagram.com/seelischabstrakt/"},
+      {"label": "Email", "url": "mailto:a.p.schranz@icloud.com"}
+    ],
+    "defaultLang": "en"
+  },
+  "nav": [
+    {"id": "about", "label": {"en": "About", "de": "Über"}},
+    {"id": "art", "label": {"en": "Art", "de": "Kunst"}},
+    {"id": "projects", "label": {"en": "Projects", "de": "Projekte"}},
+    {"id": "updates", "label": {"en": "Updates", "de": "Aktuell"}},
+    {"id": "contact", "label": {"en": "Contact", "de": "Kontakt"}}
+  ],
+  "about": {
+    "title": {"en": "About", "de": "Über"},
+    "paragraphs": {
+      "en": [
+        "I collect fragments: faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed.",
+        "I like things that show how they were made. A rough edge, a heavy layer of paint, a correction, something slightly out of place. The trace of the hand is part of the work.",
+        "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero. I approach a painting more like a physical problem than an illustration: layer by layer, decision by decision, until something begins to hold.",
+        "The goal is not perfection. The goal is presence."
+      ],
+      "de": [
+        "Ich sammle Fragmente: Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut.",
+        "Ich mag Dinge, die zeigen, wie sie gemacht wurden. Eine raue Kante, eine dicke Farbschicht, eine Korrektur, etwas, das ein wenig verrutscht ist. Die Spur der Hand gehört zum Werk.",
+        "Mein Hintergrund ist nicht klassisch akademisch. Ich habe durch Machen gelernt, durch Bauen, Verkaufen, Reparieren, Organisieren und dadurch, Dinge von null weg anzufangen. Ein Bild gehe ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration: Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
+        "Es geht nicht um Perfektion. Es geht um Präsenz."
+      ]
+    },
+    "facts": [
+      {"label": {"en": "Based in", "de": "Lebt in"}, "value": "Vienna"},
+      {"label": {"en": "Works", "de": "Arbeitet"}, "value": {"en": "Painting, drawing, small formats", "de": "Malerei, Zeichnung, kleine Formate"}},
+      {"label": {"en": "Studio name", "de": "Ateliername"}, "value": "seelischabstrakt"}
+    ]
+  },
+  "art": {
+    "title": {"en": "Art", "de": "Kunst"},
+    "intro": {"en": "Selected works. The complete list, prices and editions are in the shop.", "de": "Ausgewählte Werke. Die vollständige Liste, Preise und Editionen stehen im Shop."},
+    "source": "https://seelischabstrakt.netlify.app/works.json",
+    "shopUrl": "https://seelischabstrakt.netlify.app/",
+    "imageBase": "https://seelischabstrakt.netlify.app/",
+    "max": 8,
+    "showSold": true,
+    "cta": {"en": "All works in the shop", "de": "Alle Werke im Shop"}
+  },
+  "projects": {
+    "title": {"en": "Projects", "de": "Projekte"},
+    "items": [
+      {
+        "title": "seelischabstrakt",
+        "year": "2026",
+        "role": {"en": "Artist, shop, everything", "de": "Künstler, Shop, alles"},
+        "summary": {"en": "Studio name and online shop for originals and editions. Static site, no framework, maintained from a phone.", "de": "Ateliername und Onlineshop für Originale und Editionen. Statische Seite, kein Framework, vom Handy aus gepflegt."},
+        "url": "https://seelischabstrakt.netlify.app/",
+        "tags": ["art", "web", "commerce"]
+      },
+      {
+        "draft": true,
+        "title": "Example project (draft, not shown)",
+        "year": "2025",
+        "role": "Your role in one line",
+        "summary": {"en": "Two or three sentences. What it was, what you did, what came out of it.", "de": "Zwei, drei Sätze. Was es war, was du gemacht hast, was dabei herauskam."},
+        "url": "",
+        "image": "",
+        "tags": ["tag"]
+      }
+    ]
+  },
+  "updates": {
+    "title": {"en": "Updates", "de": "Aktuell"},
+    "items": [
+      {"date": "2026-09", "text": {"en": "seelischabstrakt goes online with the first works: Enter the Void, Fear, Suffering is Eternal.", "de": "seelischabstrakt geht mit den ersten Werken online: Enter the Void, Fear, Suffering is Eternal."}, "url": "https://seelischabstrakt.netlify.app/"}
+    ]
+  },
+  "now": {
+    "title": {"en": "Now", "de": "Gerade"},
+    "text": {"en": "Painting small formats in Vienna. Building the shop. Open to commissions and studio visits.", "de": "Kleine Formate in Wien. Der Shop wächst. Offen für Auftragswerke und Atelierbesuche."}
+  },
+  "contact": {
+    "title": {"en": "Contact", "de": "Kontakt"},
+    "text": {"en": "For works, commissions, collaborations or a studio visit in Vienna.", "de": "Für Werke, Auftragswerke, Zusammenarbeit oder einen Atelierbesuch in Wien."}
+  },
+  "footer": {
+    "text": {"en": "© {year} Alexander Schranz. Vienna.", "de": "© {year} Alexander Schranz. Wien."},
+    "links": [
+      {"label": {"en": "Imprint and privacy", "de": "Impressum und Datenschutz"}, "url": "https://seelischabstrakt.netlify.app/#imprint"}
+    ]
+  },
+  "seo": {
+    "title": "Alexander Schranz",
+    "description": {"en": "Alexander Schranz, painter in Vienna. Small formats, fragments, the trace of the hand. Portfolio, projects and updates.", "de": "Alexander Schranz, Maler in Wien. Kleine Formate, Fragmente, die Spur der Hand. Portfolio, Projekte und Aktuelles."},
+    "url": "https://alexanderschranz.at/",
+    "image": "img/alexander-schranz.jpg"
+  }
+}
