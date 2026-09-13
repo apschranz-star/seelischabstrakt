@@ -18,13 +18,6 @@
       {
         "label": "Email",
         "url": "mailto:a.p.schranz@icloud.com"
-      },
-      {
-        "label": {
-          "en": "seelischabstrakt, art project",
-          "de": "seelischabstrakt, Kunstprojekt"
-        },
-        "url": "https://seelischabstrakt.netlify.app/"
       }
     ],
     "defaultLang": "en",
@@ -137,16 +130,6 @@
         "value": {
           "en": "German native, English C2",
           "de": "Deutsch Muttersprache, Englisch C2"
-        }
-      },
-      {
-        "label": {
-          "en": "Outside work",
-          "de": "Neben der Arbeit"
-        },
-        "value": {
-          "en": "Painting in small formats, as seelischabstrakt",
-          "de": "Malerei in kleinen Formaten, als seelischabstrakt"
         }
       }
     ]
@@ -318,17 +301,20 @@
         ]
       },
       {
-        "title": "seelischabstrakt",
+        "title": {
+          "en": "Online shop, built end to end",
+          "de": "Onlineshop, end to end gebaut"
+        },
         "year": "2026",
         "role": {
-          "en": "Founder, built and shipped solo",
-          "de": "Gegründet, allein gebaut und veröffentlicht"
+          "en": "Designed, built and shipped solo",
+          "de": "Solo konzipiert, gebaut und veröffentlicht"
         },
         "summary": {
-          "en": "Art label and online shop for originals and editions. Static site, no framework, order flow with regional shipping, order numbers and payment handover, maintained end to end from a phone.",
-          "de": "Kunstlabel und Onlineshop für Originale und Editionen. Statische Seite, kein Framework, Bestellstrecke mit regionalen Versandpauschalen, Bestellnummern und Zahlungsübergabe, end to end vom Handy aus gepflegt."
+          "en": "A small commerce site without a framework: catalogue, order flow with regional shipping rates and order numbers, payment handover, legal pages generated from one config file, plus a maintenance interface that publishes to the live site from a phone.",
+          "de": "Eine kleine Commerce-Seite ohne Framework: Katalog, Bestellstrecke mit regionalen Versandpauschalen und Bestellnummern, Zahlungsübergabe, Rechtstexte aus einer Konfigurationsdatei erzeugt, dazu eine Wartungsoberfläche, die vom Handy aus auf die Live-Seite veröffentlicht."
         },
-        "url": "https://seelischabstrakt.netlify.app/",
+        "url": "",
         "tags": [
           "e-commerce",
           "web",
@@ -435,10 +421,9 @@
       {
         "date": "2026-09",
         "text": {
-          "en": "Shipped seelischabstrakt, an art shop built end to end: order flow, regional shipping rates, payment handover and a maintenance interface, static and without a framework.",
-          "de": "seelischabstrakt veröffentlicht, ein Kunstshop end to end gebaut: Bestellstrecke, regionale Versandpauschalen, Zahlungsübergabe und eine Wartungsoberfläche, statisch und ohne Framework."
-        },
-        "url": "https://seelischabstrakt.netlify.app/"
+          "en": "Shipped a small online shop end to end: order flow, regional shipping rates, payment handover and a maintenance interface, static and without a framework.",
+          "de": "Einen kleinen Onlineshop end to end veröffentlicht: Bestellstrecke, regionale Versandpauschalen, Zahlungsübergabe und eine Wartungsoberfläche, statisch und ohne Framework."
+        }
       },
       {
         "date": "2026-08",
@@ -474,13 +459,14 @@
       "en": "© {year} Alexander Schranz. Vienna.",
       "de": "© {year} Alexander Schranz. Wien."
     },
-    "links": [
+    "links": [],
+    "_links_example": [
       {
         "label": {
-          "en": "Imprint and privacy",
-          "de": "Impressum und Datenschutz"
+          "en": "Imprint",
+          "de": "Impressum"
         },
-        "url": "https://seelischabstrakt.netlify.app/#imprint"
+        "url": ""
       }
     ]
   },
@@ -510,6 +496,7 @@
     "cta": {
       "en": "All works in the shop",
       "de": "Alle Werke im Shop"
-    }
+    },
+    "_note": "Disabled. Rename to \"art\" and add a nav entry to switch the art section back on."
   }
 }

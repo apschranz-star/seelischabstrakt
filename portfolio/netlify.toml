@@ -22,7 +22,3 @@
   [headers.values]
     Cache-Control = "public, max-age=60, must-revalidate"
 
-[[redirects]]
-  from = "/shop"
-  to = "https://seelischabstrakt.netlify.app/"
-  status = 302

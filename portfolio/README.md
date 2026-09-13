@@ -19,5 +19,8 @@ Persönliches Portfolio, schwarzweiß, eine Seite. Kein Framework, kein Build. A
 3. Deploy. Dann Project configuration, General, Change project name: alexanderschranz. Die Seite heißt dann alexanderschranz.netlify.app.
 4. Später eigene Domain: Domain management, Add domain, alexanderschranz.at, DNS-Anleitung befolgen. HTTPS kommt automatisch. Danach die Adresse in portfolio.json (seo.url), index.html (canonical), sitemap.xml, robots.txt und im Shop (brand.personSite) tauschen.
 
+## Impressum
+Die Seite hat derzeit keinen Impressumslink. Sobald sie beruflich beworben wird, gehört einer dazu: Name, Adresse, E-Mail. Entweder als eigener Block hier eintragen (footer.links mit Ziel) oder eine kleine impressum.html im Ordner anlegen und verlinken.
+
 ## ChatGPT
 Dem GPT diese Datei und portfolio.json zeigen und sagen, was neu ist. Er liefert den fertigen JSON-Block, den du in GitHub einfügst.
