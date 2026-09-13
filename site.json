@@ -189,7 +189,7 @@
     },
     "heroMeta": {
       "en": "First works online, more to come",
-      "de": "Erste Arbeiten online, weitere folgen"
+      "de": "Erste Werke online, weitere folgen"
     },
     "worksKicker": {
       "en": "Originals and editions · hung on the carpet",
@@ -290,7 +290,7 @@
     "empty": {
       "works": {
         "en": "New works are on the way.",
-        "de": "Neue Arbeiten kommen."
+        "de": "Neue Werke kommen."
       },
       "filter": {
         "en": "Nothing in this selection yet.",
@@ -310,6 +310,15 @@
       "caption": {
         "en": "",
         "de": ""
+      }
+    },
+    "ui": {
+      "de": {
+        "nav.works": "Werke",
+        "works.title": "Werke",
+        "hero.cta1": "Verfügbare Werke",
+        "works.empty": "Neue Werke kommen.",
+        "notify.title": "Neue Werke per E-Mail"
       }
     }
   },
