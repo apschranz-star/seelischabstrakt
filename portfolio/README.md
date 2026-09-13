@@ -1,4 +1,4 @@
-# alexanderschranz.at
+# alexanderschranz.netlify.app (später alexanderschranz.at)
 
 Persönliches Portfolio, schwarzweiß, eine Seite. Kein Framework, kein Build. Alles Inhaltliche steht in portfolio.json.
 
@@ -15,7 +15,8 @@ Persönliches Portfolio, schwarzweiß, eine Seite. Kein Framework, kein Build. A
 ## Netlify einrichten (einmalig)
 1. Netlify, Add new project, Import from Git, dasselbe Repository wählen.
 2. Base directory: portfolio. Publish directory: portfolio. Build command leer.
-3. Deploy. Dann Domain management, Add domain, alexanderschranz.at, DNS-Anleitung befolgen. HTTPS kommt automatisch.
+3. Deploy. Dann Project configuration, General, Change project name: alexanderschranz. Die Seite heißt dann alexanderschranz.netlify.app.
+4. Später eigene Domain: Domain management, Add domain, alexanderschranz.at, DNS-Anleitung befolgen. HTTPS kommt automatisch. Danach die Adresse in portfolio.json (seo.url), index.html (canonical), sitemap.xml, robots.txt und im Shop (brand.personSite) tauschen.
 
 ## ChatGPT
 Dem GPT diese Datei und portfolio.json zeigen und sagen, was neu ist. Er liefert den fertigen JSON-Block, den du in GitHub einfügst.
