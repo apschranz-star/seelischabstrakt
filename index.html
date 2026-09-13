@@ -379,6 +379,7 @@ const UI = {
     "price.klein":"Preise sind Endpreise; gemäß § 6 Abs 1 Z 27 UStG wird keine Umsatzsteuer ausgewiesen (Kleinunternehmer).",
     "price.returns":"{d} Tage Widerrufsrecht bei Drucken. Auftragsarbeiten nach Kundenwunsch sind ausgenommen, bei bestehenden Originalen gewähren wir freiwillig dieselbe Frist zur Rückgabe." }
 };
+const UI_BASE={en:Object.assign({},UI.en),de:Object.assign({},UI.de)};
 const t = (k,vars={}) => { let s=(UI[lang]&&UI[lang][k])||UI.en[k]||k; Object.entries(vars).forEach(([a,b])=>s=s.replace(`{${a}}`,b)); return s; };
 const L = obj => (obj && (obj[lang] || obj.en || obj.de || "")) || "";
 const fmt = n => new Intl.NumberFormat(lang==="de"?"de-AT":"en-IE",{style:"currency",currency:(SITE?.commerce?.currency)||"EUR",maximumFractionDigits:0}).format(n);
@@ -403,6 +404,8 @@ function applyTheme(){
   const map={ground:"--ground",groundLine:"--ground-line",groundDot:"--ground-dot",section2:"--section2",section2Line:"--section2-line",frame:"--frame",mat:"--mat",ink:"--ink",ink2:"--ink-2",mute:"--mute",paper:"--paper",paperInk:"--paper-ink",accent:"--accent"};
   Object.entries(map).forEach(([k,v])=>{ if(c[k]) r.setProperty(v,c[k]); });
   const [p1,s1]=patternSvg(pattern,c); r.setProperty("--pattern",p1); r.setProperty("--pattern-size",s1);
+  if(th.preset==="custom"&&th.patternSvg){ r.setProperty("--pattern",th.patternSvg.trim().startsWith("<")?enc(th.patternSvg.trim()):`url("${th.patternSvg.trim()}")`); r.setProperty("--pattern-size",th.patternSize||"auto"); }
+  let cs=document.getElementById("custom-css"); if(!cs){ cs=document.createElement("style"); cs.id="custom-css"; document.head.appendChild(cs); } cs.textContent=th.customCss||"";
   const second = pattern==="gul"?"paisley":(pattern==="paisley"?"gul":"none");
   const [p2,s2]=patternSvg(second,{ground:c.section2,groundLine:c.section2Line,groundDot:c.groundDot}); r.setProperty("--pattern2",p2); r.setProperty("--pattern2-size",s2);
   const f=th.fonts||{};
@@ -493,7 +496,7 @@ mnav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{ mnav.remo
 function renderSite(){
   const b=SITE.brand, x=SITE.texts, c=SITE.commerce, lg=SITE.legal;
   document.title=b.name; document.getElementById("brand").textContent=b.name;
-  document.getElementById("wm-top").textContent=b.wordmarkTop; document.getElementById("wm-bottom").textContent=b.wordmarkBottom; document.getElementById("motto").textContent=b.motto;
+  const wm=document.querySelector(".wordmark"); if(b.logo){ wm.innerHTML=`<img src="${b.logo}" alt="${b.name}" style="display:block;max-width:min(100%,${b.logoWidth||520}px);height:auto">`; } else { if(!document.getElementById("wm-top")) wm.innerHTML='<span class="lo" id="wm-top"></span><span id="wm-bottom"></span>'; document.getElementById("wm-top").textContent=b.wordmarkTop; document.getElementById("wm-bottom").textContent=b.wordmarkBottom; } document.getElementById("motto").textContent=b.motto;
   document.getElementById("hero-lead").textContent=L(x.heroLead); document.getElementById("hero-artist").textContent=b.artist; document.getElementById("hero-city").textContent=b.city; document.getElementById("hero-meta").textContent=L(x.heroMeta);
   ["ig-btn","ig-btn2"].forEach(id=>document.getElementById(id).href=b.instagram); document.getElementById("ig-btn").textContent="@"+b.instagram.replace(/\/$/,"").split("/").pop();
   document.getElementById("works-kicker").textContent=L(x.worksKicker); const wn=document.getElementById("works-note"); const wnt=UI[lang]?.["works.note"]??UI.en["works.note"]??""; wn.textContent=wnt; wn.hidden=!wnt;
@@ -509,12 +512,22 @@ function renderSite(){
   const nf=document.getElementById("notify-form"); if(c.notify?.enabled){ nf.hidden=false; document.getElementById("notify-title").textContent=t("notify.title"); document.getElementById("notify-text").textContent=t("notify.text"); document.getElementById("notify-btn").textContent=t("notify.btn"); document.getElementById("notify-email").placeholder=t("notify.placeholder"); nf.onsubmit=async e=>{ e.preventDefault(); const em=document.getElementById("notify-email").value; let ok=false; try{ const r=await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({"form-name":"notify",email:em,lang})}); ok=r.ok; }catch(x){} if(!ok) location.href=`mailto:${b.email}?subject=Notify&body=${encodeURIComponent(em)}`; document.getElementById("notify-status").textContent=t("notify.ok"); nf.reset(); }; }
   document.getElementById("mail-btn").href=`mailto:${b.email}`; document.getElementById("comm-btn").href=c.commissionLink||`mailto:${b.email}?subject=Commission`; document.getElementById("person-link").href=b.personSite;
   document.getElementById("trust").textContent=t("trust",{d:lg.returnsDaysPrints}); document.getElementById("mobile-brand").textContent=b.name;
-  document.getElementById("copyright").textContent=`© ${new Date().getFullYear()} ${b.name} · ${b.artist} · ${b.motto}`;
+  document.getElementById("copyright").textContent=L(x.copyright)?L(x.copyright).replace("{year}",new Date().getFullYear()):`© ${new Date().getFullYear()} ${b.name} · ${b.artist} · ${b.motto}`;
   document.getElementById("print-tiers").innerHTML=(SITE.printTiers||[]).map(p=>`<div class="print-tier"><div class="size">${p.size}</div><div class="p">${fmt(p.price)}</div><small>${t("lbl.edition")} ${p.edition} · ${p.paper||""}</small></div>`).join("");
   document.getElementById("legal-links").innerHTML=["imprint","privacy","terms","shipping","us","access"].map(k=>`<button type="button" data-legal="${k}">${t("legal."+k)}</button>`).join("");
   document.querySelectorAll("[data-legal]").forEach(btn=>btn.addEventListener("click",()=>openLegal(btn.dataset.legal)));
 }
+function applyCustom(){
+  const ui=SITE.texts?.ui||{}; ["en","de"].forEach(l=>{ UI[l]=Object.assign({},UI_BASE[l],ui[l]||{}); });
+  const hide=new Set(SITE.theme?.layout?.hideSections||[]);
+  ["prints","about","commission","contact"].forEach(id=>{ const el=document.getElementById(id); if(el) el.hidden=hide.has(id); document.querySelectorAll(`a[href="#${id}"]`).forEach(a=>{ (a.closest("li")||a).hidden=hide.has(id); }); });
+  const trust=document.getElementById("trust"); if(trust) trust.hidden=hide.has("trust");
+  const facts=document.getElementById("facts"); if(facts) facts.hidden=hide.has("facts");
+  document.querySelectorAll("[data-filter]").forEach(b=>{ b.hidden=hide.has("filters"); });
+  document.querySelectorAll("[data-lang]").forEach(b=>{ b.hidden=hide.has("lang"); });
+}
 function applyAll(){
+  applyCustom();
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
