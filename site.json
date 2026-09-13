@@ -60,12 +60,12 @@
       "US"
     ],
     "shippingNote": {
-      "en": "Shipping is calculated at checkout. Within Austria 9 EUR for prints, originals insured by size. EU from 19 EUR. UK, CH and US: duties and import taxes are not included and are paid by the buyer on delivery.",
-      "de": "Versand wird im Checkout berechnet. Innerhalb Österreichs 9 EUR für Drucke, Originale versichert nach Größe. EU ab 19 EUR. UK, CH und USA: Zoll und Einfuhrabgaben sind nicht enthalten und werden vom Käufer bei Lieferung bezahlt."
+      "en": "Shipping is shown at checkout as a flat rate by region. Austria: 9 EUR for prints, 19 EUR for originals. EU: 19 and 39 EUR. UK and Switzerland: 29 and 59 EUR. USA: 39 and 89 EUR. Rest of world: 49 and 119 EUR. Pickup in Vienna is free. Outside the EU, duties and import taxes are not included and are paid by the buyer on delivery.",
+      "de": "Versand wird im Checkout als Pauschale je Region angezeigt. Österreich: 9 EUR für Drucke, 19 EUR für Originale. EU: 19 und 39 EUR. UK und Schweiz: 29 und 59 EUR. USA: 39 und 89 EUR. Übrige Welt: 49 und 119 EUR. Abholung in Wien ist kostenlos. Außerhalb der EU sind Zoll und Einfuhrabgaben nicht enthalten und werden vom Käufer bei Lieferung bezahlt."
     },
     "usNote": {
       "en": "US buyers: prices are shown in EUR and converted by your card provider. No US sales tax is collected by the seller; import duties may apply on delivery (artworks under HTS 9701 are usually duty-free, but carriers may charge a brokerage fee).",
-      "de": ""
+      "de": "Käufer in den USA: Preise sind in EUR angegeben und werden von deinem Kartenanbieter umgerechnet. Der Verkäufer hebt keine US Sales Tax ein; bei Lieferung können Einfuhrabgaben anfallen (Kunstwerke unter HTS 9701 sind meist zollfrei, Zusteller können aber eine Abfertigungsgebühr verlangen)."
     },
     "commissionLink": "",
     "analytics": {
@@ -313,7 +313,7 @@
     "chamber": "Wirtschaftskammer Wien, Fachgruppe Kunsthandel",
     "odrLink": "https://ec.europa.eu/consumers/odr",
     "hosting": "Netlify, Inc., San Francisco, USA (EU data processing agreement, Standard Contractual Clauses)",
-    "payment": "Stripe Payments Europe Ltd., Dublin, Ireland; PayPal (Europe) S.à r.l. et Cie, S.C.A., Luxembourg",
+    "payment": "Revolut Bank UAB, Vilnius, Litauen (Lithuania)",
     "returnsDaysPrints": 14,
     "originalsMadeToOrderExempt": true,
     "usPrivacyContactSameAsEmail": true,
