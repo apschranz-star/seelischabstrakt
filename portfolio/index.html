@@ -42,8 +42,6 @@ section{scroll-margin-top:24px}
 .sec-h h2{margin:0;font-weight:600;font-size:clamp(22px,2.4vw,30px);letter-spacing:-.02em}
 .sec-h .n{font-family:var(--m);font-size:12px;color:var(--mute)}
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,320px);gap:clamp(24px,4vw,56px);align-items:start}
-.about .txt{display:grid;gap:16px;max-width:62ch;font-size:clamp(17px,1.4vw,20px);font-weight:300;line-height:1.55}
-.about .txt p{margin:0}
 .portrait{border:0}
 .facts{display:grid;gap:10px;margin:22px 0 0;padding:0;font-size:14px}
 .facts div{display:grid;grid-template-columns:110px 1fr;gap:12px;border-top:1px solid var(--soft);padding-top:8px}
@@ -68,6 +66,19 @@ section{scroll-margin-top:24px}
 .list .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .list .tags span{font-family:var(--m);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--soft);padding:2px 7px;color:var(--mute)}
 .list img{margin-top:12px;max-width:520px;border:1px solid var(--soft)}
+.role{margin:6px 0 0;font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.txt{display:grid;gap:16px;max-width:62ch;font-size:clamp(17px,1.4vw,20px);font-weight:300;line-height:1.55}
+.txt p{margin:0}
+.focus{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px 28px}
+.focus li{border-top:1px solid var(--soft);padding-top:10px;font-size:15px}
+.focus b{display:block;font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:6px}
+.sub{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:34px 0 10px}
+.list .org{font-size:14px;color:var(--mute);margin:0 0 8px}
+.net{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:8px}
+.net ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px}
+.net li{padding-left:18px;position:relative}
+.net li::before{content:"";position:absolute;left:0;top:.7em;width:10px;height:1px;background:var(--fg)}
+.cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:26px;font-family:var(--m);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .now{border:1px solid var(--fg);padding:18px 20px;max-width:62ch}
 .now .k{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
 .contact p{max-width:60ch;margin:0 0 14px}
@@ -92,7 +103,7 @@ footer a{border-bottom-color:var(--soft)}
 <body>
 <div class="wrap">
   <aside>
-    <div class="head"><h1 id="name"></h1><p class="tag" id="tagline"></p></div>
+    <div class="head"><h1 id="name"></h1><p class="tag" id="tagline"></p><p class="role" id="role"></p></div>
     <nav aria-label="Sections"><ul id="nav"></ul></nav>
     <ul class="links" id="links"></ul>
     <div class="tools" id="tools"></div>
@@ -109,7 +120,7 @@ const hasDe=o=>JSON.stringify(o).includes('"de":');
 function render(){
   const p=D.profile; document.documentElement.lang=lang; document.title=D.seo?.title||p.name;
   const md=document.querySelector('meta[name="description"]'); if(md&&D.seo?.description) md.content=L(D.seo.description);
-  $("#name").textContent=p.name; $("#tagline").textContent=L(p.tagline);
+  $("#name").textContent=p.name; $("#tagline").textContent=L(p.tagline); $("#role").textContent=L(p.role||""); $("#role").hidden=!L(p.role||"");
   const sections=[];
   const nav=(D.nav||[]).filter(n=>D[n.id]); $("#nav").innerHTML=nav.map(n=>`<li><a href="#${n.id}" data-nav="${n.id}">${esc(L(n.label))}</a></li>`).join("");
   $("#links").innerHTML=(p.links||[]).map(l=>`<li><a href="${esc(l.url)}" ${/^https?:/.test(l.url)?'target="_blank" rel="noopener"':""}>${esc(L(l.label))}</a></li>`).join("");
@@ -121,12 +132,24 @@ function render(){
     <div class="about"><div><div class="txt">${(a.paragraphs?.[lang]||a.paragraphs?.en||[]).map(x=>`<p>${esc(x)}</p>`).join("")}</div>
     ${a.facts?.length?`<dl class="facts">${a.facts.map(f=>`<div><dt>${esc(L(f.label))}</dt><dd>${esc(L(f.value))}</dd></div>`).join("")}</dl>`:""}</div>
     ${p.portrait?`<img class="portrait" src="${esc(p.portrait)}" alt="${esc(p.portraitAlt||p.name)}" loading="lazy">`:""}</div></section>`); }
+  const paras=o=>(o?.[lang]||o?.en||[]).map(x=>`<p>${esc(x)}</p>`).join("");
+  if(D.work){ const w=D.work; const xp=(w.experience||[]).filter(x=>!x.draft);
+    secs.push(`<section id="work" class="reveal"><div class="sec-h"><h2>${esc(L(w.title))}</h2><span class="n">${num()}</span></div>
+    <div class="txt">${paras(w.paragraphs)}</div>
+    ${w.focus?.length?`<ul class="focus">${w.focus.map(f=>`<li><b>${esc(L(f.label))}</b>${esc(L(f.text))}</li>`).join("")}</ul>`:""}
+    ${xp.length?`<p class="sub">${esc(L(w.experienceTitle)||(lang==="de"?"Stationen":"Experience"))}</p><ul class="list">${xp.map(x=>`<li><div class="y">${esc(x.period||"")}</div><div><h3>${esc(L(x.role))}</h3><p class="org">${esc(L(x.org))}</p>${x.summary?`<p>${esc(L(x.summary))}</p>`:""}</div></li>`).join("")}</ul>`:""}
+    ${w.links?.length?`<div class="cta-row">${w.links.map(l=>`<a href="${esc(l.url)}" ${/^https?:/.test(l.url)?'target="_blank" rel="noopener"':""}>${esc(L(l.label))}</a>`).join("")}</div>`:""}</section>`); }
   if(D.art){ const a=D.art; secs.push(`<section id="art" class="reveal"><div class="sec-h"><h2>${esc(L(a.title))}</h2><span class="n">${num()}</span></div>
     ${a.intro?`<p class="intro">${esc(L(a.intro))}</p>`:""}<ul class="art" id="art-list"><li class="empty" style="grid-column:1/-1">…</li></ul>
     ${a.shopUrl?`<p class="more"><a href="${esc(a.shopUrl)}" target="_blank" rel="noopener">${esc(L(a.cta)||"Shop")}</a></p>`:""}</section>`); }
   if(D.projects){ const pr=D.projects; const items=(pr.items||[]).filter(x=>!x.draft);
     secs.push(`<section id="projects" class="reveal"><div class="sec-h"><h2>${esc(L(pr.title))}</h2><span class="n">${num()}</span></div>
     ${items.length?`<ul class="list">${items.map(x=>`<li><div class="y">${esc(x.year||"")}</div><div><h3>${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(L(x.title))}</a>`:esc(L(x.title))}</h3>${x.role?`<p class="role">${esc(L(x.role))}</p>`:""}${x.summary?`<p>${esc(L(x.summary))}</p>`:""}${x.image?`<img src="${esc(x.image)}" alt="" loading="lazy">`:""}${x.tags?.length?`<div class="tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</div></li>`).join("")}</ul>`:`<p class="empty">${lang==="de"?"Projekte folgen.":"Projects coming soon."}</p>`}</section>`); }
+  if(D.network){ const n=D.network;
+    secs.push(`<section id="network" class="reveal"><div class="sec-h"><h2>${esc(L(n.title))}</h2><span class="n">${num()}</span></div>
+    <div class="txt">${paras(n.paragraphs)}</div>
+    <div class="net">${(n.columns||[]).map(c=>`<div><p class="sub" style="margin-top:22px">${esc(L(c.title))}</p><ul>${(c.items?.[lang]||c.items?.en||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}</div>
+    ${n.links?.length?`<div class="cta-row">${n.links.map(l=>`<a href="${esc(l.url)}" ${/^https?:/.test(l.url)?'target="_blank" rel="noopener"':""}>${esc(L(l.label))}</a>`).join("")}</div>`:""}</section>`); }
   if(D.updates){ const u=D.updates; const items=(u.items||[]).filter(x=>!x.draft).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
     secs.push(`<section id="updates" class="reveal"><div class="sec-h"><h2>${esc(L(u.title))}</h2><span class="n">${num()}</span></div>
     ${items.length?`<ul class="list">${items.map(x=>`<li><div class="y">${esc(x.date||"")}</div><div><p>${esc(L(x.text))}${x.url?` <a href="${esc(x.url)}" target="_blank" rel="noopener">→</a>`:""}</p></div></li>`).join("")}</ul>`:`<p class="empty">${lang==="de"?"Noch nichts.":"Nothing yet."}</p>`}</section>`); }

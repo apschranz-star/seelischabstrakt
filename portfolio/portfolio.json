@@ -12,7 +12,14 @@
     "portraitAlt": "Alexander Schranz, black and white portrait",
     "links": [
       {
-        "label": "seelischabstrakt, the shop",
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/alexanderpeterschranz"
+      },
+      {
+        "label": {
+          "en": "seelischabstrakt, the shop",
+          "de": "seelischabstrakt, der Shop"
+        },
         "url": "https://seelischabstrakt.netlify.app/"
       },
       {
@@ -24,7 +31,11 @@
         "url": "mailto:a.p.schranz@icloud.com"
       }
     ],
-    "defaultLang": "en"
+    "defaultLang": "en",
+    "role": {
+      "en": "B2B sales and business development · AI solution builder · Vienna",
+      "de": "B2B-Vertrieb und Business Development · AI Solution Builder · Wien"
+    }
   },
   "nav": [
     {
@@ -32,6 +43,13 @@
       "label": {
         "en": "About",
         "de": "Über"
+      }
+    },
+    {
+      "id": "work",
+      "label": {
+        "en": "Work",
+        "de": "Beruf"
       }
     },
     {
@@ -46,6 +64,13 @@
       "label": {
         "en": "Projects",
         "de": "Projekte"
+      }
+    },
+    {
+      "id": "network",
+      "label": {
+        "en": "Network",
+        "de": "Netzwerk"
       }
     },
     {
@@ -73,12 +98,14 @@
         "I collect fragments: faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed.",
         "I like things that show how they were made. A rough edge, a heavy layer of paint, a correction, something slightly out of place. The trace of the hand is part of the work.",
         "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero. I approach a painting more like a physical problem than an illustration: layer by layer, decision by decision, until something begins to hold.",
+        "The same approach carries into my work in sales and business development: I build the tools my own pipeline runs on, and I would rather own a process end to end than hand it over half finished.",
         "The goal is not perfection. The goal is presence."
       ],
       "de": [
         "Ich sammle Fragmente: Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut.",
         "Ich mag Dinge, die zeigen, wie sie gemacht wurden. Eine raue Kante, eine dicke Farbschicht, eine Korrektur, etwas, das ein wenig verrutscht ist. Die Spur der Hand gehört zum Werk.",
         "Mein Hintergrund ist nicht klassisch akademisch. Ich habe durch Machen gelernt, durch Bauen, Verkaufen, Reparieren, Organisieren und dadurch, Dinge von null weg anzufangen. Ein Bild gehe ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration: Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
+        "Derselbe Zugang trägt in meiner Arbeit in Vertrieb und Business Development: Ich baue die Werkzeuge, mit denen meine eigene Pipeline läuft, und verantworte einen Prozess lieber von Anfang bis Ende, als ihn halbfertig zu übergeben.",
         "Es geht nicht um Perfektion. Es geht um Präsenz."
       ]
     },
@@ -92,8 +119,8 @@
       },
       {
         "label": {
-          "en": "Works",
-          "de": "Arbeitet"
+          "en": "Art",
+          "de": "Kunst"
         },
         "value": {
           "en": "Painting, drawing, small formats",
@@ -102,10 +129,23 @@
       },
       {
         "label": {
-          "en": "Studio name",
-          "de": "Ateliername"
+          "en": "Work",
+          "de": "Beruf"
         },
-        "value": "seelischabstrakt"
+        "value": {
+          "en": "B2B sales, business development, applied AI",
+          "de": "B2B-Vertrieb, Business Development, Applied AI"
+        }
+      },
+      {
+        "label": {
+          "en": "Languages",
+          "de": "Sprachen"
+        },
+        "value": {
+          "en": "German native, English C2",
+          "de": "Deutsch Muttersprache, Englisch C2"
+        }
       }
     ]
   },
@@ -134,6 +174,27 @@
       "de": "Projekte"
     },
     "items": [
+      {
+        "title": {
+          "en": "nobi, lead-sourcing engine",
+          "de": "nobi, Lead-Sourcing-Engine"
+        },
+        "year": "2026",
+        "role": {
+          "en": "Designed, built and maintained solo, Python and Streamlit",
+          "de": "Solo konzipiert, gebaut und gewartet, Python und Streamlit"
+        },
+        "summary": {
+          "en": "Multi-agent pipeline for prospecting: geodata ingestion, ICP scoring, company-register verification, CRM deduplication and import, with a human review gate as the final instance. About twelve minutes of manual research removed per lead.",
+          "de": "Multi-Agent-Pipeline für Prospecting: Geodaten-Ingestion, ICP-Scoring, Firmenbuch-Verifikation, CRM-Deduplizierung und Import, mit Human-Review-Gate als letzter Instanz. Rund zwölf Minuten Handrecherche pro Lead ersetzt."
+        },
+        "url": "",
+        "tags": [
+          "python",
+          "llm",
+          "sales"
+        ]
+      },
       {
         "title": "seelischabstrakt",
         "year": "2026",
@@ -191,8 +252,8 @@
       "de": "Gerade"
     },
     "text": {
-      "en": "Painting small formats in Vienna. Building the shop. Open to commissions and studio visits.",
-      "de": "Kleine Formate in Wien. Der Shop wächst. Offen für Auftragswerke und Atelierbesuche."
+      "en": "Painting small formats in Vienna and building the shop. Professionally open to what comes next: business development, new business, or applied AI built as its own function. Open to commissions, studio visits and a conversation.",
+      "de": "Kleine Formate in Wien, der Shop wächst. Beruflich offen für das Nächste: Business Development, Neukundengeschäft oder Applied AI als eigene Funktion. Offen für Auftragswerke, Atelierbesuche und ein Gespräch."
     }
   },
   "contact": {
@@ -201,8 +262,8 @@
       "de": "Kontakt"
     },
     "text": {
-      "en": "For works, commissions, collaborations or a studio visit in Vienna.",
-      "de": "Für Werke, Auftragswerke, Zusammenarbeit oder einen Atelierbesuch in Wien."
+      "en": "For works, commissions, collaborations, roles or a studio visit in Vienna. I answer every message.",
+      "de": "Für Werke, Auftragswerke, Zusammenarbeit, Rollen oder einen Atelierbesuch in Wien. Ich beantworte jede Nachricht."
     }
   },
   "footer": {
@@ -223,10 +284,219 @@
   "seo": {
     "title": "Alexander Schranz",
     "description": {
-      "en": "Alexander Schranz, painter in Vienna. Small formats, fragments, the trace of the hand. Portfolio, projects and updates.",
-      "de": "Alexander Schranz, Maler in Wien. Kleine Formate, Fragmente, die Spur der Hand. Portfolio, Projekte und Aktuelles."
+      "en": "Alexander Schranz, Vienna. B2B sales and business development, applied AI, and painting in small formats. Portfolio, projects, network and updates.",
+      "de": "Alexander Schranz, Wien. B2B-Vertrieb und Business Development, Applied AI und Malerei in kleinen Formaten. Portfolio, Projekte, Netzwerk und Aktuelles."
     },
     "url": "https://alexanderschranz.netlify.app/",
     "image": "img/alexander-schranz.jpg"
+  },
+  "work": {
+    "title": {
+      "en": "Work",
+      "de": "Beruf"
+    },
+    "paragraphs": {
+      "en": [
+        "I work in B2B sales and business development, currently in the Austrian and German energy market, and I build the AI tooling my own pipeline runs on.",
+        "In 2026 I booked 67 qualified enterprise meetings in four and a half months, every one of them self-generated from cold, across Austria and Germany. I was weekly number one in meetings booked in five of ten reports in a team of seven to eight, and never below second. Two of my own leads closed, including roughly one gigawatt hour of annual supply with a listed steel group, negotiated together with both co-CEOs.",
+        "Alongside the quota I designed and shipped four internal systems in Python: a multi-agent lead-sourcing engine, a geospatial qualification layer, an LLM outreach pipeline with a mandatory human review gate, and the team's operating knowledge base. The sourcing engine removed about twelve minutes of manual research per lead, valued internally at roughly seven hundred working hours.",
+        "I am looking for a role where I can drive impact and proactive business growth: new business and expansion owned end to end, or applied AI and sales operations built as its own function. Ideally both, because that is where I am strongest."
+      ],
+      "de": [
+        "Ich arbeite im B2B-Vertrieb und Business Development, derzeit im österreichischen und deutschen Energiemarkt, und baue die AI-Werkzeuge, mit denen meine eigene Pipeline läuft.",
+        "2026 habe ich 67 qualifizierte Enterprise-Meetings in viereinhalb Monaten gebucht, alle selbst aus der Kaltakquise, in Österreich und Deutschland. In fünf von zehn Wochenreports war ich Nummer eins bei gebuchten Meetings in einem Team von sieben bis acht, nie schlechter als Platz zwei. Zwei eigene Leads sind abgeschlossen, darunter rund eine Gigawattstunde Jahresliefervolumen mit einem börsennotierten Stahlkonzern, gemeinsam mit beiden Co-CEOs verhandelt.",
+        "Parallel zur Quote habe ich vier interne Systeme in Python konzipiert und in den Produktivbetrieb gebracht: eine Multi-Agent-Lead-Sourcing-Engine, einen Geodaten-Layer zur Standortqualifizierung, eine LLM-Outreach-Pipeline mit verpflichtendem Human-Review-Gate und die operative Wissensbasis des Teams. Die Sourcing-Engine ersetzt rund zwölf Minuten Handrecherche pro Lead, intern bewertet mit etwa siebenhundert Arbeitsstunden.",
+        "Ich suche eine Rolle, in der ich Wirkung erzielen und Wachstum aktiv treiben kann: Neukundengeschäft und Expansion end to end verantwortet, oder Applied AI und Sales Operations als eigene Funktion aufgebaut. Am liebsten beides, weil ich dort am stärksten bin."
+      ]
+    },
+    "focus": [
+      {
+        "label": {
+          "en": "New business",
+          "de": "Neukundengeschäft"
+        },
+        "text": {
+          "en": "Full outbound cycle owned end to end: ICP, prospecting, phone-first outreach, discovery, closing handover.",
+          "de": "Voller Outbound-Zyklus end to end: ICP, Prospecting, telefonische Erstansprache, Discovery, Übergabe zum Abschluss."
+        }
+      },
+      {
+        "label": {
+          "en": "Applied AI",
+          "de": "Applied AI"
+        },
+        "text": {
+          "en": "Python, Anthropic API, multi-agent pipelines with QA and a human review gate. Shipped and in production use.",
+          "de": "Python, Anthropic API, Multi-Agent-Pipelines mit QA und Human-Review-Gate. Gebaut und im Produktivbetrieb."
+        }
+      },
+      {
+        "label": {
+          "en": "Sales operations",
+          "de": "Sales Operations"
+        },
+        "text": {
+          "en": "CRM data standards, deduplication, compliance by design, reporting the team actually uses.",
+          "de": "CRM-Datenstandards, Deduplizierung, Compliance by Design, Reporting, das das Team wirklich nutzt."
+        }
+      },
+      {
+        "label": {
+          "en": "Consultative selling",
+          "de": "Beratender Verkauf"
+        },
+        "text": {
+          "en": "Load profiles, business cases and regulation translated into a decision an owner or CFO can make.",
+          "de": "Lastprofile, Business Cases und Regulatorik übersetzt in eine Entscheidung, die Eigentümer oder CFO treffen können."
+        }
+      }
+    ],
+    "experienceTitle": {
+      "en": "Experience",
+      "de": "Stationen"
+    },
+    "experience": [
+      {
+        "period": "2026",
+        "role": {
+          "en": "Commercial Energy Advisor, sales development and business development",
+          "de": "Commercial Energy Advisor, Sales Development und Business Development"
+        },
+        "org": {
+          "en": "nobile (NIG GmbH), Vienna",
+          "de": "nobile (NIG GmbH), Wien"
+        },
+        "summary": {
+          "en": "Outbound for industrial and commercial accounts in Austria and Germany. Since August 2026 responsible for the team's sales-development processes.",
+          "de": "Outbound für Industrie- und Gewerbekunden in Österreich und Deutschland. Seit August 2026 verantwortlich für die Sales-Development-Prozesse des Teams."
+        }
+      },
+      {
+        "period": "2025 – 2026",
+        "role": {
+          "en": "Inside sales and customer success, B2B and B2C",
+          "de": "Inside Sales und Customer Success, B2B und B2C"
+        },
+        "org": "Golf Tech Golfartikelvertriebs GmbH",
+        "summary": {
+          "en": "International key accounts from order to fulfilment, order volumes into six figures. Built an internal tool for warranty cases and CRM data hygiene.",
+          "de": "Internationale Key Accounts von der Bestellung bis zur Auslieferung, Auftragsvolumen im sechsstelligen Bereich. Internes Tool für Garantiefälle und CRM-Datenpflege gebaut."
+        }
+      },
+      {
+        "period": "2024 – 2025",
+        "role": {
+          "en": "Construction assistant, civil engineering",
+          "de": "Bauassistenz, Tiefbau"
+        },
+        "org": "Leyrer + Graf Baugesellschaft m.b.H.",
+        "summary": {
+          "en": "Rail infrastructure projects: coordination, material flow and logistics under strict constraints and fixed delivery windows.",
+          "de": "Bahninfrastruktur-Projekte: Koordination, Materialfluss und Logistik unter strengen Vorgaben und fixen Lieferfenstern."
+        }
+      },
+      {
+        "period": "2020 – 2022",
+        "role": {
+          "en": "Co-founder",
+          "de": "Mitgründer"
+        },
+        "org": "ReLeaf OG, Vienna",
+        "summary": {
+          "en": "Built a retail brand from zero in a heavily regulated market: brand, procurement, suppliers, social presence and shop, purchasing and sales in one hand.",
+          "de": "Eine Handelsmarke von null in einem stark regulierten Markt aufgebaut: Marke, Beschaffung, Lieferanten, Social Media und Shop, Einkauf und Verkauf in einer Hand."
+        }
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "LinkedIn profile",
+          "de": "LinkedIn-Profil"
+        },
+        "url": "https://www.linkedin.com/in/alexanderpeterschranz"
+      },
+      {
+        "label": {
+          "en": "CV on request",
+          "de": "Lebenslauf auf Anfrage"
+        },
+        "url": "mailto:a.p.schranz@icloud.com?subject=CV"
+      }
+    ]
+  },
+  "network": {
+    "title": {
+      "en": "Network",
+      "de": "Netzwerk"
+    },
+    "paragraphs": {
+      "en": [
+        "I open doors from cold for a living, so I am comfortable being the one who reaches out first. If something here overlaps with what you are building, write to me.",
+        "Conversations I am always up for: energy and industry, applied AI in sales and operations, early-stage go to market, and art, collecting or a studio visit in Vienna."
+      ],
+      "de": [
+        "Türen aus der Kaltakquise zu öffnen ist mein Beruf, also schreibe ich gern als Erster. Wenn hier etwas zu dem passt, was du gerade baust, melde dich.",
+        "Gespräche, für die ich immer zu haben bin: Energie und Industrie, Applied AI in Vertrieb und Operations, Go-to-Market in der Frühphase, und Kunst, Sammeln oder ein Atelierbesuch in Wien."
+      ]
+    },
+    "columns": [
+      {
+        "title": {
+          "en": "Open to",
+          "de": "Offen für"
+        },
+        "items": {
+          "en": [
+            "Roles in business development, new business and expansion",
+            "Applied AI and sales operations as a dedicated function",
+            "Advisory and freelance on outbound and AI tooling",
+            "Partnerships in energy, industry and B2B software"
+          ],
+          "de": [
+            "Rollen in Business Development, Neukundengeschäft und Expansion",
+            "Applied AI und Sales Operations als eigene Funktion",
+            "Beratung und freiberuflich zu Outbound und AI-Tooling",
+            "Partnerschaften in Energie, Industrie und B2B-Software"
+          ]
+        }
+      },
+      {
+        "title": {
+          "en": "What I bring",
+          "de": "Was ich mitbringe"
+        },
+        "items": {
+          "en": [
+            "Pipeline built from zero, verified against CRM records",
+            "AI systems shipped to production, not slideware",
+            "Compliance and human review gates treated as preconditions",
+            "A network across Austrian and German industry"
+          ],
+          "de": [
+            "Pipeline von null aufgebaut, gegen CRM-Daten verifiziert",
+            "AI-Systeme im Produktivbetrieb, keine Folien",
+            "Compliance und Human-Review-Gates als Voraussetzung",
+            "Ein Netzwerk in der österreichischen und deutschen Industrie"
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "Connect on LinkedIn",
+          "de": "Auf LinkedIn vernetzen"
+        },
+        "url": "https://www.linkedin.com/in/alexanderpeterschranz"
+      },
+      {
+        "label": {
+          "en": "Write an email",
+          "de": "E-Mail schreiben"
+        },
+        "url": "mailto:a.p.schranz@icloud.com"
+      }
+    ]
   }
 }
