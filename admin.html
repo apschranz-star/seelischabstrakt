@@ -112,6 +112,14 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
         <label><span>Body (reading)</span><input id="f-body"></label>
         <label><span>Mono (labels, prices)</span><input id="f-mono"></label>
       </fieldset>
+      <fieldset><legend>Advanced (optional, leave empty for the defaults)</legend>
+        <label class="full"><span>Hide parts of the page (comma separated: prints, about, commission, contact, trust, facts, filters, lang)</span><input data-path="theme.layout.hideSections" data-list="1" placeholder="commission, filters"></label>
+        <label class="full"><span>Custom CSS (added after the site styles; variables: --ground, --ink, --mute, --accent, --frame, --mat, --paper, --f-display, --f-body, --f-mono)</span><textarea data-path="theme.customCss" style="min-height:120px;font-family:'Courier Prime',monospace" placeholder=".hero{border-bottom:4px solid var(--accent)}"></textarea></label>
+        <label class="full"><span>Own background pattern (custom preset only): SVG markup or a path like img/pattern.svg</span><textarea data-path="theme.patternSvg" style="min-height:80px;font-family:'Courier Prime',monospace"></textarea></label>
+        <label><span>Pattern tile size (CSS, e.g. 160px 200px)</span><input data-path="theme.patternSize" placeholder="auto"></label>
+        <label><span>Logo image instead of wordmark (path in img/)</span><input data-path="brand.logo" placeholder="img/logo.png"></label>
+        <label><span>Logo width in px</span><input data-path="brand.logoWidth" type="number" placeholder="520"></label>
+      </fieldset>
     </section>
 
     <section id="tab-texts" hidden>
@@ -134,6 +142,12 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
         <label class="full"><span>Lead DE</span><textarea data-path="texts.heroLead.de"></textarea></label>
         <label><span>Meta EN</span><input data-path="texts.heroMeta.en"></label><label><span>Meta DE</span><input data-path="texts.heroMeta.de"></label>
         <label><span>Works kicker EN</span><input data-path="texts.worksKicker.en"></label><label><span>Works kicker DE</span><input data-path="texts.worksKicker.de"></label>
+      </fieldset>
+      <fieldset><legend>Interface wording (overrides; every button, menu item and label, keys listed in MAINTENANCE.md)</legend>
+        <label class="full"><span>EN overrides as JSON, e.g. {"nav.works":"Paintings","lbl.buyOriginal":"Buy this painting"}</span><textarea data-path="texts.ui.en" data-json="1" style="min-height:90px;font-family:'Courier Prime',monospace"></textarea></label>
+        <label class="full"><span>DE overrides as JSON, e.g. {"nav.works":"Bilder","lbl.buyOriginal":"Original erwerben"}</span><textarea data-path="texts.ui.de" data-json="1" style="min-height:90px;font-family:'Courier Prime',monospace"></textarea></label>
+        <label><span>Footer line EN ({year} is replaced)</span><input data-path="texts.copyright.en" placeholder="© {year} seelischabstrakt"></label>
+        <label><span>Footer line DE</span><input data-path="texts.copyright.de"></label>
       </fieldset>
       <fieldset><legend>Prints</legend>
         <label class="full"><span>Lead EN</span><textarea data-path="texts.printsLead.en"></textarea></label>
@@ -288,8 +302,9 @@ function bindSite(){
     if(el.type==="checkbox") el.checked=!!v;
     else if(el.dataset.lines) el.value=Array.isArray(v)?v.join("\n"):(v||"");
     else if(el.dataset.list) el.value=Array.isArray(v)?v.join(", "):(v||"");
+    else if(el.dataset.json) el.value=v&&Object.keys(v).length?JSON.stringify(v,null,1):"";
     else el.value=v??"";
-    el.oninput=()=>{ let val=el.type==="checkbox"?el.checked:el.value; if(el.type==="number") val=Number(val); if(el.dataset.lines) val=el.value.split("\n").map(x=>x.trim()).filter(Boolean); if(el.dataset.list) val=el.value.split(",").map(x=>x.trim()).filter(Boolean); set(SITE,p,val); preview(); };
+    el.oninput=()=>{ let val=el.type==="checkbox"?el.checked:el.value; if(el.type==="number") val=Number(val); if(el.dataset.lines) val=el.value.split("\n").map(x=>x.trim()).filter(Boolean); if(el.dataset.list) val=el.value.split(",").map(x=>x.trim()).filter(Boolean); if(el.dataset.json){ if(!el.value.trim()) val={}; else { try{ val=JSON.parse(el.value); if(!val||typeof val!=="object"||Array.isArray(val)) throw new Error("must be an object"); }catch(err){ status("JSON in "+p+" not readable: "+err.message,"warn"); return; } } } if(el.type==="number"&&el.value==="") val=undefined; set(SITE,p,val); preview(); };
   });
 }
 /* design */
