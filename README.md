@@ -82,7 +82,7 @@ Alternative, also free: GitHub Pages (needs a GitHub account and a repo), or Clo
 
 ## What netlify.toml does (already in the folder)
 
-Security headers (CSP, HSTS, no-sniff, referrer policy), long caching for photos in img/, short caching for the JSON files so edits show within a minute, noindex for admin.html, friendly redirects (/shop, /prints, /impressum, /datenschutz, /agb, /desk) and a 404 page. robots.txt and sitemap.xml point search engines at the shop and away from the desk. Structured data (schema.org Product list) is generated from works.json so Google can show works with prices. When you move to your own domain, replace seelischabstrakt-art.netlify.app in index.html (canonical, og:url, hreflang), robots.txt and sitemap.xml.
+Security headers (CSP, HSTS, no-sniff, referrer policy), long caching for photos in img/, short caching for the JSON files so edits show within a minute, noindex for admin.html, friendly redirects (/shop, /prints, /impressum, /datenschutz, /agb, /desk) and a 404 page. robots.txt and sitemap.xml point search engines at the shop and away from the desk. Structured data (schema.org Product list) is generated from works.json so Google can show works with prices. When you move to your own domain, replace seelischabstrakt.netlify.app in index.html (canonical, og:url, hreflang), robots.txt and sitemap.xml.
 
 ## Own domain (optional, about 10 to 15 EUR per year)
 
