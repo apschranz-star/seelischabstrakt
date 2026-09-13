@@ -51,6 +51,18 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
 .pill{font-size:11px;padding:2px 6px;border:1px solid var(--line);color:var(--mute)}
 .checklist li{margin-bottom:6px}
 @media (max-width:980px){ main{grid-template-columns:1fr} .preview{position:relative;height:70vh;top:0;border-left:0;border-top:6px solid var(--frame)} }
+
+/* photo cropper */
+.cropper{position:fixed;inset:0;background:rgba(10,6,6,.94);display:none;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;touch-action:none}
+.cropper[open]{display:flex}
+.cropper .stage{position:relative;max-width:100%;user-select:none;-webkit-user-select:none;line-height:0}
+.cropper .stage img{display:block;max-width:100%;max-height:calc(100vh - 150px);pointer-events:none}
+.cropper .box{position:absolute;border:2px solid #F2B429;box-shadow:0 0 0 9999px rgba(0,0,0,.55);cursor:move;touch-action:none;box-sizing:border-box}
+.cropper .h{position:absolute;width:30px;height:30px;background:#F2B429;border:2px solid #0D0A0A;border-radius:50%;touch-action:none;box-sizing:border-box}
+.cropper .h.nw{left:-16px;top:-16px;cursor:nwse-resize}.cropper .h.ne{right:-16px;top:-16px;cursor:nesw-resize}.cropper .h.sw{left:-16px;bottom:-16px;cursor:nesw-resize}.cropper .h.se{right:-16px;bottom:-16px;cursor:nwse-resize}
+.cropper .bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;color:#EFE7D8;font:12px "Courier Prime",monospace}
+.cropper .bar label{display:flex;gap:6px;align-items:center}
+.cropper p{margin:0;color:#C99E93;font-size:12px;text-align:center;max-width:60ch}
 </style>
 </head>
 <body>
@@ -347,8 +359,42 @@ function renderWorks(){
   });
 }
 $("#add-work").onclick=()=>{ WORKS.unshift({id:"new-"+Date.now(),title:"",year:new Date().getFullYear(),medium:{en:"",de:""},w:30,h:24,size:"",tilt:0,nomat:false,original:{price:0,available:true,link:""},prints:[],_open:true}); renderWorks(); };
+/* photo cropper: returns a canvas with the chosen region, null for the whole photo, undefined when cancelled */
+function cropPhoto(img,ratio){
+  return new Promise(resolve=>{
+    const ov=$("#cropper"), pic=$("#crop-img"), box=$("#crop-box"), stage=$("#crop-stage"), lock=$("#crop-lock"), lockWrap=$("#crop-lock-wrap");
+    let r={x:0,y:0,w:0,h:0}, sw=0, sh=0;
+    lockWrap.style.display=ratio?"flex":"none"; if(ratio) $("#crop-lock-label").textContent="Keep w × h ratio";
+    const locked=()=>ratio&&lock.checked;
+    const apply=()=>{ box.style.left=r.x+"px"; box.style.top=r.y+"px"; box.style.width=r.w+"px"; box.style.height=r.h+"px"; };
+    const reset=()=>{ sw=pic.clientWidth; sh=pic.clientHeight; let w=sw*.9, h=sh*.9; if(locked()){ if(w/h>ratio) w=h*ratio; else h=w/ratio; } r={x:(sw-w)/2,y:(sh-h)/2,w,h}; apply(); };
+    pic.onload=()=>{ ov.setAttribute("open",""); requestAnimationFrame(reset); };
+    pic.src=img.src;
+    lock.onchange=reset;
+    const MIN=30; let drag=null;
+    const down=e=>{ e.preventDefault(); drag={mode:e.target.dataset.h||"move",sx:e.clientX,sy:e.clientY,r0:{...r}}; e.target.setPointerCapture?.(e.pointerId); };
+    const move=e=>{ if(!drag) return; e.preventDefault(); const dx=e.clientX-drag.sx, dy=e.clientY-drag.sy, o=drag.r0; let n={...o};
+      if(drag.mode==="move"){ n.x=Math.min(Math.max(0,o.x+dx),sw-o.w); n.y=Math.min(Math.max(0,o.y+dy),sh-o.h); }
+      else { const m=drag.mode; let x1=o.x, y1=o.y, x2=o.x+o.w, y2=o.y+o.h;
+        if(m.includes("w")) x1=Math.min(Math.max(0,o.x+dx),x2-MIN); if(m.includes("e")) x2=Math.max(Math.min(sw,o.x+o.w+dx),x1+MIN);
+        if(m.includes("n")) y1=Math.min(Math.max(0,o.y+dy),y2-MIN); if(m.includes("s")) y2=Math.max(Math.min(sh,o.y+o.h+dy),y1+MIN);
+        n={x:x1,y:y1,w:x2-x1,h:y2-y1};
+        if(locked()){ let w=n.w, h=w/ratio; if(h>n.h){ h=n.h; w=h*ratio; } if(m.includes("w")) n.x=x2-w; if(m.includes("n")) n.y=y2-h; n.w=w; n.h=h;
+          if(n.x<0){ n.x=0; } if(n.y<0){ n.y=0; } if(n.x+n.w>sw){ n.w=sw-n.x; n.h=n.w/ratio; } if(n.y+n.h>sh){ n.h=sh-n.y; n.w=n.h*ratio; } }
+      }
+      r=n; apply(); };
+    const up=()=>{ drag=null; };
+    box.onpointerdown=down; box.querySelectorAll(".h").forEach(h=>h.onpointerdown=down);
+    document.addEventListener("pointermove",move); document.addEventListener("pointerup",up); document.addEventListener("pointercancel",up);
+    const done=v=>{ document.removeEventListener("pointermove",move); document.removeEventListener("pointerup",up); document.removeEventListener("pointercancel",up); ov.removeAttribute("open"); pic.onload=null; pic.removeAttribute("src"); resolve(v); };
+    $("#crop-ok").onclick=()=>{ const k=img.naturalWidth/sw; const cv=document.createElement("canvas"); cv.width=Math.max(1,Math.round(r.w*k)); cv.height=Math.max(1,Math.round(r.h*k)); cv.getContext("2d").drawImage(img,Math.round(r.x*k),Math.round(r.y*k),cv.width,cv.height,0,0,cv.width,cv.height); done(cv); };
+    $("#crop-skip").onclick=()=>done(null); $("#crop-cancel").onclick=()=>done(undefined);
+    window.onresize=()=>{ if(ov.hasAttribute("open")) reset(); };
+  });
+}
 function handlePhoto(file,w){
-  if(!file) return; const img=new Image(); img.onload=()=>{ const max=1600, sc=Math.min(1,max/Math.max(img.width,img.height)); const cv=document.createElement("canvas"); cv.width=Math.round(img.width*sc); cv.height=Math.round(img.height*sc); cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
+  if(!file) return; const img=new Image(); img.onload=async()=>{ const cut=await cropPhoto(img,(w.w&&w.h)?w.w/w.h:null); if(cut===undefined){ URL.revokeObjectURL(img.src); status("Photo discarded.","warn"); return; } const src=cut||img; const W=cut?cut.width:img.naturalWidth, H=cut?cut.height:img.naturalHeight;
+    const max=1600, sc=Math.min(1,max/Math.max(W,H)); const cv=document.createElement("canvas"); cv.width=Math.round(W*sc); cv.height=Math.round(H*sc); cv.getContext("2d").drawImage(src,0,0,cv.width,cv.height);
     const name=(slug(w.title||w.id)||"work-"+Date.now())+".jpg"; cv.toBlob(b=>{ w.img="img/"+name; w._preview=cv.toDataURL("image/jpeg",.85); w._newFile={name,blob:b}; if(!w.w||!w.h){ w.w=Math.round(cv.width/40); w.h=Math.round(cv.height/40); } renderWorks(); preview(); status(`Photo attached (${Math.round(b.size/1024)} kB). Publish to upload.`,"ok"); },"image/jpeg",.86); URL.revokeObjectURL(img.src); };
   img.src=URL.createObjectURL(file);
 }
@@ -388,5 +434,10 @@ $("#btn-publish").onclick=async()=>{
 function boot(){ bindSite(); bindDesign(); bindTiers(); bindFacts(); renderWorks(); ghLoad(); $("#preview").onload=()=>setTimeout(preview,300); setTimeout(preview,800); }
 tryFetch();
 </script>
+<div class="cropper" id="cropper" role="dialog" aria-modal="true" aria-label="Crop photo">
+  <div class="stage" id="crop-stage"><img id="crop-img" alt=""><div class="box" id="crop-box"><div class="h nw" data-h="nw"></div><div class="h ne" data-h="ne"></div><div class="h sw" data-h="sw"></div><div class="h se" data-h="se"></div></div></div>
+  <div class="bar"><label id="crop-lock-wrap"><input type="checkbox" id="crop-lock" checked> <span id="crop-lock-label">Keep w × h ratio</span></label><button class="btn" type="button" id="crop-ok">Crop</button><button class="btn light" type="button" id="crop-skip">Use whole photo</button><button class="btn light" type="button" id="crop-cancel">Cancel</button></div>
+  <p>Drag the frame to move it, drag a corner to resize. Crop to the painting itself when the site adds frame and mat; keep carpet and frame in the photo when "no mat" is set.</p>
+</div>
 </body>
 </html>
