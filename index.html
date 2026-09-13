@@ -111,6 +111,7 @@ body[data-density="dense"] .work{grid-column:span 3} body[data-density="dense"] 
 .buy .btn{padding:8px 12px;font-size:12px}
 .buy select{font:700 12px var(--f-mono);background:#fff;color:var(--paper-ink);border:1px solid #bfae9c;padding:7px 8px}
 .note{font-family:var(--f-mono);font-size:12px;color:var(--mute);margin-top:22px;max-width:70ch}
+.empty{grid-column:1 / -1;font-family:var(--f-mono);font-size:15px;line-height:1.5;color:var(--ink-2);text-align:center;padding:48px 16px;border:1px dashed var(--mute);margin:0}
 
 .prints{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .print-tier{background:var(--paper);color:var(--paper-ink);padding:22px;display:grid;gap:6px;border:6px solid var(--frame);box-shadow:var(--shadow)}
@@ -352,7 +353,7 @@ let SITE=null, WORKS=[], lang="en", filter="all";
 const UI = {
   en:{ "nav.works":"Works","nav.prints":"Prints","nav.about":"About","nav.commission":"Commissions","nav.contact":"Contact","hero.cta1":"See available works",
     "works.title":"Works","filter.all":"All","filter.original":"Originals","filter.print":"Prints","filter.available":"Available",
-    "works.note":"",
+    "works.note":"","works.empty":"New works are on the way.","filter.empty":"Nothing in this selection yet.","prints.empty":"Print editions are in preparation.",
     "prints.kicker":"Giclée on archival paper","prints.title":"Print editions","comm.title":"Commissions","comm.cta":"Start a commission","contact.title":"Contact","contact.mail":"Write an email",
     "footer.person":"The person behind the studio","close":"Close","consent.no":"Only necessary","consent.yes":"Accept",
     "consent.text":"This site uses optional analytics cookies to understand visits. Necessary cookies only remember your language choice.",
@@ -366,7 +367,7 @@ const UI = {
     "price.returns":"{d}-day right of withdrawal on prints. Commissions made to order are exempt; for existing originals we grant a voluntary return within the same period." },
   de:{ "nav.works":"Arbeiten","nav.prints":"Drucke","nav.about":"Über","nav.commission":"Auftragsarbeiten","nav.contact":"Kontakt","hero.cta1":"Verfügbare Arbeiten",
     "works.title":"Arbeiten","filter.all":"Alle","filter.original":"Originale","filter.print":"Drucke","filter.available":"Verfügbar",
-    "works.note":"",
+    "works.note":"","works.empty":"Neue Arbeiten kommen.","filter.empty":"In dieser Auswahl ist noch nichts.","prints.empty":"Druckeditionen sind in Vorbereitung.",
     "prints.kicker":"Giclée auf Archivpapier","prints.title":"Druckeditionen","comm.title":"Auftragsarbeiten","comm.cta":"Auftrag anfragen","contact.title":"Kontakt","contact.mail":"E-Mail schreiben",
     "footer.person":"Die Person hinter dem Atelier","close":"Schließen","consent.no":"Nur notwendige","consent.yes":"Akzeptieren",
     "consent.text":"Diese Seite verwendet optionale Analyse-Cookies, um Besuche zu verstehen. Notwendige Cookies merken sich nur deine Sprachwahl.",
@@ -452,9 +453,12 @@ function buyControl(w){
     sel.addEventListener("change",set); set(); wrap.append(sel,b); }
   return wrap;
 }
+const soon=()=>SITE.theme?.layout?.comingSoon===true;
+const emptyMsg=(key)=>L(SITE.texts?.empty?.[key])||t(key==="filter"?"filter.empty":key==="prints"?"prints.empty":"works.empty");
 function renderWorks(){
   const grid=document.getElementById("works-grid"); grid.innerHTML="";
   const lay=SITE.theme?.layout||{};
+  if(soon()){ grid.innerHTML=`<p class="empty">${emptyMsg("works")}</p>`; structuredData(); return; }
   WORKS.filter(w=>filter==="print"?w.prints?.length>0:filter==="available"?(w.original?.available||w.prints?.length>0):true).forEach(w=>{
     const art=document.createElement("article"); art.className=`work ${w.size||""}`;
     const nomat = (w.nomat===true) || (w.nomat!==false && lay.framesByDefault===false);
@@ -471,6 +475,7 @@ function renderWorks(){
     mat.addEventListener("click",()=>openLightbox(w,mat));
     label.append(h3,price,spec); const capTxt=L(w.caption); if(capTxt){ const cap=document.createElement("p"); cap.className="cap"; cap.textContent=capTxt; label.appendChild(cap); } label.appendChild(buyControl(w)); art.append(framed,label); grid.appendChild(art);
   });
+  if(!grid.children.length){ grid.innerHTML=`<p class="empty">${emptyMsg(WORKS.length?"filter":"works")}</p>`; }
   structuredData();
 }
 function structuredData(){
@@ -513,7 +518,8 @@ function renderSite(){
   document.getElementById("mail-btn").href=`mailto:${b.email}`; document.getElementById("comm-btn").href=c.commissionLink||`mailto:${b.email}?subject=Commission`; document.getElementById("person-link").href=b.personSite;
   document.getElementById("trust").textContent=t("trust",{d:lg.returnsDaysPrints}); document.getElementById("mobile-brand").textContent=b.name;
   document.getElementById("copyright").textContent=L(x.copyright)?L(x.copyright).replace("{year}",new Date().getFullYear()):`© ${new Date().getFullYear()} ${b.name} · ${b.artist} · ${b.motto}`;
-  document.getElementById("print-tiers").innerHTML=(SITE.printTiers||[]).map(p=>`<div class="print-tier"><div class="size">${p.size}</div><div class="p">${fmt(p.price)}</div><small>${t("lbl.edition")} ${p.edition} · ${p.paper||""}</small></div>`).join("");
+  const anyPrints=!soon()&&WORKS.some(w=>w.prints?.length); document.getElementById("prints-lead").hidden=!anyPrints;
+  document.getElementById("print-tiers").innerHTML=anyPrints?(SITE.printTiers||[]).map(p=>`<div class="print-tier"><div class="size">${p.size}</div><div class="p">${fmt(p.price)}</div><small>${t("lbl.edition")} ${p.edition} · ${p.paper||""}</small></div>`).join(""):`<p class="empty">${emptyMsg("prints")}</p>`;
   document.getElementById("legal-links").innerHTML=["imprint","privacy","terms","shipping","us","access"].map(k=>`<button type="button" data-legal="${k}">${t("legal."+k)}</button>`).join("");
   document.querySelectorAll("[data-legal]").forEach(btn=>btn.addEventListener("click",()=>openLegal(btn.dataset.legal)));
 }
@@ -523,7 +529,7 @@ function applyCustom(){
   ["prints","about","commission","contact"].forEach(id=>{ const el=document.getElementById(id); if(el) el.hidden=hide.has(id); document.querySelectorAll(`a[href="#${id}"]`).forEach(a=>{ (a.closest("li")||a).hidden=hide.has(id); }); });
   const trust=document.getElementById("trust"); if(trust) trust.hidden=hide.has("trust");
   const facts=document.getElementById("facts"); if(facts) facts.hidden=hide.has("facts");
-  document.querySelectorAll("[data-filter]").forEach(b=>{ b.hidden=hide.has("filters"); });
+  document.querySelectorAll("[data-filter]").forEach(b=>{ b.hidden=hide.has("filters")||SITE.theme?.layout?.comingSoon===true; });
   document.querySelectorAll("[data-lang]").forEach(b=>{ b.hidden=hide.has("lang"); });
 }
 function applyAll(){
