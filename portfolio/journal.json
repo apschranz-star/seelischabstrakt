@@ -1,5 +1,5 @@
 {
-  "_help": "Everything on alexanderschranz.netlify.app lives in this file. Every text is {\"en\": \"...\", \"de\": \"...\"}. An entry with \"draft\": true is written but not published. Sections disappear when their block is missing or renamed with a leading underscore. Images go into img/ and are referenced as img/name.jpg. Nothing here is generated, edit it in GitHub and the page updates in about a minute.",
+  "_help": "Everything on alexanderschranz.netlify.app lives in this file. Every text is {\"en\": \"...\", \"de\": \"...\"}. An entry with \"draft\": true is written but not published. Sections disappear when their block is missing or renamed with a leading underscore. Images go into img/ and are referenced as img/name.jpg. The optional \"size\" is the pixel size of the file, for example \"1400x1000\"; it only reserves the space while the photo loads and can be left out. Nothing here is generated, edit it in GitHub and the page updates in about a minute.",
   "masthead": {
     "name": "Alexander Schranz",
     "earLeft": {
@@ -59,7 +59,8 @@
         "caption": {
           "en": "Enter the Void, 2025, acrylic on canvas, 70 × 50 cm. The canvas alone, cut out of its photograph.",
           "de": "Enter the Void, 2025, Acryl auf Leinwand, 70 × 50 cm. Die Leinwand allein, aus dem Foto freigestellt."
-        }
+        },
+        "size": "1400x1000"
       }
     },
     {
@@ -100,7 +101,8 @@
         "caption": {
           "en": "Fear, 2025, acrylic on canvas, 40 × 40 cm. Paint as thick as a crust on the left, open red on the right.",
           "de": "Fear, 2025, Acryl auf Leinwand, 40 × 40 cm. Links Farbe, dick wie eine Kruste, rechts offenes Rot."
-        }
+        },
+        "size": "1400x1400"
       }
     },
     {
@@ -141,7 +143,8 @@
         "caption": {
           "en": "Suffering is Eternal, 2026, marker on coated paper, 42 × 29.7 cm, lying on the red Bokhara carpet before framing.",
           "de": "Suffering is Eternal, 2026, Marker auf beschichtetem Papier, 42 × 29,7 cm, am roten Bokhara-Teppich, bevor es gerahmt wurde."
-        }
+        },
+        "size": "1400x1400"
       },
       "factbox": {
         "title": {
@@ -206,7 +209,8 @@
         "caption": {
           "en": "The same canvas on the red Bokhara carpet. A black mass in the lower right corner.",
           "de": "Dieselbe Leinwand am roten Bokhara-Teppich. Unten rechts eine schwarze Masse."
-        }
+        },
+        "size": "1400x1400"
       }
     },
     {
@@ -249,7 +253,8 @@
         "caption": {
           "en": "Black and white, a lamp on the wall behind.",
           "de": "Schwarzweiß, hinter mir eine Lampe an der Wand."
-        }
+        },
+        "size": "1050x1400"
       }
     },
     {
@@ -320,56 +325,64 @@
         "caption": {
           "en": "Enter the Void, 2025, acrylic on canvas, 70 × 50 cm.",
           "de": "Enter the Void, 2025, Acryl auf Leinwand, 70 × 50 cm."
-        }
+        },
+        "size": "1400x1000"
       },
       {
         "src": "img/enter-the-void.jpg",
         "caption": {
           "en": "The same canvas on the black paisley shawl.",
           "de": "Dieselbe Leinwand am schwarzen Paisleytuch."
-        }
+        },
+        "size": "1400x1138"
       },
       {
         "src": "img/fear-cut.jpg",
         "caption": {
           "en": "Fear, 2025, acrylic on canvas, 40 × 40 cm.",
           "de": "Fear, 2025, Acryl auf Leinwand, 40 × 40 cm."
-        }
+        },
+        "size": "1400x1400"
       },
       {
         "src": "img/fear.jpg",
         "caption": {
           "en": "Fear on the red Bokhara carpet.",
           "de": "Fear am roten Bokhara-Teppich."
-        }
+        },
+        "size": "1400x1400"
       },
       {
         "src": "img/suffering-is-eternal-cut.jpg",
         "caption": {
           "en": "Suffering is Eternal, 2026, marker on coated paper, 42 × 29.7 cm.",
           "de": "Suffering is Eternal, 2026, Marker auf beschichtetem Papier, 42 × 29,7 cm."
-        }
+        },
+        "size": "1400x990"
       },
       {
         "src": "img/suffering-is-eternal.jpg",
         "caption": {
           "en": "The sheet on the carpet, before framing.",
           "de": "Das Blatt am Teppich, vor dem Rahmen."
-        }
+        },
+        "size": "1400x1400"
       },
       {
         "src": "img/suffering-is-eternal-framed.jpg",
         "caption": {
           "en": "The same sheet, framed.",
           "de": "Dasselbe Blatt, gerahmt."
-        }
+        },
+        "size": "1400x1167"
       },
       {
         "src": "img/alexander-schranz.jpg",
         "caption": {
           "en": "Black and white, a lamp on the wall behind.",
           "de": "Schwarzweiß, hinter mir eine Lampe an der Wand."
-        }
+        },
+        "size": "1050x1400"
       }
     ]
   },

@@ -32,7 +32,7 @@ html{background:var(--paper)}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.5 var(--text);-webkit-font-smoothing:antialiased;
   padding-inline:clamp(16px,4.4vw,56px);padding-block:0 0}
 .sheet{max-width:var(--sheet);margin:0 auto}
-img{display:block;max-width:100%;height:auto;filter:grayscale(1) contrast(1.04)}
+img{display:block;max-width:100%;height:auto;filter:grayscale(1) contrast(1.04);background:var(--paper-2)}
 @supports (filter: url("#press")){ img{filter:url(#press)} }
 a{color:inherit}
 
@@ -77,7 +77,7 @@ article{padding-block:0 0}
   .entry figure.block{grid-column:9 / 13}
   .entry:nth-of-type(even) .text{grid-column:6 / 13}
   .entry:nth-of-type(even) figure.block{grid-column:1 / 5;grid-row:2}
-  .entry figure.plate,.entry .quote,.entry .factbox.wide{grid-column:1 / 13}
+  .entry figure.plate,.entry .quote,.entry .factbox.wide,.entry .folio-foot{grid-column:1 / 13}
 }
 .kicker{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
 .entry h2{margin:0;font-family:var(--display);font-weight:700;font-variation-settings:"opsz" 96;
@@ -109,7 +109,7 @@ figure.plate img{max-height:74vh;width:auto;margin-inline:auto}
 .factbox ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px;line-height:1.4}
 .factbox li{padding-left:14px;position:relative}
 .factbox li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1px;background:var(--ink-3)}
-.folio-foot{display:flex;gap:12px;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);
+.folio-foot{display:flex;gap:12px;justify-content:space-between;align-items:center;white-space:nowrap;border-top:1px solid var(--rule);
   padding-block:9px 0;margin-top:20px;font-family:var(--label);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
 .endmark{width:9px;height:9px;background:var(--ink);display:inline-block}
 
@@ -170,6 +170,7 @@ let D=null, lang="en";
 const $=s=>document.querySelector(s);
 const L=v=>v==null?"":(typeof v==="string"?v:(v[lang]||v.en||v.de||""));
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dim=o=>{ const m=/^(\d+)x(\d+)$/.exec(String((o&&o.size)||"")); return m?` width="${m[1]}" height="${m[2]}"`:""; };
 const ROMAN=["","I","II","III","IV","V","VI","VII","VIII","IX","X"];
 const isPlates=()=>location.pathname.replace(/\/$/,"").endsWith("/photos")||/photos\.html$/.test(location.pathname);
 
@@ -189,7 +190,7 @@ function paintSwitches(){
 function entryHtml(e,i,total){
   const no=ROMAN[i+1]||String(i+1);
   const f=e.figure&&e.figure.src?e.figure:null;
-  const fig=f?`<figure class="${f.layout==="plate"?"plate":"block"}"><img src="${esc(f.src)}" alt="${esc(L(e.title))}" loading="${i===0?"eager":"lazy"}" decoding="async">${L(f.caption)?`<figcaption>${esc(L(f.caption))}</figcaption>`:""}</figure>`:"";
+  const fig=f?`<figure class="${f.layout==="plate"?"plate":"block"}"><img src="${esc(f.src)}" alt="${esc(L(e.title))}"${dim(f)} loading="${i===0?"eager":"lazy"}" decoding="async">${L(f.caption)?`<figcaption>${esc(L(f.caption))}</figcaption>`:""}</figure>`:"";
   const paras=(e.paragraphs&&(e.paragraphs[lang]||e.paragraphs.en)||[]).map((p,j)=>`<p${i===0&&j===0?' class="cap"':""}>${esc(p)}</p>`).join("");
   const fb=e.factbox?`<div class="factbox${f&&f.layout==="plate"?" wide":""}"><h3>${esc(L(e.factbox.title))}</h3><ul>${(e.factbox.items[lang]||e.factbox.items.en||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:"";
   const q=L(e.pullquote)?`<blockquote class="quote">${esc(L(e.pullquote))}</blockquote>`:"";
@@ -228,7 +229,7 @@ function render(){
         <p class="kicker">${esc(L(pl.label))}</p><h2 style="margin:0;font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,7vw,5rem);line-height:.95;letter-spacing:-.02em">${esc(L(pl.title))}</h2>
       </div>
       <p class="lead">${esc(L(pl.intro))}</p>
-      ${items.map((x,i)=>`<figure class="plate-item rv"><div class="no">${lang==="de"?"Tafel":"Plate"} ${ROMAN[i+1]||i+1}</div><img src="${esc(x.src)}" alt="${esc(L(x.caption))}" loading="lazy" decoding="async"><figcaption>${esc(L(x.caption))}</figcaption></figure>`).join("")}
+      ${items.map((x,i)=>`<figure class="plate-item rv"><div class="no">${lang==="de"?"Tafel":"Plate"} ${ROMAN[i+1]||i+1}</div><img src="${esc(x.src)}" alt="${esc(L(x.caption))}"${dim(x)} loading="lazy" decoding="async"><figcaption>${esc(L(x.caption))}</figcaption></figure>`).join("")}
       <div class="jump"><a href="./"><span class="l">${esc(L(pl.backLabel))}</span><span class="r">${esc(m.name||"")}</span></a></div>
     </section>`;
   } else {
