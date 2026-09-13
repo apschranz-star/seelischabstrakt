@@ -126,6 +126,9 @@ body[data-density="dense"] .work{grid-column:span 3} body[data-density="dense"] 
 .about .lead b{font-weight:800}
 .about .body{max-width:60ch;display:grid;gap:16px;color:#D9C9B8}
 .about .body p{margin:0}
+.about .portrait{margin:28px 0 0;max-width:420px}
+.about .portrait img{display:block;width:100%;height:auto;border:8px solid var(--mat);box-shadow:var(--shadow)}
+.about .portrait figcaption{font-family:var(--f-mono);font-size:12px;color:#9E8578;margin-top:10px}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;margin:0;padding-top:18px;border-top:1px solid var(--section2-line)}
 .facts div{display:grid;gap:2px}
 .facts dt{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#B39A8F}
@@ -283,7 +286,7 @@ footer .legal-links a{cursor:pointer;text-decoration:underline;background:none;b
 
   <section class="sec shawl" id="about">
     <div class="about">
-      <p class="lead" id="about-lead"></p>
+      <div><p class="lead" id="about-lead"></p><figure class="portrait" id="about-portrait" hidden><img id="about-img" alt="" loading="lazy" decoding="async"><figcaption id="about-cap"></figcaption></figure></div>
       <div class="body"><div id="about-paras" style="display:grid;gap:16px"></div><dl class="facts" id="facts"></dl></div>
     </div>
   </section>
@@ -509,6 +512,7 @@ function renderSite(){
   document.getElementById("prints-lead").textContent=L(x.printsLead);
   document.getElementById("about-lead").innerHTML=L(x.aboutLead);
   document.getElementById("about-paras").innerHTML=(x.aboutParagraphs[lang]||x.aboutParagraphs.en).map(p=>`<p>${p}</p>`).join("");
+  const ai=x.aboutImage||{}; const pf=document.getElementById("about-portrait"); if(ai.src){ const im=document.getElementById("about-img"); im.src=ai.src; im.alt=L(ai.alt)||b.artist||""; document.getElementById("about-cap").textContent=L(ai.caption)||""; document.getElementById("about-cap").hidden=!L(ai.caption); pf.hidden=false; } else pf.hidden=true;
   document.getElementById("facts").innerHTML=(x.facts||[]).map(f=>`<div><dt>${L(f.label)}</dt><dd>${L(f.value)}</dd></div>`).join("");
   document.getElementById("comm-intro").textContent=L(x.commission.intro);
   document.getElementById("comm-steps").innerHTML=(x.commission.steps[lang]||x.commission.steps.en).map(s=>`<li>${s}</li>`).join("");
