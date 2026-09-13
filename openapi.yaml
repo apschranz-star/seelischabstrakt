@@ -83,6 +83,48 @@ paths:
       responses:
         "200":
           description: Result with the saved work
+  /site:
+    get:
+      operationId: getSite
+      summary: Read all site settings (texts EN/DE, design, shop rules, shipping rates, legal data) as JSON
+      responses:
+        "200":
+          description: site.json without the publish block
+    post:
+      operationId: updateSite
+      summary: Change site settings. Use patch to deep-merge an object, or sets to change single values by dotted path. Allowed top-level keys are brand, theme, commerce, texts, printTiers, legal.
+      security:
+        - deskKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [patch, set]
+                  description: patch (default when patch is given) merges objects and replaces arrays and scalars; set writes single values by path
+                patch:
+                  type: object
+                  description: "Partial site.json, e.g. {\"texts\":{\"heroMeta\":{\"de\":\"Neun Arbeiten\",\"en\":\"Nine works\"}},\"theme\":{\"layout\":{\"hideSections\":[\"commission\"]}}}"
+                sets:
+                  type: array
+                  description: "List of single changes, e.g. [{\"path\":\"commerce.shipping.rates.AT.print\",\"value\":9},{\"path\":\"texts.ui.de.nav.works\",\"value\":\"Bilder\"}]"
+                  items:
+                    type: object
+                    properties:
+                      path: { type: string, description: "Dotted path starting with brand, theme, commerce, texts, printTiers or legal. Array items by index, e.g. printTiers.0.price" }
+                      value: { description: "New value: string, number, boolean, object or array" }
+                message:
+                  type: string
+                  description: Optional commit message shown in the repository history
+      responses:
+        "200":
+          description: Result with changed top-level keys and the new site settings
+        "400":
+          description: Validation error, nothing was written
 components:
   securitySchemes:
     deskKey:
