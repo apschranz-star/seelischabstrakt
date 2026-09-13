@@ -1,6 +1,62 @@
 {
   "works": [
     {
+      "id": "w11",
+      "title": "Enter the Void",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic on canvas",
+        "de": "Acryl auf Leinwand"
+      },
+      "w": 70,
+      "h": 50,
+      "seed": 77,
+      "style": "eye",
+      "size": "wide",
+      "tilt": 0.4,
+      "nomat": true,
+      "img": "img/enter-the-void.jpg",
+      "original": {
+        "price": 4800,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "A red eye, wide open, black running down from the lid. The pupil is not a point but an opening. You look in and the room behind it has no floor. The step inside is the whole picture.",
+        "de": "Ein rotes Auge, weit offen, vom Lid rinnt Schwarz herunter. Die Pupille ist kein Punkt, sondern ein Eingang. Man schaut hinein, und der Raum dahinter hat keinen Boden. Der Schritt hinein ist das ganze Bild."
+      },
+      "images": []
+    },
+    {
+      "id": "w12",
+      "title": "Fear",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic on canvas",
+        "de": "Acryl auf Leinwand"
+      },
+      "w": 40,
+      "h": 40,
+      "seed": 63,
+      "style": "grid",
+      "size": "",
+      "tilt": -0.5,
+      "nomat": true,
+      "img": "img/fear.jpg",
+      "original": {
+        "price": 2600,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "Paint as thick as a scab on the left, a narrow strip of open red on the right, and in the corner a black knot that will not come undone. Fear is small in size and takes up the whole canvas anyway.",
+        "de": "Links Farbe, dick wie eine Kruste, rechts ein schmaler Streifen offenes Rot, in der Ecke ein schwarzer Knoten, der nicht aufgeht. Angst ist klein im Format und nimmt trotzdem die ganze Leinwand ein."
+      },
+      "images": []
+    },
+    {
       "id": "w10",
       "title": "Suffering is Eternal",
       "year": 2026,
