@@ -45,7 +45,9 @@
       "heroStyle": "split",
       "_heroStyle": "split | stacked | minimal",
       "comingSoon": false,
-      "reveal": true
+      "reveal": true,
+      "worksLayout": "single",
+      "_worksLayout": "grid | single"
     }
   },
   "commerce": {
