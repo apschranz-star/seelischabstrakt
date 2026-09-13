@@ -1,5 +1,5 @@
 {
-  "_help": "Everything on alexanderschranz.at lives in this file. Text values can be a plain string or {\"en\": \"...\", \"de\": \"...\"}. Entries with \"draft\": true are hidden. Dates as YYYY-MM or YYYY-MM-DD.",
+  "_help": "Everything on this page lives in this file. Text values can be a plain string or {\"en\": \"...\", \"de\": \"...\"}. Entries with \"draft\": true are hidden. A whole section disappears when its block is missing or renamed with a leading underscore, for example \"_art\". Dates as YYYY-MM or YYYY-MM-DD.",
   "profile": {
     "name": "Alexander Schranz",
     "tagline": {
@@ -16,25 +16,21 @@
         "url": "https://www.linkedin.com/in/alexanderpeterschranz"
       },
       {
-        "label": {
-          "en": "seelischabstrakt, the shop",
-          "de": "seelischabstrakt, der Shop"
-        },
-        "url": "https://seelischabstrakt.netlify.app/"
-      },
-      {
-        "label": "Instagram",
-        "url": "https://www.instagram.com/seelischabstrakt/"
-      },
-      {
         "label": "Email",
         "url": "mailto:a.p.schranz@icloud.com"
+      },
+      {
+        "label": {
+          "en": "seelischabstrakt, art project",
+          "de": "seelischabstrakt, Kunstprojekt"
+        },
+        "url": "https://seelischabstrakt.netlify.app/"
       }
     ],
     "defaultLang": "en",
     "role": {
-      "en": "B2B sales and business development · AI solution builder · Vienna",
-      "de": "B2B-Vertrieb und Business Development · AI Solution Builder · Wien"
+      "en": "B2B sales and business development · applied AI · Vienna",
+      "de": "B2B-Vertrieb und Business Development · Applied AI · Wien"
     }
   },
   "nav": [
@@ -50,13 +46,6 @@
       "label": {
         "en": "Work",
         "de": "Beruf"
-      }
-    },
-    {
-      "id": "art",
-      "label": {
-        "en": "Art",
-        "de": "Kunst"
       }
     },
     {
@@ -95,46 +84,49 @@
     },
     "paragraphs": {
       "en": [
-        "I collect fragments: faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed.",
-        "I like things that show how they were made. A rough edge, a heavy layer of paint, a correction, something slightly out of place. The trace of the hand is part of the work.",
-        "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero. I approach a painting more like a physical problem than an illustration: layer by layer, decision by decision, until something begins to hold.",
-        "The same approach carries into my work in sales and business development: I build the tools my own pipeline runs on, and I would rather own a process end to end than hand it over half finished.",
-        "The goal is not perfection. The goal is presence."
+        "I work in B2B sales and business development, and I build the tooling my own pipeline runs on. Selling and building are not two jobs for me. Whatever I sell, I want to understand it well enough to rebuild the process behind it.",
+        "My background is not traditionally academic. I learned by making: an apprenticeship, a company founded at twenty, a year on construction sites, then sales. Every one of those taught the same thing, that a thing only holds once it has been built, corrected and built again.",
+        "I approach a business problem the way I approach a canvas: layer by layer, decision by decision, until something holds. I would rather own a process end to end than hand it over half finished, and I would rather show a number than a promise.",
+        "Judgement over hype, especially with AI. A tool has to survive contact with a real quota before I call it finished. Human review gates, compliance and cost ceilings are preconditions, not extras.",
+        "What I want next is impact and proactive growth: new business and expansion owned end to end, or applied AI built as its own function. Ideally both."
       ],
       "de": [
-        "Ich sammle Fragmente: Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut.",
-        "Ich mag Dinge, die zeigen, wie sie gemacht wurden. Eine raue Kante, eine dicke Farbschicht, eine Korrektur, etwas, das ein wenig verrutscht ist. Die Spur der Hand gehört zum Werk.",
-        "Mein Hintergrund ist nicht klassisch akademisch. Ich habe durch Machen gelernt, durch Bauen, Verkaufen, Reparieren, Organisieren und dadurch, Dinge von null weg anzufangen. Ein Bild gehe ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration: Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
-        "Derselbe Zugang trägt in meiner Arbeit in Vertrieb und Business Development: Ich baue die Werkzeuge, mit denen meine eigene Pipeline läuft, und verantworte einen Prozess lieber von Anfang bis Ende, als ihn halbfertig zu übergeben.",
-        "Es geht nicht um Perfektion. Es geht um Präsenz."
+        "Ich arbeite im B2B-Vertrieb und Business Development und baue die Werkzeuge, mit denen meine eigene Pipeline läuft. Verkaufen und Bauen sind für mich nicht zwei Berufe. Was ich verkaufe, will ich so weit verstehen, dass ich den Prozess dahinter neu bauen kann.",
+        "Mein Hintergrund ist nicht klassisch akademisch. Ich habe durch Machen gelernt: Lehre, mit zwanzig eine Firma gegründet, ein Jahr auf der Baustelle, dann Vertrieb. Alle drei haben dasselbe gelehrt, nämlich dass etwas erst hält, wenn es gebaut, korrigiert und wieder gebaut wurde.",
+        "Eine geschäftliche Aufgabe gehe ich an wie eine Leinwand: Schicht für Schicht, Entscheidung für Entscheidung, bis etwas hält. Ich verantworte einen Prozess lieber von Anfang bis Ende, als ihn halbfertig zu übergeben, und zeige lieber eine Zahl als ein Versprechen.",
+        "Urteilsvermögen statt Hype, gerade bei AI. Ein Werkzeug ist für mich erst fertig, wenn es den Kontakt mit einer echten Quote überstanden hat. Human-Review-Gates, Compliance und Kostenobergrenzen sind Voraussetzung, kein Zusatz.",
+        "Was ich als Nächstes will, ist Wirkung und aktives Wachstum: Neukundengeschäft und Expansion end to end verantwortet, oder Applied AI als eigene Funktion aufgebaut. Am liebsten beides."
       ]
     },
     "facts": [
       {
         "label": {
           "en": "Based in",
-          "de": "Lebt in"
-        },
-        "value": "Vienna"
-      },
-      {
-        "label": {
-          "en": "Art",
-          "de": "Kunst"
+          "de": "Standort"
         },
         "value": {
-          "en": "Painting, drawing, small formats",
-          "de": "Malerei, Zeichnung, kleine Formate"
+          "en": "Vienna, Austria",
+          "de": "Wien, Österreich"
         }
       },
       {
         "label": {
-          "en": "Work",
-          "de": "Beruf"
+          "en": "Focus",
+          "de": "Fokus"
         },
         "value": {
-          "en": "B2B sales, business development, applied AI",
-          "de": "B2B-Vertrieb, Business Development, Applied AI"
+          "en": "New business, business development, applied AI",
+          "de": "Neukundengeschäft, Business Development, Applied AI"
+        }
+      },
+      {
+        "label": {
+          "en": "Builds with",
+          "de": "Baut mit"
+        },
+        "value": {
+          "en": "Python, Anthropic API, HubSpot, geodata APIs",
+          "de": "Python, Anthropic API, HubSpot, Geodaten-APIs"
         }
       },
       {
@@ -146,149 +138,18 @@
           "en": "German native, English C2",
           "de": "Deutsch Muttersprache, Englisch C2"
         }
-      }
-    ]
-  },
-  "art": {
-    "title": {
-      "en": "Art",
-      "de": "Kunst"
-    },
-    "intro": {
-      "en": "Selected works. The complete list, prices and editions are in the shop.",
-      "de": "Ausgewählte Werke. Die vollständige Liste, Preise und Editionen stehen im Shop."
-    },
-    "source": "https://seelischabstrakt.netlify.app/works.json",
-    "shopUrl": "https://seelischabstrakt.netlify.app/",
-    "imageBase": "https://seelischabstrakt.netlify.app/",
-    "max": 8,
-    "showSold": true,
-    "cta": {
-      "en": "All works in the shop",
-      "de": "Alle Werke im Shop"
-    }
-  },
-  "projects": {
-    "title": {
-      "en": "Projects",
-      "de": "Projekte"
-    },
-    "items": [
-      {
-        "title": {
-          "en": "Lead-sourcing engine",
-          "de": "Lead-Sourcing-Engine"
-        },
-        "year": "2026",
-        "role": {
-          "en": "Designed, built and maintained solo, Python and Streamlit, in production use",
-          "de": "Solo konzipiert, gebaut und gewartet, Python und Streamlit, im Produktivbetrieb"
-        },
-        "summary": {
-          "en": "Multi-agent pipeline for prospecting: geodata ingestion, ICP scoring, company-register verification, CRM deduplication and import, with a human review gate as the final instance. About twelve minutes of manual research removed per lead.",
-          "de": "Multi-Agent-Pipeline für Prospecting: Geodaten-Ingestion, ICP-Scoring, Firmenbuch-Verifikation, CRM-Deduplizierung und Import, mit Human-Review-Gate als letzter Instanz. Rund zwölf Minuten Handrecherche pro Lead ersetzt."
-        },
-        "url": "",
-        "tags": [
-          "python",
-          "llm",
-          "sales"
-        ]
       },
-      {
-        "title": "seelischabstrakt",
-        "year": "2026",
-        "role": {
-          "en": "Artist, shop, everything",
-          "de": "Künstler, Shop, alles"
-        },
-        "summary": {
-          "en": "Studio name and online shop for originals and editions. Static site, no framework, maintained from a phone.",
-          "de": "Ateliername und Onlineshop für Originale und Editionen. Statische Seite, kein Framework, vom Handy aus gepflegt."
-        },
-        "url": "https://seelischabstrakt.netlify.app/",
-        "tags": [
-          "art",
-          "web",
-          "commerce"
-        ]
-      },
-      {
-        "draft": true,
-        "title": "Example project (draft, not shown)",
-        "year": "2025",
-        "role": "Your role in one line",
-        "summary": {
-          "en": "Two or three sentences. What it was, what you did, what came out of it.",
-          "de": "Zwei, drei Sätze. Was es war, was du gemacht hast, was dabei herauskam."
-        },
-        "url": "",
-        "image": "",
-        "tags": [
-          "tag"
-        ]
-      }
-    ]
-  },
-  "updates": {
-    "title": {
-      "en": "Updates",
-      "de": "Aktuell"
-    },
-    "items": [
-      {
-        "date": "2026-09",
-        "text": {
-          "en": "seelischabstrakt goes online with the first works: Enter the Void, Fear, Suffering is Eternal.",
-          "de": "seelischabstrakt geht mit den ersten Werken online: Enter the Void, Fear, Suffering is Eternal."
-        },
-        "url": "https://seelischabstrakt.netlify.app/"
-      }
-    ]
-  },
-  "now": {
-    "title": {
-      "en": "Now",
-      "de": "Gerade"
-    },
-    "text": {
-      "en": "Painting small formats in Vienna and building the shop. Professionally open to what comes next: business development, new business, or applied AI built as its own function. Open to commissions, studio visits and a conversation.",
-      "de": "Kleine Formate in Wien, der Shop wächst. Beruflich offen für das Nächste: Business Development, Neukundengeschäft oder Applied AI als eigene Funktion. Offen für Auftragswerke, Atelierbesuche und ein Gespräch."
-    }
-  },
-  "contact": {
-    "title": {
-      "en": "Contact",
-      "de": "Kontakt"
-    },
-    "text": {
-      "en": "For works, commissions, collaborations, roles or a studio visit in Vienna. I answer every message.",
-      "de": "Für Werke, Auftragswerke, Zusammenarbeit, Rollen oder einen Atelierbesuch in Wien. Ich beantworte jede Nachricht."
-    }
-  },
-  "footer": {
-    "text": {
-      "en": "© {year} Alexander Schranz. Vienna.",
-      "de": "© {year} Alexander Schranz. Wien."
-    },
-    "links": [
       {
         "label": {
-          "en": "Imprint and privacy",
-          "de": "Impressum und Datenschutz"
+          "en": "Outside work",
+          "de": "Neben der Arbeit"
         },
-        "url": "https://seelischabstrakt.netlify.app/#imprint"
+        "value": {
+          "en": "Painting in small formats, as seelischabstrakt",
+          "de": "Malerei in kleinen Formaten, als seelischabstrakt"
+        }
       }
     ]
-  },
-  "seo": {
-    "title": "Alexander Schranz",
-    "description": {
-      "en": "Alexander Schranz, Vienna. B2B sales and business development, applied AI, and painting in small formats. Portfolio, projects, network and updates.",
-      "de": "Alexander Schranz, Wien. B2B-Vertrieb und Business Development, Applied AI und Malerei in kleinen Formaten. Portfolio, Projekte, Netzwerk und Aktuelles."
-    },
-    "url": "https://alexanderschranz.netlify.app/",
-    "image": "img/alexander-schranz.jpg"
   },
   "work": {
     "title": {
@@ -297,13 +158,13 @@
     },
     "paragraphs": {
       "en": [
-        "I work in B2B sales and business development, currently in the Austrian and German energy market, and I build the AI tooling my own pipeline runs on.",
+        "Currently in the Austrian and German energy market: outbound for industrial and commercial accounts, from first call to the handover that closes.",
         "In 2026 I booked 67 qualified enterprise meetings in four and a half months, every one of them self-generated from cold, across Austria and Germany. I was weekly number one in meetings booked in five of ten reports in a team of seven to eight, and never below second. Two of my own leads closed, including roughly one gigawatt hour of annual supply with a listed industrial group, negotiated together with both co-CEOs.",
         "Alongside the quota I designed and shipped four internal systems in Python: a multi-agent lead-sourcing engine, a geospatial qualification layer, an LLM outreach pipeline with a mandatory human review gate, and the team's operating knowledge base. The sourcing engine removed about twelve minutes of manual research per lead, valued internally at roughly seven hundred working hours.",
         "I am looking for a role where I can drive impact and proactive business growth: new business and expansion owned end to end, or applied AI and sales operations built as its own function. Ideally both, because that is where I am strongest."
       ],
       "de": [
-        "Ich arbeite im B2B-Vertrieb und Business Development, derzeit im österreichischen und deutschen Energiemarkt, und baue die AI-Werkzeuge, mit denen meine eigene Pipeline läuft.",
+        "Derzeit im österreichischen und deutschen Energiemarkt: Outbound für Industrie- und Gewerbekunden, vom ersten Anruf bis zur Übergabe, die zum Abschluss führt.",
         "2026 habe ich 67 qualifizierte Enterprise-Meetings in viereinhalb Monaten gebucht, alle selbst aus der Kaltakquise, in Österreich und Deutschland. In fünf von zehn Wochenreports war ich Nummer eins bei gebuchten Meetings in einem Team von sieben bis acht, nie schlechter als Platz zwei. Zwei eigene Leads sind abgeschlossen, darunter rund eine Gigawattstunde Jahresliefervolumen mit einem börsennotierten Industriekonzern, gemeinsam mit beiden Co-CEOs verhandelt.",
         "Parallel zur Quote habe ich vier interne Systeme in Python konzipiert und in den Produktivbetrieb gebracht: eine Multi-Agent-Lead-Sourcing-Engine, einen Geodaten-Layer zur Standortqualifizierung, eine LLM-Outreach-Pipeline mit verpflichtendem Human-Review-Gate und die operative Wissensbasis des Teams. Die Sourcing-Engine ersetzt rund zwölf Minuten Handrecherche pro Lead, intern bewertet mit etwa siebenhundert Arbeitsstunden.",
         "Ich suche eine Rolle, in der ich Wirkung erzielen und Wachstum aktiv treiben kann: Neukundengeschäft und Expansion end to end verantwortet, oder Applied AI und Sales Operations als eigene Funktion aufgebaut. Am liebsten beides, weil ich dort am stärksten bin."
@@ -429,6 +290,68 @@
       "de": "Firmennamen und Referenzen auf Anfrage. Alle Zahlen gegen CRM- und Telefondaten belegbar."
     }
   },
+  "projects": {
+    "title": {
+      "en": "Projects",
+      "de": "Projekte"
+    },
+    "items": [
+      {
+        "title": {
+          "en": "Lead-sourcing engine",
+          "de": "Lead-Sourcing-Engine"
+        },
+        "year": "2026",
+        "role": {
+          "en": "Designed, built and maintained solo, Python and Streamlit, in production use",
+          "de": "Solo konzipiert, gebaut und gewartet, Python und Streamlit, im Produktivbetrieb"
+        },
+        "summary": {
+          "en": "Multi-agent pipeline for prospecting: geodata ingestion, ICP scoring, company-register verification, CRM deduplication and import, with a human review gate as the final instance. About twelve minutes of manual research removed per lead.",
+          "de": "Multi-Agent-Pipeline für Prospecting: Geodaten-Ingestion, ICP-Scoring, Firmenbuch-Verifikation, CRM-Deduplizierung und Import, mit Human-Review-Gate als letzter Instanz. Rund zwölf Minuten Handrecherche pro Lead ersetzt."
+        },
+        "url": "",
+        "tags": [
+          "python",
+          "llm",
+          "sales"
+        ]
+      },
+      {
+        "title": "seelischabstrakt",
+        "year": "2026",
+        "role": {
+          "en": "Founder, built and shipped solo",
+          "de": "Gegründet, allein gebaut und veröffentlicht"
+        },
+        "summary": {
+          "en": "Art label and online shop for originals and editions. Static site, no framework, order flow with regional shipping, order numbers and payment handover, maintained end to end from a phone.",
+          "de": "Kunstlabel und Onlineshop für Originale und Editionen. Statische Seite, kein Framework, Bestellstrecke mit regionalen Versandpauschalen, Bestellnummern und Zahlungsübergabe, end to end vom Handy aus gepflegt."
+        },
+        "url": "https://seelischabstrakt.netlify.app/",
+        "tags": [
+          "e-commerce",
+          "web",
+          "solo build"
+        ]
+      },
+      {
+        "draft": true,
+        "title": "Example project (draft, not shown)",
+        "year": "2025",
+        "role": "Your role in one line",
+        "summary": {
+          "en": "Two or three sentences. What it was, what you did, what came out of it.",
+          "de": "Zwei, drei Sätze. Was es war, was du gemacht hast, was dabei herauskam."
+        },
+        "url": "",
+        "image": "",
+        "tags": [
+          "tag"
+        ]
+      }
+    ]
+  },
   "network": {
     "title": {
       "en": "Network",
@@ -437,11 +360,11 @@
     "paragraphs": {
       "en": [
         "I open doors from cold for a living, so I am comfortable being the one who reaches out first. If something here overlaps with what you are building, write to me.",
-        "Conversations I am always up for: energy and industry, applied AI in sales and operations, early-stage go to market, and art, collecting or a studio visit in Vienna."
+        "Conversations I am always up for: energy and industry, applied AI in sales and operations, early-stage go to market, and how small teams ship things that hold."
       ],
       "de": [
         "Türen aus der Kaltakquise zu öffnen ist mein Beruf, also schreibe ich gern als Erster. Wenn hier etwas zu dem passt, was du gerade baust, melde dich.",
-        "Gespräche, für die ich immer zu haben bin: Energie und Industrie, Applied AI in Vertrieb und Operations, Go-to-Market in der Frühphase, und Kunst, Sammeln oder ein Atelierbesuch in Wien."
+        "Gespräche, für die ich immer zu haben bin: Energie und Industrie, Applied AI in Vertrieb und Operations, Go-to-Market in der Frühphase, und wie kleine Teams Dinge bauen, die halten."
       ]
     },
     "columns": [
@@ -502,5 +425,91 @@
         "url": "mailto:a.p.schranz@icloud.com"
       }
     ]
+  },
+  "updates": {
+    "title": {
+      "en": "Updates",
+      "de": "Aktuell"
+    },
+    "items": [
+      {
+        "date": "2026-09",
+        "text": {
+          "en": "Shipped seelischabstrakt, an art shop built end to end: order flow, regional shipping rates, payment handover and a maintenance interface, static and without a framework.",
+          "de": "seelischabstrakt veröffentlicht, ein Kunstshop end to end gebaut: Bestellstrecke, regionale Versandpauschalen, Zahlungsübergabe und eine Wartungsoberfläche, statisch und ohne Framework."
+        },
+        "url": "https://seelischabstrakt.netlify.app/"
+      },
+      {
+        "date": "2026-08",
+        "text": {
+          "en": "Took over the sales-development processes for a team of seven to eight: templates, workflows and reporting standards.",
+          "de": "Verantwortung für die Sales-Development-Prozesse eines Teams von sieben bis acht übernommen: Templates, Workflows und Reporting-Standards."
+        }
+      }
+    ]
+  },
+  "now": {
+    "title": {
+      "en": "Now",
+      "de": "Gerade"
+    },
+    "text": {
+      "en": "Open to what comes next: business development, new business, or applied AI built as its own function. Based in Vienna, working across Austria and Germany. Always open to a conversation.",
+      "de": "Offen für das Nächste: Business Development, Neukundengeschäft oder Applied AI als eigene Funktion. Standort Wien, tätig in Österreich und Deutschland. Für ein Gespräch immer zu haben."
+    }
+  },
+  "contact": {
+    "title": {
+      "en": "Contact",
+      "de": "Kontakt"
+    },
+    "text": {
+      "en": "For roles, collaborations, partnerships or an introduction. I answer every message.",
+      "de": "Für Rollen, Zusammenarbeit, Partnerschaften oder eine Vorstellung. Ich beantworte jede Nachricht."
+    }
+  },
+  "footer": {
+    "text": {
+      "en": "© {year} Alexander Schranz. Vienna.",
+      "de": "© {year} Alexander Schranz. Wien."
+    },
+    "links": [
+      {
+        "label": {
+          "en": "Imprint and privacy",
+          "de": "Impressum und Datenschutz"
+        },
+        "url": "https://seelischabstrakt.netlify.app/#imprint"
+      }
+    ]
+  },
+  "seo": {
+    "title": "Alexander Schranz",
+    "description": {
+      "en": "Alexander Schranz, Vienna. B2B sales and business development, applied AI, systems shipped to production. Profile, projects, network and updates.",
+      "de": "Alexander Schranz, Wien. B2B-Vertrieb und Business Development, Applied AI, Systeme im Produktivbetrieb. Profil, Projekte, Netzwerk und Aktuelles."
+    },
+    "url": "https://alexanderschranz.netlify.app/",
+    "image": "img/alexander-schranz.jpg"
+  },
+  "_art": {
+    "title": {
+      "en": "Art",
+      "de": "Kunst"
+    },
+    "intro": {
+      "en": "Selected works. The complete list, prices and editions are in the shop.",
+      "de": "Ausgewählte Werke. Die vollständige Liste, Preise und Editionen stehen im Shop."
+    },
+    "source": "https://seelischabstrakt.netlify.app/works.json",
+    "shopUrl": "https://seelischabstrakt.netlify.app/",
+    "imageBase": "https://seelischabstrakt.netlify.app/",
+    "max": 8,
+    "showSold": true,
+    "cta": {
+      "en": "All works in the shop",
+      "de": "Alle Werke im Shop"
+    }
   }
 }

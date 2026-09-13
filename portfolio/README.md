@@ -6,9 +6,10 @@ Persönliches Portfolio, schwarzweiß, eine Seite. Kein Framework, kein Build. A
 - portfolio.json in GitHub öffnen (Stift-Symbol), ändern, Commit. Eine Minute später live.
 - Texte können ein einfacher String sein oder {"en": "...", "de": "..."}. Sobald irgendwo ein "de" steht, erscheint der Sprachschalter.
 - Neues Projekt: einen Block in projects.items kopieren. "draft": true blendet einen Eintrag aus.
+- Beruf: work.paragraphs, work.focus (vier Schwerpunkte), work.experience (Stationen) und work.note. Netzwerk: network.paragraphs und network.columns.
 - Neuer Eintrag unter Aktuell: updates.items, Datum als JJJJ-MM oder JJJJ-MM-TT, neueste stehen automatisch oben.
 - Bilder in portfolio/img ablegen (klein, unter 400 kB), Pfad img/name.jpg eintragen. Alle Bilder erscheinen schwarzweiß, in Farbe erst beim Darüberfahren.
-- Der Bereich Kunst holt die Werke automatisch aus dem Shop (art.source). Nichts doppelt pflegen. art.max begrenzt die Anzahl.
+- Die Seite ist rein beruflich. Der Kunstbereich ist abgeschaltet: Er liegt als Block "_art" in der Datei. Wer ihn wieder will, benennt "_art" in "art" um und ergänzt {"id": "art", "label": {"en": "Art", "de": "Kunst"}} in nav. Er holt die Werke dann automatisch aus dem Shop.
 - Reihenfolge und Namen der Bereiche: nav. Ein Bereich verschwindet, wenn sein Block in portfolio.json fehlt.
 - Dunkel oder hell folgt dem System, der Knopf oben links schaltet um.
 
