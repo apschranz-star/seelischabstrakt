@@ -158,4 +158,6 @@ Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk
 
 Wenn etwas nicht geht: Seite zeigt keine Werke, dann ist meist works.json oder site.json beschädigt; Datei in GitHub öffnen und in jsonlint.com prüfen. Desk meldet "Publish failed 401 oder 403": Token abgelaufen oder ohne Contents write, neuen Token erzeugen. Desk meldet 404: Repository-Name im Tab Publish prüfen. /add meldet 401: DESK_KEY in Netlify stimmt nicht mit dem eingegebenen Schlüssel überein.
 
+Design und Wortwahl anpassen: Studio desk, Tab Design, Abschnitt Advanced (Teile der Seite ausblenden, eigenes CSS, eigenes Hintergrundmuster, Logo statt Schriftzug) und Tab Texts, Abschnitt Interface wording (jeden Knopf und Menüpunkt umbenennen, Fußzeile). Dieselben Dinge kann der Custom GPT über getSite und updateSite ändern, Anleitung in MAINTENANCE.md.
+
 Für Textarbeit ohne Zugang zum Repo: ChatGPT oder Claude mit MAINTENANCE.md füttern, das Werk beschreiben, den JSON-Block in das Feld "Aus ChatGPT einfügen" auf /add kopieren.
