@@ -43,7 +43,8 @@
       "gridDensity": "normal",
       "_gridDensity": "airy | normal | dense",
       "heroStyle": "split",
-      "_heroStyle": "split | stacked | minimal"
+      "_heroStyle": "split | stacked | minimal",
+      "comingSoon": false
     }
   },
   "commerce": {
@@ -184,8 +185,8 @@
       "de": "Kleine Bilder, Zeichnungen und Köpfe aus einer Wiener Wohnung. Originale auf Leinwand, Karton und Papier, gerahmt wie sie hier hängen, dazu ein paar nummerierte Drucke."
     },
     "heroMeta": {
-      "en": "26 works and counting",
-      "de": "26 Arbeiten, es werden mehr"
+      "en": "First works online, more to come",
+      "de": "Erste Arbeiten online, weitere folgen"
     },
     "worksKicker": {
       "en": "Originals and editions · hung on the carpet",
@@ -276,6 +277,20 @@
     "contactIntro": {
       "en": "Questions about a work, studio visits in Vienna, or prices for several pieces together. Replies usually within a day.",
       "de": "Fragen zu einer Arbeit, Atelierbesuche in Wien oder Preise für mehrere Stücke gemeinsam. Antwort meist innerhalb eines Tages."
+    },
+    "empty": {
+      "works": {
+        "en": "New works are on the way.",
+        "de": "Neue Arbeiten kommen."
+      },
+      "filter": {
+        "en": "Nothing in this selection yet.",
+        "de": "In dieser Auswahl ist noch nichts."
+      },
+      "prints": {
+        "en": "Print editions are in preparation.",
+        "de": "Druckeditionen sind in Vorbereitung."
+      }
     }
   },
   "printTiers": [
