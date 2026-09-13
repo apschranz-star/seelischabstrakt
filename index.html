@@ -112,9 +112,17 @@ body[data-density="dense"] .work{grid-column:span 3} body[data-density="dense"] 
 .buy select{font:700 12px var(--f-mono);background:#fff;color:var(--paper-ink);border:1px solid #bfae9c;padding:7px 8px}
 .note{font-family:var(--f-mono);font-size:12px;color:var(--mute);margin-top:22px;max-width:70ch}
 /* soft reveal: elements slide up and fade in when they enter the viewport (theme.layout.reveal) */
-html.js body[data-reveal="on"] .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms);will-change:opacity,transform}
-html.js body[data-reveal="on"] .reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion: reduce){ html.js body[data-reveal="on"] .reveal{opacity:1;transform:none;transition:none} }
+html.js body[data-reveal="on"] .reveal{opacity:0}
+html.js body[data-reveal="on"] .reveal.in{animation:reveal-in 1s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0ms)}
+@keyframes reveal-in{from{opacity:0;transform:translate(var(--dx,0px),var(--dy,28px))}to{opacity:1;transform:translate(0,0)}}
+/* single column: one work per row, large, alternating slide-in and a slow float */
+body[data-works="single"] .works{grid-template-columns:1fr;gap:clamp(56px,8vw,120px)}
+body[data-works="single"] .work,body[data-works="single"] .work.wide,body[data-works="single"] .work.small,body[data-works="single"][data-density] .work{grid-column:1 / -1;width:min(100%,900px);justify-self:center}
+body[data-works="single"] .work.small{width:min(100%,640px)}
+body[data-works="single"] .work:nth-child(even){--dx:48px} body[data-works="single"] .work:nth-child(odd){--dx:-48px}
+html.js body[data-reveal="on"][data-works="single"] .work.in .framed{animation:float 7s ease-in-out 1s infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(var(--tilt,0deg))}50%{transform:translateY(-6px) rotate(var(--tilt,0deg))}}
+@media (prefers-reduced-motion: reduce){ html.js body[data-reveal="on"] .reveal{opacity:1} html.js body[data-reveal="on"] .reveal.in{animation:none} html.js body[data-reveal="on"][data-works="single"] .work.in .framed{animation:none} }
 .empty{display:block;width:100%;box-sizing:border-box;overflow-wrap:anywhere;font-family:var(--f-mono);font-size:15px;line-height:1.5;color:var(--ink-2);text-align:center;padding:48px 16px;border:1px dashed var(--mute);margin:0}
 
 .prints{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -423,7 +431,7 @@ function applyTheme(){
   if(f.mono) r.setProperty("--f-mono",`"${f.mono}","Courier New",monospace`);
   const fams=[f.display,f.body,f.mono].filter(Boolean).map(x=>"family="+encodeURIComponent(x).replace(/%20/g,"+")+":wght@300;400;700;800").join("&");
   if(fams) document.getElementById("fontlink").href=`https://fonts.googleapis.com/css2?${fams}&display=swap`;
-  const lay=th.layout||{}; document.body.dataset.hero=lay.heroStyle||"split"; document.body.dataset.density=lay.gridDensity||"normal";
+  const lay=th.layout||{}; document.body.dataset.hero=lay.heroStyle||"split"; document.body.dataset.density=lay.gridDensity||"normal"; document.body.dataset.works=lay.worksLayout||"grid";
 }
 
 /* ---------- placeholder paintings ---------- */
@@ -482,7 +490,7 @@ function renderWorks(){
     const price=document.createElement("div"); price.className="price"; price.textContent=w.original?.available?fmt(w.original.price):(w.prints?.length?`${t("lbl.from")} ${fmt(Math.min(...w.prints.map(p=>p.price)))}`:t("lbl.sold"));
     const spec=document.createElement("div"); spec.className="spec"; spec.textContent=`${w.year} · ${L(w.medium)} · ${w.w} × ${w.h} cm`+(w.prints?.length?` · ${t("lbl.print")}: ${w.prints.map(p=>p.size).join(", ")}`:"");
     mat.addEventListener("click",()=>openLightbox(w,mat));
-    label.append(h3,price,spec); const capTxt=L(w.caption); if(capTxt){ const cap=document.createElement("p"); cap.className="cap"; cap.textContent=capTxt; label.appendChild(cap); } label.appendChild(buyControl(w)); art.append(framed,label); art.classList.add("reveal"); art.style.setProperty("--d",((grid.children.length%3)*120)+"ms"); grid.appendChild(art);
+    label.append(h3,price,spec); const capTxt=L(w.caption); if(capTxt){ const cap=document.createElement("p"); cap.className="cap"; cap.textContent=capTxt; label.appendChild(cap); } label.appendChild(buyControl(w)); art.append(framed,label); art.classList.add("reveal"); art.style.setProperty("--d",(document.body.dataset.works==="single"?0:(grid.children.length%3)*120)+"ms"); grid.appendChild(art);
   });
   if(document.body.dataset.reveal==="on"&&revealIO) grid.querySelectorAll(".reveal:not(.in)").forEach(el=>revealIO.observe(el)); else if(document.body.dataset.reveal!=="on") grid.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
   if(!grid.children.length) showEmpty(WORKS.length?"filter":"works");
@@ -552,7 +560,7 @@ function setupReveal(){
   const heroOrder=[".hero .wordmark",".hero .motto","#hero-lead",".hero-side .hero-meta",".hero-actions","#trust"]; heroOrder.forEach((sel,i)=>{ const el=document.querySelector(sel); if(el) el.style.setProperty("--d",(i*110)+"ms"); });
   if(!("IntersectionObserver" in window)){ document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in")); return; }
   if(!revealIO) revealIO=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); revealIO.unobserve(e.target); } }); },{threshold:.12,rootMargin:"0px 0px -6% 0px"});
-  document.querySelectorAll(".reveal:not(.in)").forEach(el=>revealIO.observe(el));
+  void document.body.offsetHeight; requestAnimationFrame(()=>document.querySelectorAll(".reveal:not(.in)").forEach(el=>revealIO.observe(el)));
 }
 function applyAll(){
   applyCustom();
