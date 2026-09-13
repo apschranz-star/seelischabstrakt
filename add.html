@@ -20,6 +20,7 @@ h1{font-size:20px;margin:0}label{display:grid;gap:4px;font-size:12px;color:#6b5a
   <label>Caption (DE, optional)<textarea id="cde" rows="2"></textarea></label>
   <label>Caption (EN, optional)<textarea id="cen" rows="2"></textarea></label>
   <div class="two"><label>Rahmen und Passepartout<select id="nomat"><option value="false">ja, Seite rahmt</option><option value="true">nein, Foto zeigt Setting</option></select></label><label>Druckgrößen<select id="prints"><option value="">keine</option><option value="30">30 × 40 (95)</option><option value="30,50">30 × 40 und 50 × 70</option><option value="30,50,70">alle drei</option></select></label></div>
+  <label>Aus ChatGPT einfügen (optional): JSON-Block hier hineinkopieren, die Felder oben füllen sich von selbst<textarea id="paste" rows="3" placeholder='{"title":"Kopf, rot","w":30,"h":24,"price":380,"medium":{"de":"…","en":"…"},"caption":{"de":"…","en":"…"},"prints":[{"size":"30 × 40","price":95}]}'></textarea></label>
   <label>Desk-Schlüssel<input id="key" type="password" autocomplete="off"></label>
   <button class="btn" type="submit" id="go">Veröffentlichen</button>
   <div class="status" id="st"></div>
@@ -30,14 +31,20 @@ $("#year").value=new Date().getFullYear();
 $("#cam").onclick=()=>$("#fcam").click(); $("#pick").onclick=()=>$("#fpick").click();
 async function load(file){ if(!file) return; const img=new Image(); img.onload=()=>{ const max=1600,sc=Math.min(1,max/Math.max(img.width,img.height)); const c=document.createElement("canvas"); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc); c.getContext("2d").drawImage(img,0,0,c.width,c.height); photo=c.toDataURL("image/jpeg",.86); $("#shot").src=photo; $("#shot").style.display="block"; if(!$("#w").value){ $("#w").value=30; $("#h").value=Math.round(30*c.height/c.width*2)/2; } URL.revokeObjectURL(img.src); }; img.src=URL.createObjectURL(file); }
 $("#fcam").onchange=e=>load(e.target.files[0]); $("#fpick").onchange=e=>load(e.target.files[0]);
+let pastedPrints=null;
+$("#paste").oninput=()=>{ const raw=$("#paste").value.trim(); if(!raw) { pastedPrints=null; return; } try{ const j=JSON.parse(raw.replace(/^```(json)?|```$/g,"").trim()); const w=j.work||j;
+  if(w.title) $("#title").value=w.title; if(w.w) $("#w").value=w.w; if(w.h) $("#h").value=w.h; if(w.price!==undefined) $("#price").value=w.price; else if(w.original?.price!==undefined) $("#price").value=w.original.price; if(w.year) $("#year").value=w.year;
+  const m=w.medium||{}; $("#mde").value=typeof m==="string"?m:(m.de||""); $("#men").value=typeof m==="string"?"":(m.en||""); const c=w.caption||{}; $("#cde").value=typeof c==="string"?c:(c.de||""); $("#cen").value=typeof c==="string"?"":(c.en||"");
+  if(w.nomat!==undefined) $("#nomat").value=String(!!w.nomat); pastedPrints=Array.isArray(w.prints)?w.prints:null; if(pastedPrints){ $("#prints").value=""; }
+  $("#st").className="status ok"; $("#st").textContent="Block übernommen. Foto wählen, Schlüssel eingeben, veröffentlichen."; }catch(err){ $("#st").className="status warn"; $("#st").textContent="Block nicht lesbar: "+err.message; } };
 const TIERS={"30":{size:"30 × 40",price:95},"50":{size:"50 × 70",price:190},"70":{size:"70 × 100",price:340}};
 $("#f").onsubmit=async e=>{ e.preventDefault(); const st=$("#st"); st.className="status"; st.textContent="Wird veröffentlicht…"; $("#go").disabled=true;
   try{ localStorage.setItem("desk-key",$("#key").value); }catch(e){}
   const body={ action:"add", title:$("#title").value.trim(), w:Number($("#w").value), h:Number($("#h").value), year:Number($("#year").value)||undefined, price:Number($("#price").value), available:true, nomat:$("#nomat").value==="true",
     medium:{de:$("#mde").value.trim(),en:$("#men").value.trim()||$("#mde").value.trim()}, caption:{de:$("#cde").value.trim(),en:$("#cen").value.trim()},
-    prints:($("#prints").value?$("#prints").value.split(","):[]).map(k=>({...TIERS[k],link:""})), imageBase64:photo||undefined };
+    prints:pastedPrints?pastedPrints.map(p=>({size:p.size,price:Number(p.price),link:p.link||""})):($("#prints").value?$("#prints").value.split(","):[]).map(k=>({...TIERS[k],link:""})), imageBase64:photo||undefined };
   try{ const r=await fetch("/api/works",{method:"POST",headers:{"Content-Type":"application/json","x-desk-key":$("#key").value},body:JSON.stringify(body)}); const j=await r.json(); if(!r.ok) throw new Error(j.error||r.status);
-    st.className="status ok"; st.textContent=j.message; $("#f").reset(); $("#year").value=new Date().getFullYear(); photo=null; $("#shot").style.display="none"; try{ $("#key").value=localStorage.getItem("desk-key"); }catch(e){}
+    st.className="status ok"; st.textContent=j.message; $("#f").reset(); $("#year").value=new Date().getFullYear(); photo=null; pastedPrints=null; $("#shot").style.display="none"; try{ $("#key").value=localStorage.getItem("desk-key"); }catch(e){}
   }catch(err){ st.className="status warn"; st.textContent="Fehler: "+err.message; }
   $("#go").disabled=false; };
 </script></body></html>
