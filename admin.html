@@ -112,6 +112,12 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
         <label><span>Body (reading)</span><input id="f-body"></label>
         <label><span>Mono (labels, prices)</span><input id="f-mono"></label>
       </fieldset>
+      <fieldset><legend>Coming soon and empty sections</legend>
+        <label class="full"><span>Whole page coming soon: show the message instead of works, filters and print editions</span><input type="checkbox" data-path="theme.layout.comingSoon"></label>
+        <label><span>No works yet EN</span><input data-path="texts.empty.works.en" placeholder="New works are on the way."></label><label><span>No works yet DE</span><input data-path="texts.empty.works.de" placeholder="Neue Arbeiten kommen."></label>
+        <label><span>Filter without result EN</span><input data-path="texts.empty.filter.en" placeholder="Nothing in this selection yet."></label><label><span>Filter without result DE</span><input data-path="texts.empty.filter.de" placeholder="In dieser Auswahl ist noch nichts."></label>
+        <label><span>No prints yet EN</span><input data-path="texts.empty.prints.en" placeholder="Print editions are in preparation."></label><label><span>No prints yet DE</span><input data-path="texts.empty.prints.de" placeholder="Druckeditionen sind in Vorbereitung."></label>
+      </fieldset>
       <fieldset><legend>Advanced (optional, leave empty for the defaults)</legend>
         <label class="full"><span>Hide parts of the page (comma separated: prints, about, commission, contact, trust, facts, filters, lang)</span><input data-path="theme.layout.hideSections" data-list="1" placeholder="commission, filters"></label>
         <label class="full"><span>Custom CSS (added after the site styles; variables: --ground, --ink, --mute, --accent, --frame, --mat, --paper, --f-display, --f-body, --f-mono)</span><textarea data-path="theme.customCss" style="min-height:120px;font-family:'Courier Prime',monospace" placeholder=".hero{border-bottom:4px solid var(--accent)}"></textarea></label>

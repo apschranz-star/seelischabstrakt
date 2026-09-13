@@ -152,6 +152,7 @@ Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk
 - Neues Werk: Tab Works, "Add work", Felder füllen, Foto wählen, Publish. Oder seelischabstrakt.netlify.app/add am Handy, wenn die vier Environment variables in Netlify gesetzt sind (DESK_KEY, GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH).
 - Adresse, E-Mail, Telefon, UID: Tab Legal, Publish. Daraus entstehen Impressum, AGB, Datenschutz in beiden Sprachen.
 - Revolut Business statt privat: Tab Shop and taxes, Revolut-Link tauschen, Publish. Der Anbietername für die Rechtstexte steht im Tab Legal unter payment.
+- Seite auf "Coming soon" stellen oder die Texte für leere Bereiche ändern: Tab Design, Abschnitt Coming soon and empty sections, Publish.
 - Umsatzsteuerpflicht: Tab Shop and taxes, Kleinunternehmer aus. Preise, AGB und Versandseite stellen sich um.
 - Bestellungen: Netlify, Forms, "order". E-Mail-Benachrichtigung unter Form notifications eintragen. Rechnung innerhalb von 48 Stunden selbst schicken, danach versenden.
 - Interessenten für neue Werke: Netlify, Forms, "notify", Liste exportieren.
