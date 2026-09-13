@@ -6,6 +6,7 @@
 
 [functions]
   node_bundler = "esbuild"
+  included_files = ["admin.html"]
 
 # API used by add.html, the ChatGPT custom GPT and Claude
 [[redirects]]
@@ -107,7 +108,14 @@
   from = "/shipping"
   to = "/#shipping"
   status = 301
+# Studio desk behind a password (function desk.js, env DESK_PASSWORD). force = true shadows the static file.
 [[redirects]]
   from = "/desk"
-  to = "/admin.html"
-  status = 302
+  to = "/.netlify/functions/desk"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/admin.html"
+  to = "/.netlify/functions/desk"
+  status = 200
+  force = true
