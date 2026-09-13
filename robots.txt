@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /add.html
 Disallow: /api/
-Sitemap: https://seelischabstrakt-art.netlify.app/sitemap.xml
+Sitemap: https://seelischabstrakt.netlify.app/sitemap.xml

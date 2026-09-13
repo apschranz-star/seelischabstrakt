@@ -4,7 +4,7 @@ info:
   version: "1.0"
   description: Add, update or remove artworks in the seelischabstrakt shop. Changes go live within about a minute.
 servers:
-  - url: https://seelischabstrakt-art.netlify.app/api
+  - url: https://seelischabstrakt.netlify.app/api
 paths:
   /works:
     get:
