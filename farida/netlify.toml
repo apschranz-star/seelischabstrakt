@@ -2,6 +2,10 @@
 [build]
   publish = "."
   command = ""
+  # Build only when something in this folder changed. Compares against the last commit that was
+  # actually deployed, not against the previous commit, so a skipped build never leaves the site
+  # behind. If the comparison cannot run, the command fails and Netlify builds as usual.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
 
 [[headers]]
   for = "/*"
