@@ -16,6 +16,11 @@ paths:
     post:
       operationId: upsertWork
       summary: Add a new work, update an existing one (send its id), or delete (action delete)
+      description: >-
+        Adding a work needs title, w, h and price. Without them the call is rejected with 400 and nothing is
+        written; never guess a missing value, ask for it. Numbers must be sent as plain numbers, so 4800 and
+        not "4.800" or "4800". A title whose id already exists is refused with 409, so to change a work send
+        its id from listWorks instead of the title. Fields you leave out keep their current value.
       security:
         - deskKey: []
       requestBody:
@@ -93,6 +98,12 @@ paths:
     post:
       operationId: updateSite
       summary: Change site settings. Use patch to deep-merge an object, or sets to change single values by dotted path. Allowed top-level keys are brand, theme, commerce, texts, printTiers, legal.
+      description: >-
+        patch merges objects and replaces lists and single values outright, so a patch that carries one entry
+        of a list replaces the whole list. A dotted path may not walk through a single value: brand.motto is
+        one text for both languages, so write {"path":"brand.motto","value":"..."} and never brand.motto.de.
+        A path that does not exist yet is created, so check the spelling against getSite first. Texts that are
+        lists, such as texts.aboutParagraphs and texts.commission.steps, must stay lists per language.
       security:
         - deskKey: []
       requestBody:
@@ -135,6 +146,14 @@ paths:
     post:
       operationId: updateJournal
       summary: Change the personal journal. Actions - entry adds or updates one entry, deleteEntry removes one, plate and deletePlate do the same for the photographs page, patch merges an object, set writes single values by path, image uploads a photograph.
+      description: >-
+        Use action entry for anything about an entry; it merges by id and keeps every field you leave out.
+        A language you do not send is kept, so sending only de changes only the German. Do not use patch for
+        entries or plates: patch replaces the whole list, which deletes every entry you did not include.
+        Dash characters are rejected in every text, use a comma or a full stop. At most six published entries
+        are allowed; write a seventh with draft true. A photograph must be uploaded with action image first,
+        the call returns the path to put into figure.src or into a plate. Uploading with a name that already
+        exists replaces that photograph everywhere it is used.
       security:
         - deskKey: []
       requestBody:
