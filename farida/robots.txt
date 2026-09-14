@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://faridabenslimane.netlify.app/sitemap.xml

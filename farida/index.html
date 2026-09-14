@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Farida Benslimane</title>
+<meta name="description" content="Farida Benslimane. Studio medico privato.">
+<link rel="canonical" href="https://faridabenslimane.netlify.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Farida Benslimane">
+<meta property="og:url" content="https://faridabenslimane.netlify.app/">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300..600&family=Inter:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#FBFAF8; --paper-2:#F2F0EB; --ink:#23282B; --ink-2:#4E585D; --ink-3:#626C71;
+  --line:#E4E2DD; --line-2:#CFCCC5; --accent:#2F6B5F; --accent-soft:#E9F0ED; --on-accent:#FFFFFF;
+  --display:"Newsreader",Georgia,serif; --text:"Inter",system-ui,sans-serif;
+  --wrap:min(100% - 40px, 1020px);
+}
+:root:not([data-theme="light"]) { }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#15181A; --paper-2:#1D2225; --ink:#EDEAE4; --ink-2:#BDC4C6; --ink-3:#8D9598;
+  --line:#2C3235; --line-2:#3C4448; --accent:#7FC0B0; --accent-soft:#1E2A28; --on-accent:#10201C;
+}}
+:root[data-theme="dark"]{
+  --paper:#15181A; --paper-2:#1D2225; --ink:#EDEAE4; --ink-2:#BDC4C6; --ink-3:#8D9598;
+  --line:#2C3235; --line-2:#3C4448; --accent:#7FC0B0; --accent-soft:#1E2A28; --on-accent:#10201C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+html[dir="rtl"] body{font-family:"Noto Naskh Arabic","Inter",system-ui,sans-serif;line-height:1.9}
+html[dir="rtl"] h1,html[dir="rtl"] h2,html[dir="rtl"] h3{font-family:"Noto Naskh Arabic",Georgia,serif}
+.wrap{width:var(--wrap);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;margin:0}
+a{color:inherit}
+.skip{position:absolute;inset-inline-start:-9999px}
+.skip:focus{inset-inline-start:12px;top:12px;background:var(--ink);color:var(--paper);padding:10px 14px;z-index:9;border-radius:6px}
+
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:18px;padding:12px 0;width:var(--wrap);margin-inline:auto}
+.who{font-family:var(--display);font-size:18px;white-space:nowrap}
+nav.main{display:none;gap:22px;margin-inline-start:auto;font-size:14px}
+nav.main a{text-decoration:none;color:var(--ink-2)}
+nav.main a:hover{color:var(--accent)}
+.langs{display:flex;gap:4px;margin-inline-start:auto;flex-wrap:wrap}
+nav.main + .langs{margin-inline-start:0}
+.langs button{font:inherit;font-size:12px;letter-spacing:.06em;padding:5px 8px;border:1px solid var(--line-2);background:transparent;color:var(--ink-3);border-radius:4px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+@media (min-width:860px){ nav.main{display:flex} }
+
+main{display:block}
+section{padding-block:clamp(44px,7vw,84px);border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+h2{font-size:clamp(1.7rem,4vw,2.5rem);margin-bottom:18px}
+.lead{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--ink-2);max-width:62ch}
+p{margin:0 0 16px}
+
+.hero{padding-block:clamp(40px,8vw,96px)}
+.hero .grid{display:grid;gap:clamp(24px,4vw,48px)}
+@media (min-width:820px){ .hero .grid{grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);align-items:center} }
+.hero h1{font-size:clamp(2.2rem,6vw,3.6rem)}
+.hero .role{font-size:clamp(1rem,2.4vw,1.25rem);color:var(--accent);margin-top:10px}
+.hero .lead{margin-top:20px}
+.portrait{margin:0}
+.portrait img{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 20px 44px -26px rgba(20,25,28,.5)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-block;padding:13px 22px;border-radius:6px;text-decoration:none;font-size:15px;font-weight:500;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn:focus-visible,.langs button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.meta{font-size:14px;color:var(--ink-3);margin-top:22px}
+.meta b{font-weight:500;color:var(--ink-2)}
+
+.points{display:grid;gap:20px;margin-top:28px}
+@media (min-width:760px){ .points{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px} }
+.point h3{font-size:1.15rem;margin-bottom:8px}
+.point p{color:var(--ink-2);margin:0}
+
+.svc{list-style:none;margin:28px 0 0;padding:0;border-top:1px solid var(--line)}
+.svc li{border-bottom:1px solid var(--line);padding:18px 0;display:grid;gap:6px}
+@media (min-width:700px){ .svc li{grid-template-columns:minmax(0,1fr) auto;align-items:baseline;column-gap:28px} }
+.svc .nm{font-family:var(--display);font-size:1.2rem}
+.svc .tx{color:var(--ink-2);font-size:15px;grid-column:1}
+.svc .pr{font-size:15px;color:var(--ink);white-space:nowrap}
+.svc .du{font-size:13px;color:var(--ink-3)}
+
+.quotes{display:grid;gap:22px;margin-top:26px}
+@media (min-width:760px){ .quotes{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))} }
+blockquote{margin:0;padding:22px;background:var(--paper-2);border-radius:10px}
+blockquote p{font-family:var(--display);font-size:1.08rem;color:var(--ink)}
+blockquote cite{font-style:normal;font-size:13px;color:var(--ink-3)}
+.srcline{margin-top:22px;font-size:15px}
+.srcline a{color:var(--accent)}
+
+.places{display:grid;gap:30px;margin-top:26px}
+@media (min-width:760px){ .places{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))} }
+.place h3{font-size:1.15rem;margin-bottom:10px}
+.place address{font-style:normal;color:var(--ink-2)}
+.hours{margin:14px 0 0;padding:0;list-style:none;font-size:15px;color:var(--ink-2)}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:3px 0;border-bottom:1px dotted var(--line)}
+.linkline{margin-top:12px;font-size:14px}
+.linkline a{color:var(--accent)}
+
+footer{border-top:1px solid var(--line);padding-block:34px;font-size:13px;color:var(--ink-3)}
+footer h3{font-size:14px;font-family:var(--text);font-weight:600;color:var(--ink-2);margin-bottom:6px;letter-spacing:.02em}
+.foot-grid{display:grid;gap:22px}
+@media (min-width:760px){ .foot-grid{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.emergency{margin-top:24px;padding:12px 14px;border:1px solid var(--line-2);border-radius:6px;color:var(--ink-2)}
+.empty{color:var(--ink-3);font-size:15px}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" id="skip">→</a>
+<header>
+  <div class="bar">
+    <span class="who" id="who">Farida Benslimane</span>
+    <nav class="main" id="nav" aria-label="Menu"></nav>
+    <div class="langs" id="langs"></div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap grid">
+      <div>
+        <h1 id="h-name">Farida Benslimane</h1>
+        <p class="role" id="h-role" hidden></p>
+        <p class="lead" id="h-lead" hidden></p>
+        <div class="cta" id="h-cta"></div>
+        <p class="meta" id="h-langs" hidden></p>
+      </div>
+      <figure class="portrait" id="h-portrait" hidden><img id="h-photo" alt=""></figure>
+    </div>
+  </section>
+
+  <section id="approach" hidden><div class="wrap">
+    <p class="kicker" id="approach-k"></p>
+    <h2 id="approach-t"></h2>
+    <p class="lead" id="approach-i"></p>
+    <div class="points" id="approach-p"></div>
+  </div></section>
+
+  <section id="services" hidden><div class="wrap">
+    <h2 id="services-t"></h2>
+    <p class="lead" id="services-i" hidden></p>
+    <ul class="svc" id="services-l"></ul>
+    <p class="meta" id="services-n" hidden></p>
+  </div></section>
+
+  <section id="reviews" hidden><div class="wrap">
+    <h2 id="reviews-t"></h2>
+    <p class="lead" id="reviews-i" hidden></p>
+    <div class="quotes" id="reviews-q"></div>
+    <p class="srcline" id="reviews-s" hidden></p>
+  </div></section>
+
+  <section id="practice" hidden><div class="wrap">
+    <h2 id="practice-t"></h2>
+    <p class="lead" id="practice-i" hidden></p>
+    <div class="places" id="practice-l"></div>
+  </div></section>
+
+  <section id="preparing" hidden><div class="wrap"><p class="empty" id="preparing-t"></p></div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div id="f-contact"></div>
+    <div id="f-legal" hidden></div>
+    <div id="f-privacy"></div>
+  </div>
+  <p class="emergency" id="f-emergency"></p>
+  <p style="margin-top:20px" id="f-copy"></p>
+</div></footer>
+
+<script>
+"use strict";
+const LANGS=["it","en","de","fr","ar"];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function safeUrl(u){ const s=String(u||"").trim(); if(!s) return "";
+  if(/^(https?:|mailto:|tel:)/i.test(s)) return s;
+  if(/^(\/|\.\/|img\/|#)/.test(s)) return s; return ""; }
+let D={}, lang="it";
+const L=v=>{ if(v==null) return ""; if(typeof v==="string") return v; return v[lang]||v.it||v.en||""; };
+const has=v=>!!L(v).trim();
+const ltr=s=>`<bdi class="ltr">${esc(s)}</bdi>`;
+const fill=(s,m)=>String(s).replace(/\{(\w+)\}/g,(_,k)=>m[k]!==undefined?m[k]:"");
+
+function setLang(l,store){
+  lang=LANGS.includes(l)?l:"it";
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+  if(store!==false){ try{ localStorage.setItem("fb-lang",lang); }catch(e){} }
+  render();
+}
+function langBar(){
+  const box=$("#langs"); box.innerHTML="";
+  LANGS.forEach(l=>{ const b=document.createElement("button"); b.type="button"; b.textContent=l.toUpperCase();
+    b.setAttribute("aria-pressed",String(l===lang)); b.setAttribute("lang",l);
+    b.addEventListener("click",()=>setLang(l)); box.appendChild(b); });
+}
+const live=o=>o && o.draft!==true;
+
+function renderHero(){
+  const p=D.profile||{};
+  $("#who").textContent=p.name||"";
+  $("#h-name").textContent=p.name||"";
+  const role=$("#h-role"); role.textContent=L(p.title); role.hidden=!has(p.title);
+  const lead=$("#h-lead"); lead.textContent=L(p.lead); lead.hidden=!has(p.lead);
+  const fig=$("#h-portrait"), img=$("#h-photo");
+  if(safeUrl(p.photo)){ img.src=safeUrl(p.photo); img.alt=L(p.photoAlt)||p.name||"";
+    const m=/^(\d+)x(\d+)$/.exec(String(p.photoSize||"")); if(m){ img.width=+m[1]; img.height=+m[2]; }
+    fig.hidden=false; } else fig.hidden=true;
+  const cta=$("#h-cta"); cta.innerHTML="";
+  const add=(href,label,ghost)=>{ const u=safeUrl(href); if(!u||!label) return;
+    const a=document.createElement("a"); a.className="btn"+(ghost?" ghost":""); a.href=u; a.textContent=label;
+    if(/^https?:/i.test(u)){ a.target="_blank"; a.rel="noopener"; } cta.appendChild(a); };
+  add(p.bookingUrl,L(D.ui?.book));
+  if(p.email) add("mailto:"+p.email,L(D.ui?.email),!!safeUrl(p.bookingUrl));
+  if(p.phone){ const u=safeUrl("tel:"+String(p.phone).replace(/\s+/g,""));
+    if(u){ const a=document.createElement("a"); a.className="btn ghost"; a.href=u;
+      a.innerHTML=`${esc(L(D.ui?.phone))} ${ltr(p.phone)}`; cta.appendChild(a); } }
+  const ls=$("#h-langs"); const list=Array.isArray(p.languages)?p.languages.filter(Boolean):[];
+  if(list.length){ ls.innerHTML=`<b>${esc(L(D.ui?.languages))}:</b> ${esc(list.join(" · "))}`; ls.hidden=false; } else ls.hidden=true;
+}
+function renderNav(){
+  const ids=["approach","services","reviews","practice"].filter(id=>!$("#"+id).hidden);
+  const nav=$("#nav"); nav.innerHTML="";
+  (D.nav||[]).filter(n=>ids.includes(n.id)).forEach(n=>{
+    const a=document.createElement("a"); a.href="#"+n.id; a.textContent=L(n.label); nav.appendChild(a); });
+}
+function renderApproach(){
+  const a=D.approach, s=$("#approach");
+  if(!live(a)||!has(a.intro)){ s.hidden=true; return; }
+  s.hidden=false; $("#approach-k").textContent=""; $("#approach-t").textContent=L(a.title); $("#approach-i").textContent=L(a.intro);
+  const box=$("#approach-p"); box.innerHTML="";
+  (a.points||[]).filter(pt=>has(pt.title)||has(pt.text)).forEach(pt=>{
+    const d=document.createElement("div"); d.className="point";
+    d.innerHTML=(has(pt.title)?`<h3>${esc(L(pt.title))}</h3>`:"")+(has(pt.text)?`<p>${esc(L(pt.text))}</p>`:"");
+    box.appendChild(d); });
+}
+function renderServices(){
+  const sv=D.services, s=$("#services");
+  const items=(sv?.items||[]).filter(i=>has(i.name));
+  if(!live(sv)||!items.length){ s.hidden=true; return; }
+  s.hidden=false; $("#services-t").textContent=L(sv.title);
+  const i=$("#services-i"); i.textContent=L(sv.intro); i.hidden=!has(sv.intro);
+  const ul=$("#services-l"); ul.innerHTML="";
+  items.forEach(it=>{
+    const li=document.createElement("li");
+    const price=String(it.price||"").trim()||L(D.ui?.onRequest);
+    li.innerHTML=`<span class="nm">${esc(L(it.name))}</span><span class="pr">${ltr(price)}</span>`
+      +(has(it.text)?`<span class="tx">${esc(L(it.text))}</span>`:"")
+      +(it.duration?`<span class="du">${esc(L(D.ui?.duration))}: ${ltr(it.duration)}</span>`:"");
+    ul.appendChild(li); });
+  const n=$("#services-n"); n.textContent=L(sv.note); n.hidden=!has(sv.note);
+}
+function renderReviews(){
+  const r=D.reviews, s=$("#reviews");
+  const items=(r?.items||[]).filter(x=>x&&x.consent===true&&String(x.text||"").trim());
+  const src=r?.source&&safeUrl(r.source.url)&&has(r.source.label);
+  if(!live(r)||(!items.length&&!src)){ s.hidden=true; return; }
+  s.hidden=false; $("#reviews-t").textContent=L(r.title);
+  const i=$("#reviews-i"); i.textContent=L(r.intro); i.hidden=!has(r.intro);
+  const q=$("#reviews-q"); q.innerHTML="";
+  items.forEach(x=>{ const b=document.createElement("blockquote");
+    b.innerHTML=`<p>${esc(x.text)}</p>`+(x.name?`<cite>${esc(x.name)}${x.date?" · "+esc(x.date):""}</cite>`:"");
+    q.appendChild(b); });
+  const sl=$("#reviews-s");
+  if(src){ sl.innerHTML=`<a href="${esc(safeUrl(r.source.url))}" target="_blank" rel="noopener">${esc(L(r.source.label))}</a>`; sl.hidden=false; }
+  else sl.hidden=true;
+}
+function renderPractice(){
+  const pr=D.practice, s=$("#practice");
+  const places=(pr?.locations||[]).filter(l=>String(l.street||"").trim()||String(l.zipCity||"").trim());
+  if(!live(pr)||!places.length){ s.hidden=true; return; }
+  s.hidden=false; $("#practice-t").textContent=L(pr.title);
+  const i=$("#practice-i"); i.textContent=L(pr.intro); i.hidden=!has(pr.intro);
+  const box=$("#practice-l"); box.innerHTML="";
+  places.forEach(pl=>{
+    const d=document.createElement("div"); d.className="place";
+    const hours=(pl.hours||[]).filter(h=>h&&h.time);
+    d.innerHTML=(has(pl.label)?`<h3>${esc(L(pl.label))}</h3>`:"")
+      +`<address>${pl.street?ltr(pl.street):""}${pl.street&&pl.zipCity?"<br>":""}${pl.zipCity?ltr(pl.zipCity):""}</address>`
+      +(has(pl.note)?`<p class="linkline">${esc(L(pl.note))}</p>`:"")
+      +(hours.length?`<h3 style="margin-top:16px;font-size:14px;font-family:var(--text)">${esc(L(D.ui?.hours))}</h3><ul class="hours">${hours.map(h=>`<li><span>${esc(L(h.day))}</span><span>${ltr(h.time)}</span></li>`).join("")}</ul>`:"")
+      +(safeUrl(pl.mapUrl)?`<p class="linkline"><a href="${esc(safeUrl(pl.mapUrl))}" target="_blank" rel="noopener">${esc(L(D.ui?.map))}</a></p>`:"");
+    box.appendChild(d); });
+}
+function renderFooter(){
+  const p=D.profile||{}, lg=D.legal||{}, ui=D.ui||{};
+  const c=$("#f-contact"); const bits=[];
+  if(p.email) bits.push(`<a href="mailto:${esc(p.email)}">${ltr(p.email)}</a>`);
+  if(p.phone) bits.push(ltr(p.phone));
+  if(safeUrl(p.profileUrl)) bits.push(`<a href="${esc(safeUrl(p.profileUrl))}" target="_blank" rel="noopener">${esc(L(ui.profile))}</a>`);
+  c.innerHTML=bits.length?`<h3>${esc(p.name||"")}</h3>${bits.join("<br>")}`:"";
+  const fl=$("#f-legal"); const rows=[];
+  if(lg.albo) rows.push(`${esc(L(ui.albo))}: ${ltr(lg.albo)}${lg.alboProvince?" ("+esc(lg.alboProvince)+")":""}`);
+  if(lg.vat) rows.push(`${esc(L(ui.vat))}: ${ltr(lg.vat)}`);
+  if(lg.address) rows.push(ltr(lg.address));
+  if(rows.length){ fl.innerHTML=`<h3>${esc(L(ui.legalTitle))}</h3>${esc(lg.legalName||"")}<br>${rows.join("<br>")}`; fl.hidden=false; }
+  else fl.hidden=true;
+  const pv=$("#f-privacy");
+  pv.innerHTML=`<h3>${esc(L(ui.privacyTitle))}</h3>${esc(fill(L(lg.privacy),{name:lg.legalName||p.name||"",email:lg.email||p.email||""}))}`;
+  $("#f-emergency").textContent=L(ui.emergency);
+  $("#f-copy").textContent=fill(L(D.footer?.text),{year:new Date().getFullYear(),name:p.name||""});
+  $("#skip").textContent=L(ui.menu);
+}
+function render(){
+  document.title=(D.seo?.title)||"Farida Benslimane";
+  const desc=L(D.seo?.description); const m=document.querySelector('meta[name="description"]'); if(m&&desc) m.content=desc;
+  langBar(); renderHero(); renderApproach(); renderServices(); renderReviews(); renderPractice();
+  const anyLive=["approach","services","reviews","practice"].some(id=>!$("#"+id).hidden);
+  $("#preparing").hidden=anyLive; $("#preparing-t").textContent=L(D.ui?.preparing);
+  renderNav(); renderFooter();
+}
+(async function boot(){
+  try{
+    const r=await fetch("content.json?v="+Date.now());
+    D=await r.json();
+  }catch(e){
+    document.getElementById("preparing").hidden=false;
+    document.getElementById("preparing-t").textContent="content.json";
+    return;
+  }
+  let saved=null; try{ saved=localStorage.getItem("fb-lang"); }catch(e){}
+  const url=new URLSearchParams(location.search).get("lang");
+  const nav=(navigator.languages||[navigator.language||"it"]).map(x=>String(x).slice(0,2).toLowerCase()).find(x=>LANGS.includes(x));
+  setLang(url||saved||nav||D.profile?.defaultLang||"it",!!url);
+})();
+</script>
+</body>
+</html>

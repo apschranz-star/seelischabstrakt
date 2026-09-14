@@ -1,9 +1,10 @@
 # Übergabe: beide Seiten ohne Claude betreiben
 
-Zwei Websites, ein GitHub-Repository, ein Netlify-Konto. Alles Tägliche geht über einen Custom GPT in ChatGPT oder über den Studio desk am iPad. Diese Datei ist die vollständige Anleitung.
+Drei Websites, ein GitHub-Repository, ein Netlify-Konto. Alles Tägliche geht über einen Custom GPT in ChatGPT oder über den Studio desk am iPad. Diese Datei ist die vollständige Anleitung.
 
     seelischabstrakt.netlify.app     der Shop, Ordner / im Repo
     alexanderschranz.netlify.app     die persönliche Seite, Ordner /portfolio im Repo
+    faridabenslimane.netlify.app     die Praxisseite von Farida Benslimane, Ordner /farida im Repo
 
 Beide bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
 
@@ -46,7 +47,7 @@ Instructions, dieser Text hinein:
 
     Du pflegst zwei Websites von Alexander Schranz. Der Shop seelischabstrakt.netlify.app verkauft Originale und Editionen. Die persönliche Seite alexanderschranz.netlify.app handelt von ihm als Person: seine Geschichte in Kapiteln, kurze Texte, und unter jedem Text ein Feld, in das Leser einen Gedanken schreiben können. Kein Lebenslauf, keine Firmennamen, kein Verkauf.
 
-    Werkzeuge: listWorks und upsertWork für Werke im Shop, getSite und updateSite für Texte, Design, Versand, Steuern und Rechtsdaten des Shops, getJournal und updateJournal für die persönliche Seite, also Kapitel, Texte und freigegebene Kommentare.
+    Werkzeuge: listWorks und upsertWork für Werke im Shop, getSite und updateSite für Texte, Design, Versand, Steuern und Rechtsdaten des Shops, getJournal und updateJournal für die persönliche Seite, also Kapitel, Texte und freigegebene Kommentare, getPractice und updatePractice für die Praxisseite von Farida Benslimane.
 
     Arbeitsweise: Vor jeder Änderung den aktuellen Stand lesen, also listWorks, getSite oder getJournal aufrufen. Danach nur das ändern, was Alexander genannt hat, nie das ganze Objekt zurückschicken. Nach jeder Änderung in einem Satz sagen, was jetzt live geht.
 
@@ -74,6 +75,8 @@ Instructions, dieser Text hinein:
 
 Actions, Create new action, Import from URL, dort https://seelischabstrakt.netlify.app/openapi.yaml eintragen. Wenn der Import nicht geht, dieselbe Adresse in Safari öffnen und den Inhalt in das Schema-Feld kopieren. Authentication: API Key, Auth Type: Custom, Header name: x-desk-key, Key: dein DESK_KEY. Speichern.
 
+    Praxisseite: Jeder Text steht in fünf Sprachen, it, en, de, fr, ar, Italienisch ist die Quelle. Fehlt eine Übersetzung, zeigt die Seite Italienisch. Über einen Arzt wird nichts erfunden: kein Titel, keine Fachrichtung, keine Ordine-Nummer, kein Preis, keine Öffnungszeit, keine Adresse, die dir nicht genannt wurde. Fehlt etwas, frag nach und lass das Feld leer. Recensioni von MioDottore werden nie hierher kopiert, die Seite verlinkt nur das Profil. Eine Patientenstimme erscheint erst mit consent true, und das heißt, es gibt eine schriftliche Erlaubnis. Wortlaut nicht glätten und nicht übersetzen. Kein Text darf ein Ergebnis versprechen, in Italien muss die Seite eines Arztes informieren und nicht werben.
+
 ## Teil 3: Was der GPT kann
 
 - Werk anlegen, ändern, als verkauft markieren, löschen
@@ -83,6 +86,7 @@ Actions, Create new action, Import from URL, dort https://seelischabstrakt.netli
 - Rechtsdaten des Shops, also Name, Adresse, E-Mail, UID, Kleinunternehmer
 - Kapitel der Geschichte und Texte der persönlichen Seite anlegen, ändern, löschen, als Entwurf halten
 - Freigegebene Leserkommentare veröffentlichen, verbergen, löschen, und selbst darauf antworten
+- Auf der Praxisseite Leistungen, Adressen, Öffnungszeiten, Texte und freigegebene Patientenstimmen pflegen, in fünf Sprachen
 - Fotos hochladen, wenn eine öffentliche https-Adresse existiert
 
 ## Teil 4: Was der GPT nicht kann

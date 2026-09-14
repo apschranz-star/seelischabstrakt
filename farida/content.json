@@ -1,0 +1,339 @@
+{
+  "_help": "Tutto il sito vive in questo file. Ogni testo è {\"it\": \"...\", \"en\": \"...\", \"de\": \"...\", \"fr\": \"...\", \"ar\": \"...\"}. L'italiano è la lingua di partenza: se una traduzione manca, viene mostrato l'italiano. Ogni blocco con \"draft\": true è scritto ma non pubblicato, quindi non appare sul sito. Le foto vanno in img/ e si scrivono come img/nome.jpg. ATTENZIONE: i campi vuoti sono vuoti perché nessuno ha ancora fornito il dato. Non inventare nulla.",
+  "profile": {
+    "name": "Farida Benslimane",
+    "title": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "_title": "Titolo professionale esatto, per esempio Medico chirurgo, specialista in ... . Da compilare.",
+    "lead": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "_lead": "Due o tre frasi in prima persona. Chi è, cosa fa, per chi. Da scrivere da lei.",
+    "photo": "",
+    "photoSize": "",
+    "photoAlt": {
+      "it": "Farida Benslimane",
+      "en": "Farida Benslimane",
+      "de": "Farida Benslimane",
+      "fr": "Farida Benslimane",
+      "ar": "فريدة بن سليمان"
+    },
+    "city": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "email": "",
+    "phone": "",
+    "bookingUrl": "",
+    "profileUrl": "https://www.miodottore.it/profilo/farida-benslimane",
+    "languages": [],
+    "_languages": "Lingue in cui riceve i pazienti, per esempio [\"Italiano\",\"Français\",\"العربية\",\"English\"]. Solo quelle vere.",
+    "defaultLang": "it"
+  },
+  "nav": [
+    {
+      "id": "approach",
+      "label": {
+        "it": "Il mio approccio",
+        "en": "My approach",
+        "de": "Mein Ansatz",
+        "fr": "Mon approche",
+        "ar": "نهجي في الطب"
+      }
+    },
+    {
+      "id": "services",
+      "label": {
+        "it": "Prestazioni",
+        "en": "Services",
+        "de": "Leistungen",
+        "fr": "Prestations",
+        "ar": "الخدمات"
+      }
+    },
+    {
+      "id": "reviews",
+      "label": {
+        "it": "Pareri dei pazienti",
+        "en": "What patients say",
+        "de": "Stimmen von Patienten",
+        "fr": "Avis des patients",
+        "ar": "آراء المرضى"
+      }
+    },
+    {
+      "id": "practice",
+      "label": {
+        "it": "Studio e contatti",
+        "en": "Practice and contact",
+        "de": "Praxis und Kontakt",
+        "fr": "Cabinet et contact",
+        "ar": "العيادة والتواصل"
+      }
+    }
+  ],
+  "approach": {
+    "draft": true,
+    "title": {
+      "it": "Il mio approccio",
+      "en": "My approach",
+      "de": "Mein Ansatz",
+      "fr": "Mon approche",
+      "ar": "نهجي في الطب"
+    },
+    "intro": {
+      "it": "BOZZA. Qui va scritto, in prima persona e con parole sue, come lavora: quanto dura una visita, come ascolta, come decide insieme al paziente, cosa fa prima di prescrivere. Tre o quattro frasi bastano. Niente promesse di risultato.",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "points": [],
+    "_points": "Da due a quattro punti, ognuno {\"title\":{\"it\":...},\"text\":{\"it\":...}} nelle cinque lingue. Esempi di cosa dire: quanto dura una prima visita, come spiega una diagnosi, come resta raggiungibile dopo. Solo cose vere."
+  },
+  "services": {
+    "draft": true,
+    "title": {
+      "it": "Prestazioni",
+      "en": "Services",
+      "de": "Leistungen",
+      "fr": "Prestations",
+      "ar": "الخدمات"
+    },
+    "intro": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "note": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "_note": "Per esempio: se il prezzo è indicativo, se serve impegnativa, se accetta convenzioni. Solo se è vero.",
+    "items": [],
+    "_items": "Una voce per prestazione: {\"name\":{\"it\":...},\"text\":{\"it\":...},\"duration\":\"30 min\",\"price\":\"80 EUR\"} nelle cinque lingue. Senza price il sito scrive da solo Su richiesta."
+  },
+  "reviews": {
+    "draft": true,
+    "title": {
+      "it": "Pareri dei pazienti",
+      "en": "What patients say",
+      "de": "Stimmen von Patienten",
+      "fr": "Avis des patients",
+      "ar": "آراء المرضى"
+    },
+    "intro": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "source": {
+      "label": {
+        "it": "Le recensioni verificate sono su MioDottore",
+        "en": "Verified reviews are on MioDottore",
+        "de": "Die geprüften Bewertungen stehen auf MioDottore",
+        "fr": "Les avis vérifiés sont sur MioDottore",
+        "ar": "التقييمات الموثقة منشورة على MioDottore"
+      },
+      "url": "https://www.miodottore.it/profilo/farida-benslimane"
+    },
+    "items": [],
+    "_items": "Un pensiero per riga: {\"name\":\"...\",\"date\":\"2026-09-14\",\"text\":\"...\",\"consent\":true}. Compaiono solo le voci con consent true, cioè quelle per cui il paziente ha dato il permesso scritto. Le recensioni di MioDottore non si copiano qui: appartengono alla piattaforma e a chi le ha scritte. Si rimanda al profilo con il link qui sopra."
+  },
+  "practice": {
+    "draft": true,
+    "title": {
+      "it": "Studio e contatti",
+      "en": "Practice and contact",
+      "de": "Praxis und Kontakt",
+      "fr": "Cabinet et contact",
+      "ar": "العيادة والتواصل"
+    },
+    "intro": {
+      "it": "",
+      "en": "",
+      "de": "",
+      "fr": "",
+      "ar": ""
+    },
+    "locations": [],
+    "_locations": "Un blocco per studio: {\"label\":{\"it\":...},\"street\":\"...\",\"zipCity\":\"...\",\"mapUrl\":\"https://...\",\"hours\":[{\"day\":{\"it\":\"lunedì\"},\"time\":\"09:00 - 13:00\"}]}. Solo orari veri."
+  },
+  "legal": {
+    "_help": "In Italia il sito di un medico deve essere informativo, non promozionale, e deve indicare titolo, specializzazione, numero di iscrizione all'Ordine con la provincia e la partita IVA. Finché questi campi sono vuoti il blocco resta nascosto.",
+    "legalName": "Farida Benslimane",
+    "albo": "",
+    "_albo": "Numero di iscrizione all'Ordine dei Medici Chirurghi e degli Odontoiatri.",
+    "alboProvince": "",
+    "vat": "",
+    "address": "",
+    "email": "",
+    "hosting": "Netlify, Inc., San Francisco, USA",
+    "privacy": {
+      "it": "Questo sito non usa cookie di profilazione e non raccoglie dati di navigazione. Se scrivi una email, i tuoi dati vengono usati solo per risponderti. Titolare del trattamento: {name}, {email}.",
+      "en": "This site uses no profiling cookies and collects no browsing data. If you send an email, your data is used only to answer you. Data controller: {name}, {email}.",
+      "de": "Diese Seite verwendet keine Profiling-Cookies und erhebt keine Nutzungsdaten. Wenn du eine E-Mail schreibst, werden deine Daten nur zur Antwort verwendet. Verantwortlich: {name}, {email}.",
+      "fr": "Ce site n'utilise aucun cookie de profilage et ne collecte aucune donnée de navigation. Si vous envoyez un e-mail, vos données servent uniquement à vous répondre. Responsable du traitement : {name}, {email}.",
+      "ar": "لا يستخدم هذا الموقع ملفات تعريف الارتباط لأغراض التتبع ولا يجمع بيانات التصفح. عند إرسال رسالة بريد إلكتروني تُستخدم بياناتك للرد عليك فقط. المسؤول عن معالجة البيانات: {name}، {email}."
+    }
+  },
+  "ui": {
+    "book": {
+      "it": "Prenota una visita",
+      "en": "Book an appointment",
+      "de": "Termin vereinbaren",
+      "fr": "Prendre rendez-vous",
+      "ar": "حجز موعد"
+    },
+    "email": {
+      "it": "Scrivi una email",
+      "en": "Send an email",
+      "de": "E-Mail schreiben",
+      "fr": "Écrire un e-mail",
+      "ar": "إرسال بريد إلكتروني"
+    },
+    "phone": {
+      "it": "Telefono",
+      "en": "Phone",
+      "de": "Telefon",
+      "fr": "Téléphone",
+      "ar": "الهاتف"
+    },
+    "duration": {
+      "it": "Durata",
+      "en": "Duration",
+      "de": "Dauer",
+      "fr": "Durée",
+      "ar": "المدة"
+    },
+    "onRequest": {
+      "it": "Su richiesta",
+      "en": "On request",
+      "de": "Auf Anfrage",
+      "fr": "Sur demande",
+      "ar": "عند الطلب"
+    },
+    "languages": {
+      "it": "Lingue",
+      "en": "Languages spoken",
+      "de": "Sprachen",
+      "fr": "Langues parlées",
+      "ar": "لغات التواصل"
+    },
+    "hours": {
+      "it": "Orari",
+      "en": "Opening hours",
+      "de": "Öffnungszeiten",
+      "fr": "Horaires",
+      "ar": "أوقات العمل"
+    },
+    "map": {
+      "it": "Apri la mappa",
+      "en": "Open the map",
+      "de": "Karte öffnen",
+      "fr": "Ouvrir la carte",
+      "ar": "فتح الخريطة"
+    },
+    "profile": {
+      "it": "Profilo su MioDottore",
+      "en": "Profile on MioDottore",
+      "de": "Profil auf MioDottore",
+      "fr": "Profil sur MioDottore",
+      "ar": "الملف الشخصي على MioDottore"
+    },
+    "legalTitle": {
+      "it": "Informazioni ai sensi di legge",
+      "en": "Information required by law",
+      "de": "Pflichtangaben",
+      "fr": "Mentions légales",
+      "ar": "بيانات قانونية"
+    },
+    "privacyTitle": {
+      "it": "Privacy",
+      "en": "Privacy",
+      "de": "Datenschutz",
+      "fr": "Confidentialité",
+      "ar": "الخصوصية"
+    },
+    "albo": {
+      "it": "Iscrizione all'Ordine",
+      "en": "Medical register number",
+      "de": "Ärztekammer-Nummer",
+      "fr": "Numéro d'inscription à l'Ordre",
+      "ar": "رقم القيد في نقابة الأطباء"
+    },
+    "vat": {
+      "it": "Partita IVA",
+      "en": "VAT number",
+      "de": "Steuernummer",
+      "fr": "Numéro de TVA",
+      "ar": "الرقم الضريبي"
+    },
+    "emergency": {
+      "it": "Questo sito non sostituisce una visita medica. In caso di emergenza chiama il 112.",
+      "en": "This site does not replace a medical consultation. In an emergency call 112.",
+      "de": "Diese Seite ersetzt keine ärztliche Untersuchung. Im Notfall 112 anrufen.",
+      "fr": "Ce site ne remplace pas une consultation médicale. En cas d'urgence, appelez le 112.",
+      "ar": "هذا الموقع لا يغني عن الاستشارة الطبية. في الحالات الطارئة اتصل بالرقم 112."
+    },
+    "preparing": {
+      "it": "Il sito è in preparazione.",
+      "en": "This site is being prepared.",
+      "de": "Die Seite wird gerade aufgebaut.",
+      "fr": "Ce site est en préparation.",
+      "ar": "هذا الموقع قيد الإعداد."
+    },
+    "close": {
+      "it": "Chiudi",
+      "en": "Close",
+      "de": "Schließen",
+      "fr": "Fermer",
+      "ar": "إغلاق"
+    },
+    "menu": {
+      "it": "Menu",
+      "en": "Menu",
+      "de": "Menü",
+      "fr": "Menu",
+      "ar": "القائمة"
+    }
+  },
+  "seo": {
+    "title": "Farida Benslimane",
+    "description": {
+      "it": "Farida Benslimane. Studio medico privato.",
+      "en": "Farida Benslimane. Private medical practice.",
+      "de": "Farida Benslimane. Private Arztpraxis.",
+      "fr": "Farida Benslimane. Cabinet médical privé.",
+      "ar": "فريدة بن سليمان. عيادة طبية خاصة."
+    }
+  },
+  "footer": {
+    "text": {
+      "it": "© {year} {name}",
+      "en": "© {year} {name}",
+      "de": "© {year} {name}",
+      "fr": "© {year} {name}",
+      "ar": "© {year} {name}"
+    }
+  }
+}

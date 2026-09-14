@@ -257,6 +257,116 @@ paths:
           description: Result with the new journal
         "400":
           description: Validation failed, nothing was written
+  /practice:
+    get:
+      operationId: getPractice
+      summary: Read the whole site of the medical practice (farida/content.json) of faridabenslimane.netlify.app
+      responses:
+        "200":
+          description: content.json
+    post:
+      operationId: updatePractice
+      summary: Change the practice site. Actions - service and deleteService for the list of services, review and deleteReview for patient voices, location and deleteLocation for the addresses, patch merges an object, set writes single values by path, image uploads a photograph.
+      description: >-
+        This is the site of Dr Farida Benslimane, a private medical practice. It is a different site from
+        the shop and from the personal page, with its own rules.
+        Five languages in every text - it, en, de, fr, ar - and Italian is the source. Send at least the
+        Italian; a language you leave out keeps what is stored, and the page shows Italian where a
+        translation is missing. The answer says which languages are still missing.
+        Anything with draft true is written but not published, which is how a half finished section is
+        kept off the page.
+        Never invent anything about a doctor. No title, no specialisation, no register number, no price,
+        no opening hour and no address that Alexander or Farida has not given you. If a fact is missing,
+        ask for it and leave the field empty.
+        Reviews - the reviews on MioDottore belong to that platform and to the people who wrote them, so
+        they are never copied onto this site; the site links to the profile instead. Only a patient voice
+        with consent true appears on the page, and consent true means written permission exists. Send the
+        text word for word, do not tidy it up and do not translate it.
+        Nothing here is medical advice and no text may promise a result. Italian law requires the site of
+        a doctor to inform rather than advertise.
+      security:
+        - deskKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [service, deleteService, review, deleteReview, location, deleteLocation, patch, set, image]
+                service:
+                  type: object
+                  description: One service. Matched by the Italian name, so sending it again updates that entry.
+                  properties:
+                    name: { type: object, properties: { it: { type: string }, en: { type: string }, de: { type: string }, fr: { type: string }, ar: { type: string } } }
+                    text: { type: object, description: "One or two sentences on what the appointment involves", properties: { it: { type: string }, en: { type: string }, de: { type: string }, fr: { type: string }, ar: { type: string } } }
+                    duration: { type: string, description: "For example 45 min" }
+                    price: { type: string, description: "For example 120 EUR. Left empty the page writes On request by itself." }
+                review:
+                  type: object
+                  description: One patient voice. Only appears on the page when consent is true.
+                  properties:
+                    id: { type: string, description: "Only to change an existing one" }
+                    name: { type: string, description: "As the patient wishes to be named, at most 60 characters" }
+                    text: { type: string, description: "Word for word, at most 1200 characters" }
+                    date: { type: string, description: "2026-09-14" }
+                    consent: { type: boolean, description: "true only when written permission exists. false stores it hidden." }
+                location:
+                  type: object
+                  description: One practice address, matched by street.
+                  properties:
+                    label: { type: object, properties: { it: { type: string }, en: { type: string }, de: { type: string }, fr: { type: string }, ar: { type: string } } }
+                    street: { type: string }
+                    zipCity: { type: string }
+                    note: { type: object, properties: { it: { type: string }, en: { type: string }, de: { type: string }, fr: { type: string }, ar: { type: string } } }
+                    mapUrl: { type: string, description: "https address of the map" }
+                    hours:
+                      type: array
+                      description: Sending this replaces the whole list of opening hours.
+                      items:
+                        type: object
+                        properties:
+                          day: { type: object, properties: { it: { type: string }, en: { type: string }, de: { type: string }, fr: { type: string }, ar: { type: string } } }
+                          time: { type: string, description: "For example 09:00 - 13:00" }
+                name:
+                  type: string
+                  description: For deleteService the Italian name of the service. For image the file name without extension.
+                id:
+                  type: string
+                  description: For deleteReview
+                street:
+                  type: string
+                  description: For deleteLocation
+                position:
+                  type: integer
+                  description: Where to insert a new service. Left out it goes last.
+                patch:
+                  type: object
+                  description: "Partial content.json. Allowed at top level - profile, nav, approach, services, reviews, practice, legal, ui, seo, footer"
+                sets:
+                  type: array
+                  description: "Single values by dotted path, for example [{\"path\": \"approach.draft\", \"value\": false}]"
+                  items:
+                    type: object
+                    properties:
+                      path: { type: string }
+                      value: {}
+                imageBase64:
+                  type: string
+                  description: For image. A JPEG as base64.
+                imageUrl:
+                  type: string
+                  description: For image. A public https URL of a jpg, png or webp under 6 MB.
+                message:
+                  type: string
+                  description: Optional commit message
+      responses:
+        "200":
+          description: Result with the new content
+        "400":
+          description: Validation failed, nothing was written
 components:
   securitySchemes:
     deskKey:
