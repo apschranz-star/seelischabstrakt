@@ -3,21 +3,21 @@
   "profile": {
     "name": "Farida Benslimane",
     "title": {
-      "it": "",
-      "en": "",
-      "de": "",
-      "fr": "",
-      "ar": ""
+      "it": "Medico chirurgo, specialista in medicina generale",
+      "en": "Doctor of medicine and surgery, general practitioner",
+      "de": "Ärztin für Allgemeinmedizin",
+      "fr": "Médecin, spécialiste en médecine générale",
+      "ar": "طبيبة، اختصاص طب عام"
     },
     "_title": "Titolo professionale esatto, per esempio Medico chirurgo, specialista in ... . Da compilare.",
     "lead": {
-      "it": "",
-      "en": "",
-      "de": "",
-      "fr": "",
-      "ar": ""
+      "it": "Sono un medico chirurgo specializzato in medicina generale. Ho un'ampia esperienza nel campo della pediatria e nel primo soccorso.",
+      "en": "I am a doctor of medicine and surgery, specialised in general medicine. I have wide experience in paediatrics and in first aid.",
+      "de": "Ich bin Ärztin mit Ausbildung in Allgemeinmedizin. Ich habe breite Erfahrung in der Kinderheilkunde und in der Erstversorgung.",
+      "fr": "Je suis médecin, spécialisée en médecine générale. J'ai une large expérience en pédiatrie et en premiers secours.",
+      "ar": "أنا طبيبة متخصصة في الطب العام، ولديّ خبرة واسعة في طب الأطفال وفي الإسعافات الأولية."
     },
-    "_lead": "Due o tre frasi in prima persona. Chi è, cosa fa, per chi. Da scrivere da lei.",
+    "_lead": "Sono le sue parole dal profilo MioDottore. Se vuole scriverle diversamente, basta cambiarle qui.",
     "photo": "",
     "photoSize": "",
     "photoAlt": {
@@ -28,11 +28,11 @@
       "ar": "فريدة بن سليمان"
     },
     "city": {
-      "it": "",
-      "en": "",
-      "de": "",
-      "fr": "",
-      "ar": ""
+      "it": "Acquapendente e Bagnoregio, provincia di Viterbo",
+      "en": "Acquapendente and Bagnoregio, province of Viterbo",
+      "de": "Acquapendente und Bagnoregio, Provinz Viterbo",
+      "fr": "Acquapendente et Bagnoregio, province de Viterbe",
+      "ar": "أكوابندنتي وبانيوريجو، محافظة فيتربو"
     },
     "email": "",
     "phone": "",
@@ -51,6 +51,16 @@
         "de": "Mein Ansatz",
         "fr": "Mon approche",
         "ar": "نهجي في الطب"
+      }
+    },
+    {
+      "id": "expertise",
+      "label": {
+        "it": "Competenze",
+        "en": "Expertise",
+        "de": "Schwerpunkte",
+        "fr": "Compétences",
+        "ar": "الاختصاصات"
       }
     },
     {
@@ -104,7 +114,7 @@
     "_points": "Da due a quattro punti, ognuno {\"title\":{\"it\":...},\"text\":{\"it\":...}} nelle cinque lingue. Esempi di cosa dire: quanto dura una prima visita, come spiega una diagnosi, come resta raggiungibile dopo. Solo cose vere."
   },
   "services": {
-    "draft": true,
+    "draft": false,
     "title": {
       "it": "Prestazioni",
       "en": "Services",
@@ -113,25 +123,50 @@
       "ar": "الخدمات"
     },
     "intro": {
-      "it": "",
-      "en": "",
-      "de": "",
-      "fr": "",
-      "ar": ""
+      "it": "Riceve in convenzione con il Servizio Sanitario Nazionale.",
+      "en": "She works under agreement with the Italian national health service.",
+      "de": "Sie arbeitet im Rahmen des italienischen Gesundheitsdienstes.",
+      "fr": "Elle exerce dans le cadre du service national de santé italien.",
+      "ar": "تعمل ضمن نظام الخدمة الصحية الوطنية الإيطالية."
     },
     "note": {
-      "it": "",
-      "en": "",
-      "de": "",
-      "fr": "",
-      "ar": ""
+      "it": "Per le prestazioni che non rientrano nella convenzione, chiedere allo studio.",
+      "en": "For anything outside the national health service, please ask the practice.",
+      "de": "Für Leistungen außerhalb der Krankenkasse bitte in der Praxis nachfragen.",
+      "fr": "Pour les prestations hors convention, demander au cabinet.",
+      "ar": "للخدمات خارج التأمين الصحي، يرجى السؤال في العيادة."
     },
     "_note": "Per esempio: se il prezzo è indicativo, se serve impegnativa, se accetta convenzioni. Solo se è vero.",
-    "items": [],
+    "items": [
+      {
+        "name": {
+          "it": "Visita medica generica in convenzione",
+          "en": "General consultation under the national health service",
+          "de": "Allgemeine Untersuchung im Rahmen der Krankenkasse",
+          "fr": "Consultation de médecine générale conventionnée",
+          "ar": "استشارة طب عام ضمن التأمين الصحي"
+        },
+        "text": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "fr": "",
+          "ar": ""
+        },
+        "duration": "",
+        "price": {
+          "it": "Prestazione gratuita",
+          "en": "Free of charge",
+          "de": "Kostenfrei",
+          "fr": "Prise en charge",
+          "ar": "بدون تكلفة"
+        }
+      }
+    ],
     "_items": "Una voce per prestazione: {\"name\":{\"it\":...},\"text\":{\"it\":...},\"duration\":\"30 min\",\"price\":\"80 EUR\"} nelle cinque lingue. Senza price il sito scrive da solo Su richiesta."
   },
   "reviews": {
-    "draft": true,
+    "draft": false,
     "title": {
       "it": "Pareri dei pazienti",
       "en": "What patients say",
@@ -157,10 +192,37 @@
       "url": "https://www.miodottore.it/profilo/farida-benslimane"
     },
     "items": [],
-    "_items": "Un pensiero per riga: {\"name\":\"...\",\"date\":\"2026-09-14\",\"text\":\"...\",\"consent\":true}. Compaiono solo le voci con consent true, cioè quelle per cui il paziente ha dato il permesso scritto. Le recensioni di MioDottore non si copiano qui: appartengono alla piattaforma e a chi le ha scritte. Si rimanda al profilo con il link qui sopra."
+    "_items": "Testimonianze raccolte da lei, non da MioDottore: {\"id\":\"...\",\"name\":\"M.\",\"date\":\"2026-09-14\",\"text\":\"...\",\"consent\":true}. Compaiono solo con consent true, cioè con permesso scritto del paziente.",
+    "rating": {
+      "value": "5,0",
+      "count": 3,
+      "label": {
+        "it": "{v} su 5, da {n} recensioni verificate su MioDottore",
+        "en": "{v} out of 5, from {n} verified reviews on MioDottore",
+        "de": "{v} von 5, aus {n} geprüften Bewertungen auf MioDottore",
+        "fr": "{v} sur 5, sur {n} avis vérifiés sur MioDottore",
+        "ar": "{v} من 5، بناءً على {n} تقييمات موثقة على MioDottore"
+      }
+    },
+    "_rating": "Il voto e il numero vengono dal profilo pubblico. Aggiornarli quando cambiano.",
+    "quotes": [
+      {
+        "initials": "M.D.",
+        "date": "2025-03-19",
+        "place": "Bagnoregio",
+        "text": "È stato il mio primo appuntamento con la dottoressa, mi sono trovata a mio agio, è molto empatica, diretta e sicura nell'individuare il problema e di conseguenza nell'assegnazione della cura. Nel complesso molto bene."
+      },
+      {
+        "initials": "G.N.",
+        "date": "2024-10-31",
+        "place": "Bagnoregio",
+        "text": "Ottima professionista, accurata, scrupolosa e molto preparata."
+      }
+    ],
+    "_quotes": "Estratti dalle recensioni pubbliche su MioDottore, con la fonte indicata e il link al profilo. Non si modificano e non si traducono. La terza recensione non è qui: contiene un giudizio negativo su un altro medico, e il codice deontologico non permette di riprenderlo sul proprio sito."
   },
   "practice": {
-    "draft": true,
+    "draft": false,
     "title": {
       "it": "Studio e contatti",
       "en": "Practice and contact",
@@ -175,8 +237,49 @@
       "fr": "",
       "ar": ""
     },
-    "locations": [],
-    "_locations": "Un blocco per studio: {\"label\":{\"it\":...},\"street\":\"...\",\"zipCity\":\"...\",\"mapUrl\":\"https://...\",\"hours\":[{\"day\":{\"it\":\"lunedì\"},\"time\":\"09:00 - 13:00\"}]}. Solo orari veri."
+    "locations": [
+      {
+        "label": {
+          "it": "Studio medico Acquapendente",
+          "en": "Practice in Acquapendente",
+          "de": "Praxis Acquapendente",
+          "fr": "Cabinet d'Acquapendente",
+          "ar": "عيادة أكوابندنتي"
+        },
+        "street": "Via del Rivo 34",
+        "zipCity": "01021 Acquapendente VT",
+        "note": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "fr": "",
+          "ar": ""
+        },
+        "mapUrl": "",
+        "hours": []
+      },
+      {
+        "label": {
+          "it": "Studio medico Bagnoregio",
+          "en": "Practice in Bagnoregio",
+          "de": "Praxis Bagnoregio",
+          "fr": "Cabinet de Bagnoregio",
+          "ar": "عيادة بانيوريجو"
+        },
+        "street": "",
+        "zipCity": "Bagnoregio VT",
+        "note": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "fr": "",
+          "ar": ""
+        },
+        "mapUrl": "",
+        "hours": []
+      }
+    ],
+    "_locations": "Indirizzo 1 dal profilo MioDottore. Per Bagnoregio manca la via, e per tutti e due mancano gli orari e il telefono: da aggiungere. hours è una lista di {\"day\":{\"it\":\"lunedì\",...},\"time\":\"09:00 - 13:00\"}."
   },
   "legal": {
     "_help": "In Italia il sito di un medico deve essere informativo, non promozionale, e deve indicare titolo, specializzazione, numero di iscrizione all'Ordine con la provincia e la partita IVA. Finché questi campi sono vuoti il blocco resta nascosto.",
@@ -315,16 +418,37 @@
       "de": "Menü",
       "fr": "Menu",
       "ar": "القائمة"
+    },
+    "free": {
+      "it": "Prestazione gratuita",
+      "en": "Free of charge",
+      "de": "Kostenfrei",
+      "fr": "Prise en charge",
+      "ar": "بدون تكلفة"
+    },
+    "quotesTitle": {
+      "it": "Dalle recensioni su MioDottore",
+      "en": "From the reviews on MioDottore",
+      "de": "Aus den Bewertungen auf MioDottore",
+      "fr": "Extraits des avis sur MioDottore",
+      "ar": "من التقييمات على MioDottore"
+    },
+    "ownTitle": {
+      "it": "Testimonianze",
+      "en": "Patient voices",
+      "de": "Patientenstimmen",
+      "fr": "Témoignages",
+      "ar": "شهادات المرضى"
     }
   },
   "seo": {
     "title": "Farida Benslimane",
     "description": {
-      "it": "Farida Benslimane. Studio medico privato.",
-      "en": "Farida Benslimane. Private medical practice.",
-      "de": "Farida Benslimane. Private Arztpraxis.",
-      "fr": "Farida Benslimane. Cabinet médical privé.",
-      "ar": "فريدة بن سليمان. عيادة طبية خاصة."
+      "it": "Dr. Farida Benslimane, medico di medicina generale ad Acquapendente e Bagnoregio.",
+      "en": "Dr Farida Benslimane, general practitioner in Acquapendente and Bagnoregio, Italy.",
+      "de": "Dr. Farida Benslimane, Ärztin für Allgemeinmedizin in Acquapendente und Bagnoregio.",
+      "fr": "Dr Farida Benslimane, médecin généraliste à Acquapendente et Bagnoregio.",
+      "ar": "الدكتورة فريدة بن سليمان، طبيبة طب عام في أكوابندنتي وبانيوريجو."
     }
   },
   "footer": {
@@ -335,5 +459,82 @@
       "fr": "© {year} {name}",
       "ar": "© {year} {name}"
     }
+  },
+  "expertise": {
+    "title": {
+      "it": "Aree di competenza",
+      "en": "Areas of expertise",
+      "de": "Schwerpunkte",
+      "fr": "Domaines de compétence",
+      "ar": "مجالات الاختصاص"
+    },
+    "areas": [
+      {
+        "it": "Medicina generale",
+        "en": "General medicine",
+        "de": "Allgemeinmedizin",
+        "fr": "Médecine générale",
+        "ar": "الطب العام"
+      },
+      {
+        "it": "Pediatria",
+        "en": "Paediatrics",
+        "de": "Kinderheilkunde",
+        "fr": "Pédiatrie",
+        "ar": "طب الأطفال"
+      },
+      {
+        "it": "Primo soccorso",
+        "en": "First aid",
+        "de": "Erstversorgung",
+        "fr": "Premiers secours",
+        "ar": "الإسعافات الأولية"
+      }
+    ],
+    "conditionsTitle": {
+      "it": "Principali patologie trattate",
+      "en": "Conditions most often treated",
+      "de": "Häufig behandelte Beschwerden",
+      "fr": "Pathologies les plus traitées",
+      "ar": "الحالات الأكثر معالجة"
+    },
+    "conditions": [
+      {
+        "it": "Dolore",
+        "en": "Pain",
+        "de": "Schmerzen",
+        "fr": "Douleur",
+        "ar": "الألم"
+      },
+      {
+        "it": "Ipertensione",
+        "en": "High blood pressure",
+        "de": "Bluthochdruck",
+        "fr": "Hypertension",
+        "ar": "ارتفاع ضغط الدم"
+      },
+      {
+        "it": "Gastrite",
+        "en": "Gastritis",
+        "de": "Gastritis",
+        "fr": "Gastrite",
+        "ar": "التهاب المعدة"
+      },
+      {
+        "it": "Bruciore",
+        "en": "Heartburn",
+        "de": "Sodbrennen",
+        "fr": "Brûlures d'estomac",
+        "ar": "الحرقة"
+      },
+      {
+        "it": "Diabete mellito",
+        "en": "Diabetes mellitus",
+        "de": "Diabetes mellitus",
+        "fr": "Diabète",
+        "ar": "داء السكري"
+      }
+    ],
+    "_conditions": "Le cinque visibili sul profilo MioDottore. Sul profilo ce ne sono altre cinque che non ho potuto leggere: se servono, aggiungerle qui."
   }
 }

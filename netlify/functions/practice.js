@@ -13,7 +13,7 @@
 const GH = "https://api.github.com";
 const FILE = "farida/content.json";
 const IMGDIR = "farida/img/";
-const ALLOWED = ["profile", "nav", "approach", "services", "reviews", "practice", "legal", "ui", "seo", "footer"];
+const ALLOWED = ["profile", "nav", "approach", "expertise", "services", "reviews", "practice", "legal", "ui", "seo", "footer"];
 const LANGS = ["it", "en", "de", "fr", "ar"];
 const SRC = "it";
 
@@ -134,7 +134,11 @@ function normaliseService(inc, existing) {
     s[k] = p;
   }
   if (inc.duration !== undefined) s.duration = String(inc.duration);
-  if (inc.price !== undefined) s.price = String(inc.price);
+  if (inc.price !== undefined) {
+    // a price is either a plain string like "80 EUR" or a text in the five languages, for example free of charge
+    if (isObj(inc.price)) { const p = pairInto(inc.price, isObj(s.price) ? s.price : null); if (!p) throw new Error("price already exists in five languages, send it the same way"); s.price = p; }
+    else s.price = String(inc.price);
+  }
   return s;
 }
 function normaliseLocation(inc, existing) {
@@ -189,6 +193,9 @@ function validate(d) {
   const sv = (d.services || {}).items || [];
   if (d.services && !Array.isArray(d.services.items)) errs.push("services.items must be a list");
   else sv.forEach((s, i) => { if (!hasSrc(s.name)) errs.push(`service ${i} has no Italian name`); });
+  const qs = d.reviews ? d.reviews.quotes : [];
+  if (d.reviews && qs !== undefined && !Array.isArray(qs)) errs.push("reviews.quotes must be a list");
+  else (qs || []).forEach((q, i) => { if (!isObj(q) || !String(q.text || "").trim()) errs.push(`quoted review ${i} has no text`); });
   const rv = d.reviews ? d.reviews.items : [];
   if (d.reviews && !Array.isArray(rv)) errs.push("reviews.items must be a list");
   else (rv || []).forEach((r, i) => {

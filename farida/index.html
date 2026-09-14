@@ -15,19 +15,19 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300..600&family=Inter:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&display=swap">
 <style>
 :root{
-  --paper:#FBFAF8; --paper-2:#F2F0EB; --ink:#23282B; --ink-2:#4E585D; --ink-3:#626C71;
-  --line:#E4E2DD; --line-2:#CFCCC5; --accent:#2F6B5F; --accent-soft:#E9F0ED; --on-accent:#FFFFFF;
+  --paper:#FBFCFE; --paper-2:#EFF3F8; --ink:#101A2C; --ink-2:#3D4A61; --ink-3:#5B6880;
+  --line:#DEE5EE; --line-2:#C3CEDC; --accent:#1B3A6B; --accent-soft:#E7EDF7; --on-accent:#FFFFFF;
   --display:"Newsreader",Georgia,serif; --text:"Inter",system-ui,sans-serif;
   --wrap:min(100% - 40px, 1020px);
 }
 :root:not([data-theme="light"]) { }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#15181A; --paper-2:#1D2225; --ink:#EDEAE4; --ink-2:#BDC4C6; --ink-3:#8D9598;
-  --line:#2C3235; --line-2:#3C4448; --accent:#7FC0B0; --accent-soft:#1E2A28; --on-accent:#10201C;
+  --paper:#0B1220; --paper-2:#141D30; --ink:#E9EEF7; --ink-2:#B3C0D4; --ink-3:#8E9CB4;
+  --line:#222E45; --line-2:#33425D; --accent:#8FB3E8; --accent-soft:#16223A; --on-accent:#0B1220;
 }}
 :root[data-theme="dark"]{
-  --paper:#15181A; --paper-2:#1D2225; --ink:#EDEAE4; --ink-2:#BDC4C6; --ink-3:#8D9598;
-  --line:#2C3235; --line-2:#3C4448; --accent:#7FC0B0; --accent-soft:#1E2A28; --on-accent:#10201C;
+  --paper:#0B1220; --paper-2:#141D30; --ink:#E9EEF7; --ink-2:#B3C0D4; --ink-3:#8E9CB4;
+  --line:#222E45; --line-2:#33425D; --accent:#8FB3E8; --accent-soft:#16223A; --on-accent:#0B1220;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
@@ -109,6 +109,12 @@ footer h3{font-size:14px;font-family:var(--text);font-weight:600;color:var(--ink
 .foot-grid{display:grid;gap:22px}
 @media (min-width:760px){ .foot-grid{grid-template-columns:repeat(3,minmax(0,1fr))} }
 .emergency{margin-top:24px;padding:12px 14px;border:1px solid var(--line-2);border-radius:6px;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.chips li{border:1px solid var(--line-2);background:var(--accent-soft);color:var(--ink-2);border-radius:100px;padding:6px 14px;font-size:14px}
+.sub{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:30px 0 12px}
+.rating{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.stars{color:var(--accent);font-size:20px;letter-spacing:2px}
+.rating .val{font-family:var(--display);font-size:1.5rem}
 .empty{color:var(--ink-3);font-size:15px}
 .ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
 [hidden]{display:none!important}
@@ -145,6 +151,13 @@ footer h3{font-size:14px;font-family:var(--text);font-weight:600;color:var(--ink
     <div class="points" id="approach-p"></div>
   </div></section>
 
+  <section id="expertise" hidden><div class="wrap">
+    <h2 id="expertise-t"></h2>
+    <ul class="chips" id="expertise-a"></ul>
+    <p class="sub" id="expertise-ct" hidden></p>
+    <ul class="chips" id="expertise-c"></ul>
+  </div></section>
+
   <section id="services" hidden><div class="wrap">
     <h2 id="services-t"></h2>
     <p class="lead" id="services-i" hidden></p>
@@ -155,7 +168,11 @@ footer h3{font-size:14px;font-family:var(--text);font-weight:600;color:var(--ink
   <section id="reviews" hidden><div class="wrap">
     <h2 id="reviews-t"></h2>
     <p class="lead" id="reviews-i" hidden></p>
+    <div class="rating" id="reviews-r" hidden><span class="stars" id="reviews-stars" aria-hidden="true"></span><span class="val" id="reviews-val"></span></div>
+    <p class="sub" id="reviews-qt" hidden></p>
     <div class="quotes" id="reviews-q"></div>
+    <p class="sub" id="reviews-ot" hidden></p>
+    <div class="quotes" id="reviews-o"></div>
     <p class="srcline" id="reviews-s" hidden></p>
   </div></section>
 
@@ -189,7 +206,10 @@ function safeUrl(u){ const s=String(u||"").trim(); if(!s) return "";
 let D={}, lang="it";
 const L=v=>{ if(v==null) return ""; if(typeof v==="string") return v; return v[lang]||v.it||v.en||""; };
 const has=v=>!!L(v).trim();
+const isPair=v=>v&&typeof v==="object"&&!Array.isArray(v);
 const ltr=s=>`<bdi class="ltr">${esc(s)}</bdi>`;
+const nice=d=>{ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d||"")); if(!m) return String(d||"");
+  try{ return new Intl.DateTimeFormat(lang==="ar"?"ar":lang,{day:"numeric",month:"long",year:"numeric"}).format(new Date(+m[1],+m[2]-1,+m[3])); }catch(e){ return d; } };
 const fill=(s,m)=>String(s).replace(/\{(\w+)\}/g,(_,k)=>m[k]!==undefined?m[k]:"");
 
 function setLang(l,store){
@@ -230,7 +250,7 @@ function renderHero(){
   if(list.length){ ls.innerHTML=`<b>${esc(L(D.ui?.languages))}:</b> ${esc(list.join(" · "))}`; ls.hidden=false; } else ls.hidden=true;
 }
 function renderNav(){
-  const ids=["approach","services","reviews","practice"].filter(id=>!$("#"+id).hidden);
+  const ids=["approach","expertise","services","reviews","practice"].filter(id=>!$("#"+id).hidden);
   const nav=$("#nav"); nav.innerHTML="";
   (D.nav||[]).filter(n=>ids.includes(n.id)).forEach(n=>{
     const a=document.createElement("a"); a.href="#"+n.id; a.textContent=L(n.label); nav.appendChild(a); });
@@ -245,6 +265,15 @@ function renderApproach(){
     d.innerHTML=(has(pt.title)?`<h3>${esc(L(pt.title))}</h3>`:"")+(has(pt.text)?`<p>${esc(L(pt.text))}</p>`:"");
     box.appendChild(d); });
 }
+function renderExpertise(){
+  const e=D.expertise, s=$("#expertise");
+  const areas=(e?.areas||[]).filter(has), cond=(e?.conditions||[]).filter(has);
+  if(!live(e)||(!areas.length&&!cond.length)){ s.hidden=true; return; }
+  s.hidden=false; $("#expertise-t").textContent=L(e.title);
+  $("#expertise-a").innerHTML=areas.map(a=>`<li>${esc(L(a))}</li>`).join("");
+  const ct=$("#expertise-ct"); ct.textContent=L(e.conditionsTitle); ct.hidden=!cond.length||!has(e.conditionsTitle);
+  $("#expertise-c").innerHTML=cond.map(c=>`<li>${esc(L(c))}</li>`).join("");
+}
 function renderServices(){
   const sv=D.services, s=$("#services");
   const items=(sv?.items||[]).filter(i=>has(i.name));
@@ -254,7 +283,7 @@ function renderServices(){
   const ul=$("#services-l"); ul.innerHTML="";
   items.forEach(it=>{
     const li=document.createElement("li");
-    const price=String(it.price||"").trim()||L(D.ui?.onRequest);
+    const price=(isPair(it.price)?L(it.price):String(it.price||"")).trim()||L(D.ui?.onRequest);
     li.innerHTML=`<span class="nm">${esc(L(it.name))}</span><span class="pr">${ltr(price)}</span>`
       +(has(it.text)?`<span class="tx">${esc(L(it.text))}</span>`:"")
       +(it.duration?`<span class="du">${esc(L(D.ui?.duration))}: ${ltr(it.duration)}</span>`:"");
@@ -263,15 +292,29 @@ function renderServices(){
 }
 function renderReviews(){
   const r=D.reviews, s=$("#reviews");
-  const items=(r?.items||[]).filter(x=>x&&x.consent===true&&String(x.text||"").trim());
+  const own=(r?.items||[]).filter(x=>x&&x.consent===true&&String(x.text||"").trim());
+  const quotes=(r?.quotes||[]).filter(x=>x&&String(x.text||"").trim());
+  const rate=r?.rating&&String(r.rating.value||"").trim()&&has(r.rating.label);
   const src=r?.source&&safeUrl(r.source.url)&&has(r.source.label);
-  if(!live(r)||(!items.length&&!src)){ s.hidden=true; return; }
+  if(!live(r)||(!own.length&&!quotes.length&&!rate&&!src)){ s.hidden=true; return; }
   s.hidden=false; $("#reviews-t").textContent=L(r.title);
   const i=$("#reviews-i"); i.textContent=L(r.intro); i.hidden=!has(r.intro);
+  const rw=$("#reviews-r");
+  if(rate){ const n=Math.round(parseFloat(String(r.rating.value).replace(",","."))||0);
+    $("#reviews-stars").textContent="\u2605".repeat(Math.max(0,Math.min(5,n)));
+    $("#reviews-val").textContent=fill(L(r.rating.label),{v:r.rating.value,n:r.rating.count});
+    rw.hidden=false; } else rw.hidden=true;
+  const qt=$("#reviews-qt"); qt.textContent=L(D.ui?.quotesTitle); qt.hidden=!quotes.length;
   const q=$("#reviews-q"); q.innerHTML="";
-  items.forEach(x=>{ const b=document.createElement("blockquote");
-    b.innerHTML=`<p>${esc(x.text)}</p>`+(x.name?`<cite>${esc(x.name)}${x.date?" · "+esc(x.date):""}</cite>`:"");
+  quotes.forEach(x=>{ const b=document.createElement("blockquote");
+    const meta=[x.initials,x.place,x.date?nice(x.date):""].filter(Boolean).map(esc).join(" \u00b7 ");
+    b.innerHTML=`<p>${esc(x.text)}</p>`+(meta?`<cite>${meta}</cite>`:"");
     q.appendChild(b); });
+  const ot=$("#reviews-ot"); ot.textContent=L(D.ui?.ownTitle); ot.hidden=!own.length;
+  const o=$("#reviews-o"); o.innerHTML="";
+  own.forEach(x=>{ const b=document.createElement("blockquote");
+    b.innerHTML=`<p>${esc(x.text)}</p>`+(x.name?`<cite>${esc(x.name)}${x.date?" \u00b7 "+esc(x.date):""}</cite>`:"");
+    o.appendChild(b); });
   const sl=$("#reviews-s");
   if(src){ sl.innerHTML=`<a href="${esc(safeUrl(r.source.url))}" target="_blank" rel="noopener">${esc(L(r.source.label))}</a>`; sl.hidden=false; }
   else sl.hidden=true;
@@ -307,7 +350,7 @@ function renderFooter(){
   if(rows.length){ fl.innerHTML=`<h3>${esc(L(ui.legalTitle))}</h3>${esc(lg.legalName||"")}<br>${rows.join("<br>")}`; fl.hidden=false; }
   else fl.hidden=true;
   const pv=$("#f-privacy");
-  pv.innerHTML=`<h3>${esc(L(ui.privacyTitle))}</h3>${esc(fill(L(lg.privacy),{name:lg.legalName||p.name||"",email:lg.email||p.email||""}))}`;
+  pv.innerHTML=`<h3>${esc(L(ui.privacyTitle))}</h3>${esc(fill(L(lg.privacy),{name:lg.legalName||p.name||"",email:lg.email||p.email||""}).replace(/[,،]\s*(?=[.。]|$)/,"").replace(/\s{2,}/g," "))}`;
   $("#f-emergency").textContent=L(ui.emergency);
   $("#f-copy").textContent=fill(L(D.footer?.text),{year:new Date().getFullYear(),name:p.name||""});
   $("#skip").textContent=L(ui.menu);
@@ -315,8 +358,8 @@ function renderFooter(){
 function render(){
   document.title=(D.seo?.title)||"Farida Benslimane";
   const desc=L(D.seo?.description); const m=document.querySelector('meta[name="description"]'); if(m&&desc) m.content=desc;
-  langBar(); renderHero(); renderApproach(); renderServices(); renderReviews(); renderPractice();
-  const anyLive=["approach","services","reviews","practice"].some(id=>!$("#"+id).hidden);
+  langBar(); renderHero(); renderApproach(); renderExpertise(); renderServices(); renderReviews(); renderPractice();
+  const anyLive=["approach","expertise","services","reviews","practice"].some(id=>!$("#"+id).hidden);
   $("#preparing").hidden=anyLive; $("#preparing-t").textContent=L(D.ui?.preparing);
   renderNav(); renderFooter();
 }
