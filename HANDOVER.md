@@ -3,7 +3,7 @@
 Zwei Websites, ein GitHub-Repository, ein Netlify-Konto. Alles Tägliche geht über einen Custom GPT in ChatGPT oder über den Studio desk am iPad. Diese Datei ist die vollständige Anleitung.
 
     seelischabstrakt.netlify.app     der Shop, Ordner / im Repo
-    alexanderschranz.netlify.app     das Journal, Ordner /portfolio im Repo
+    alexanderschranz.netlify.app     die persönliche Seite, Ordner /portfolio im Repo
 
 Beide bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
 
@@ -26,13 +26,17 @@ Danach Deploys, Trigger deploy.
 
 Test: seelischabstrakt.netlify.app/api/works im Browser öffnen. Es müssen die Titel deiner Werke dastehen, also Enter the Void, Fear und die übrigen. Steht dort nur `{"works":[]}`, stimmt GITHUB_REPO oder GITHUB_BRANCH nicht. Steht dort ein Text mit "error", ist GITHUB_TOKEN falsch, abgelaufen oder ohne Zugriff auf dieses Repository. Der Test zeigt nur, dass gelesen werden kann. Ob geschrieben werden kann, siehst du beim ersten Werk über /add.
 
-### Journal-Seite (noch anzulegen)
+### Persönliche Seite (noch anzulegen)
 Netlify, Add new project, Import from Git, dasselbe Repository. Base directory: portfolio. Publish directory leer lassen, Build command leer. Den Rest regelt die Datei portfolio/netlify.toml, die nicht gelöscht werden darf. Deploy. Dann Project configuration, General, Change project name: alexanderschranz.
 
 Diese zweite Seite braucht keine Environment variables. Die API läuft auf der Shop-Seite und schreibt ins gemeinsame Repository, beide Seiten bauen daraufhin neu.
 
 ### Formulare
-Nur auf der Shop-Seite: Forms, Enable form detection. Danach Deploys, Trigger deploy. Netlify liest die Formulare erst beim nächsten Deploy aus der Seite. Vorher stehen sie nicht in der Liste und es kommt auch keine Bestellung an. Erst nach diesem Deploy erscheinen "order" und "notify" unter Forms. Dann Form notifications, Email notification für "order" und für "notify", jeweils an a.p.schranz@icloud.com. Zum Schluss eine Testbestellung auf der Seite auslösen und schauen, ob sie in Netlify unter Forms auftaucht und die Mail ankommt.
+Auf beiden Seiten getrennt einstellen. Forms, Enable form detection, danach Deploys, Trigger deploy. Netlify liest die Formulare erst beim nächsten Deploy aus der Seite. Vorher stehen sie nicht in der Liste und es kommt auch nichts an.
+
+Shop: nach dem Deploy erscheinen "order" und "notify" unter Forms. Dann Form notifications, Email notification für beide, an a.p.schranz@icloud.com. Zum Schluss eine Testbestellung auslösen und schauen, ob sie unter Forms auftaucht und die Mail ankommt.
+
+Persönliche Seite: dort heißt das Formular "comment", das ist "Share your thoughts" unter jedem Text. Auch hier Email notification an a.p.schranz@icloud.com. Ohne diese Einstellung schreibt jemand etwas und niemand erfährt davon. Zum Testen selbst einen Gedanken abschicken.
 
 ## Teil 2: Den Custom GPT anlegen
 
@@ -40,9 +44,9 @@ ChatGPT, Explore GPTs, Create. Name: Schranz Desk.
 
 Instructions, dieser Text hinein:
 
-    Du pflegst zwei Websites von Alexander Schranz. Der Shop seelischabstrakt.netlify.app verkauft Originale und Editionen. Die persönliche Seite alexanderschranz.netlify.app ist ein Journal im Zeitungssatz, schwarzweiß, ohne Lebenslauf, ohne Firmennamen, ohne Verkauf.
+    Du pflegst zwei Websites von Alexander Schranz. Der Shop seelischabstrakt.netlify.app verkauft Originale und Editionen. Die persönliche Seite alexanderschranz.netlify.app handelt von ihm als Person: seine Geschichte in Kapiteln, kurze Texte, und unter jedem Text ein Feld, in das Leser einen Gedanken schreiben können. Kein Lebenslauf, keine Firmennamen, kein Verkauf.
 
-    Werkzeuge: listWorks und upsertWork für Werke im Shop, getSite und updateSite für Texte, Design, Versand, Steuern und Rechtsdaten des Shops, getJournal und updateJournal für das Journal und die Tafelseite.
+    Werkzeuge: listWorks und upsertWork für Werke im Shop, getSite und updateSite für Texte, Design, Versand, Steuern und Rechtsdaten des Shops, getJournal und updateJournal für die persönliche Seite, also Kapitel, Texte und freigegebene Kommentare.
 
     Arbeitsweise: Vor jeder Änderung den aktuellen Stand lesen, also listWorks, getSite oder getJournal aufrufen. Danach nur das ändern, was Alexander genannt hat, nie das ganze Objekt zurückschicken. Nach jeder Änderung in einem Satz sagen, was jetzt live geht.
 
@@ -60,7 +64,11 @@ Instructions, dieser Text hinein:
 
     Fotos für den Shop kannst du nur hochladen, wenn Alexander dir eine öffentliche https-Adresse gibt. Sonst sag ihm: eine Minute warten, bis Netlify fertig gebaut hat, dann /desk öffnen, Tab Works, die Karte des Werks aufklappen, Choose photo, dann Publish to site. /add legt immer ein neues Werk an und ist nur für Werke, die es noch nicht gibt.
 
-    Journal: Ein Eintrag besteht aus kicker, title, standfirst, drei bis fünf kurzen Absätzen, einem pullquote aus dem Eintrag selbst und einem Bild mit Caption. Der standfirst muss etwas sagen, das im ersten Absatz nicht steht. Mehr als sechs veröffentlichte Einträge lässt die API nicht zu, das ist Absicht; ein siebenter geht nur mit draft true. Für Einträge und Tafeln immer action entry oder action plate verwenden, nie patch, denn patch ersetzt die ganze Liste. Ein Foto zuerst mit action image hochladen und dann den zurückgegebenen Pfad als figure.src verwenden.
+    Persönliche Seite, Geschichte: story.chapters. Ein Kapitel hat title, period als kleine Zeile darüber, drei oder vier kurze Absätze und optional ein Bild mit Caption. Es geht um Gefühle und Wendepunkte, nicht um Daten und Namen. Mehr als sechs veröffentlichte Kapitel lässt die API nicht zu, das ist Absicht; ein siebentes geht nur mit draft true.
+
+    Persönliche Seite, Texte: writing.posts. Ein Text hat title, date, einen excerpt für die Liste, Absätze und optional Bilder. Immer action chapter oder action post verwenden, nie patch, denn patch ersetzt die ganze Liste. Ein Foto zuerst mit action image hochladen und dann den zurückgegebenen Pfad als image.src verwenden.
+
+    Kommentare: Leser schreiben über das Formular, das landet bei Netlify und per Mail bei Alexander, nicht auf der Seite. Auf der Seite steht nur, was er freigibt. Sagt er "stell das rein", rufst du action comment mit post, name und text auf, Wortlaut unverändert, nicht geglättet und nicht übersetzt. Erfinde nie einen Kommentar und stell nie einen rein, den er dir nicht vorgelesen hat. author "me" schreibt eine Antwort von ihm selbst. hideComment nimmt einen Kommentar von der Seite und behält ihn, deleteComment löscht ihn. Der Gedankenstrich-Regel unterliegen Kommentare von Lesern nicht, seine eigenen Texte schon.
 
     Wenn die API einen Fehler meldet, gib den Wortlaut vollständig weiter und erkläre ihn. Bei 400 wurde nichts geschrieben. Bei 500 steht die eigentliche Ursache im Text der Meldung, lies sie vor.
 
@@ -73,16 +81,17 @@ Actions, Create new action, Import from URL, dort https://seelischabstrakt.netli
 - Alle Texte des Shops in EN und DE ändern, auch die Oberflächenbegriffe
 - Farben, Schriften, Layout, Hintergrundmuster, ausgeblendete Bereiche, Coming-soon-Modus
 - Rechtsdaten des Shops, also Name, Adresse, E-Mail, UID, Kleinunternehmer
-- Journal-Einträge anlegen, ändern, löschen, als Entwurf halten
-- Tafelseite, also Fotos ergänzen, umbeschriften, entfernen
+- Kapitel der Geschichte und Texte der persönlichen Seite anlegen, ändern, löschen, als Entwurf halten
+- Freigegebene Leserkommentare veröffentlichen, verbergen, löschen, und selbst darauf antworten
 - Fotos hochladen, wenn eine öffentliche https-Adresse existiert
 
 ## Teil 4: Was der GPT nicht kann
 
-- Fotos direkt aus dem Chat hochladen. Für Werke im Shop: /add am Handy für ein neues Werk, der Studio desk für ein bestehendes. Für das Journal siehe den nächsten Punkt.
-- Journal-Fotos vom iPad. Dafür gibt es keinen Knopf. Weg: github.com, dein Repository, Ordner portfolio/img öffnen, Add file, Upload files, Foto auswählen, Commit. Dann dem GPT sagen, wie die Datei heißt, exakt so wie hochgeladen, also zum Beispiel img/mein-foto.jpg. Groß- und Kleinschreibung zählt. Die API prüft, ob die Datei existiert, und weist einen falschen Namen zurück.
+- Fotos direkt aus dem Chat hochladen. Für Werke im Shop: /add am Handy für ein neues Werk, der Studio desk für ein bestehendes. Für die persönliche Seite siehe den nächsten Punkt.
+- Fotos für die persönliche Seite vom iPad. Dafür gibt es keinen Knopf. Weg: github.com, dein Repository, Ordner portfolio/img öffnen, Add file, Upload files, Foto auswählen, Commit. Dann dem GPT sagen, wie die Datei heißt, exakt so wie hochgeladen, also zum Beispiel img/mein-foto.jpg. Groß- und Kleinschreibung zählt. Die API prüft, ob die Datei existiert, und weist einen falschen Namen zurück.
+- Die Kommentare der Leser lesen. Die stehen in Netlify unter Forms und in deiner Mail. Du liest sie dort und sagst dem GPT, welcher auf die Seite darf.
 - Die Rechtstexte im Fließtext ändern, also Impressum, AGB, Datenschutz. Die stehen in index.html und werden aus den Feldern erzeugt.
-- Das Layout im Code ändern, also index.html, photos.html, admin.html, add.html, netlify.toml.
+- Das Layout im Code ändern, also index.html, admin.html, add.html, netlify.toml.
 - Etwas an Netlify einstellen. Environment variables, Domains und Formulare bleiben Handarbeit.
 - Eine Bestellung bearbeiten. Rechnung und Versand machst du selbst.
 
@@ -94,7 +103,7 @@ Einmal den GitHub-Token im Tab Publish eintragen, er bleibt in diesem Browser. D
 
 Wichtig, wenn du auch den GPT benutzt: Der Desk arbeitet mit dem Stand, den er beim Öffnen geladen hat. Hast du zwischendurch im GPT etwas geändert, lade den Desk zuerst neu, bevor du zu tippen anfängst. Nicht umgekehrt, ein Reload wirft alles weg, was du seit dem Öffnen eingegeben hast, auch schon zugeschnittene Fotos. Faustregel: Desk öffnen, tippen, Publish, Tab schließen. Keinen Desk-Tab über Nacht offen lassen. Der Desk schreibt beim Publish nur die Datei, die du auch geändert hast, und sagt dir in der Statuszeile, welche er nicht angerührt hat.
 
-Das Journal hat keine solche Oberfläche. Es wird über den GPT gepflegt oder direkt in GitHub, Datei portfolio/journal.json, Stift-Symbol.
+Die persönliche Seite hat keine solche Oberfläche. Sie wird über den GPT gepflegt oder direkt in GitHub, Datei portfolio/journal.json, Stift-Symbol. Das gilt auch für die Kommentare, siehe portfolio/README.md.
 
 ## Teil 6: Wenn etwas nicht geht
 
@@ -109,7 +118,9 @@ Aus ChatGPT oder von /add:
     401                        DESK_KEY in Netlify stimmt nicht mit dem Schlüssel im GPT überein.
     400                        Validierung. Der Text sagt, was falsch ist. Es wurde nichts geschrieben.
     404 No work with id        Diese id gibt es nicht. Den GPT listWorks aufrufen lassen und die id von dort nehmen.
-    404 No entry with id       Dasselbe im Journal, erst getJournal aufrufen lassen. Ebenso bei No plate with src.
+    404 No chapter with id     Dasselbe auf der persönlichen Seite, erst getJournal aufrufen lassen.
+    404 No text with id        Ebenso, die id steht unter writing.posts.
+    400 There is no text       Der Kommentar zeigt auf einen Text, den es nicht gibt. getJournal, id von dort nehmen.
     404 not found              site.json oder journal.json nicht gefunden. GITHUB_REPO und GITHUB_BRANCH prüfen.
     409                        Ein Werk mit dieser id gibt es schon. Zum Ändern die id schicken,
                                für ein zweites Werk einen anderen Titel wählen.

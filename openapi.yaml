@@ -139,21 +139,31 @@ paths:
   /journal:
     get:
       operationId: getJournal
-      summary: Read the whole personal journal (masthead, entries, plates, colophon) of alexanderschranz.netlify.app
+      summary: Read the whole personal page (profile, story chapters, written texts, reader comments) of alexanderschranz.netlify.app
       responses:
         "200":
           description: journal.json
     post:
       operationId: updateJournal
-      summary: Change the personal journal. Actions - entry adds or updates one entry, deleteEntry removes one, plate and deletePlate do the same for the photographs page, patch merges an object, set writes single values by path, image uploads a photograph.
+      summary: Change the personal page. Actions - chapter and deleteChapter for the story, post and deletePost for the written texts, comment, hideComment and deleteComment for reader thoughts, patch merges an object, set writes single values by path, image uploads a photograph.
       description: >-
-        Use action entry for anything about an entry; it merges by id and keeps every field you leave out.
-        A language you do not send is kept, so sending only de changes only the German. Do not use patch for
-        entries or plates: patch replaces the whole list, which deletes every entry you did not include.
-        Dash characters are rejected in every text, use a comma or a full stop. At most six published entries
-        are allowed; write a seventh with draft true. A photograph must be uploaded with action image first,
-        the call returns the path to put into figure.src or into a plate. Uploading with a name that already
+        The personal page has three parts. story.chapters is Alexander's life told in at most six published
+        chapters. writing.posts are the texts people can read and comment under. comments are the reader
+        thoughts he has approved; everything in that list is visible on the page.
+        Use action chapter and action post for anything about those; both merge by id and keep every field
+        you leave out. A language you do not send is kept, so sending only de changes only the German.
+        Do not use patch for chapters, posts or comments - patch replaces the whole list, which deletes
+        everything you did not include. Anything with draft true is written but stays off the page, which is
+        the safe way to work on a half finished text. A published chapter or text needs paragraphs in both
+        languages. Dash characters are rejected in every text Alexander writes, use a comma or a full stop;
+        a reader comment is left exactly as the reader wrote it. A photograph must be uploaded with action
+        image first, the call returns the path to put into image.src. Uploading with a name that already
         exists replaces that photograph everywhere it is used.
+        Comments - readers send their thought through the form on the page and it arrives by email, it does
+        not appear here by itself. Nothing is public until Alexander says so. When he says publish it, send
+        action comment with post, name and text, and it appears under that text. author "me" writes the same
+        entry as a reply from Alexander. hideComment takes a published comment off the page but keeps it,
+        deleteComment removes it for good. Never publish a comment he has not approved, and never invent one.
       security:
         - deskKey: []
       requestBody:
@@ -165,53 +175,66 @@ paths:
               properties:
                 action:
                   type: string
-                  enum: [entry, deleteEntry, plate, deletePlate, patch, set, image]
-                entry:
+                  enum: [chapter, deleteChapter, post, deletePost, comment, hideComment, deleteComment, patch, set, image]
+                chapter:
                   type: object
-                  description: One journal entry. Matched by id, so sending an existing id updates that entry and leaves the fields you omit untouched.
+                  description: One chapter of the story. Matched by id, so sending an existing id updates that chapter and leaves the fields you omit untouched.
                   properties:
-                    id: { type: string, description: "Short slug. Left out on a new entry it is derived from the English title." }
-                    kicker: { type: object, description: "Two or three words above the headline", properties: { en: { type: string }, de: { type: string } } }
+                    id: { type: string, description: "Short slug. Left out on a new chapter it is derived from the English title." }
                     title: { type: object, properties: { en: { type: string }, de: { type: string } } }
-                    standfirst: { type: object, description: "One sentence under the headline. It must say something the first paragraph does not.", properties: { en: { type: string }, de: { type: string } } }
-                    paragraphs: { type: object, description: "Three to five short paragraphs per language", properties: { en: { type: array, items: { type: string } }, de: { type: array, items: { type: string } } } }
-                    pullquote: { type: object, description: "One sentence taken from the entry itself", properties: { en: { type: string }, de: { type: string } } }
-                    draft: { type: boolean, description: "true writes the entry but keeps it off the page" }
-                    figure:
+                    period: { type: object, description: "Small line above the title, for example Childhood. Not a date if he does not want one.", properties: { en: { type: string }, de: { type: string } } }
+                    paragraphs: { type: object, description: "Three or four short paragraphs per language, feelings and turning points rather than facts", properties: { en: { type: array, items: { type: string } }, de: { type: array, items: { type: string } } } }
+                    draft: { type: boolean, description: "true writes the chapter but keeps it off the page" }
+                    image:
                       type: object
+                      description: One photograph beside the chapter. Send null to remove it.
                       properties:
                         src: { type: string, description: "Must start with img/ . Upload the photograph first with action image." }
-                        layout: { type: string, enum: [block, plate], description: "block sits beside the text, plate runs across the full width" }
-                        caption: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                        caption: { type: object, description: "What the photograph actually shows. Never describe something that is not in it.", properties: { en: { type: string }, de: { type: string } } }
                         size: { type: string, description: "Pixel size of the file, for example 1400x1000" }
-                    factbox:
-                      type: object
-                      description: The one boxed list on the page. Send null to remove it.
-                      properties:
-                        title: { type: object, properties: { en: { type: string }, de: { type: string } } }
-                        items: { type: object, properties: { en: { type: array, items: { type: string } }, de: { type: array, items: { type: string } } } }
+                post:
+                  type: object
+                  description: One written text. Matched by id, so sending an existing id updates that text and leaves the fields you omit untouched.
+                  properties:
+                    id: { type: string, description: "Short slug. Left out on a new text it is derived from the English title." }
+                    date: { type: string, description: "2026-09-14. Left out on a new text it is today." }
+                    title: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                    excerpt: { type: object, description: "One sentence in the list. Left out it follows the first paragraph.", properties: { en: { type: string }, de: { type: string } } }
+                    paragraphs: { type: object, properties: { en: { type: array, items: { type: string } }, de: { type: array, items: { type: string } } } }
+                    draft: { type: boolean, description: "true writes the text but keeps it off the page" }
+                    commentsClosed: { type: boolean, description: "true hides the form under this text" }
+                    images:
+                      type: array
+                      description: Photographs inside the text. Sending this replaces the whole list, send [] to remove them all.
+                      items:
+                        type: object
+                        properties:
+                          src: { type: string, description: "Must start with img/" }
+                          caption: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                          size: { type: string }
+                comment:
+                  type: object
+                  description: One approved reader thought, or a reply from Alexander. Only send this when he has said the comment may go on the page.
+                  properties:
+                    id: { type: string, description: "Only to change an existing comment. On a new one it is made from the text id and the name." }
+                    post: { type: string, description: "The id of the text it belongs under, from writing.posts" }
+                    name: { type: string, description: "As the reader signed, at most 60 characters" }
+                    text: { type: string, description: "The comment word for word, at most 2000 characters. Do not tidy it up." }
+                    date: { type: string, description: "2026-09-14. Left out it is today." }
+                    author: { type: string, enum: [me], description: "me writes the entry as a reply from Alexander" }
+                    approved: { type: boolean, description: "false hides it, same as hideComment" }
                 position:
                   type: integer
-                  description: Where to insert a new entry or plate. Left out it goes last.
+                  description: Where to insert a new chapter or text. A chapter goes last, a text goes first.
                 id:
                   type: string
-                  description: For deleteEntry
-                plate:
-                  type: object
-                  description: One photograph on the plates page, matched by src
-                  properties:
-                    src: { type: string }
-                    caption: { type: object, properties: { en: { type: string }, de: { type: string } } }
-                    size: { type: string }
-                src:
-                  type: string
-                  description: For deletePlate
+                  description: For deleteChapter, deletePost, hideComment and deleteComment
                 patch:
                   type: object
-                  description: "Partial journal.json. Allowed at top level - masthead, entries, plates, colophon, seo"
+                  description: "Partial journal.json. Allowed at top level - profile, nav, story, writing, commentForm, comments, contact, footer, seo"
                 sets:
                   type: array
-                  description: "Single values by dotted path, for example [{\"path\": \"masthead.motto.de\", \"value\": \"...\"}]"
+                  description: "Single values by dotted path, for example [{\"path\": \"profile.tagline.de\", \"value\": \"...\"}]"
                   items:
                     type: object
                     properties:

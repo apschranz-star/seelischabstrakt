@@ -1,407 +1,224 @@
 {
-  "_help": "Everything on alexanderschranz.netlify.app lives in this file. Every text is {\"en\": \"...\", \"de\": \"...\"}. An entry with \"draft\": true is written but not published. Sections disappear when their block is missing or renamed with a leading underscore. Images go into img/ and are referenced as img/name.jpg. The optional \"size\" is the pixel size of the file, for example \"1400x1000\"; it only reserves the space while the photo loads and can be left out. Nothing here is generated, edit it in GitHub and the page updates in about a minute.",
-  "masthead": {
+  "_help": "The whole personal site lives in this file. Every text is {\"en\": \"...\", \"de\": \"...\"}. Anything with \"draft\": true is written but not published, so it is safe to leave half finished. Photos go into img/ and are referenced as img/name.jpg. The optional \"size\" is the pixel size of the file, for example 1400x1000, it only reserves the space while the photo loads. Comments only appear here after Alexander has approved them.",
+
+  "profile": {
     "name": "Alexander Schranz",
-    "earLeft": {
-      "en": "Vienna 1180 · Notes from the floor of a flat",
-      "de": "Wien 1180 · Notizen vom Boden einer Wohnung"
+    "tagline": { "en": "Creating is in our nature.", "de": "Erschaffen ist in unserer Natur." },
+    "intro": {
+      "en": "I am Alexander. I live in Vienna, I paint on the floor of my flat, and I write here about the things that made me the person doing that.",
+      "de": "Ich bin Alexander. Ich lebe in Wien, ich male am Boden meiner Wohnung, und hier schreibe ich über die Dinge, die mich zu dem gemacht haben, der das tut."
     },
-    "motto": {
-      "en": "Creating is in our nature.",
-      "de": "Erschaffen ist in unserer Natur."
-    },
-    "mottoSub": {
-      "en": "Erschaffen ist in unserer Natur",
-      "de": "Creating is in our nature"
-    },
-    "contentsLabel": {
-      "en": "In this issue",
-      "de": "In dieser Ausgabe"
-    },
+    "portrait": "img/alexander-schranz.jpg",
+    "portraitSize": "1050x1400",
+    "portraitAlt": { "en": "Alexander Schranz", "de": "Alexander Schranz" },
+    "email": "a.p.schranz@icloud.com",
+    "place": { "en": "Vienna, Austria", "de": "Wien, Österreich" },
     "defaultLang": "en"
   },
-  "entries": [
-    {
-      "id": "why",
-      "kicker": {
-        "en": "Why at all",
-        "de": "Warum überhaupt"
-      },
-      "title": {
-        "en": "Creating is in our nature",
-        "de": "Erschaffen ist in unserer Natur"
-      },
-      "standfirst": {
-        "en": "The motto is not a line on a wall. It is the reason I start.",
-        "de": "Das Motto ist kein Spruch an der Wand. Es ist der Grund, warum ich anfange."
-      },
-      "paragraphs": {
-        "en": [
-          "People ask why I paint. I do not have a long answer. Creating is in our nature.",
-          "Something is in the room afterwards that was not in the room before. That is enough of a reason to sit down again.",
-          "The goal is not perfection. The goal is presence. A thing that is actually there and does not need explaining.",
-          "Everything else on this page is the longer version of that."
-        ],
-        "de": [
-          "Leute fragen, warum ich male. Eine lange Antwort hab ich nicht. Erschaffen ist in unserer Natur.",
-          "Danach steht etwas im Raum, das vorher nicht da war. Das reicht als Grund, sich wieder hinzusetzen.",
-          "Das Ziel ist nicht Perfektion. Das Ziel ist Präsenz. Ein Ding, das wirklich da ist und keine Erklärung braucht.",
-          "Alles Weitere auf dieser Seite ist die längere Fassung davon."
-        ]
-      },
-      "pullquote": {
-        "en": "Something is in the room afterwards that was not in the room before.",
-        "de": "Danach steht etwas im Raum, das vorher nicht da war."
-      },
-      "figure": {
-        "src": "img/enter-the-void-cut.jpg",
-        "layout": "block",
-        "caption": {
-          "en": "Enter the Void, 2025, acrylic on canvas, 70 × 50 cm. The canvas alone, cut out of its photograph.",
-          "de": "Enter the Void, 2025, Acryl auf Leinwand, 70 × 50 cm. Die Leinwand allein, aus dem Foto freigestellt."
-        },
-        "size": "1400x1000"
-      }
+
+  "nav": [
+    { "id": "story", "label": { "en": "My story", "de": "Meine Geschichte" } },
+    { "id": "writing", "label": { "en": "Writing", "de": "Texte" } },
+    { "id": "contact", "label": { "en": "Say hello", "de": "Schreib mir" } }
+  ],
+
+  "story": {
+    "title": { "en": "My story", "de": "Meine Geschichte" },
+    "intro": {
+      "en": "Not a timeline. The parts that changed the direction.",
+      "de": "Keine Zeittafel. Die Stellen, an denen sich die Richtung geändert hat."
     },
-    {
-      "id": "learned",
-      "kicker": {
-        "en": "How I learned",
-        "de": "Wie ich gelernt hab"
-      },
-      "title": {
-        "en": "I learned it by making it",
-        "de": "Gelernt hab ich es beim Machen"
-      },
-      "standfirst": {
-        "en": "Everything I know about a surface I found out by putting something on it.",
-        "de": "Was ich über eine Oberfläche weiß, hab ich herausgefunden, indem ich etwas draufgesetzt hab."
-      },
-      "paragraphs": {
-        "en": [
-          "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero.",
-          "That is still how I work. I approach a painting more like a physical problem than an illustration.",
-          "Layer by layer, decision by decision, until something begins to hold.",
-          "A layer that goes on too thick has to be answered by the next one."
-        ],
-        "de": [
-          "Mein Hintergrund ist nicht klassisch akademisch. Gelernt hab ich beim Machen: bauen, verkaufen, reparieren, organisieren, Sachen von null weg anfangen.",
-          "So arbeite ich bis heute. Ein Bild geh ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration.",
-          "Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
-          "Eine Schicht, die zu dick wird, muss die nächste beantworten."
-        ]
-      },
-      "pullquote": {
-        "en": "A painting is a physical problem, not an illustration.",
-        "de": "Ein Bild ist eine handwerkliche Aufgabe, keine Illustration."
-      },
-      "figure": {
-        "src": "img/fear-cut.jpg",
-        "layout": "block",
-        "caption": {
-          "en": "Fear, 2025, acrylic on canvas, 40 × 40 cm. Paint as thick as a crust on the left, open red on the right.",
-          "de": "Fear, 2025, Acryl auf Leinwand, 40 × 40 cm. Links Farbe, dick wie eine Kruste, rechts offenes Rot."
-        },
-        "size": "1400x1400"
-      }
-    },
-    {
-      "id": "room",
-      "kicker": {
-        "en": "The room",
-        "de": "Der Raum"
-      },
-      "title": {
-        "en": "The floor is the table",
-        "de": "Der Boden ist der Tisch"
-      },
-      "standfirst": {
-        "en": "Multum in parvo. Much in little. Down there it is meant practically, not prettily.",
-        "de": "Multum in parvo. Viel im Kleinen. Da unten ist das praktisch gemeint, nicht schön gesagt."
-      },
-      "paragraphs": {
-        "en": [
-          "No studio. A flat in Vienna, 1180. The flat is the room and the floor is the table.",
-          "The red Bokhara carpet lies in the same room. Almost every photograph of my work is taken on it, before anything gets framed. Sometimes the black paisley shawl instead.",
-          "Small formats matter to me. They force concentration.",
-          "A small surface can carry an enormous amount of information when every mark has a reason to exist."
-        ],
-        "de": [
-          "Kein Atelier. Eine Wohnung in Wien, 1180. Die Wohnung ist der Raum, der Boden ist der Tisch.",
-          "Der rote Bokhara-Teppich liegt im selben Zimmer. Fast jedes Foto meiner Arbeiten entsteht darauf, bevor irgendetwas gerahmt wird. Manchmal stattdessen das schwarze Paisleytuch.",
-          "Kleine Formate sind mir wichtig. Sie zwingen zur Konzentration.",
-          "Eine kleine Fläche kann enorm viel tragen, wenn jeder Strich einen Grund hat, da zu sein."
-        ]
-      },
-      "pullquote": {
-        "en": "The flat is the room. The floor is the table.",
-        "de": "Die Wohnung ist der Raum, der Boden ist der Tisch."
-      },
-      "figure": {
-        "src": "img/suffering-is-eternal.jpg",
-        "layout": "plate",
-        "caption": {
-          "en": "Suffering is Eternal, 2026, marker on coated paper, 42 × 29.7 cm, lying on the red Bokhara carpet before framing.",
-          "de": "Suffering is Eternal, 2026, Marker auf beschichtetem Papier, 42 × 29,7 cm, am roten Bokhara-Teppich, bevor es gerahmt wurde."
-        },
-        "size": "1400x1400"
-      },
-      "factbox": {
-        "title": {
-          "en": "The studio",
-          "de": "Das Atelier"
-        },
-        "items": {
+    "chapters": [
+      {
+        "id": "making",
+        "title": { "en": "I learned by making", "de": "Gelernt hab ich beim Machen" },
+        "period": { "en": "How I got here", "de": "Wie ich hierher kam" },
+        "paragraphs": {
           "en": [
-            "The floor of a flat, Vienna 1180",
-            "A red Bokhara carpet, the ground of almost every photograph",
-            "A black paisley shawl, the second backdrop",
-            "Photographed there, then framed",
-            "Small formats only"
+            "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero.",
+            "That is still how I work. I approach a painting more like a physical problem than an illustration. Layer by layer, decision by decision, until something begins to hold.",
+            "A layer that goes on too thick has to be answered by the next one. You find that out by putting it there, not by reading about it."
           ],
           "de": [
-            "Der Boden einer Wohnung, Wien 1180",
-            "Ein roter Bokhara-Teppich, der Grund von fast jedem Foto",
-            "Ein schwarzes Paisleytuch, der zweite Hintergrund",
-            "Dort fotografiert, dann gerahmt",
-            "Nur kleine Formate"
+            "Mein Hintergrund ist nicht klassisch akademisch. Gelernt hab ich beim Machen: bauen, verkaufen, reparieren, organisieren, Sachen von null weg anfangen.",
+            "So arbeite ich bis heute. Ein Bild geh ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration. Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
+            "Eine Schicht, die zu dick wird, muss die nächste beantworten. Das findet man heraus, indem man sie hinsetzt, nicht durchs Nachlesen."
           ]
+        },
+        "image": {
+          "src": "img/fear-cut.jpg",
+          "size": "1400x1400",
+          "caption": { "en": "Paint as thick as a crust, and a strip of open red beside it.", "de": "Farbe, dick wie eine Kruste, daneben ein Streifen offenes Rot." }
         }
-      }
-    },
-    {
-      "id": "looking",
-      "kicker": {
-        "en": "What I look for",
-        "de": "Worauf ich schaue"
-      },
-      "title": {
-        "en": "Not too resolved",
-        "de": "Nicht zu fertig"
-      },
-      "standfirst": {
-        "en": "I stop a picture before it gets polite.",
-        "de": "Ich hör bei einem Bild auf, bevor es brav wird."
-      },
-      "paragraphs": {
-        "en": [
-          "I collect fragments. Faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed.",
-          "A rough edge. A heavy layer of paint. A correction. Something slightly out of place. Those are the parts I keep.",
-          "I do not want work that feels too resolved. A picture that hides how it was made says less to me. The trace of the hand is part of the work.",
-          "I am interested in the tension between control and accident. Something carefully constructed, and next to it something that arrived on its own. Neither one wins.",
-          "That tension is the actual subject. Not the eye, not the head, not the title."
-        ],
-        "de": [
-          "Ich sammle Fragmente. Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut.",
-          "Eine raue Kante. Eine dicke Farbschicht. Eine Korrektur. Etwas, das ein wenig verrutscht ist. Genau das behalte ich.",
-          "Ich will keine Arbeit, die zu fertig wirkt. Ein Bild, das versteckt, wie es gemacht wurde, sagt mir weniger. Die Spur der Hand gehört zum Werk.",
-          "Mich interessiert die Spannung zwischen Kontrolle und Zufall. Etwas sorgfältig Gebautes, und daneben etwas, das von selber gekommen ist. Keines von beiden gewinnt.",
-          "Diese Spannung ist eigentlich das Thema. Nicht das Auge, nicht der Kopf, nicht der Titel."
-        ]
-      },
-      "pullquote": {
-        "en": "I do not want work that feels too resolved.",
-        "de": "Ich will keine Arbeit, die zu fertig wirkt."
-      },
-      "figure": {
-        "src": "img/fear.jpg",
-        "layout": "block",
-        "caption": {
-          "en": "The same canvas on the red Bokhara carpet. A black mass in the lower right corner.",
-          "de": "Dieselbe Leinwand am roten Bokhara-Teppich. Unten rechts eine schwarze Masse."
-        },
-        "size": "1400x1400"
-      }
-    },
-    {
-      "id": "now",
-      "kicker": {
-        "en": "Now",
-        "de": "Gerade"
-      },
-      "title": {
-        "en": "The goal is presence",
-        "de": "Das Ziel ist Präsenz"
-      },
-      "standfirst": {
-        "en": "Presence is the only test I have for a picture.",
-        "de": "Präsenz ist der einzige Test, den ich für ein Bild hab."
-      },
-      "paragraphs": {
-        "en": [
-          "Three works are public so far. Two canvases from 2025 and one sheet from 2026. The rest stays here.",
-          "I am staying with small formats. Marker on paper, acrylic on canvas, the same two backdrops on the floor.",
-          "The goal is not perfection. The goal is presence. A picture either stands in the room or it does not.",
-          "I am open to people who look properly and then say what they see. Also to being told that a picture does not hold.",
-          "The next layer goes down, and then I see what holds."
-        ],
-        "de": [
-          "Drei Arbeiten sind bis jetzt öffentlich. Zwei Leinwände von 2025 und ein Blatt von 2026. Der Rest bleibt da.",
-          "Ich bleib beim kleinen Format. Marker auf Papier, Acryl auf Leinwand, die zwei gleichen Hintergründe am Boden.",
-          "Das Ziel ist nicht Perfektion. Das Ziel ist Präsenz. Ein Bild steht im Raum oder es steht nicht.",
-          "Offen bin ich für Leute, die wirklich hinschauen und dann sagen, was sie sehen. Auch dafür, dass mir wer sagt, ein Bild geht nicht auf.",
-          "Die nächste Schicht kommt drauf, und dann schau ich, was hält."
-        ]
-      },
-      "pullquote": {
-        "en": "A picture either stands in the room or it does not.",
-        "de": "Ein Bild steht im Raum oder es steht nicht."
-      },
-      "figure": {
-        "src": "img/alexander-schranz.jpg",
-        "layout": "block",
-        "caption": {
-          "en": "Black and white, a lamp on the wall behind.",
-          "de": "Schwarzweiß, hinter mir eine Lampe an der Wand."
-        },
-        "size": "1050x1400"
-      }
-    },
-    {
-      "draft": true,
-      "id": "seen",
-      "kicker": {
-        "en": "Seen",
-        "de": "Gesehen"
-      },
-      "title": {
-        "en": "Walls somewhere else",
-        "de": "Wände anderswo"
-      },
-      "standfirst": {
-        "en": "DRAFT. Alexander, this entry is for the travels and the art you saw on other walls. Write three or four sentences here and set draft to false.",
-        "de": "ENTWURF. Alexander, dieser Eintrag ist für die Reisen und die Kunst, die du anderswo an der Wand gesehen hast. Schreib drei, vier Sätze hinein und setz draft auf false."
-      },
-      "paragraphs": {
-        "en": [
-          "Where you were. What hung there. What you stood in front of for too long.",
-          "One thing you took home from it and put into the work.",
-          "Delete these lines, they are only a prompt."
-        ],
-        "de": [
-          "Wo du warst. Was dort gehängt ist. Vor was du zu lange gestanden bist.",
-          "Eine Sache, die du mitgenommen und in die Arbeit gesteckt hast.",
-          "Diese Zeilen löschen, sie sind nur eine Frage an dich."
-        ]
-      },
-      "pullquote": {
-        "en": "",
-        "de": ""
-      },
-      "figure": {
-        "src": "",
-        "layout": "block",
-        "caption": {
-          "en": "",
-          "de": ""
-        }
-      }
-    }
-  ],
-  "plates": {
-    "label": {
-      "en": "Plates",
-      "de": "Tafeln"
-    },
-    "title": {
-      "en": "Plates",
-      "de": "Tafeln"
-    },
-    "intro": {
-      "en": "Nothing but photographs. The works, the carpet, the shawl, the frame.",
-      "de": "Nichts als Fotos. Die Arbeiten, der Teppich, das Tuch, der Rahmen."
-    },
-    "backLabel": {
-      "en": "Back to the journal",
-      "de": "Zurück zum Journal"
-    },
-    "jumpLabel": {
-      "en": "Plates, all photographs",
-      "de": "Tafeln, alle Fotos"
-    },
-    "items": [
-      {
-        "src": "img/enter-the-void-cut.jpg",
-        "caption": {
-          "en": "Enter the Void, 2025, acrylic on canvas, 70 × 50 cm.",
-          "de": "Enter the Void, 2025, Acryl auf Leinwand, 70 × 50 cm."
-        },
-        "size": "1400x1000"
       },
       {
-        "src": "img/enter-the-void.jpg",
-        "caption": {
-          "en": "The same canvas on the black paisley shawl.",
-          "de": "Dieselbe Leinwand am schwarzen Paisleytuch."
+        "draft": true,
+        "id": "roots",
+        "title": { "en": "Where I come from", "de": "Wo ich herkomme" },
+        "period": { "en": "Childhood", "de": "Kindheit" },
+        "paragraphs": {
+          "en": [
+            "DRAFT. Alexander, this chapter is for your roots. Not dates and not names, you chose feelings and turning points.",
+            "What did the place you grew up in feel like. What was always there in the background. What did you believe about yourself back then.",
+            "Write three or four short paragraphs, then set draft to false."
+          ],
+          "de": [
+            "ENTWURF. Alexander, dieses Kapitel ist für deine Wurzeln. Keine Daten und keine Namen, du hast Gefühle und Wendepunkte gewählt.",
+            "Wie hat sich der Ort angefühlt, an dem du aufgewachsen bist. Was war immer im Hintergrund da. Was hast du damals über dich selbst geglaubt.",
+            "Schreib drei, vier kurze Absätze, dann setz draft auf false."
+          ]
         },
-        "size": "1400x1138"
+        "image": { "src": "", "caption": { "en": "", "de": "" } }
       },
       {
-        "src": "img/fear-cut.jpg",
-        "caption": {
-          "en": "Fear, 2025, acrylic on canvas, 40 × 40 cm.",
-          "de": "Fear, 2025, Acryl auf Leinwand, 40 × 40 cm."
+        "draft": true,
+        "id": "turn",
+        "title": { "en": "The turn", "de": "Die Wendung" },
+        "period": { "en": "What changed", "de": "Was sich geändert hat" },
+        "paragraphs": {
+          "en": [
+            "DRAFT. The moment something shifted. It does not need a date or a place.",
+            "What did you stop doing. What did you start. What did it cost.",
+            "One paragraph is enough if it is the true one."
+          ],
+          "de": [
+            "ENTWURF. Der Moment, an dem sich etwas verschoben hat. Er braucht kein Datum und keinen Ort.",
+            "Womit hast du aufgehört. Womit hast du angefangen. Was hat es gekostet.",
+            "Ein Absatz reicht, wenn es der richtige ist."
+          ]
         },
-        "size": "1400x1400"
+        "image": { "src": "", "caption": { "en": "", "de": "" } }
       },
       {
-        "src": "img/fear.jpg",
-        "caption": {
-          "en": "Fear on the red Bokhara carpet.",
-          "de": "Fear am roten Bokhara-Teppich."
+        "draft": true,
+        "id": "now",
+        "title": { "en": "Where I am now", "de": "Wo ich jetzt bin" },
+        "period": { "en": "Today", "de": "Heute" },
+        "paragraphs": {
+          "en": [
+            "DRAFT. What a normal day looks like, and what you are still working on in yourself.",
+            "This is the chapter people will read twice. Keep it plain."
+          ],
+          "de": [
+            "ENTWURF. Wie ein normaler Tag aussieht, und woran du an dir selbst noch arbeitest.",
+            "Dieses Kapitel lesen die Leute zweimal. Halt es einfach."
+          ]
         },
-        "size": "1400x1400"
-      },
-      {
-        "src": "img/suffering-is-eternal-cut.jpg",
-        "caption": {
-          "en": "Suffering is Eternal, 2026, marker on coated paper, 42 × 29.7 cm.",
-          "de": "Suffering is Eternal, 2026, Marker auf beschichtetem Papier, 42 × 29,7 cm."
-        },
-        "size": "1400x990"
-      },
-      {
-        "src": "img/suffering-is-eternal.jpg",
-        "caption": {
-          "en": "The sheet on the carpet, before framing.",
-          "de": "Das Blatt am Teppich, vor dem Rahmen."
-        },
-        "size": "1400x1400"
-      },
-      {
-        "src": "img/suffering-is-eternal-framed.jpg",
-        "caption": {
-          "en": "The same sheet, framed.",
-          "de": "Dasselbe Blatt, gerahmt."
-        },
-        "size": "1400x1167"
-      },
-      {
-        "src": "img/alexander-schranz.jpg",
-        "caption": {
-          "en": "Black and white, a lamp on the wall behind.",
-          "de": "Schwarzweiß, hinter mir eine Lampe an der Wand."
-        },
-        "size": "1050x1400"
+        "image": { "src": "", "caption": { "en": "", "de": "" } }
       }
     ]
   },
-  "colophon": {
-    "text": {
-      "en": "Written and set by Alexander Schranz in Vienna. Printed in one ink. Photographs of his own work.",
-      "de": "Geschrieben und gesetzt von Alexander Schranz in Wien. In einer Farbe gedruckt. Fotos der eigenen Arbeiten."
+
+  "writing": {
+    "title": { "en": "Writing", "de": "Texte" },
+    "intro": {
+      "en": "Short pieces, written next to the work. You can leave a thought under any of them.",
+      "de": "Kurze Texte, neben der Arbeit geschrieben. Unter jedem kannst du einen Gedanken hinterlassen."
     },
-    "email": "a.p.schranz@icloud.com",
-    "contactLabel": {
-      "en": "Write",
-      "de": "Schreiben"
+    "readMore": { "en": "Read", "de": "Lesen" },
+    "backLabel": { "en": "All writing", "de": "Alle Texte" },
+    "posts": [
+      {
+        "id": "creating-is-in-our-nature",
+        "date": "2026-09-14",
+        "title": { "en": "Creating is in our nature", "de": "Erschaffen ist in unserer Natur" },
+        "excerpt": {
+          "en": "People ask why I paint. I do not have a long answer.",
+          "de": "Leute fragen, warum ich male. Eine lange Antwort hab ich nicht."
+        },
+        "paragraphs": {
+          "en": [
+            "People ask why I paint. I do not have a long answer. Creating is in our nature.",
+            "Something is in the room afterwards that was not in the room before. That is enough of a reason to sit down again.",
+            "The goal is not perfection. The goal is presence. A thing that is actually there and does not need explaining.",
+            "I collect fragments. Faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed. A rough edge. A heavy layer of paint. A correction. Something slightly out of place. Those are the parts I keep.",
+            "I do not want work that feels too resolved. A picture that hides how it was made says less to me. The trace of the hand is part of the work."
+          ],
+          "de": [
+            "Leute fragen, warum ich male. Eine lange Antwort hab ich nicht. Erschaffen ist in unserer Natur.",
+            "Danach steht etwas im Raum, das vorher nicht da war. Das reicht als Grund, sich wieder hinzusetzen.",
+            "Das Ziel ist nicht Perfektion. Das Ziel ist Präsenz. Ein Ding, das wirklich da ist und keine Erklärung braucht.",
+            "Ich sammle Fragmente. Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut. Eine raue Kante. Eine dicke Farbschicht. Eine Korrektur. Etwas, das ein wenig verrutscht ist. Genau das behalte ich.",
+            "Ich will keine Arbeit, die zu fertig wirkt. Ein Bild, das versteckt, wie es gemacht wurde, sagt mir weniger. Die Spur der Hand gehört zum Werk."
+          ]
+        },
+        "images": [
+          {
+            "src": "img/enter-the-void-cut.jpg",
+            "size": "1400x1000",
+            "caption": { "en": "A red eye, wide open, black running down from the lid.", "de": "Ein rotes Auge, weit offen, vom Lid rinnt Schwarz herunter." }
+          }
+        ]
+      },
+      {
+        "draft": true,
+        "id": "a-first-memory",
+        "date": "2026-09-14",
+        "title": { "en": "A first memory", "de": "Eine erste Erinnerung" },
+        "excerpt": { "en": "DRAFT, waiting for you.", "de": "ENTWURF, wartet auf dich." },
+        "paragraphs": {
+          "en": [
+            "DRAFT. A good first personal post is one memory, told plainly, with one thing you understood only later.",
+            "No moral at the end. Just the memory and the sentence it left behind."
+          ],
+          "de": [
+            "ENTWURF. Ein guter erster persönlicher Text ist eine Erinnerung, einfach erzählt, mit einer Sache, die du erst später verstanden hast.",
+            "Keine Moral am Schluss. Nur die Erinnerung und der Satz, der übrig geblieben ist."
+          ]
+        },
+        "images": []
+      }
+    ]
+  },
+
+  "commentForm": {
+    "title": { "en": "Share your thoughts", "de": "Teile deine Gedanken" },
+    "intro": {
+      "en": "Anything this brought up for you. I read every message and put the ones that belong here on the page.",
+      "de": "Was dir dazu durch den Kopf gegangen ist. Ich lese jede Nachricht und stelle die, die hierher passen, auf die Seite."
+    },
+    "nameLabel": { "en": "Your name", "de": "Dein Name" },
+    "namePlaceholder": { "en": "However you want to be called", "de": "Wie du genannt werden willst" },
+    "textLabel": { "en": "Your thought", "de": "Dein Gedanke" },
+    "button": { "en": "Send", "de": "Senden" },
+    "sending": { "en": "Sending", "de": "Wird gesendet" },
+    "thanks": {
+      "en": "Thank you. It reached me. If it belongs on the page, it will appear here in a day or two.",
+      "de": "Danke. Es ist angekommen. Wenn es auf die Seite passt, steht es in ein, zwei Tagen hier."
+    },
+    "failed": {
+      "en": "That did not send. Write to me by email instead, the address is below.",
+      "de": "Das ist nicht rausgegangen. Schreib mir stattdessen per E-Mail, die Adresse steht unten."
+    },
+    "note": {
+      "en": "Your name and your text appear on this page if I publish them. Nothing else is stored, no account, no tracking.",
+      "de": "Dein Name und dein Text erscheinen auf dieser Seite, wenn ich sie veröffentliche. Sonst wird nichts gespeichert, kein Konto, kein Tracking."
+    },
+    "emptyLabel": { "en": "No thoughts here yet. Yours can be the first.", "de": "Hier steht noch nichts. Deiner kann der erste sein." },
+    "headingLabel": { "en": "Thoughts", "de": "Gedanken" },
+    "replyLabel": { "en": "Alexander", "de": "Alexander" }
+  },
+
+  "comments": [],
+
+  "contact": {
+    "title": { "en": "Say hello", "de": "Schreib mir" },
+    "text": {
+      "en": "If something here landed, or if you just want to say hello, write to me. I answer every message.",
+      "de": "Wenn dich hier etwas erwischt hat, oder du einfach hallo sagen willst, schreib mir. Ich beantworte jede Nachricht."
     }
   },
+
+  "footer": {
+    "text": { "en": "© {year} Alexander Schranz. Vienna.", "de": "© {year} Alexander Schranz. Wien." },
+    "links": []
+  },
+
   "seo": {
     "title": "Alexander Schranz",
     "description": {
-      "en": "The journal of Alexander Schranz, painter in Vienna. Why he makes things, the floor he works on, and a page of plates.",
-      "de": "Das Journal von Alexander Schranz, Maler in Wien. Warum er Dinge macht, der Boden, auf dem er arbeitet, und eine Seite mit Tafeln."
+      "en": "Alexander Schranz, Vienna. My story, short pieces of writing, and a place to share your thoughts.",
+      "de": "Alexander Schranz, Wien. Meine Geschichte, kurze Texte und ein Platz für deine Gedanken."
     }
   }
 }

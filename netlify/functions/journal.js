@@ -1,18 +1,22 @@
 // Journal API for the personal page (portfolio/journal.json). Same repository, same env vars as works.js and site.js:
 // DESK_KEY, GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH.
-// GET  /api/journal                                        -> the whole journal.json
-// POST /api/journal {action:"patch", patch:{...}}           deep merge into journal.json
-// POST /api/journal {action:"set", sets:[{path,value}]}     write single values by dotted path
-// POST /api/journal {action:"entry", entry:{...}}           add or update one entry (matched by id)
-// POST /api/journal {action:"deleteEntry", id:"..."}        remove one entry
-// POST /api/journal {action:"plate", plate:{...}}           add or update one plate (matched by src)
-// POST /api/journal {action:"deletePlate", src:"..."}       remove one plate
+// GET  /api/journal                                           -> the whole journal.json
+// POST /api/journal {action:"patch", patch:{...}}              deep merge into journal.json
+// POST /api/journal {action:"set", sets:[{path,value}]}        write single values by dotted path
+// POST /api/journal {action:"chapter", chapter:{...}}          add or update one story chapter (matched by id)
+// POST /api/journal {action:"deleteChapter", id:"..."}         remove one chapter
+// POST /api/journal {action:"post", post:{...}}                add or update one blog post (matched by id)
+// POST /api/journal {action:"deletePost", id:"..."}            remove one post
+// POST /api/journal {action:"comment", comment:{...}}          publish a reader comment, or add a reply from Alexander
+// POST /api/journal {action:"hideComment", id:"..."}           take a published comment off the page
+// POST /api/journal {action:"deleteComment", id:"..."}         remove a comment for good
 // POST /api/journal {action:"image", name:"...", imageBase64|imageUrl}   put a photo into portfolio/img/
 const GH = "https://api.github.com";
 const FILE = "portfolio/journal.json";
 const IMGDIR = "portfolio/img/";
-const ALLOWED = ["masthead", "entries", "plates", "colophon", "seo"];
+const ALLOWED = ["profile", "nav", "story", "writing", "commentForm", "comments", "contact", "footer", "seo"];
 const LANGS = ["en", "de"];
+const MAXCHAPTERS = 6;
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -25,6 +29,7 @@ const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
 const slug = (s) => String(s || "").toLowerCase()
   .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
   .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const today = () => new Date().toISOString().slice(0, 10);
 
 async function gh(path, opts = {}) {
   const r = await fetch(`${GH}/repos/${process.env.GITHUB_REPO}/contents/${path}${opts.q || ""}`, {
@@ -79,6 +84,7 @@ function setPath(obj, path, value) {
     const k = parts[i];
     if (k === "__proto__" || k === "constructor" || k === "prototype") throw new Error("Invalid path");
     if (Array.isArray(cur) && /^\d+$/.test(k)) { cur = cur[Number(k)]; if (cur === undefined) throw new Error(`No item at ${path}`); continue; }
+    if (cur[k] !== undefined && !isObj(cur[k]) && !Array.isArray(cur[k])) throw new Error(`${parts.slice(0, i + 1).join(".")} is a single value, so nothing can sit underneath it. Set ${parts.slice(0, i + 1).join(".")} itself.`);
     if (!isObj(cur[k]) && !Array.isArray(cur[k])) cur[k] = {};
     cur = cur[k];
   }
@@ -116,76 +122,178 @@ const pairListInto = (v, cur) => {
   if (!out.de.length) out.de = out.en.slice();
   return out;
 };
-const pair = (v) => pairInto(v, null);
 // every string value that carries a dash, with the path where it sits
 function dashPaths(v, path = "", out = []) {
-  if (typeof v === "string") { if (/[\u2013\u2014]/.test(v)) out.push({ path: path || "(root)", value: v }); }
+  if (typeof v === "string") { if (/[–—]/.test(v)) out.push({ path: path || "(root)", value: v }); }
   else if (Array.isArray(v)) v.forEach((x, i) => dashPaths(x, `${path}[${i}]`, out));
   else if (isObj(v)) for (const [k, x] of Object.entries(v)) dashPaths(x, path ? `${path}.${k}` : k, out);
   return out;
 }
 
-function normaliseEntry(inc, existing) {
-  const e = existing ? JSON.parse(JSON.stringify(existing)) : { id: "", kicker: { en: "", de: "" }, title: { en: "", de: "" }, standfirst: { en: "", de: "" }, paragraphs: { en: [], de: [] }, pullquote: { en: "", de: "" }, figure: { src: "", layout: "block", caption: { en: "", de: "" } } };
-  if (inc.id) e.id = slug(inc.id);
-  for (const k of ["kicker", "title", "standfirst", "pullquote"]) if (inc[k] !== undefined) { const p = pairInto(inc[k], e[k]); if (!p) throw new Error(`${k} already exists in both languages, so send it as {"en": "...", "de": "..."} and not as one text`); e[k] = p; }
-  if (inc.paragraphs !== undefined) { const p = pairListInto(inc.paragraphs, e.paragraphs); if (!p) throw new Error('paragraphs already exist, so send them as {"en": [...], "de": [...]} and not as one list'); e.paragraphs = p; }
-  if (inc.draft !== undefined) { if (inc.draft) e.draft = true; else delete e.draft; }
-  if (inc.figure !== undefined) {
-    if (!isObj(inc.figure)) throw new Error("figure must be an object");
-    e.figure = e.figure || {};
-    if (inc.figure.src !== undefined) e.figure.src = String(inc.figure.src);
-    if (inc.figure.layout !== undefined) {
-      if (!["block", "plate"].includes(inc.figure.layout)) throw new Error('figure.layout must be "block" or "plate"');
-      e.figure.layout = inc.figure.layout;
-    }
-    if (inc.figure.caption !== undefined) { const p = pairInto(inc.figure.caption, e.figure.caption); if (!p) throw new Error('figure.caption already exists in both languages, send {"en": "...", "de": "..."}'); e.figure.caption = p; }
-    if (inc.figure.size !== undefined) e.figure.size = String(inc.figure.size);
+function imageInto(inc, cur) {
+  const img = isObj(cur) ? JSON.parse(JSON.stringify(cur)) : { src: "", caption: { en: "", de: "" } };
+  if (!isObj(inc)) throw new Error("image must be an object with src and caption");
+  if (inc.src !== undefined) img.src = String(inc.src);
+  if (inc.size !== undefined) img.size = String(inc.size);
+  if (inc.caption !== undefined) {
+    const p = pairInto(inc.caption, img.caption);
+    if (!p) throw new Error('caption already exists in both languages, so send it as {"en": "...", "de": "..."}');
+    img.caption = p;
   }
-  if (inc.factbox !== undefined) {
-    if (inc.factbox === null) delete e.factbox;
-    else {
-      if (!isObj(inc.factbox)) throw new Error("factbox must be an object or null");
-      const t = pairInto(inc.factbox.title, (e.factbox || {}).title), items = pairListInto(inc.factbox.items, (e.factbox || {}).items);
-      if (!t || !items) throw new Error('factbox needs title and items, each as {"en": ..., "de": ...}');
-      e.factbox = { title: t, items };
-    }
+  return img;
+}
+
+function normaliseChapter(inc, existing) {
+  const c = existing ? JSON.parse(JSON.stringify(existing))
+    : { id: "", title: { en: "", de: "" }, period: { en: "", de: "" }, paragraphs: { en: [], de: [] }, image: { src: "", caption: { en: "", de: "" } } };
+  if (inc.id) c.id = slug(inc.id);
+  for (const k of ["title", "period"]) if (inc[k] !== undefined) {
+    const p = pairInto(inc[k], c[k]);
+    if (!p) throw new Error(`${k} already exists in both languages, so send it as {"en": "...", "de": "..."} and not as one text`);
+    c[k] = p;
   }
-  return e;
+  if (inc.paragraphs !== undefined) {
+    const p = pairListInto(inc.paragraphs, c.paragraphs);
+    if (!p) throw new Error('paragraphs already exist, so send them as {"en": [...], "de": [...]} and not as one list');
+    c.paragraphs = p;
+  }
+  if (inc.draft !== undefined) { if (inc.draft) c.draft = true; else delete c.draft; }
+  if (inc.image !== undefined) c.image = inc.image === null ? { src: "", caption: { en: "", de: "" } } : imageInto(inc.image, c.image);
+  return c;
+}
+
+function normalisePost(inc, existing) {
+  const p = existing ? JSON.parse(JSON.stringify(existing))
+    : { id: "", date: today(), title: { en: "", de: "" }, excerpt: { en: "", de: "" }, paragraphs: { en: [], de: [] }, images: [] };
+  if (inc.id) p.id = slug(inc.id);
+  if (inc.date !== undefined) {
+    const d = String(inc.date);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) throw new Error("date must look like 2026-09-14");
+    p.date = d;
+  }
+  for (const k of ["title", "excerpt"]) if (inc[k] !== undefined) {
+    const q = pairInto(inc[k], p[k]);
+    if (!q) throw new Error(`${k} already exists in both languages, so send it as {"en": "...", "de": "..."} and not as one text`);
+    p[k] = q;
+  }
+  if (inc.paragraphs !== undefined) {
+    const q = pairListInto(inc.paragraphs, p.paragraphs);
+    if (!q) throw new Error('paragraphs already exist, so send them as {"en": [...], "de": [...]} and not as one list');
+    p.paragraphs = q;
+  }
+  if (inc.draft !== undefined) { if (inc.draft) p.draft = true; else delete p.draft; }
+  if (inc.commentsClosed !== undefined) { if (inc.commentsClosed) p.commentsClosed = true; else delete p.commentsClosed; }
+  if (inc.images !== undefined) {
+    if (!Array.isArray(inc.images)) throw new Error("images must be a list, send [] to remove all photos");
+    p.images = inc.images.map((im, i) => {
+      const cur = Array.isArray(existing && existing.images) ? existing.images.find((x) => x && x.src === (isObj(im) ? String(im.src || "") : "")) : null;
+      const out = imageInto(im, cur);
+      if (!out.src) throw new Error(`image ${i} has no src`);
+      return out;
+    });
+  }
+  // an excerpt that was never written follows the first paragraph
+  if (!p.excerpt.en && !p.excerpt.de && (p.paragraphs.en[0] || p.paragraphs.de[0])) {
+    p.excerpt = { en: String(p.paragraphs.en[0] || p.paragraphs.de[0]), de: String(p.paragraphs.de[0] || p.paragraphs.en[0]) };
+  }
+  return p;
+}
+
+// Reader comments arrive by email through the Netlify form, not through this API.
+// Alexander reads them and publishes the ones that belong on the page.
+function normaliseComment(inc, existing, list) {
+  const c = existing ? JSON.parse(JSON.stringify(existing)) : { id: "", post: "", name: "", text: "", date: today() };
+  if (inc.post !== undefined) c.post = slug(inc.post);
+  if (inc.name !== undefined) c.name = String(inc.name).slice(0, 60);
+  if (inc.text !== undefined) c.text = String(inc.text).slice(0, 2000);
+  if (inc.date !== undefined) {
+    const d = String(inc.date);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) throw new Error("date must look like 2026-09-14");
+    c.date = d;
+  }
+  if (inc.author !== undefined) {
+    if (inc.author === "me") c.author = "me";
+    else if (!inc.author) delete c.author;
+    else throw new Error('author is either "me" for a reply from Alexander, or left out for a reader');
+  }
+  if (inc.approved !== undefined) { if (inc.approved === false) c.approved = false; else delete c.approved; }
+  if (!c.post) throw new Error("comment needs post, the id of the text it belongs under");
+  if (!c.text) throw new Error("comment needs text");
+  if (!c.name) c.name = c.author === "me" ? "Alexander" : "Anonymous";
+  if (!c.id) {
+    const base = `${c.post}-${slug(c.name) || "reader"}`;
+    let n = 1, id = `${base}-${n}`;
+    while (list.some((x) => x && x.id === id)) { n += 1; id = `${base}-${n}`; }
+    c.id = id;
+  }
+  return c;
 }
 
 function validate(j) {
   const errs = [];
-  if (!isObj(j.masthead) || !j.masthead.name) errs.push("masthead.name must not be empty");
-  if (!Array.isArray(j.entries)) errs.push("entries must be a list");
+  const strList = (v) => Array.isArray(v) && v.every((x) => typeof x === "string");
+  if (!isObj(j.profile) || !j.profile.name) errs.push("profile.name must not be empty");
+
+  const chapters = ((j.story || {}).chapters) || [];
+  if (j.story && !Array.isArray(j.story.chapters)) errs.push("story.chapters must be a list");
   else {
     const ids = new Set();
-    j.entries.forEach((e, i) => {
-      if (!e || !e.id) { errs.push(`entry ${i} has no id`); return; }
-      if (ids.has(e.id)) errs.push(`duplicate entry id ${e.id}`);
-      ids.add(e.id);
-      for (const k of ["kicker", "title"]) if (!isObj(e[k])) errs.push(`entry ${e.id}: ${k} must be {en, de}`);
-      const strList = (v) => Array.isArray(v) && v.every((x) => typeof x === "string");
-      if (!isObj(e.paragraphs)) errs.push(`entry ${e.id}: paragraphs must be {en:[], de:[]}`);
+    chapters.forEach((c, i) => {
+      if (!c || !c.id) { errs.push(`chapter ${i} has no id`); return; }
+      if (ids.has(c.id)) errs.push(`duplicate chapter id ${c.id}`);
+      ids.add(c.id);
+      if (!isObj(c.title)) errs.push(`chapter ${c.id}: title must be {en, de}`);
+      if (!isObj(c.paragraphs)) errs.push(`chapter ${c.id}: paragraphs must be {en:[], de:[]}`);
       else {
-        for (const l of LANGS) if (e.paragraphs[l] !== undefined && !strList(e.paragraphs[l])) errs.push(`entry ${e.id}: paragraphs.${l} must be a list of sentences, each in quotation marks`);
-        if (!e.draft && LANGS.some((l) => !Array.isArray(e.paragraphs[l]) || !e.paragraphs[l].length)) errs.push(`entry ${e.id}: a published entry needs paragraphs in English and in German, or set draft true`);
+        for (const l of LANGS) if (c.paragraphs[l] !== undefined && !strList(c.paragraphs[l])) errs.push(`chapter ${c.id}: paragraphs.${l} must be a list of sentences, each in quotation marks`);
+        if (!c.draft && LANGS.some((l) => !Array.isArray(c.paragraphs[l]) || !c.paragraphs[l].length)) errs.push(`chapter ${c.id}: a published chapter needs paragraphs in English and in German, or set draft true`);
       }
-      if (e.factbox !== undefined) {
-        if (!isObj(e.factbox) || !isObj(e.factbox.items)) errs.push(`entry ${e.id}: factbox needs items {en:[], de:[]}, or send factbox null to remove it`);
-        else for (const l of LANGS) if (e.factbox.items[l] !== undefined && !strList(e.factbox.items[l])) errs.push(`entry ${e.id}: factbox.items.${l} must be a list of short lines`);
-      }
-      if (e.figure && e.figure.layout && !["block", "plate"].includes(e.figure.layout)) errs.push(`entry ${e.id}: figure.layout must be block or plate`);
-      if (e.figure && e.figure.src && !/^img\//.test(e.figure.src)) errs.push(`entry ${e.id}: figure.src must start with img/`);
+      if (c.image && c.image.src && !/^img\//.test(c.image.src)) errs.push(`chapter ${c.id}: image.src must start with img/`);
     });
-    const live = j.entries.filter((e) => !e.draft).length;
-    if (live > 6) errs.push(`${live} published entries, the page is designed for at most six`);
+    const live = chapters.filter((c) => !c.draft).length;
+    if (live > MAXCHAPTERS) errs.push(`${live} published chapters, the story is designed for at most ${MAXCHAPTERS}`);
   }
-  if (j.plates && !Array.isArray(j.plates.items)) errs.push("plates.items must be a list");
-  if (j.plates && Array.isArray(j.plates.items)) j.plates.items.forEach((p, i) => {
-    if (!p || !p.src) errs.push(`plate ${i} has no src`);
-    else if (!/^img\//.test(p.src)) errs.push(`plate ${i}: src must start with img/`);
-  });
+
+  const posts = ((j.writing || {}).posts) || [];
+  if (j.writing && !Array.isArray(j.writing.posts)) errs.push("writing.posts must be a list");
+  else {
+    const ids = new Set();
+    posts.forEach((p, i) => {
+      if (!p || !p.id) { errs.push(`post ${i} has no id`); return; }
+      if (ids.has(p.id)) errs.push(`duplicate post id ${p.id}`);
+      ids.add(p.id);
+      if (!isObj(p.title)) errs.push(`post ${p.id}: title must be {en, de}`);
+      if (p.date !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(String(p.date))) errs.push(`post ${p.id}: date must look like 2026-09-14`);
+      if (!isObj(p.paragraphs)) errs.push(`post ${p.id}: paragraphs must be {en:[], de:[]}`);
+      else {
+        for (const l of LANGS) if (p.paragraphs[l] !== undefined && !strList(p.paragraphs[l])) errs.push(`post ${p.id}: paragraphs.${l} must be a list of sentences, each in quotation marks`);
+        if (!p.draft && LANGS.some((l) => !Array.isArray(p.paragraphs[l]) || !p.paragraphs[l].length)) errs.push(`post ${p.id}: a published text needs paragraphs in English and in German, or set draft true`);
+      }
+      if (p.images !== undefined && !Array.isArray(p.images)) errs.push(`post ${p.id}: images must be a list`);
+      else (p.images || []).forEach((im, k) => {
+        if (!im || !im.src) errs.push(`post ${p.id}: image ${k} has no src`);
+        else if (!/^img\//.test(im.src)) errs.push(`post ${p.id}: image ${k} src must start with img/`);
+      });
+    });
+  }
+
+  if (j.comments !== undefined) {
+    if (!Array.isArray(j.comments)) errs.push("comments must be a list");
+    else {
+      const postIds = new Set(posts.map((p) => p && p.id));
+      const ids = new Set();
+      j.comments.forEach((c, i) => {
+        if (!isObj(c)) { errs.push(`comment ${i} must be an object`); return; }
+        if (!c.id) errs.push(`comment ${i} has no id`);
+        else if (ids.has(c.id)) errs.push(`duplicate comment id ${c.id}`);
+        ids.add(c.id);
+        if (typeof c.text !== "string" || !c.text) errs.push(`comment ${c.id || i}: text must not be empty`);
+        if (typeof c.name !== "string" || !c.name) errs.push(`comment ${c.id || i}: name must not be empty`);
+        if (!postIds.has(c.post)) errs.push(`comment ${c.id || i}: there is no text with the id ${c.post}`);
+        if (c.author !== undefined && c.author !== "me") errs.push(`comment ${c.id || i}: author is either "me" or left out`);
+      });
+    }
+  }
   return errs;
 }
 
@@ -203,7 +311,7 @@ exports.handler = async (event) => {
     if (!process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO) return json(500, { error: "Server not configured: set GITHUB_TOKEN and GITHUB_REPO" });
 
     const body = JSON.parse(event.body || "{}");
-    const action = body.action || (body.entry ? "entry" : body.sets ? "set" : body.patch ? "patch" : "");
+    const action = body.action || (body.chapter ? "chapter" : body.post ? "post" : body.comment ? "comment" : body.sets ? "set" : body.patch ? "patch" : "");
 
     // photo upload does not touch journal.json
     if (action === "image") {
@@ -217,7 +325,7 @@ exports.handler = async (event) => {
       const path = `${IMGDIR}${base}.${img.ext}`;
       const existing = await gh(path, { q: `?ref=${branch()}` });
       await writeFile(path, img.b64, `Journal photo ${base}.${img.ext}`, existing ? existing.sha : undefined);
-      return json(200, { ok: true, action, src: `img/${base}.${img.ext}`, message: `Photo stored as img/${base}.${img.ext}. Use that value as figure.src or plate src.` });
+      return json(200, { ok: true, action, src: `img/${base}.${img.ext}`, message: `Photo stored as img/${base}.${img.ext}. Use that value as image.src.` });
     }
 
     const { data: j, sha } = await readJson(FILE);
@@ -237,70 +345,101 @@ exports.handler = async (event) => {
       if (!sets.length) return json(400, { error: "sets must be a list of {path, value}" });
       try { for (const s of sets) setPath(j, s.path, s.value); } catch (e) { return json(400, { error: e.message }); }
       message = message || `Journal: set ${sets.map((s) => s.path).join(", ")}`;
-    } else if (action === "entry") {
-      const inc = body.entry || {};
-      if (!inc.id && !inc.title) return json(400, { error: "entry needs an id or a title" });
+    } else if (action === "chapter") {
+      const inc = body.chapter || {};
+      if (!inc.id && !inc.title) return json(400, { error: "chapter needs an id or a title" });
       const id = slug(inc.id || (isObj(inc.title) ? inc.title.en || inc.title.de : inc.title));
-      j.entries = Array.isArray(j.entries) ? j.entries : [];
-      const i = j.entries.findIndex((e) => e.id === id);
-      let e;
-      try { e = normaliseEntry({ ...inc, id }, i >= 0 ? j.entries[i] : null); } catch (err) { return json(400, { error: err.message }); }
-      if (e.figure && e.figure.src && (i < 0 || j.entries[i].figure?.src !== e.figure.src) && !(await fileExists(`portfolio/${e.figure.src}`)))
-        return json(400, { error: `There is no photo at portfolio/${e.figure.src}. Upload it first with action image, then use the path it returns.` });
-      if (i >= 0) { j.entries[i] = e; message = message || `Journal: update entry ${id}`; }
+      j.story = isObj(j.story) ? j.story : {};
+      j.story.chapters = Array.isArray(j.story.chapters) ? j.story.chapters : [];
+      const i = j.story.chapters.findIndex((c) => c.id === id);
+      let c;
+      try { c = normaliseChapter({ ...inc, id }, i >= 0 ? j.story.chapters[i] : null); } catch (err) { return json(400, { error: err.message }); }
+      if (c.image && c.image.src && (i < 0 || (j.story.chapters[i].image || {}).src !== c.image.src) && !(await fileExists(`portfolio/${c.image.src}`)))
+        return json(400, { error: `There is no photo at portfolio/${c.image.src}. Upload it first with action image, then use the path it returns.` });
+      if (i >= 0) { j.story.chapters[i] = c; message = message || `Journal: update chapter ${id}`; }
       else {
-        const at = Number.isInteger(body.position) ? Math.max(0, Math.min(j.entries.length, body.position)) : j.entries.length;
-        j.entries.splice(at, 0, e);
-        message = message || `Journal: add entry ${id}`;
+        const at = Number.isInteger(body.position) ? Math.max(0, Math.min(j.story.chapters.length, body.position)) : j.story.chapters.length;
+        j.story.chapters.splice(at, 0, c);
+        message = message || `Journal: add chapter ${id}`;
       }
-    } else if (action === "deleteEntry") {
+    } else if (action === "deleteChapter") {
       const id = slug(body.id || "");
-      const i = (j.entries || []).findIndex((e) => e.id === id);
-      if (i < 0) return json(404, { error: `No entry with id ${id}` });
-      j.entries.splice(i, 1);
-      message = message || `Journal: remove entry ${id}`;
-    } else if (action === "plate") {
-      const p = body.plate || {};
-      if (!p.src) return json(400, { error: "plate needs src" });
-      const src = String(p.src);
-      if (!/^img\//.test(src)) return json(400, { error: "plate src must start with img/" });
-      j.plates = j.plates || { items: [] };
-      j.plates.items = Array.isArray(j.plates.items) ? j.plates.items : [];
-      const i = j.plates.items.findIndex((x) => x.src === src);
-      let cap;
-      if (p.caption !== undefined) {
-        cap = pairInto(p.caption, i >= 0 ? j.plates.items[i].caption : null);
-        if (!cap) return json(400, { error: 'plate caption already exists in both languages, send {"en": "...", "de": "..."}' });
+      const list = (j.story || {}).chapters || [];
+      const i = list.findIndex((c) => c.id === id);
+      if (i < 0) return json(404, { error: `No chapter with id ${id}` });
+      list.splice(i, 1);
+      message = message || `Journal: remove chapter ${id}`;
+    } else if (action === "post") {
+      const inc = body.post || {};
+      if (!inc.id && !inc.title) return json(400, { error: "post needs an id or a title" });
+      const id = slug(inc.id || (isObj(inc.title) ? inc.title.en || inc.title.de : inc.title));
+      j.writing = isObj(j.writing) ? j.writing : {};
+      j.writing.posts = Array.isArray(j.writing.posts) ? j.writing.posts : [];
+      const i = j.writing.posts.findIndex((p) => p.id === id);
+      let p;
+      try { p = normalisePost({ ...inc, id }, i >= 0 ? j.writing.posts[i] : null); } catch (err) { return json(400, { error: err.message }); }
+      const had = new Set((i >= 0 ? (j.writing.posts[i].images || []) : []).map((im) => im && im.src));
+      for (const im of p.images || []) {
+        if (im.src && !had.has(im.src) && !(await fileExists(`portfolio/${im.src}`)))
+          return json(400, { error: `There is no photo at portfolio/${im.src}. Upload it first with action image, then use the path it returns.` });
       }
-      if (i < 0 && !(await fileExists(`portfolio/${src}`))) return json(400, { error: `There is no photo at portfolio/${src}. Upload it first with action image, then use the path it returns.` });
-      const item = { src };
-      if (cap) item.caption = cap;
-      if (p.size) item.size = String(p.size);
-      if (i >= 0) { j.plates.items[i] = { ...j.plates.items[i], ...item }; message = message || `Journal: update plate ${src}`; }
+      if (i >= 0) { j.writing.posts[i] = p; message = message || `Journal: update text ${id}`; }
       else {
-        const at = Number.isInteger(body.position) ? Math.max(0, Math.min(j.plates.items.length, body.position)) : j.plates.items.length;
-        j.plates.items.splice(at, 0, { src, caption: cap || { en: "", de: "" }, ...(item.size ? { size: item.size } : {}) });
-        message = message || `Journal: add plate ${src}`;
+        const at = Number.isInteger(body.position) ? Math.max(0, Math.min(j.writing.posts.length, body.position)) : 0;
+        j.writing.posts.splice(at, 0, p);
+        message = message || `Journal: add text ${id}`;
       }
-    } else if (action === "deletePlate") {
-      const src = String(body.src || "");
-      const i = ((j.plates || {}).items || []).findIndex((x) => x.src === src);
-      if (i < 0) return json(404, { error: `No plate with src ${src}` });
-      j.plates.items.splice(i, 1);
-      message = message || `Journal: remove plate ${src}`;
+    } else if (action === "deletePost") {
+      const id = slug(body.id || "");
+      const list = (j.writing || {}).posts || [];
+      const i = list.findIndex((p) => p.id === id);
+      if (i < 0) return json(404, { error: `No text with id ${id}` });
+      list.splice(i, 1);
+      j.comments = (Array.isArray(j.comments) ? j.comments : []).filter((c) => c.post !== id);
+      message = message || `Journal: remove text ${id}`;
+    } else if (action === "comment") {
+      const inc = body.comment || {};
+      j.comments = Array.isArray(j.comments) ? j.comments : [];
+      const id = inc.id ? String(inc.id) : "";
+      const i = id ? j.comments.findIndex((c) => c.id === id) : -1;
+      if (id && i < 0 && !inc.post) return json(404, { error: `No comment with id ${id}` });
+      let c;
+      try { c = normaliseComment({ ...inc, id }, i >= 0 ? j.comments[i] : null, j.comments); } catch (err) { return json(400, { error: err.message }); }
+      const posts = (j.writing || {}).posts || [];
+      const target = posts.find((p) => p.id === c.post);
+      if (!target) return json(400, { error: `There is no text with the id ${c.post}. Ask for the journal first and use one of the ids under writing.posts.` });
+      if (target.commentsClosed && c.author !== "me") return json(400, { error: `Comments are closed under ${c.post}.` });
+      if (i >= 0) { j.comments[i] = c; message = message || `Journal: update comment ${c.id}`; }
+      else { j.comments.push(c); message = message || `Journal: publish comment by ${c.name} under ${c.post}`; }
+    } else if (action === "hideComment") {
+      const id = String(body.id || "");
+      const i = (Array.isArray(j.comments) ? j.comments : []).findIndex((c) => c.id === id);
+      if (i < 0) return json(404, { error: `No comment with id ${id}` });
+      j.comments[i].approved = false;
+      message = message || `Journal: hide comment ${id}`;
+    } else if (action === "deleteComment") {
+      const id = String(body.id || "");
+      const i = (Array.isArray(j.comments) ? j.comments : []).findIndex((c) => c.id === id);
+      if (i < 0) return json(404, { error: `No comment with id ${id}` });
+      j.comments.splice(i, 1);
+      message = message || `Journal: remove comment ${id}`;
     } else {
-      return json(400, { error: "Unknown action. Use patch, set, entry, deleteEntry, plate, deletePlate or image" });
+      return json(400, { error: "Unknown action. Use patch, set, chapter, deleteChapter, post, deletePost, comment, hideComment, deleteComment or image" });
     }
 
     const errs = validate(j);
     if (errs.length) return json(400, { error: errs.join("; ") });
     if (JSON.stringify(j) === before) return json(200, { ok: true, action, message: "Nothing changed." });
 
-    const had = new Set(dashPaths(JSON.parse(before)).map((h) => h.value));
-    const now = dashPaths(j);
-    const introduced = now.filter((h) => !had.has(h.value));
-    if (introduced.length) return json(400, { error: `Dash character in ${introduced.map((h) => h.path).join(", ")}. Use a comma or a full stop. Nothing was written.` });
-    const stale = now.filter((h) => had.has(h.value)).map((h) => h.path);
+    // A reader writes as a reader. Only Alexander's own texts are held to the house style.
+    let stale = [];
+    if (!["comment", "hideComment", "deleteComment"].includes(action)) {
+      const had = new Set(dashPaths(JSON.parse(before)).map((h) => h.value));
+      const now = dashPaths(j);
+      const introduced = now.filter((h) => !had.has(h.value) && !/^comments\[/.test(h.path));
+      if (introduced.length) return json(400, { error: `Dash character in ${introduced.map((h) => h.path).join(", ")}. Use a comma or a full stop. Nothing was written.` });
+      stale = now.filter((h) => had.has(h.value) && !/^comments\[/.test(h.path)).map((h) => h.path);
+    }
 
     const doc = JSON.stringify(j, null, 2) + "\n";
     if (Buffer.byteLength(doc, "utf8") > MAXDOC) return json(400, { error: "This change would make journal.json larger than 512 kB, so nothing was written. A photo or a very long text has probably ended up in a text field." });
