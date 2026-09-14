@@ -142,6 +142,9 @@ Until a link is set, the button opens an email to the address in site.json (bran
 
 Impressum (ECG § 5 and Mediengesetz § 25): name, address, email, and for a business the UID or a note that you are a Kleinunternehmer. Rücktrittsrecht 14 days for consumers on prints; originals made to order are exempt but say so. All of this is generated from the Legal tab in admin.html (Impressum, Datenschutz with DSGVO and CCPA, AGB with Widerrufsformular, Versand und Steuern, US buyers, Barrierefreiheit). The texts are templates: let the WKO or a lawyer confirm them before the first sale.
 
+## Übergabe
+Die vollständige Anleitung für den Betrieb beider Seiten ohne Assistenten steht in HANDOVER.md. Kurz: Netlify-Variablen setzen, zweite Netlify-Seite für den Ordner portfolio anlegen, Custom GPT mit openapi.yaml verbinden.
+
 ## Alltag ohne Assistenten (Stand 13.09.2026)
 
 Alles Tägliche geht über den Studio desk auf seelischabstrakt.netlify.app/desk, direkt am iPad. Der Desk fragt nach einem Passwort: Netlify, Environment variables, DESK_PASSWORD setzen (der Name im Anmeldefenster ist egal), danach Trigger deploy. Ohne die Variable bleibt der Desk gesperrt. Einmalig im Tab Publish den GitHub-Token eintragen (Fine-grained, nur dieses Repo, Contents: Read and write). Der Token bleibt nur in deinem Browser.

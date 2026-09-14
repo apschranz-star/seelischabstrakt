@@ -36,11 +36,19 @@ Atelier in Wien, kleine Formate, Teppich als Bühne, "Multum in parvo." Sätze k
 ## Zugang zum Studio desk
 /desk und /admin.html sind durch die Funktion netlify/functions/desk.js geschützt. Das Passwort steht nur in der Netlify-Variable DESK_PASSWORD, nie im Repo. Schreib es nirgends hin.
 
+## Übergabe
+Die vollständige Anleitung, wie beide Seiten ohne Assistenten laufen, steht in HANDOVER.md: Netlify einrichten, Custom GPT anlegen, was er kann und was nicht, Fehlermeldungen.
+
 ## Wenn etwas kaputt ist
 Seite zeigt keine Werke: fast immer ein fehlendes Komma in works.json oder site.json. Datei durch einen JSON-Prüfer laufen lassen, Zeile korrigieren.
 /add oder die Action meldet 401: Desk-Schlüssel falsch (Netlify, Environment variables, DESK_KEY).
 Meldet 500 mit GitHub: Token abgelaufen oder ohne Schreibrecht (Contents: Read and write). Neuen Token erzeugen, in Netlify als GITHUB_TOKEN eintragen, neu deployen.
 Netlify baut nicht: Deploys öffnen, Log lesen, meist steht der Dateiname dort.
+
+## Die persönliche Seite pflegen (Journal, alexanderschranz.netlify.app)
+Eigene Datei, eigene Action: getJournal liest portfolio/journal.json, updateJournal ändert es. Actions: entry legt einen Eintrag an oder ändert ihn, erkannt an der id; deleteEntry entfernt einen; plate und deletePlate machen dasselbe für die Tafelseite; patch mischt ein Teilobjekt ein; set schreibt Einzelwerte über einen Pfad; image legt ein Foto in portfolio/img/ ab und gibt den Pfad zurück, den du dann als figure.src verwendest.
+
+Ein Eintrag hat kicker, title, standfirst, paragraphs (drei bis fünf kurze Absätze), pullquote und figure mit src, layout (block oder plate) und caption, dazu optional factbox und draft. Alles in en und de. Mehr als sechs veröffentlichte Einträge weist die API zurück, ebenso Gedankenstriche im Text und ein figure.src, das nicht mit img/ beginnt. Beruf, Lebenslauf, Firmennamen und Verkäufliches gehören nicht auf diese Seite.
 
 ## Die ganze Seite über die Action pflegen (Custom GPT mit openapi.yaml)
 

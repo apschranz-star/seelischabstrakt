@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
-  title: seelischabstrakt shop API
-  version: "1.0"
-  description: Add, update or remove artworks in the seelischabstrakt shop. Changes go live within about a minute.
+  title: Schranz sites API
+  version: "2.0"
+  description: Maintain both sites from one place. /works and /site drive the shop seelischabstrakt.netlify.app, /journal drives the personal page alexanderschranz.netlify.app. Every change is committed to the same GitHub repository and is live within about a minute.
 servers:
   - url: https://seelischabstrakt.netlify.app/api
 paths:
@@ -125,6 +125,96 @@ paths:
           description: Result with changed top-level keys and the new site settings
         "400":
           description: Validation error, nothing was written
+  /journal:
+    get:
+      operationId: getJournal
+      summary: Read the whole personal journal (masthead, entries, plates, colophon) of alexanderschranz.netlify.app
+      responses:
+        "200":
+          description: journal.json
+    post:
+      operationId: updateJournal
+      summary: Change the personal journal. Actions - entry adds or updates one entry, deleteEntry removes one, plate and deletePlate do the same for the photographs page, patch merges an object, set writes single values by path, image uploads a photograph.
+      security:
+        - deskKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [entry, deleteEntry, plate, deletePlate, patch, set, image]
+                entry:
+                  type: object
+                  description: One journal entry. Matched by id, so sending an existing id updates that entry and leaves the fields you omit untouched.
+                  properties:
+                    id: { type: string, description: "Short slug. Left out on a new entry it is derived from the English title." }
+                    kicker: { type: object, description: "Two or three words above the headline", properties: { en: { type: string }, de: { type: string } } }
+                    title: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                    standfirst: { type: object, description: "One sentence under the headline. It must say something the first paragraph does not.", properties: { en: { type: string }, de: { type: string } } }
+                    paragraphs: { type: object, description: "Three to five short paragraphs per language", properties: { en: { type: array, items: { type: string } }, de: { type: array, items: { type: string } } } }
+                    pullquote: { type: object, description: "One sentence taken from the entry itself", properties: { en: { type: string }, de: { type: string } } }
+                    draft: { type: boolean, description: "true writes the entry but keeps it off the page" }
+                    figure:
+                      type: object
+                      properties:
+                        src: { type: string, description: "Must start with img/ . Upload the photograph first with action image." }
+                        layout: { type: string, enum: [block, plate], description: "block sits beside the text, plate runs across the full width" }
+                        caption: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                        size: { type: string, description: "Pixel size of the file, for example 1400x1000" }
+                    factbox:
+                      type: object
+                      description: The one boxed list on the page. Send null to remove it.
+                      properties:
+                        title: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                        items: { type: object, properties: { en: { type: array, items: { type: string } }, de: { type: array, items: { type: string } } } }
+                position:
+                  type: integer
+                  description: Where to insert a new entry or plate. Left out it goes last.
+                id:
+                  type: string
+                  description: For deleteEntry
+                plate:
+                  type: object
+                  description: One photograph on the plates page, matched by src
+                  properties:
+                    src: { type: string }
+                    caption: { type: object, properties: { en: { type: string }, de: { type: string } } }
+                    size: { type: string }
+                src:
+                  type: string
+                  description: For deletePlate
+                patch:
+                  type: object
+                  description: "Partial journal.json. Allowed at top level - masthead, entries, plates, colophon, seo"
+                sets:
+                  type: array
+                  description: "Single values by dotted path, for example [{\"path\": \"masthead.motto.de\", \"value\": \"...\"}]"
+                  items:
+                    type: object
+                    properties:
+                      path: { type: string }
+                      value: {}
+                name:
+                  type: string
+                  description: For image. The file name without extension, it is turned into a slug.
+                imageBase64:
+                  type: string
+                  description: For image. A JPEG as base64.
+                imageUrl:
+                  type: string
+                  description: For image. A public https URL of a jpg, png or webp under 6 MB.
+                message:
+                  type: string
+                  description: Optional commit message
+      responses:
+        "200":
+          description: Result with the new journal
+        "400":
+          description: Validation failed, nothing was written
 components:
   securitySchemes:
     deskKey:
