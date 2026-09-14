@@ -3,21 +3,21 @@
   "profile": {
     "name": "Farida Benslimane",
     "title": {
-      "it": "Medico chirurgo, specialista in medicina generale",
-      "en": "Doctor of medicine and surgery, general practitioner",
-      "de": "Ärztin für Allgemeinmedizin",
-      "fr": "Médecin, spécialiste en médecine générale",
-      "ar": "طبيبة، اختصاص طب عام"
+      "it": "Medico di medicina generale",
+      "en": "General practitioner",
+      "de": "Hausärztin, Allgemeinmedizin",
+      "fr": "Médecin généraliste",
+      "ar": "طبيبة عامة"
     },
-    "_title": "Titolo professionale esatto, per esempio Medico chirurgo, specialista in ... . Da compilare.",
+    "_title": "Come sul profilo MioDottore. In italiano il titolo di studio è medico chirurgo, ma in inglese, tedesco e francese suonerebbe come chirurgo, quindi lì si scrive il ruolo reale.",
     "lead": {
       "it": "Sono un medico chirurgo specializzato in medicina generale. Ho un'ampia esperienza nel campo della pediatria e nel primo soccorso.",
-      "en": "I am a doctor of medicine and surgery, specialised in general medicine. I have wide experience in paediatrics and in first aid.",
-      "de": "Ich bin Ärztin mit Ausbildung in Allgemeinmedizin. Ich habe breite Erfahrung in der Kinderheilkunde und in der Erstversorgung.",
-      "fr": "Je suis médecin, spécialisée en médecine générale. J'ai une large expérience en pédiatrie et en premiers secours.",
-      "ar": "أنا طبيبة متخصصة في الطب العام، ولديّ خبرة واسعة في طب الأطفال وفي الإسعافات الأولية."
+      "en": "I am a physician working in general medicine. I have wide experience in paediatrics and in first aid.",
+      "de": "Ich bin Ärztin für Allgemeinmedizin. Ich habe breite Erfahrung in der Kinderheilkunde und in der Erstversorgung.",
+      "fr": "Je suis médecin généraliste. J'ai une large expérience en pédiatrie et en premiers secours.",
+      "ar": "أنا طبيبة عامة، ولديّ خبرة واسعة في طب الأطفال وفي الإسعافات الأولية."
     },
-    "_lead": "Sono le sue parole dal profilo MioDottore. Se vuole scriverle diversamente, basta cambiarle qui.",
+    "_lead": "L'italiano sono le sue parole dal profilo. Le altre lingue dicono la stessa cosa senza far pensare a un chirurgo.",
     "photo": "img/farida-benslimane.jpg",
     "photoSize": "267x267",
     "photoAlt": {
@@ -224,7 +224,9 @@
         "text": "Ottima professionista, accurata, scrupolosa e molto preparata."
       }
     ],
-    "_quotes": "Estratti dalle recensioni pubbliche su MioDottore, con la fonte indicata e il link al profilo. Non si modificano e non si traducono. La terza recensione non è qui: contiene un giudizio negativo su un altro medico, e il codice deontologico non permette di riprenderlo sul proprio sito."
+    "_quotes": "Estratti dalle recensioni pubbliche su MioDottore, con la fonte indicata e il link al profilo. Non si modificano e non si traducono. La terza recensione non è qui: contiene un giudizio negativo su un altro medico, e il codice deontologico non permette di riprenderlo sul proprio sito.",
+    "showQuotes": false,
+    "_showQuotes": "false tiene le citazioni fuori dalla pagina e lascia solo il voto con il link a MioDottore. Il codice deontologico chiede informazione non suggestiva, e le testimonianze dei pazienti sul proprio sito vengono spesso lette così. Metti true solo se lei, sentito l'Ordine, lo vuole."
   },
   "practice": {
     "draft": false,
