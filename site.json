@@ -67,8 +67,8 @@
       "US"
     ],
     "shippingNote": {
-      "en": "Shipping is shown at checkout as a flat rate by region. Austria: 9 EUR for prints, 19 EUR for originals. EU: 19 and 39 EUR. UK and Switzerland: 29 and 59 EUR. USA: 39 and 89 EUR. Rest of world: 49 and 119 EUR. Pickup in Vienna is free. Outside the EU, duties and import taxes are not included and are paid by the buyer on delivery.",
-      "de": "Versand wird im Checkout als Pauschale je Region angezeigt. Österreich: 9 EUR für Drucke, 19 EUR für Originale. EU: 19 und 39 EUR. UK und Schweiz: 29 und 59 EUR. USA: 39 und 89 EUR. Übrige Welt: 49 und 119 EUR. Abholung in Wien ist kostenlos. Außerhalb der EU sind Zoll und Einfuhrabgaben nicht enthalten und werden vom Käufer bei Lieferung bezahlt."
+      "en": "Shipping is shown at checkout as a flat rate by region. Austria: 9 EUR for editions, 19 EUR for originals. EU: 19 and 39 EUR. UK and Switzerland: 29 and 59 EUR. USA: 39 and 89 EUR. Rest of world: 49 and 119 EUR. Pickup in Vienna is free. Outside the EU, duties and import taxes are not included and are paid by the buyer on delivery.",
+      "de": "Versand wird im Checkout als Pauschale je Region angezeigt. Österreich: 9 EUR für Editionen, 19 EUR für Originale. EU: 19 und 39 EUR. UK und Schweiz: 29 und 59 EUR. USA: 39 und 89 EUR. Übrige Welt: 49 und 119 EUR. Abholung in Wien ist kostenlos. Außerhalb der EU sind Zoll und Einfuhrabgaben nicht enthalten und werden vom Käufer bei Lieferung bezahlt."
     },
     "usNote": {
       "en": "US buyers: prices are shown in EUR and converted by your card provider. No US sales tax is collected by the seller; import duties may apply on delivery (artworks under HTS 9701 are usually duty-free, but carriers may charge a brokerage fee).",
@@ -133,12 +133,9 @@
         ],
         "EU": [
           "Germany",
-          "Deutschland",
           "Italy",
-          "Italia",
           "France",
           "Spain",
-          "España",
           "Netherlands",
           "Belgium",
           "Czechia",
@@ -187,16 +184,16 @@
   },
   "texts": {
     "heroLead": {
-      "en": "Small paintings, drawings and heads from a Vienna studio. Originals on canvas, board and paper, framed as they hang here, and a small number of numbered editions.",
-      "de": "Kleine Bilder, Zeichnungen und Köpfe aus einem Wiener Atelier. Originale auf Leinwand, Karton und Papier, gerahmt wie sie hier hängen, dazu wenige nummerierte Editionen."
+      "en": "Paintings and drawings from a Vienna studio. Originals on canvas and on paper, each one a single piece, photographed on the carpet in the studio. Editions are in preparation.",
+      "de": "Bilder und Zeichnungen aus einem Wiener Atelier. Originale auf Leinwand und auf Papier, jedes Stück ein Unikat, fotografiert am Teppich im Atelier. Editionen sind in Vorbereitung."
     },
     "heroMeta": {
       "en": "First works online, more to come",
       "de": "Erste Werke online, weitere folgen"
     },
     "worksKicker": {
-      "en": "Originals and editions · staged on the carpet",
-      "de": "Originale und Editionen · inszeniert am Teppich"
+      "en": "Originals · photographed on the carpet",
+      "de": "Originale · fotografiert am Teppich"
     },
     "printsLead": {
       "en": "Each edition is signed and numbered and ships flat from Vienna. Editions are limited per size; a sold-out size will not be reprinted.",
@@ -333,8 +330,10 @@
         "notify.text": "A short note when a new work is released. No newsletter, no tracking.",
         "works.empty": "New works will be released soon.",
         "filter.empty": "Nothing in this selection at the moment.",
-        "trust": "Signed certificate of authenticity · Ships from Vienna · {d}-day returns on editions · Secure order, payment by Revolut",
-        "legal.us": "Buyers in the US"
+        "trust": "Signed certificate of authenticity · Ships insured from Vienna · {d} days to return a work that was in stock · Payment by Revolut",
+        "legal.us": "Buyers in the US",
+        "price.returns": "{d} days right of withdrawal on editions. Commissions made to order are exempt. For originals that were in stock we grant a voluntary return within the same period.",
+        "works.note": "Every work here is a single piece. The price is final, the signed certificate of authenticity is included, shipping is added at checkout."
       },
       "de": {
         "nav.works": "Werke",
@@ -357,8 +356,10 @@
         "notify.text": "Eine kurze Nachricht, wenn ein neues Werk erscheint. Kein Newsletter, kein Tracking.",
         "works.empty": "Neue Werke folgen in Kürze.",
         "filter.empty": "In dieser Auswahl gibt es derzeit nichts.",
-        "trust": "Signiertes Echtheitszertifikat · Versand aus Wien · {d} Tage Rückgabe bei Editionen · Sichere Bestellung, Zahlung per Revolut",
-        "legal.us": "Käufer in den USA"
+        "trust": "Signiertes Echtheitszertifikat · Versichert aus Wien · {d} Tage Rückgabe bei vorrätigen Werken · Zahlung per Revolut",
+        "legal.us": "Käufer in den USA",
+        "price.returns": "{d} Tage Widerrufsrecht bei Editionen. Auftragswerke nach Kundenwunsch sind ausgenommen. Bei vorrätigen Originalen gewähren wir freiwillig dieselbe Frist zur Rückgabe.",
+        "works.note": "Jedes Werk hier ist ein Unikat. Der Preis ist ein Endpreis, das signierte Echtheitszertifikat ist dabei, der Versand kommt im Checkout dazu."
       }
     }
   },

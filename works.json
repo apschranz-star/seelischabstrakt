@@ -28,7 +28,11 @@
       },
       "images": [
         "img/enter-the-void.jpg"
-      ]
+      ],
+      "alt": {
+        "en": "A large red eye painted on canvas, black paint running down from the upper lid, blue and grey brushwork around it.",
+        "de": "Ein großes rotes Auge auf Leinwand, vom oberen Lid rinnt schwarze Farbe herunter, rundherum blaue und graue Pinselzüge."
+      }
     },
     {
       "id": "w12",
@@ -53,12 +57,16 @@
       },
       "prints": [],
       "caption": {
-        "en": "Paint as thick as a scab on the left, a narrow strip of open red on the right, and in the corner a black knot that will not come undone. Fear is small in size and takes up the whole canvas anyway.",
-        "de": "Links Farbe, dick wie eine Kruste, rechts ein schmaler Streifen offenes Rot, in der Ecke ein schwarzer Knoten, der nicht aufgeht. Angst ist klein im Format und nimmt trotzdem die ganze Leinwand ein."
+        "en": "The left side is crusted, the paint standing thick enough to catch the light. The right side stays open: red, a violet sweep over the top, black strokes laid on it. In the lower corner the black knots together and does not come undone.",
+        "de": "Die linke Seite ist verkrustet, die Farbe steht so dick, dass sie Licht fängt. Rechts bleibt es offen: Rot, darüber ein violetter Zug, schwarze Striche daraufgelegt. In der unteren Ecke verknotet sich das Schwarz und geht nicht mehr auf."
       },
       "images": [
         "img/fear.jpg"
-      ]
+      ],
+      "alt": {
+        "en": "A square canvas, the left half crusted with thick paint, the right half open red with black strokes laid across it.",
+        "de": "Eine quadratische Leinwand, die linke Hälfte verkrustet mit dicker Farbe, die rechte Hälfte offenes Rot mit schwarzen Strichen darüber."
+      }
     },
     {
       "id": "w10",
@@ -89,7 +97,11 @@
       "images": [
         "img/suffering-is-eternal.jpg",
         "img/suffering-is-eternal-framed.jpg"
-      ]
+      ],
+      "alt": {
+        "en": "A head drawn with a marker in one continuous line on pale blue paper, black running from the mouth, the crossed out title above it.",
+        "de": "Ein Kopf, mit Marker in einer durchgehenden Linie auf hellblaues Papier gezeichnet, aus dem Mund rinnt Schwarz, darüber der durchgestrichene Titel."
+      }
     }
   ]
 }
