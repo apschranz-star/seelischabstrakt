@@ -59,7 +59,7 @@ Security notes: keep DESK_KEY out of Instagram bios and screenshots; rotate it i
 Buyer on a phone: shipping was "quoted later", which kills conversion and is not compliant (the total must be visible before the pay button). Now: country selector, flat rates per region from site.json, live total, Revolut link carries the full amount, free pickup in Vienna. Buyer gets "Email me a copy" and "Print or save as PDF"; you still send the formal invoice within 48 hours.
 Designer: small muted text on the red carpet was below WCAG contrast; lightened. Extra photos per work (detail, in room) show as thumbnails in the large view. Browser language is detected on first visit.
 Tax adviser: Kleinunternehmer flag was set inconsistently in two places; now one switch (Shop tab) drives price footnote, Terms and Shipping page. Default is now Kleinunternehmer = true; change it the day you register for VAT.
-Technician: og.jpg placeholder generated so shared links show a preview; replace with a real photo of a framed work on the carpet, 1200 × 630. Print stylesheet for order confirmations.
+Technician: img/og-carpet.jpg is the preview picture for shared links, 1200 × 630, the wordmark on the carpet. Print stylesheet for order confirmations.
 Operator after three months: an email signup ("New works by email", Netlify form "notify") so the shop collects interested people from day one; export the list from Netlify → Forms when you post a new piece. Edition counting for prints is still manual: when a size sells out, delete that print row in the Studio desk.
 
 Still open, by choice: no card checkout (add a Stripe Payment Link per work when volume justifies the fees), no automatic invoice (use a free invoice template or your bank's tool; the order email has every field), no stock reservation (a static site cannot lock an original for a pending payment; if two people order the same original, the first payment wins and you refund the second).
@@ -128,7 +128,7 @@ Commas matter: every block and every field is separated by a comma, except the l
 - Keep the carpet in the photo if nomat is true.
 - JPG, 1600 px on the long side is plenty. Smaller files load faster. squoosh.app compresses for free in the browser.
 - Name files simply: kopf-rot.jpg, not IMG_4821.JPG.
-- Optional: put a 1200 × 630 image called og.jpg in img/ and it becomes the preview image when the link is shared.
+- The preview picture for shared links is img/og-carpet.jpg, 1200 × 630. Replacing it needs a new file name, otherwise WhatsApp keeps showing the old one from its cache. New name, then the two og:image lines and the twitter:image line in index.html.
 
 ## Taking money
 
