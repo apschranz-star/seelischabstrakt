@@ -27,12 +27,16 @@
       "fr": "Farida Benslimane",
       "ar": "فريدة بن سليمان"
     },
+    "heroImage": "",
+    "_heroImage": "Foto larga di sfondo per la testata, per esempio img/studio.jpg. Senza foto la testata resta blu, e va bene così.",
+    "whatsapp": "",
+    "_whatsapp": "Numero WhatsApp in formato internazionale senza spazi, per esempio +393331234567. Compare come pulsante fisso in basso.",
     "city": {
-      "it": "Acquapendente e Bagnoregio, provincia di Viterbo",
-      "en": "Acquapendente and Bagnoregio, province of Viterbo",
-      "de": "Acquapendente und Bagnoregio, Provinz Viterbo",
-      "fr": "Acquapendente et Bagnoregio, province de Viterbe",
-      "ar": "أكوابندنتي وبانيوريجو، محافظة فيتربو"
+      "it": "Acquapendente · Bagnoregio",
+      "en": "Acquapendente · Bagnoregio",
+      "de": "Acquapendente · Bagnoregio",
+      "fr": "Acquapendente · Bagnoregio",
+      "ar": "أكوابندنتي · بانيوريجو"
     },
     "email": "",
     "phone": "",
@@ -197,11 +201,11 @@
       "value": "5,0",
       "count": 3,
       "label": {
-        "it": "{v} su 5, da {n} recensioni verificate su MioDottore",
-        "en": "{v} out of 5, from {n} verified reviews on MioDottore",
-        "de": "{v} von 5, aus {n} geprüften Bewertungen auf MioDottore",
-        "fr": "{v} sur 5, sur {n} avis vérifiés sur MioDottore",
-        "ar": "{v} من 5، بناءً على {n} تقييمات موثقة على MioDottore"
+        "it": "{n} recensioni verificate su MioDottore",
+        "en": "{n} verified reviews on MioDottore",
+        "de": "{n} geprüfte Bewertungen auf MioDottore",
+        "fr": "{n} avis vérifiés sur MioDottore",
+        "ar": "{n} تقييمات موثقة على MioDottore"
       }
     },
     "_rating": "Il voto e il numero vengono dal profilo pubblico. Aggiornarli quando cambiano.",
@@ -439,6 +443,41 @@
       "de": "Patientenstimmen",
       "fr": "Témoignages",
       "ar": "شهادات المرضى"
+    },
+    "whatsapp": {
+      "it": "WhatsApp",
+      "en": "WhatsApp",
+      "de": "WhatsApp",
+      "fr": "WhatsApp",
+      "ar": "واتساب"
+    },
+    "callAria": {
+      "it": "Chiama lo studio",
+      "en": "Call the practice",
+      "de": "Praxis anrufen",
+      "fr": "Appeler le cabinet",
+      "ar": "اتصل بالعيادة"
+    },
+    "trustRating": {
+      "it": "Giudizio dei pazienti",
+      "en": "Patient rating",
+      "de": "Bewertung der Patienten",
+      "fr": "Avis des patients",
+      "ar": "تقييم المرضى"
+    },
+    "trustWhere": {
+      "it": "Dove riceve",
+      "en": "Where she practises",
+      "de": "Sprechorte",
+      "fr": "Lieux de consultation",
+      "ar": "أماكن العمل"
+    },
+    "trustWhat": {
+      "it": "Competenze",
+      "en": "Expertise",
+      "de": "Schwerpunkte",
+      "fr": "Compétences",
+      "ar": "الاختصاصات"
     }
   },
   "seo": {
