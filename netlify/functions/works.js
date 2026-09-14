@@ -25,9 +25,11 @@ async function gh(path, opts = {}) {
   return r.json();
 }
 const branch = () => process.env.GITHUB_BRANCH || "main";
+const MAXDOC = 512 * 1024;
 async function readJson(path) {
   const f = await gh(path, { q: `?ref=${branch()}` });
   if (!f) return { data: null, sha: undefined };
+  if (f.encoding !== "base64" || !f.content) throw new Error(`${path} is larger than 1 MB and can no longer be read through the API. Open the Studio desk, remove the oversized text and publish again.`);
   return { data: JSON.parse(Buffer.from(f.content, "base64").toString("utf8")), sha: f.sha };
 }
 async function writeFile(path, contentBase64, message, sha) {
@@ -70,20 +72,30 @@ exports.handler = async (event) => {
       let existing = incoming.id ? works.find((x) => x.id === incoming.id) : null;
       if (action === "update" && !existing) return json(404, { error: `No work with id ${incoming.id}` });
       if (!existing) {
-        if (!incoming.title) return json(400, { error: "title is required" });
+        for (const k of ["title", "w", "h", "price"])
+          if (incoming[k] === undefined || incoming[k] === "") return json(400, { error: `${k} is required on a new work. Ask Alexander for it; nothing was written.` });
         existing = { id: slug(incoming.title), title: incoming.title, year: new Date().getFullYear(), medium: { en: "", de: "" }, w: 30, h: 24, size: "", tilt: 0, nomat: false, original: { price: 0, available: true, link: "" }, prints: [] };
-        if (works.some((x) => x.id === existing.id)) existing.id += "-" + Date.now().toString(36);
+        if (works.some((x) => x.id === existing.id)) return json(409, { error: `A work with the id ${existing.id} already exists. To change it send that id, to add a second one give it a different title.` });
         works.unshift(existing);
         message = `Add ${existing.title}`;
       } else message = `Update ${existing.title}`;
       // merge simple fields
-      for (const k of ["title", "year", "w", "h", "size", "tilt", "nomat", "style", "seed"]) if (incoming[k] !== undefined) existing[k] = incoming[k];
+      for (const k of ["title", "size", "nomat", "style"]) if (incoming[k] !== undefined) existing[k] = incoming[k];
       for (const k of ["medium", "caption", "alt"]) if (incoming[k] !== undefined) existing[k] = typeof incoming[k] === "string" ? { en: incoming[k], de: existing[k]?.de || "" } : { ...(existing[k] || {}), ...incoming[k] };
-      if (incoming.price !== undefined) existing.original.price = Number(incoming.price);
-      if (incoming.available !== undefined) existing.original.available = !!incoming.available;
-      if (incoming.link !== undefined) existing.original.link = incoming.link;
-      if (incoming.original) existing.original = { ...existing.original, ...incoming.original };
-      if (Array.isArray(incoming.prints)) existing.prints = incoming.prints.map((p) => ({ size: p.size, price: Number(p.price), link: p.link || "" }));
+      const num = (v, what) => { if (typeof v !== "number" || !Number.isFinite(v)) throw new Error(`${what} must be a plain number without quotation marks and without a thousands separator, for example 4800`); return v; };
+      try {
+        for (const k of ["year", "w", "h", "tilt", "seed"]) if (incoming[k] !== undefined) existing[k] = num(incoming[k], k);
+        if (incoming.price !== undefined) existing.original.price = num(incoming.price, "price");
+        if (incoming.available !== undefined) existing.original.available = !!incoming.available;
+        if (incoming.link !== undefined) existing.original.link = String(incoming.link);
+        if (incoming.original) {
+          const o = incoming.original;
+          if (o.price !== undefined) existing.original.price = num(o.price, "original.price");
+          if (o.available !== undefined) existing.original.available = !!o.available;
+          if (o.link !== undefined) existing.original.link = String(o.link);
+        }
+        if (Array.isArray(incoming.prints)) existing.prints = incoming.prints.map((pr) => ({ size: String(pr.size || ""), price: num(pr.price, "print price"), link: pr.link ? String(pr.link) : "" }));
+      } catch (e) { return json(400, { error: `${e.message}. Nothing was written.` }); }
       // photo: base64 (from add.html) or a public URL (from a chat that can hand over a link)
       let img;
       if (incoming.imageBase64) img = { b64: incoming.imageBase64.replace(/^data:image\/\w+;base64,/, ""), ext: "jpg" };
@@ -95,8 +107,9 @@ exports.handler = async (event) => {
       }
       work = existing;
     }
-    const content = Buffer.from(JSON.stringify({ works }, null, 2), "utf8").toString("base64");
-    await writeFile("works.json", content, message, sha);
+    const doc = JSON.stringify({ works }, null, 2);
+    if (Buffer.byteLength(doc, "utf8") > MAXDOC) return json(400, { error: "This change would make works.json larger than 512 kB, so nothing was written. A photo or a very long text has probably ended up in a text field." });
+    await writeFile("works.json", Buffer.from(doc, "utf8").toString("base64"), message, sha);
     return json(200, { ok: true, action, work, message: `${message}. Netlify is rebuilding; live in about a minute.` });
   } catch (e) {
     return json(500, { error: e.message });

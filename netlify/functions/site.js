@@ -26,9 +26,11 @@ async function gh(path, opts = {}) {
   return r.json();
 }
 const branch = () => process.env.GITHUB_BRANCH || "main";
+const MAXDOC = 512 * 1024;
 async function readJson(path) {
   const f = await gh(path, { q: `?ref=${branch()}` });
   if (!f) return { data: null, sha: undefined };
+  if (f.encoding !== "base64" || !f.content) throw new Error(`${path} is larger than 1 MB and can no longer be read through the API. Open the Studio desk, remove the oversized text and publish again.`);
   return { data: JSON.parse(Buffer.from(f.content, "base64").toString("utf8")), sha: f.sha };
 }
 async function writeFile(path, contentBase64, message, sha) {
@@ -50,8 +52,13 @@ function setPath(obj, path, value) {
   for (let i = 0; i < parts.length - 1; i++) {
     const k = parts[i];
     if (k === "__proto__" || k === "constructor") throw new Error("Invalid path");
-    if (Array.isArray(cur) && /^\d+$/.test(k)) { cur = cur[Number(k)]; continue; }
-    if (!isObj(cur[k]) && !Array.isArray(cur[k])) cur[k] = {};
+    if (Array.isArray(cur) && /^\d+$/.test(k)) { cur = cur[Number(k)]; if (cur === undefined) throw new Error(`No item at ${path}`); continue; }
+    const here = cur[k];
+    if (here !== undefined && here !== null && !isObj(here) && !Array.isArray(here)) {
+      const sofar = parts.slice(0, i + 1).join(".");
+      throw new Error(`${sofar} is a single value, not a group. Set it directly, for example {"path":"${sofar}","value":"..."} . It has no en and de parts.`);
+    }
+    if (!isObj(here) && !Array.isArray(here)) cur[k] = {};
     cur = cur[k];
   }
   const last = parts[parts.length - 1];
@@ -67,6 +74,28 @@ function validate(site) {
   for (const l of ["en", "de"]) { const ui = site.texts?.ui?.[l]; if (ui !== undefined && !isObj(ui)) errs.push(`texts.ui.${l} must be an object of key: text`); }
   if (site.theme?.customCss !== undefined && typeof site.theme.customCss !== "string") errs.push("theme.customCss must be a string");
   if (typeof site.theme?.customCss === "string" && /<\/?script|@import|url\((?!["']?(data:|img\/))/i.test(site.theme.customCss)) errs.push("theme.customCss may not contain script tags, @import or external url()");
+  // fields the page treats as one value must stay one value, not an en and de pair
+  for (const k of ["name", "wordmarkTop", "wordmarkBottom", "motto", "artist", "city", "instagram", "email", "personSite", "logo"])
+    if (site.brand?.[k] !== undefined && site.brand[k] !== null && typeof site.brand[k] !== "string")
+      errs.push(`brand.${k} must be a single text, not an en and de pair`);
+  for (const [k, v] of Object.entries(site.legal || {}))
+    if (v !== null && typeof v === "object") errs.push(`legal.${k} must be a single value, not an en and de pair`);
+  // fields the page loops over must stay lists
+  for (const [name, v] of [["texts.aboutParagraphs", site.texts?.aboutParagraphs], ["texts.commission.steps", site.texts?.commission?.steps]]) {
+    if (v === undefined) continue;
+    if (!isObj(v)) { errs.push(`${name} must be an object with en and de, each a list of paragraphs`); continue; }
+    for (const l of ["en", "de"]) {
+      if (typeof v[l] === "string") v[l] = [v[l]];
+      else if (v[l] !== undefined && !Array.isArray(v[l])) errs.push(`${name}.${l} must be a list, for example ["Erster Absatz.","Zweiter Absatz."]`);
+    }
+    if (!Array.isArray(v.en)) errs.push(`${name}.en must exist as a list, it is the fallback for every language`);
+  }
+  if (site.texts?.commission !== undefined && !isObj(site.texts.commission)) errs.push("texts.commission must be an object with intro and steps");
+  if (site.texts?.facts !== undefined && !Array.isArray(site.texts.facts)) errs.push("texts.facts must be a list of {label, value}");
+  if (Array.isArray(site.printTiers)) site.printTiers.forEach((tier, i) => {
+    if (!isObj(tier)) errs.push(`printTiers ${i} must be an object`);
+    else if (tier.price !== undefined && typeof tier.price !== "number") errs.push(`printTiers ${i}: price must be a plain number`);
+  });
   return errs;
 }
 
@@ -108,8 +137,9 @@ exports.handler = async (event) => {
     if (JSON.stringify(site) === before) return json(200, { ok: true, action, changed: [], message: "Nothing changed." });
 
     const message = body.message || `Update site: ${[...changed].join(", ")}`;
-    const content = Buffer.from(JSON.stringify(site, null, 2) + "\n", "utf8").toString("base64");
-    await writeFile("site.json", content, message, sha);
+    const doc = JSON.stringify(site, null, 2) + "\n";
+    if (Buffer.byteLength(doc, "utf8") > MAXDOC) return json(400, { error: "This change would make site.json larger than 512 kB, so nothing was written. A photo or a very long text has probably ended up in a text field." });
+    await writeFile("site.json", Buffer.from(doc, "utf8").toString("base64"), message, sha);
     const { publish, ...pub } = site;
     return json(200, { ok: true, action, changed: [...changed], site: pub, message: `${message}. Netlify is rebuilding; live in about a minute.` });
   } catch (e) {

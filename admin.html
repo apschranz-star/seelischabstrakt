@@ -449,15 +449,20 @@ $("#btn-publish").onclick=async()=>{
   try{
     const photos=WORKS.filter(w=>w._newFile); let n=0;
     for(const w of photos){ st.textContent=`Uploading photo ${++n} of ${photos.length}…`; await ghPut(w.img, await b64(w._newFile.blob), `Add photo ${w._newFile.name}`); }
-    st.textContent="Writing works.json…"; await ghPut("works.json", btoa(unescape(encodeURIComponent(JSON.stringify({works:cleanWorks()},null,2)))), "Update works");
-    st.textContent="Writing site.json…"; await ghPut("site.json", btoa(unescape(encodeURIComponent(JSON.stringify(SITE,null,2)))), "Update site settings");
+    const nowWorks=JSON.stringify({works:cleanWorks()},null,2), nowSite=JSON.stringify(SITE,null,2), skipped=[];
+    if(nowWorks!==SNAP.works){ st.textContent="Writing works.json…"; await ghPut("works.json", btoa(unescape(encodeURIComponent(nowWorks))), "Update works"); } else skipped.push("works.json");
+    if(nowSite!==SNAP.site){ st.textContent="Writing site.json…"; await ghPut("site.json", btoa(unescape(encodeURIComponent(nowSite))), "Update site settings"); } else skipped.push("site.json");
+    SNAP.works=nowWorks; SNAP.site=nowSite;
     WORKS.forEach(w=>{ delete w._newFile; }); renderWorks();
-    st.textContent="Published. Netlify is rebuilding; the live site updates in about a minute."; st.className="status ok"; status("Published to GitHub","ok");
+    st.textContent="Published. Netlify is rebuilding; the live site updates in about a minute."+(skipped.length?" Not touched, so not overwritten: "+skipped.join(", ")+".":""); st.className="status ok"; status("Published to GitHub","ok");
   }catch(e){ st.textContent="Publish failed: "+e.message+". Check token permissions (Contents: read and write) and repository name."; st.className="status warn"; }
   btn.disabled=false;
 };
 
-function boot(){ bindSite(); bindDesign(); bindTiers(); bindFacts(); renderWorks(); ghLoad(); $("#preview").onload=()=>setTimeout(preview,300); setTimeout(preview,800); }
+/* what the desk loaded, so publishing never overwrites a file it did not change */
+const SNAP={};
+function snapshot(){ try{ SNAP.site=JSON.stringify(SITE,null,2); SNAP.works=JSON.stringify({works:cleanWorks()},null,2); }catch(e){} }
+function boot(){ bindSite(); bindDesign(); bindTiers(); bindFacts(); renderWorks(); ghLoad(); snapshot(); $("#preview").onload=()=>setTimeout(preview,300); setTimeout(preview,800); }
 tryFetch();
 </script>
 <div class="cropper" id="cropper" role="dialog" aria-modal="true" aria-label="Crop photo">

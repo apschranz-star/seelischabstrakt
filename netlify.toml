@@ -126,3 +126,13 @@
   to = "/.netlify/functions/desk"
   status = 200
   force = true
+[[redirects]]
+  from = "/admin"
+  to = "/.netlify/functions/desk"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/admin/*"
+  to = "/.netlify/functions/desk"
+  status = 200
+  force = true

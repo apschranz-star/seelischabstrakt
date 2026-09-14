@@ -37,10 +37,15 @@ async function gh(path, opts = {}) {
   return r.json();
 }
 const branch = () => process.env.GITHUB_BRANCH || "main";
+const MAXDOC = 512 * 1024;
 async function readJson(path) {
   const f = await gh(path, { q: `?ref=${branch()}` });
   if (!f) return { data: null, sha: undefined };
+  if (f.encoding !== "base64" || !f.content) throw new Error(`${path} is larger than 1 MB and can no longer be read through the API. Edit it in GitHub, remove the oversized text and try again.`);
   return { data: JSON.parse(Buffer.from(f.content, "base64").toString("utf8")), sha: f.sha };
+}
+async function fileExists(path) {
+  try { return !!(await gh(path, { q: `?ref=${branch()}` })); } catch (e) { return true; }
 }
 async function writeFile(path, contentBase64, message, sha) {
   return gh(path, { method: "PUT", body: { message, content: contentBase64, branch: branch(), sha } });
@@ -82,19 +87,49 @@ function setPath(obj, path, value) {
   if (Array.isArray(cur) && /^\d+$/.test(last)) cur[Number(last)] = value; else cur[last] = value;
 }
 
-// text fields are {en, de}; a plain string is accepted and stored for both
-const pair = (v) => (typeof v === "string" ? { en: v, de: v } : (isObj(v) ? { en: String(v.en || v.de || ""), de: String(v.de || v.en || "") } : null));
-const pairList = (v) => {
-  if (Array.isArray(v)) return { en: v.map(String), de: v.map(String) };
-  if (isObj(v)) return { en: (v.en || v.de || []).map(String), de: (v.de || v.en || []).map(String) };
-  return null;
+// Text fields are {en, de}. A named language overwrites only that language, an empty side
+// is filled from the other one, and a bare string is refused once text already exists.
+const pairInto = (v, cur) => {
+  const out = { en: String((cur && cur.en) || ""), de: String((cur && cur.de) || "") };
+  if (typeof v === "string") {
+    if (out.en || out.de) return null;
+    return { en: v, de: v };
+  }
+  if (!isObj(v)) return null;
+  if (v.en !== undefined) out.en = String(v.en);
+  if (v.de !== undefined) out.de = String(v.de);
+  if (!out.en) out.en = out.de;
+  if (!out.de) out.de = out.en;
+  return out;
 };
+const pairListInto = (v, cur) => {
+  const arr = (x) => (Array.isArray(x) ? x.map(String) : []);
+  const out = { en: arr(cur && cur.en), de: arr(cur && cur.de) };
+  if (Array.isArray(v)) {
+    if (out.en.length || out.de.length) return null;
+    return { en: v.map(String), de: v.map(String) };
+  }
+  if (!isObj(v)) return null;
+  if (Array.isArray(v.en)) out.en = v.en.map(String);
+  if (Array.isArray(v.de)) out.de = v.de.map(String);
+  if (!out.en.length) out.en = out.de.slice();
+  if (!out.de.length) out.de = out.en.slice();
+  return out;
+};
+const pair = (v) => pairInto(v, null);
+// every string value that carries a dash, with the path where it sits
+function dashPaths(v, path = "", out = []) {
+  if (typeof v === "string") { if (/[\u2013\u2014]/.test(v)) out.push({ path: path || "(root)", value: v }); }
+  else if (Array.isArray(v)) v.forEach((x, i) => dashPaths(x, `${path}[${i}]`, out));
+  else if (isObj(v)) for (const [k, x] of Object.entries(v)) dashPaths(x, path ? `${path}.${k}` : k, out);
+  return out;
+}
 
 function normaliseEntry(inc, existing) {
   const e = existing ? JSON.parse(JSON.stringify(existing)) : { id: "", kicker: { en: "", de: "" }, title: { en: "", de: "" }, standfirst: { en: "", de: "" }, paragraphs: { en: [], de: [] }, pullquote: { en: "", de: "" }, figure: { src: "", layout: "block", caption: { en: "", de: "" } } };
   if (inc.id) e.id = slug(inc.id);
-  for (const k of ["kicker", "title", "standfirst", "pullquote"]) if (inc[k] !== undefined) { const p = pair(inc[k]); if (!p) throw new Error(`${k} must be a string or {en, de}`); e[k] = p; }
-  if (inc.paragraphs !== undefined) { const p = pairList(inc.paragraphs); if (!p) throw new Error("paragraphs must be a list or {en:[], de:[]}"); e.paragraphs = p; }
+  for (const k of ["kicker", "title", "standfirst", "pullquote"]) if (inc[k] !== undefined) { const p = pairInto(inc[k], e[k]); if (!p) throw new Error(`${k} already exists in both languages, so send it as {"en": "...", "de": "..."} and not as one text`); e[k] = p; }
+  if (inc.paragraphs !== undefined) { const p = pairListInto(inc.paragraphs, e.paragraphs); if (!p) throw new Error('paragraphs already exist, so send them as {"en": [...], "de": [...]} and not as one list'); e.paragraphs = p; }
   if (inc.draft !== undefined) { if (inc.draft) e.draft = true; else delete e.draft; }
   if (inc.figure !== undefined) {
     if (!isObj(inc.figure)) throw new Error("figure must be an object");
@@ -104,15 +139,15 @@ function normaliseEntry(inc, existing) {
       if (!["block", "plate"].includes(inc.figure.layout)) throw new Error('figure.layout must be "block" or "plate"');
       e.figure.layout = inc.figure.layout;
     }
-    if (inc.figure.caption !== undefined) { const p = pair(inc.figure.caption); if (!p) throw new Error("figure.caption must be a string or {en, de}"); e.figure.caption = p; }
+    if (inc.figure.caption !== undefined) { const p = pairInto(inc.figure.caption, e.figure.caption); if (!p) throw new Error('figure.caption already exists in both languages, send {"en": "...", "de": "..."}'); e.figure.caption = p; }
     if (inc.figure.size !== undefined) e.figure.size = String(inc.figure.size);
   }
   if (inc.factbox !== undefined) {
     if (inc.factbox === null) delete e.factbox;
     else {
       if (!isObj(inc.factbox)) throw new Error("factbox must be an object or null");
-      const t = pair(inc.factbox.title), items = pairList(inc.factbox.items);
-      if (!t || !items) throw new Error("factbox needs title and items");
+      const t = pairInto(inc.factbox.title, (e.factbox || {}).title), items = pairListInto(inc.factbox.items, (e.factbox || {}).items);
+      if (!t || !items) throw new Error('factbox needs title and items, each as {"en": ..., "de": ...}');
       e.factbox = { title: t, items };
     }
   }
@@ -130,7 +165,16 @@ function validate(j) {
       if (ids.has(e.id)) errs.push(`duplicate entry id ${e.id}`);
       ids.add(e.id);
       for (const k of ["kicker", "title"]) if (!isObj(e[k])) errs.push(`entry ${e.id}: ${k} must be {en, de}`);
-      if (!isObj(e.paragraphs) || !LANGS.some((l) => Array.isArray(e.paragraphs[l]))) errs.push(`entry ${e.id}: paragraphs must be {en:[], de:[]}`);
+      const strList = (v) => Array.isArray(v) && v.every((x) => typeof x === "string");
+      if (!isObj(e.paragraphs)) errs.push(`entry ${e.id}: paragraphs must be {en:[], de:[]}`);
+      else {
+        for (const l of LANGS) if (e.paragraphs[l] !== undefined && !strList(e.paragraphs[l])) errs.push(`entry ${e.id}: paragraphs.${l} must be a list of sentences, each in quotation marks`);
+        if (!e.draft && LANGS.some((l) => !Array.isArray(e.paragraphs[l]) || !e.paragraphs[l].length)) errs.push(`entry ${e.id}: a published entry needs paragraphs in English and in German, or set draft true`);
+      }
+      if (e.factbox !== undefined) {
+        if (!isObj(e.factbox) || !isObj(e.factbox.items)) errs.push(`entry ${e.id}: factbox needs items {en:[], de:[]}, or send factbox null to remove it`);
+        else for (const l of LANGS) if (e.factbox.items[l] !== undefined && !strList(e.factbox.items[l])) errs.push(`entry ${e.id}: factbox.items.${l} must be a list of short lines`);
+      }
       if (e.figure && e.figure.layout && !["block", "plate"].includes(e.figure.layout)) errs.push(`entry ${e.id}: figure.layout must be block or plate`);
       if (e.figure && e.figure.src && !/^img\//.test(e.figure.src)) errs.push(`entry ${e.id}: figure.src must start with img/`);
     });
@@ -142,8 +186,6 @@ function validate(j) {
     if (!p || !p.src) errs.push(`plate ${i} has no src`);
     else if (!/^img\//.test(p.src)) errs.push(`plate ${i}: src must start with img/`);
   });
-  const txt = JSON.stringify(j);
-  if (/[–—]/.test(txt)) errs.push("the text contains a dash character, use a comma or a full stop");
   return errs;
 }
 
@@ -203,6 +245,8 @@ exports.handler = async (event) => {
       const i = j.entries.findIndex((e) => e.id === id);
       let e;
       try { e = normaliseEntry({ ...inc, id }, i >= 0 ? j.entries[i] : null); } catch (err) { return json(400, { error: err.message }); }
+      if (e.figure && e.figure.src && (i < 0 || j.entries[i].figure?.src !== e.figure.src) && !(await fileExists(`portfolio/${e.figure.src}`)))
+        return json(400, { error: `There is no photo at portfolio/${e.figure.src}. Upload it first with action image, then use the path it returns.` });
       if (i >= 0) { j.entries[i] = e; message = message || `Journal: update entry ${id}`; }
       else {
         const at = Number.isInteger(body.position) ? Math.max(0, Math.min(j.entries.length, body.position)) : j.entries.length;
@@ -220,17 +264,22 @@ exports.handler = async (event) => {
       if (!p.src) return json(400, { error: "plate needs src" });
       const src = String(p.src);
       if (!/^img\//.test(src)) return json(400, { error: "plate src must start with img/" });
-      const cap = p.caption !== undefined ? pair(p.caption) : { en: "", de: "" };
-      if (!cap) return json(400, { error: "plate caption must be a string or {en, de}" });
       j.plates = j.plates || { items: [] };
       j.plates.items = Array.isArray(j.plates.items) ? j.plates.items : [];
       const i = j.plates.items.findIndex((x) => x.src === src);
-      const item = { src, caption: cap };
+      let cap;
+      if (p.caption !== undefined) {
+        cap = pairInto(p.caption, i >= 0 ? j.plates.items[i].caption : null);
+        if (!cap) return json(400, { error: 'plate caption already exists in both languages, send {"en": "...", "de": "..."}' });
+      }
+      if (i < 0 && !(await fileExists(`portfolio/${src}`))) return json(400, { error: `There is no photo at portfolio/${src}. Upload it first with action image, then use the path it returns.` });
+      const item = { src };
+      if (cap) item.caption = cap;
       if (p.size) item.size = String(p.size);
       if (i >= 0) { j.plates.items[i] = { ...j.plates.items[i], ...item }; message = message || `Journal: update plate ${src}`; }
       else {
         const at = Number.isInteger(body.position) ? Math.max(0, Math.min(j.plates.items.length, body.position)) : j.plates.items.length;
-        j.plates.items.splice(at, 0, item);
+        j.plates.items.splice(at, 0, { src, caption: cap || { en: "", de: "" }, ...(item.size ? { size: item.size } : {}) });
         message = message || `Journal: add plate ${src}`;
       }
     } else if (action === "deletePlate") {
@@ -247,8 +296,16 @@ exports.handler = async (event) => {
     if (errs.length) return json(400, { error: errs.join("; ") });
     if (JSON.stringify(j) === before) return json(200, { ok: true, action, message: "Nothing changed." });
 
-    await writeFile(FILE, Buffer.from(JSON.stringify(j, null, 2) + "\n", "utf8").toString("base64"), message, sha);
-    return json(200, { ok: true, action, journal: j, message: `${message}. Netlify is rebuilding; live in about a minute.` });
+    const had = new Set(dashPaths(JSON.parse(before)).map((h) => h.value));
+    const now = dashPaths(j);
+    const introduced = now.filter((h) => !had.has(h.value));
+    if (introduced.length) return json(400, { error: `Dash character in ${introduced.map((h) => h.path).join(", ")}. Use a comma or a full stop. Nothing was written.` });
+    const stale = now.filter((h) => had.has(h.value)).map((h) => h.path);
+
+    const doc = JSON.stringify(j, null, 2) + "\n";
+    if (Buffer.byteLength(doc, "utf8") > MAXDOC) return json(400, { error: "This change would make journal.json larger than 512 kB, so nothing was written. A photo or a very long text has probably ended up in a text field." });
+    await writeFile(FILE, Buffer.from(doc, "utf8").toString("base64"), message, sha);
+    return json(200, { ok: true, action, journal: j, message: `${message}. Netlify is rebuilding; live in about a minute.${stale.length ? ` Note: an older dash is still sitting in ${stale.join(", ")}.` : ""}` });
   } catch (e) {
     return json(500, { error: e.message });
   }
