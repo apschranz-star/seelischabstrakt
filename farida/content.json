@@ -479,6 +479,13 @@
       "de": "Schwerpunkte",
       "fr": "Compétences",
       "ar": "الاختصاصات"
+    },
+    "contactAction": {
+      "it": "Contatti e orari",
+      "en": "Contact and hours",
+      "de": "Kontakt und Zeiten",
+      "fr": "Contact et horaires",
+      "ar": "التواصل والمواعيد"
     }
   },
   "seo": {
