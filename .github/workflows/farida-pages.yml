@@ -1,0 +1,39 @@
+# Publishes the folder farida/ to GitHub Pages.
+# Independent of Netlify, so the practice site stays reachable even while Netlify deploys are paused.
+name: Publish the practice site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "farida/**"
+      - ".github/workflows/farida-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check that the content file is valid JSON
+        run: python3 -c "import json;json.load(open('farida/content.json'));print('content.json ok')"
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: farida
+      - id: deploy
+        uses: actions/deploy-pages@v4
