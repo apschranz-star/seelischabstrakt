@@ -18,8 +18,8 @@
       "ar": "أنا طبيبة متخصصة في الطب العام، ولديّ خبرة واسعة في طب الأطفال وفي الإسعافات الأولية."
     },
     "_lead": "Sono le sue parole dal profilo MioDottore. Se vuole scriverle diversamente, basta cambiarle qui.",
-    "photo": "",
-    "photoSize": "",
+    "photo": "img/farida-benslimane.jpg",
+    "photoSize": "267x267",
     "photoAlt": {
       "it": "Farida Benslimane",
       "en": "Farida Benslimane",
@@ -44,7 +44,8 @@
     "profileUrl": "https://www.miodottore.it/profilo/farida-benslimane",
     "languages": [],
     "_languages": "Lingue in cui riceve i pazienti, per esempio [\"Italiano\",\"Français\",\"العربية\",\"English\"]. Solo quelle vere.",
-    "defaultLang": "it"
+    "defaultLang": "it",
+    "_photo": "Ritratto rotondo nella testata. Questo è ritagliato dalla foto del profilo MioDottore, quindi è piccolo: con il file originale diventa più nitido e si può usare anche come sfondo largo."
   },
   "nav": [
     {

@@ -95,6 +95,8 @@ nav.main ~ .tools{margin-inline-start:0}
 .hero .wrap{padding-block:clamp(58px,11vw,116px);position:relative}
 .hero.nocta .wrap{padding-block:clamp(52px,9vw,92px)}
 .hero .inner{max-width:44rem}
+.avatar{width:clamp(96px,26vw,128px);height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;display:block;margin-bottom:22px;
+  border:3px solid rgba(255,255,255,.22);box-shadow:0 18px 40px -18px rgba(0,0,0,.8)}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
   color:#BFE4F2;background:rgba(63,180,214,.14);border:1px solid rgba(127,211,232,.28);padding:7px 14px;border-radius:100px;margin-bottom:22px}
 .hero h1{font-size:clamp(2.35rem,7vw,4.15rem);font-weight:800;letter-spacing:-.035em;color:#fff}
@@ -210,6 +212,7 @@ footer h3{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#7F
   <section class="hero plain" id="top">
     <div class="bg" id="hero-bg" hidden></div>
     <div class="wrap"><div class="inner">
+      <img class="avatar" id="h-avatar" alt="" hidden>
       <span class="eyebrow" id="h-eyebrow" hidden></span>
       <h1 id="h-name">Farida Benslimane</h1>
       <p class="role" id="h-role" hidden></p>
@@ -317,6 +320,10 @@ function renderHero(){
   const eb=$("#h-eyebrow"); eb.textContent=L(p.city); eb.hidden=!has(p.city);
   const role=$("#h-role"); role.textContent=L(p.title); role.hidden=!has(p.title);
   const lead=$("#h-lead"); lead.textContent=L(p.lead); lead.hidden=!has(p.lead);
+  const av=$("#h-avatar"), asrc=safeUrl(p.photo);
+  if(asrc){ av.src=asrc; av.alt=L(p.photoAlt)||p.name||"";
+    const ms=/^(\d+)x(\d+)$/.exec(String(p.photoSize||"")); if(ms){ av.width=+ms[1]; av.height=+ms[2]; }
+    av.hidden=false; } else av.hidden=true;
   const bg=$("#hero-bg"), src=safeUrl(p.heroImage);
   if(src){ bg.style.backgroundImage=`url("${src}")`; bg.hidden=false; hero.classList.remove("plain"); }
   else { bg.hidden=true; hero.classList.add("plain"); }
