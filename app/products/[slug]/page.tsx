@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { AddToCart } from "@/components/product/add-to-cart";
 import { InciDrawer } from "@/components/product/inci-drawer";
+import { GpsrPanel } from "@/components/product/gpsr-panel";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { PRODUCTS, getProductBySlug, type MeasureUnit } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
@@ -225,9 +226,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               Schweiz gelten eigene Sätze, der Warenkorb rechnet sie nach deinem Lieferland.
             </p>
             <p className="mt-2 text-[13px] leading-relaxed text-ink-3">
-              {WITHDRAWAL_DAYS} Tage Widerrufsrecht.
+              {WITHDRAWAL_DAYS} Tage Widerrufsrecht.{" "}
+              <Link href="/legal/versand" className="text-ink underline underline-offset-4">
+                Versandkosten und Steuern
+              </Link>
+              .
             </p>
           </section>
+
+          <GpsrPanel product={product} />
         </div>
       </div>
 

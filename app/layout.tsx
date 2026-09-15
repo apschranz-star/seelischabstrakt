@@ -65,6 +65,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de" data-mode="yang" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: MODE_BOOTSTRAP }} />
+        {/* Without scripting the reveal animation must not hide anything. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}>
         <YinYangProvider>

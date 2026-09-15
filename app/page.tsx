@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 
 import { ProductCard } from "@/components/product/product-card";
+import { Reveal } from "@/components/ui/reveal";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import { getProductsByCollection } from "@/config/products";
@@ -142,7 +143,8 @@ function CollectionSection({
       className="scroll-mt-24 border-b border-line py-14 sm:py-20"
     >
       <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line pb-6">
+        <Reveal from={collection === "yang" ? "left" : "right"}>
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line pb-6">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
               {copy.kicker}
@@ -158,7 +160,8 @@ function CollectionSection({
           <p className="font-mono text-[11px] tabular-nums uppercase tracking-[0.18em] text-ink-3">
             {copy.hours} Uhr
           </p>
-        </div>
+          </div>
+        </Reveal>
 
         <AnimatePresence initial={false} mode="wait">
           {active ? (
@@ -172,19 +175,15 @@ function CollectionSection({
               className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
             >
               {products.map((product, index) => (
-                <motion.li
+                <Reveal
                   key={product.id}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: reduceMotion ? 0 : 0.42,
-                    delay: reduceMotion ? 0 : index * 0.06,
-                    ease: "easeOut",
-                  }}
+                  as="li"
+                  from={index % 2 === 0 ? "left" : "right"}
+                  delay={(index % 4) * 0.07}
                   className="h-full"
                 >
                   <ProductCard product={product} />
-                </motion.li>
+                </Reveal>
               ))}
             </motion.ul>
           ) : (
@@ -268,16 +267,19 @@ export default function HomePage() {
           role="list"
           className="mx-auto grid w-full max-w-[1240px] grid-cols-1 px-4 sm:grid-cols-3 sm:px-6"
         >
-          {facts.map((fact) => (
-            <li
+          {facts.map((fact, index) => (
+            <Reveal
               key={fact.label}
+              as="li"
+              from={index === 1 ? "up" : index === 0 ? "left" : "right"}
+              delay={index * 0.06}
               className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line py-4 last:border-b-0 sm:border-b-0 sm:py-5"
             >
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
                 {fact.label}
               </span>
               <span className="text-sm text-ink-2">{fact.value}</span>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>
@@ -291,33 +293,35 @@ export default function HomePage() {
 
       <section aria-labelledby="these-titel" className="bg-inverse-surface text-inverse-ink">
         <div className="mx-auto w-full max-w-[1240px] px-4 py-16 sm:px-6 sm:py-24">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-inverse-ink/60">
-            Die These
-          </p>
-          <h2
-            id="these-titel"
-            className="mt-5 max-w-[22ch] font-display text-3xl leading-tight tracking-[0.04em] sm:text-5xl"
-          >
-            Zwei Hälften, ein Regal
-          </h2>
+          <Reveal from="left">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-inverse-ink/60">
+              Die These
+            </p>
+            <h2
+              id="these-titel"
+              className="mt-5 max-w-[22ch] font-display text-3xl leading-tight tracking-[0.04em] sm:text-5xl"
+            >
+              Zwei Hälften, ein Regal
+            </h2>
+          </Reveal>
 
           <div className="mt-12 grid gap-8 border-t border-line-2 pt-10 md:grid-cols-3">
-            <p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
+            <Reveal from="left" delay={0.05}><p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
               Der Tag verlangt etwas anderes als die Nacht. Am Morgen zählt, was Struktur gibt und
               bis zum letzten Termin hält. Am Abend zählt, was zurücknimmt und der Haut die Arbeit
               überlässt.
-            </p>
-            <p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
+            </p></Reveal>
+            <Reveal from="up" delay={0.12}><p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
               Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang
               gehört zu den Stunden von {SITE.ritualWindow.yang} Uhr, Yin zu den Stunden von{" "}
               {SITE.ritualWindow.yin} Uhr. Jede Hälfte besteht aus vier Stücken, mehr braucht ein
               Ritual nicht.
-            </p>
-            <p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
+            </p></Reveal>
+            <Reveal from="right" delay={0.19}><p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
               Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit mit zwei Seiten. Du
               entscheidest, welche gerade gilt, und der Shop richtet sich danach aus, in der Ansicht
               wie im Sortiment.
-            </p>
+            </p></Reveal>
           </div>
         </div>
       </section>

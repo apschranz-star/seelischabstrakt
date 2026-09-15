@@ -4,8 +4,10 @@ import { SITE, WITHDRAWAL_DAYS } from "@/config/site";
 
 const LEGAL = [
   { href: "/legal/impressum", label: "Impressum" },
+  { href: "/legal/datenschutz", label: "Datenschutz" },
   { href: "/legal/agb", label: "AGB" },
   { href: "/legal/widerruf", label: "Widerrufsrecht" },
+  { href: "/legal/versand", label: "Versand und Steuern" },
 ];
 
 export function SiteFooter() {
@@ -38,7 +40,11 @@ export function SiteFooter() {
             {WITHDRAWAL_DAYS} Tage Widerrufsrecht. Versand aus {SITE.warehouse.city}.
           </p>
           <p className="mt-6 text-xs text-ink-3">
-            Alle Preise inkl. MwSt., zzgl. Versandkosten.
+            Alle Preise inkl. MwSt., zzgl.{" "}
+            <Link href="/legal/versand" className="underline underline-offset-4">
+              Versandkosten
+            </Link>
+            .
           </p>
         </div>
       </div>

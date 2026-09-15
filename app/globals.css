@@ -59,9 +59,15 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* The reveal starts elements outside the viewport. clip, never hidden, so the
+     sticky header keeps working. */
+  overflow-x: clip;
 }
 
 body {
+  /* The reveal animation starts elements outside the viewport. clip, not hidden,
+     because hidden on the body would break the sticky header. */
+  overflow-x: clip;
   background-color: var(--jing-surface);
   color: var(--jing-ink);
   font-family: var(--font-sans);

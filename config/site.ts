@@ -185,4 +185,23 @@ export const SITE = {
   },
 } as const;
 
+/**
+ * Producer and responsible person, as the General Product Safety Regulation
+ * (EU) 2023/988 requires them to be shown with every online offer since
+ * 13 December 2024, and as Regulation (EC) 1223/2009 requires for cosmetics.
+ * For a private label range these are the shop's own entity. Placeholders again.
+ */
+export const RESPONSIBLE_PERSON = {
+  role: "Verantwortliche Person und Hersteller im Sinne der EU-Produktsicherheitsverordnung",
+  company: "JING Retail GmbH",
+  street: "[Straße und Hausnummer]",
+  zipCity: "[PLZ] [Ort]",
+  country: "Deutschland",
+  email: "sicherheit@jing.example",
+  note:
+    "Für kosmetische Mittel ist dieselbe Stelle die verantwortliche Person nach Artikel 4 " +
+    "der Verordnung (EG) Nr. 1223/2009. Die Produktinformationsdatei wird dort zehn Jahre " +
+    "aufbewahrt und ist den Marktüberwachungsbehörden auf Verlangen zugänglich.",
+} as const;
+
 export const WITHDRAWAL_DAYS = 14;
