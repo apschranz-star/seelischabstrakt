@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informazioni per il tuo sito</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --plum-900:#1B1430; --plum-800:#2A2047;
+  --paper:#FBF8F4; --card:#FFFFFF; --ink:#20182C; --ink-2:#544B62; --ink-3:#736A82;
+  --line:#E8E0D4; --line-2:#D3C7B5; --gold:#8A6526; --gold-2:#C9A961; --soft:#F4EFE7;
+  --font:"Manrope",system-ui,-apple-system,sans-serif; --display:"Cormorant Garamond",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){ :root{
+  --paper:#130E20; --card:#1B1530; --ink:#F2ECE2; --ink-2:#C6BCD2; --ink-3:#9C93AC;
+  --line:#2B2342; --line-2:#3C3257; --gold:#DFC488; --soft:#221A3A;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;padding-bottom:104px}
+.wrap{width:min(100% - 32px,720px);margin-inline:auto}
+header{background:var(--plum-900);color:#F3ECE0;padding:30px 0 26px}
+header::after{content:"";display:block;height:2px;margin-top:26px;background:linear-gradient(90deg,transparent,rgba(201,169,97,.7),transparent)}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(1.9rem,6vw,2.6rem);margin:0;line-height:1.1}
+header p{margin:14px 0 0;color:#D6CCE2;font-size:15.5px}
+h2{font-family:var(--display);font-weight:500;font-size:1.5rem;margin:0 0 4px}
+.sec{background:var(--card);border:1px solid var(--line);border-top:2px solid rgba(201,169,97,.55);border-radius:14px;padding:22px;margin-top:18px}
+.sec .hint{color:var(--ink-3);font-size:14.5px;margin:0 0 16px}
+.must{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px}
+label{display:block;margin-top:16px;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+label .q{display:block;font-weight:400;color:var(--ink-3);font-size:13.5px;margin-top:3px}
+input[type=text],input[type=tel],input[type=email],textarea{width:100%;margin-top:7px;padding:13px 14px;font:inherit;font-size:16px;
+  color:var(--ink);background:var(--paper);border:1px solid var(--line-2);border-radius:10px}
+textarea{min-height:104px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:none;border-color:var(--gold-2);box-shadow:0 0 0 3px rgba(201,169,97,.2)}
+.choice{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.choice label{margin:0}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice span{display:block;padding:10px 16px;border:1px solid var(--line-2);border-radius:100px;font-size:14.5px;font-weight:500;cursor:pointer;color:var(--ink-2)}
+.choice input:checked + span{background:linear-gradient(135deg,#EBD5A0,#C9A961);border-color:transparent;color:#2A1E0B;font-weight:600}
+.choice input:focus-visible + span{outline:2px solid var(--gold-2);outline-offset:2px}
+.ok{display:flex;gap:11px;align-items:flex-start;margin-top:20px;font-size:14.5px;color:var(--ink-2)}
+.ok input{width:22px;height:22px;flex:0 0 22px;margin-top:2px;accent-color:#C9A961}
+.bar{position:fixed;inset-inline:0;inset-block-end:0;background:color-mix(in srgb,var(--card) 95%,transparent);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);padding:11px max(16px,env(safe-area-inset-left)) calc(11px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right))}
+.bar .in{width:min(100% - 0px,720px);margin-inline:auto;display:flex;align-items:center;gap:10px}
+.send{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:9px;min-height:52px;border:0;border-radius:100px;font:inherit;font-size:16.5px;font-weight:700;
+  background:linear-gradient(135deg,#EBD5A0,#C9A961 46%,#A9863F);color:#2A1E0B;box-shadow:0 12px 26px -14px rgba(169,134,63,.8);cursor:pointer}
+.copy{min-height:52px;padding:0 18px;border-radius:100px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.state{font-size:13px;color:var(--ink-3);text-align:center;margin:8px 0 0}
+.note{background:var(--soft);border-radius:12px;padding:16px 18px;font-size:14.5px;color:var(--ink-2);margin-top:18px}
+svg{width:19px;height:19px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Informazioni per il tuo sito</h1>
+  <p>Ciao Farida. Queste sono le cose che servono per finire il sito. Compila quello che sai, salta il resto, non serve fare tutto in una volta: quello che scrivi resta salvato su questo telefono. Alla fine premi il tasto dorato e mi arriva tutto su WhatsApp.</p>
+</div></header>
+
+<main class="wrap">
+
+  <section class="sec">
+    <span class="must">Serve per legge</span>
+    <h2>Dati obbligatori</h2>
+    <p class="hint">In Italia il sito di un medico deve indicarli. Finché mancano, il sito non va diffuso.</p>
+    <label>Numero di iscrizione all'Ordine dei Medici<input type="text" id="albo" inputmode="numeric"></label>
+    <label>Provincia dell'Ordine<span class="q">Per esempio Viterbo</span><input type="text" id="alboProv"></label>
+    <label>Partita IVA<input type="text" id="piva" inputmode="numeric"></label>
+    <label>Nome e cognome come devono apparire<span class="q">Con o senza Dr., come preferisci</span><input type="text" id="nome" placeholder="Dr. Farida Benslimane"></label>
+  </section>
+
+  <section class="sec">
+    <span class="must">Serve per i contatti</span>
+    <h2>Come ti si raggiunge</h2>
+    <p class="hint">Senza almeno un recapito il sito non ha nessun tasto per prenotare.</p>
+    <label>Telefono dello studio<input type="tel" id="tel" placeholder="+39 ..."></label>
+    <label>WhatsApp<span class="q">Se lo lasci, sul sito appare il tasto verde di WhatsApp</span><input type="tel" id="wa" placeholder="+39 ..."></label>
+    <label>Email<input type="email" id="email" placeholder="nome@esempio.it"></label>
+    <label>Come si prenota una visita<span class="q">Telefono a certe ore, di persona, WhatsApp, altro</span><textarea id="prenota"></textarea></label>
+  </section>
+
+  <section class="sec">
+    <span class="must">Serve per i pazienti</span>
+    <h2>Studi e orari</h2>
+    <label>Acquapendente, Via del Rivo 34, 01021<span class="q">È giusto così?</span></label>
+    <div class="choice">
+      <label><input type="radio" name="ind1" value="confermato"><span>Sì, giusto</span></label>
+      <label><input type="radio" name="ind1" value="da correggere"><span>Da correggere</span></label>
+    </div>
+    <label>Se va corretto, scrivi l'indirizzo giusto<input type="text" id="ind1fix"></label>
+    <label>Orari ad Acquapendente<span class="q">Una riga per giorno, per esempio: lunedì 09:00 - 13:00</span><textarea id="ore1"></textarea></label>
+    <label>Indirizzo completo a Bagnoregio<span class="q">Via e numero, quello mi manca del tutto</span><input type="text" id="ind2"></label>
+    <label>Orari a Bagnoregio<textarea id="ore2"></textarea></label>
+  </section>
+
+  <section class="sec">
+    <h2>Prestazioni</h2>
+    <p class="hint">Sul sito adesso c'è solo la visita generica in convenzione, indicata come gratuita.</p>
+    <div class="choice">
+      <label><input type="radio" name="conv" value="giusto"><span>È giusto</span></label>
+      <label><input type="radio" name="conv" value="da cambiare"><span>Da cambiare</span></label>
+    </div>
+    <label>Altre prestazioni<span class="q">Una per riga, con durata e prezzo se ce l'ha. Per esempio: certificato sportivo, 20 min, 50 euro</span><textarea id="prest"></textarea></label>
+  </section>
+
+  <section class="sec">
+    <h2>Il tuo modo di lavorare</h2>
+    <p class="hint">Questa è la parte che fa la differenza fra un sito qualunque e il tuo. Rispondi come parli, ci penso io a metterlo in bella forma. Se preferisci, scrivi tutto in fondo con parole tue e salta le domande.</p>
+    <label>Quanto dura di solito una prima visita?<input type="text" id="a1"></label>
+    <label>Qual è la prima cosa che chiedi a un paziente nuovo?<textarea id="a2"></textarea></label>
+    <label>Come spieghi una diagnosi?<textarea id="a3"></textarea></label>
+    <label>Cosa fai prima di prescrivere una terapia?<textarea id="a4"></textarea></label>
+    <label>Un paziente ti può ricontattare dopo la visita? Come?<textarea id="a5"></textarea></label>
+    <label>Oppure scrivi tu tre o quattro frasi<span class="q">Come lavori, cosa conta per te</span><textarea id="a6"></textarea></label>
+  </section>
+
+  <section class="sec">
+    <h2>Competenze e lingue</h2>
+    <label>Altre patologie che tratti<span class="q">Sul profilo MioDottore ce ne sono altre cinque che non riesco a leggere</span><textarea id="pato"></textarea></label>
+    <label>In che lingue ricevi i pazienti?<span class="q">Per esempio: italiano, francese, arabo</span><input type="text" id="lingue"></label>
+  </section>
+
+  <section class="sec">
+    <h2>Foto</h2>
+    <label>Posso usare la tua foto del profilo MioDottore?<span class="q">Adesso è sul sito, ritagliata da lì, quindi è piccola</span></label>
+    <div class="choice">
+      <label><input type="radio" name="foto" value="sì, e mando l'originale"><span>Sì, e mando l'originale</span></label>
+      <label><input type="radio" name="foto" value="sì, va bene così"><span>Sì, va bene così</span></label>
+      <label><input type="radio" name="foto" value="no, ne mando un'altra"><span>No, ne mando un'altra</span></label>
+    </div>
+    <label>Foto dello studio</label>
+    <div class="choice">
+      <label><input type="radio" name="foto2" value="le mando"><span>Te le mando</span></label>
+      <label><input type="radio" name="foto2" value="non ne ho"><span>Non ne ho</span></label>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Recensioni</h2>
+    <p class="hint">Sul sito adesso c'è solo il voto, cinque stelle su tre recensioni, con il link a MioDottore. Le citazioni dei pazienti le ho tolte: il codice deontologico chiede informazione non suggestiva, e le testimonianze sul proprio sito vengono spesso lette così. Decidi tu.</p>
+    <div class="choice">
+      <label><input type="radio" name="rec" value="va bene solo il voto e il link"><span>Va bene così</span></label>
+      <label><input type="radio" name="rec" value="voglio anche le citazioni"><span>Voglio anche le citazioni</span></label>
+      <label><input type="radio" name="rec" value="chiedo prima all'Ordine"><span>Chiedo prima all'Ordine</span></label>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Ultime cose</h2>
+    <label>Vuoi un indirizzo tuo, per esempio faridabenslimane.it?<span class="q">Costa una decina di euro l'anno</span></label>
+    <div class="choice">
+      <label><input type="radio" name="dom" value="sì"><span>Sì</span></label>
+      <label><input type="radio" name="dom" value="no, va bene il link attuale"><span>No, va bene così</span></label>
+      <label><input type="radio" name="dom" value="decidete voi"><span>Decidete voi</span></label>
+    </div>
+    <label>C'è qualcosa che sul sito non deve esserci?<textarea id="no"></textarea></label>
+    <label>Altro che vuoi dirmi<textarea id="altro"></textarea></label>
+    <div class="ok"><input type="checkbox" id="consenso"><label for="consenso" style="margin:0;font-weight:500">Confermo che questi dati sono miei e possono essere pubblicati sul mio sito.</label></div>
+    <p class="note">Questa pagina non manda niente a nessuno da sola e non salva niente su internet. Quello che scrivi resta su questo telefono finché non premi il tasto e scegli tu la chat.</p>
+  </section>
+</main>
+
+<div class="bar"><div class="in">
+  <button class="copy" type="button" id="copy">Copia</button>
+  <button class="send" type="button" id="send">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.8-.6-3.1-1.3-5.1-4.4-5.3-4.6-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.9-1c.2-.2.4-.2.6-.1l2 .9c.2.1.4.2.4.3.1.1.1.6-.1 1.2z"/></svg>
+    Manda su WhatsApp
+  </button>
+</div><p class="state" id="state"></p></div>
+
+<script>
+"use strict";
+const KEY="farida-modulo-v1";
+const fields=["albo","alboProv","piva","nome","tel","wa","email","prenota","ind1fix","ore1","ind2","ore2","prest","a1","a2","a3","a4","a5","a6","pato","lingue","no","altro"];
+const radios=["ind1","conv","foto","foto2","rec","dom"];
+const $=id=>document.getElementById(id);
+const val=id=>($(id)?$(id).value.trim():"");
+const pick=n=>{const e=document.querySelector(`input[name="${n}"]:checked`);return e?e.value:"";};
+
+function save(){
+  const d={};
+  fields.forEach(f=>d[f]=val(f));
+  radios.forEach(r=>d[r]=pick(r));
+  d.consenso=$("consenso").checked;
+  try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){}
+  count();
+}
+function load(){
+  let d=null; try{ d=JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
+  if(!d) return;
+  fields.forEach(f=>{ if($(f)&&d[f]) $(f).value=d[f]; });
+  radios.forEach(r=>{ if(d[r]){ const e=document.querySelector(`input[name="${r}"][value="${CSS.escape(d[r])}"]`); if(e) e.checked=true; } });
+  if(d.consenso) $("consenso").checked=true;
+}
+function count(){
+  const filled=fields.filter(f=>val(f)).length+radios.filter(r=>pick(r)).length;
+  $("state").textContent=filled?`${filled} risposte pronte da mandare`:"Compila quello che sai, poi premi il tasto dorato";
+}
+function message(){
+  const out=["INFORMAZIONI PER IL SITO"];
+  const group=(title,pairs)=>{
+    const lines=pairs.filter(([,v])=>v).map(([k,v])=>k+": "+v);
+    if(!lines.length) return;
+    out.push("","— "+title+" —",...lines);
+  };
+  group("Dati obbligatori",[["Iscrizione Ordine",val("albo")],["Provincia Ordine",val("alboProv")],
+    ["Partita IVA",val("piva")],["Nome sul sito",val("nome")]]);
+  group("Contatti",[["Telefono",val("tel")],["WhatsApp",val("wa")],["Email",val("email")],
+    ["Come si prenota",val("prenota")]]);
+  group("Studi",[["Acquapendente",pick("ind1")],["Indirizzo corretto",val("ind1fix")],
+    ["Orari Acquapendente",val("ore1")],["Bagnoregio",val("ind2")],["Orari Bagnoregio",val("ore2")]]);
+  group("Prestazioni",[["Visita in convenzione",pick("conv")],["Altre prestazioni",val("prest")]]);
+  group("Modo di lavorare",[["Durata prima visita",val("a1")],["Prima domanda",val("a2")],
+    ["Come spiega la diagnosi",val("a3")],["Prima di prescrivere",val("a4")],
+    ["Dopo la visita",val("a5")],["Parole sue",val("a6")]]);
+  group("Competenze",[["Altre patologie",val("pato")],["Lingue",val("lingue")]]);
+  group("Foto",[["Foto profilo",pick("foto")],["Foto studio",pick("foto2")]]);
+  group("Recensioni",[["Scelta",pick("rec")]]);
+  group("Altro",[["Dominio proprio",pick("dom")],["Da non pubblicare",val("no")],["Altro",val("altro")]]);
+  out.push("", $("consenso").checked
+    ? "Confermo che i dati sono miei e possono essere pubblicati."
+    : "(consenso non ancora spuntato)");
+  return out.join("\n");
+}
+document.addEventListener("input",save);
+document.addEventListener("change",save);
+$("send").addEventListener("click",()=>{
+  save();
+  const t=encodeURIComponent(message());
+  location.href="https://wa.me/?text="+t;
+});
+$("copy").addEventListener("click",async()=>{
+  save();
+  const txt=message();
+  try{ await navigator.clipboard.writeText(txt); $("state").textContent="Copiato, ora incollalo dove vuoi"; }
+  catch(e){
+    const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); $("state").textContent="Copiato"; }catch(x){ $("state").textContent="Non riesco a copiare, tieni premuto sul testo"; }
+    ta.remove();
+  }
+});
+load(); count();
+</script>
+</body>
+</html>

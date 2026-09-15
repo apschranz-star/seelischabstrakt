@@ -5,6 +5,7 @@ arabo. L'italiano è la lingua di partenza, l'arabo si scrive da destra a sinist
 da solo. Nessun framework, nessun build, nessun database.
 
     index.html    la pagina
+    modulo.html   il modulo che Farida compila dal telefono, non è collegato al sito
     content.json  tutto il contenuto
     img/          le foto
 
