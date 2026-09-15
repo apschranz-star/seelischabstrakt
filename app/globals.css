@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/*
+  JING design tokens.
+
+  The palette is defined twice, once for each ritual. `data-mode` on the document
+  element decides which set is live, and every component styles itself through the
+  tokens, never through a literal colour. That is what lets the Yin Yang toggle
+  invert the whole surface in one transition.
+*/
+
+@theme {
+  --font-display: var(--jing-font-display), "Bodoni Moda", Georgia, serif;
+  --font-sans: var(--jing-font-sans), "Archivo", system-ui, sans-serif;
+  --font-mono: var(--jing-font-mono), "JetBrains Mono", ui-monospace, monospace;
+
+  --color-surface: var(--jing-surface);
+  --color-surface-2: var(--jing-surface-2);
+  --color-ink: var(--jing-ink);
+  --color-ink-2: var(--jing-ink-2);
+  --color-ink-3: var(--jing-ink-3);
+  --color-line: var(--jing-line);
+  --color-line-2: var(--jing-line-2);
+  --color-inverse-surface: var(--jing-inverse-surface);
+  --color-inverse-ink: var(--jing-inverse-ink);
+  --color-seal: var(--jing-seal);
+
+  --ease-ritual: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root,
+:root[data-mode="yang"] {
+  --jing-surface: #f9f9fb;
+  --jing-surface-2: #f1f1f4;
+  --jing-ink: #111111;
+  --jing-ink-2: #3d3d40;
+  --jing-ink-3: #6b6b70;
+  --jing-line: #e5e5e5;
+  --jing-line-2: #d2d2d6;
+  --jing-inverse-surface: #0d0d0d;
+  --jing-inverse-ink: #fafafa;
+  --jing-seal: #8f2a1f;
+  color-scheme: light;
+}
+
+:root[data-mode="yin"] {
+  --jing-surface: #0d0d0d;
+  --jing-surface-2: #141414;
+  --jing-ink: #fafafa;
+  --jing-ink-2: #c9c9c9;
+  --jing-ink-3: #8f8f8f;
+  --jing-line: #262626;
+  --jing-line-2: #3a3a3a;
+  --jing-inverse-surface: #f9f9fb;
+  --jing-inverse-ink: #111111;
+  --jing-seal: #c4574a;
+  color-scheme: dark;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--jing-surface);
+  color: var(--jing-ink);
+  font-family: var(--font-sans);
+  transition:
+    background-color 620ms var(--ease-ritual),
+    color 620ms var(--ease-ritual);
+}
+
+::selection {
+  background-color: var(--jing-ink);
+  color: var(--jing-surface);
+}
+
+:focus-visible {
+  outline: 2px solid var(--jing-ink);
+  outline-offset: 3px;
+}
+
+.jing-hairline {
+  border-color: var(--jing-line);
+}
+
+/* The vertical rule that separates the two rituals in the hero. */
+.jing-spine {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--jing-line-2) 12%,
+    var(--jing-line-2) 88%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
