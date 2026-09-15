@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://apschranz-star.github.io/seelischabstrakt/sitemap.xml
