@@ -40,7 +40,7 @@ export function SiteFooter() {
             {WITHDRAWAL_DAYS} Tage Widerrufsrecht. Versand aus {SITE.warehouse.city}.
           </p>
           <p className="mt-6 text-xs text-ink-3">
-            Alle Preise inkl. MwSt., zzgl.{" "}
+            Alle Produktpreise inkl. MwSt., zzgl.{" "}
             <Link href="/legal/versand" className="underline underline-offset-4">
               Versandkosten
             </Link>

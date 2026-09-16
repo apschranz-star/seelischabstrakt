@@ -89,9 +89,9 @@ export const REGIONS: Record<RegionCode, Region> = {
       clearanceCents: 1100,
       incoterm: "DDP",
       note:
-        "Die Schweiz liegt ausserhalb der EU-Zollunion. Wir versenden verzollt und versteuert, " +
-        "Zollabfertigung und Einfuhrsteuer sind im angezeigten Preis enthalten. An der Haustür " +
-        "entstehen keine weiteren Kosten.",
+        "Die Schweiz liegt ausserhalb der EU-Zollunion. Wir versenden verzollt und versteuert. " +
+        "Die Einfuhrsteuer ist im Preis enthalten, die Zollabfertigung weisen wir oben als eigene " +
+        "Position aus. An der Haustür entstehen keine weiteren Kosten.",
     },
     paymentMethods: ["twint", "card", "applepay", "paypal"],
   },

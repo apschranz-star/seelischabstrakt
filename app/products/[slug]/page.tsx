@@ -6,7 +6,7 @@ import { AddToCart } from "@/components/product/add-to-cart";
 import { InciDrawer } from "@/components/product/inci-drawer";
 import { GpsrPanel } from "@/components/product/gpsr-panel";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
-import { PRODUCTS, getProductBySlug, type MeasureUnit } from "@/config/products";
+import { PRODUCTS, getProductBySlug, hasCosmeticPart, type MeasureUnit } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
 import { computeBasePrice, deliveryWindow, formatMoney } from "@/lib/utils";
 
@@ -162,7 +162,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </p>
             ) : null}
             <p className="mt-2 text-[13px] leading-snug text-ink-3">
-              inkl. MwSt., zzgl. Versandkosten
+              inkl. MwSt., zzgl.{" "}
+              <Link href="/legal/versand" className="text-ink underline underline-offset-4">
+                Versandkosten
+              </Link>
             </p>
             <p className="mt-3 max-w-[46ch] text-[12px] leading-relaxed text-ink-3">
               Für die Schweiz weist der Warenkorb den Preis in CHF aus, verzollt und versteuert.
@@ -227,8 +230,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </p>
             <p className="mt-2 text-[13px] leading-relaxed text-ink-3">
               {WITHDRAWAL_DAYS} Tage Widerrufsrecht.{" "}
+              {hasCosmeticPart(product)
+                ? "Ausgenommen sind versiegelte kosmetische Mittel, deren Siegel du nach der Lieferung entfernt hast. "
+                : ""}
+              <Link href="/legal/widerruf" className="text-ink underline underline-offset-4">
+                Widerrufsbelehrung
+              </Link>{" "}
+              und{" "}
               <Link href="/legal/versand" className="text-ink underline underline-offset-4">
-                Versandkosten und Steuern
+                Versandkosten
               </Link>
               .
             </p>

@@ -85,9 +85,9 @@ export default function AgbPage() {
 
       <Section no="8" title="Gewährleistung">
         <p>
-          Es gilt das gesetzliche Mängelhaftungsrecht. Farbabweichungen zwischen Bildschirm und
-          Produkt sind kein Mangel. Bei Transportschäden melde dich bitte innerhalb von sieben Tagen
-          mit Fotos, dann ersetzen wir oder erstatten.
+          Es gilt das gesetzliche Mängelhaftungsrecht. Melde Transportschäden am besten gleich mit
+          Fotos, dann ersetzen wir oder erstatten sofort. Deine gesetzlichen Mängelrechte bleiben
+          davon unberührt und verjähren erst nach zwei Jahren.
         </p>
       </Section>
 

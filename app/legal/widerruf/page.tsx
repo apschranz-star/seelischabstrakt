@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const L = SITE.legalEntity;
-const ADDRESS = `${L.company}, ${L.street}, ${L.zipCity}, ${L.country}, ${SITE.email}`;
+const ADDRESS = `${L.company}, ${L.street}, ${L.zipCity}, ${L.country}, ${L.phone}, ${SITE.email}`;
 
 export default function WiderrufPage() {
   return (
@@ -36,6 +36,15 @@ export default function WiderrufPage() {
           haben, einschließlich der Lieferkosten, unverzüglich und spätestens binnen vierzehn Tagen
           ab dem Tag, an dem die Mitteilung über den Widerruf bei uns eingegangen ist. Die
           Lieferkosten erstatten wir in Höhe der günstigsten von uns angebotenen Standardlieferung.
+          Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das du bei der
+          ursprünglichen Transaktion eingesetzt hast, es sei denn, mit dir wurde ausdrücklich etwas
+          anderes vereinbart. In keinem Fall werden dir wegen dieser Rückzahlung Entgelte berechnet.
+        </p>
+        <p>
+          Du hast die Ware unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem
+          Tag, an dem du uns über den Widerruf dieses Vertrags unterrichtest, an uns zurückzusenden
+          oder zu übergeben. Die Frist ist gewahrt, wenn du die Ware vor Ablauf der Frist von
+          vierzehn Tagen absendest.
         </p>
         <p>
           Wir können die Rückzahlung verweigern, bis wir die Ware zurückerhalten haben oder bis du

@@ -64,16 +64,8 @@ export default function ImpressumPage() {
 
       <Section no="4" title="Streitbeilegung">
         <p>
-          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit:{" "}
-          <a
-            href="https://ec.europa.eu/consumers/odr"
-            className="text-ink underline underline-offset-4"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ec.europa.eu/consumers/odr
-          </a>
-          .
+          Die europäische Plattform zur Online-Streitbeilegung wurde zum 20. Juli 2025 eingestellt.
+          Eine Verlinkung ist seitdem nicht mehr vorgeschrieben.
         </p>
         <p>
           Wir sind nicht verpflichtet und nicht bereit, an einem Streitbeilegungsverfahren vor einer

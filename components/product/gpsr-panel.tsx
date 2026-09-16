@@ -1,5 +1,5 @@
 import { RESPONSIBLE_PERSON } from "@/config/site";
-import type { Product } from "@/config/products";
+import { hasCosmeticPart, type Product } from "@/config/products";
 
 /**
  * The block the General Product Safety Regulation asks for on the offer itself:
@@ -7,8 +7,19 @@ import type { Product } from "@/config/products";
  * belong to it. It is not hidden behind a drawer, because the regulation wants
  * this visible with the offer.
  */
+/**
+ * Everything that must by law sit on the product itself, in the order a label
+ * carries it. CLP hazard statements come first because they are label elements
+ * under Regulation EC 1272/2008, not house copy.
+ */
+function mandatoryLabelText(regulatory: Product["regulatory"]): string[] {
+  const clp = regulatory.kind === "candle" ? regulatory.clpStatements : [];
+  const enclosed = regulatory.kind === "accessory" ? (regulatory.cosmetic?.warnings ?? []) : [];
+  return [...clp, ...regulatory.warnings, ...enclosed];
+}
+
 export function GpsrPanel({ product }: { product: Product }) {
-  const warnings = product.regulatory.warnings;
+  const warnings = mandatoryLabelText(product.regulatory);
 
   return (
     <section
@@ -78,7 +89,9 @@ export function GpsrPanel({ product }: { product: Product }) {
         </div>
       ) : null}
 
-      <p className="mt-6 text-xs leading-relaxed text-ink-3">{RESPONSIBLE_PERSON.note}</p>
+      <p className="mt-6 text-xs leading-relaxed text-ink-3">
+        {hasCosmeticPart(product) ? RESPONSIBLE_PERSON.note : RESPONSIBLE_PERSON.role}
+      </p>
     </section>
   );
 }

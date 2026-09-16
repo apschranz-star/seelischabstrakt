@@ -19,6 +19,12 @@ export interface NetQuantity {
   unit: MeasureUnit;
 }
 
+/**
+ * Note for anyone editing the ingredient lists: the cyclic siloxanes D4, D5 and
+ * D6 (Cyclotetrasiloxane, Cyclopentasiloxane, Cyclohexasiloxane) may not be used
+ * at or above 0,1 percent in leave-on cosmetics, entry 70 of Annex XVII REACH as
+ * amended by Regulation (EU) 2024/1328. Do not reintroduce them.
+ */
 export interface CosmeticRegulatory {
   kind: "cosmetic";
   /** INCI list in descending order of weight, as printed on the pack. */
@@ -56,6 +62,12 @@ export interface AccessoryRegulatory {
   material: string;
   care: string;
   warnings: string[];
+  /**
+   * A set may ship a cosmetic alongside the tool. That part keeps the full
+   * cosmetics duties of Regulation EC 1223/2009, so it carries its own block
+   * rather than disappearing into the accessory branch.
+   */
+  cosmetic?: Omit<CosmeticRegulatory, "kind"> & { name: string; netQuantity: NetQuantity };
 }
 
 export type Regulatory =
@@ -139,9 +151,10 @@ export const PRODUCTS: Product[] = [
     category: "Nachtpflege",
     tagline: "Regenerierendes Gesichtsöl mit schwarzem Sesam",
     description:
-      "Acht Pflanzenöle, kalt gepresst, in einer Braunglasflasche mit mattem Überzug. " +
-      "Die Textur zieht in etwa neunzig Sekunden ein und hinterlässt keinen Film. " +
-      "Der Duft kommt aus den Ölen selbst, es ist kein Parfüm zugesetzt.",
+      "Sechs Pflanzenöle, kalt gepresst, dazu Squalan und Vitamin E, in einer Braunglasflasche " +
+      "mit mattem Überzug. Die Textur zieht in etwa neunzig Sekunden ein und hinterlässt keinen " +
+      "Film. Der Duft kommt aus den Ölen selbst, ein Parfümöl ist nicht zugesetzt. Die natürlich " +
+      "enthaltenen Duftstoffe Linalool und Limonen sind deklariert.",
     ritual: "Drei bis vier Tropfen abends auf die feuchte Haut, von innen nach aussen.",
     priceCents: 5400,
     netQuantity: { value: 50, unit: "ml" },
@@ -198,8 +211,24 @@ export const PRODUCTS: Product[] = [
       warnings: [
         "Nicht auf entzündeter oder verletzter Haut anwenden.",
         "Der Stein ist bruchempfindlich, nicht auf harte Flächen fallen lassen.",
-        "Das beiliegende Öl ist ein kosmetisches Mittel, die INCI-Liste liegt der Packung bei.",
       ],
+      cosmetic: {
+        name: "Beiliegendes Trägeröl",
+        netQuantity: { value: 30, unit: "ml" },
+        inci: [
+          "Helianthus Annuus Seed Oil",
+          "Simmondsia Chinensis Seed Oil",
+          "Caprylic/Capric Triglyceride",
+          "Tocopherol",
+        ],
+        allergens: [],
+        pao: "12M",
+        cpnpReference: "CPNP-DEMO-YIN03-OEL",
+        warnings: [
+          "Nur zur äusseren Anwendung.",
+          "Kontakt mit den Augen vermeiden.",
+        ],
+      },
     },
     order: 3,
   },
@@ -224,11 +253,12 @@ export const PRODUCTS: Product[] = [
       kind: "candle",
       clpSignalWord: "",
       clpStatements: [
-        "Enthält Duftstoffe. Kann allergische Reaktionen hervorrufen.",
-        "Brennende Kerze niemals unbeaufsichtigt lassen.",
+        // EUH208 names the sensitising substance, the generic word Duftstoffe does not satisfy it.
+        "Enthält Cedrol, Limonen, Linalool. Kann allergische Reaktionen hervorrufen.",
       ],
       burnTimeHours: 50,
       warnings: [
+        "Brennende Kerze niemals unbeaufsichtigt lassen.",
         "Von Kindern und Haustieren fernhalten.",
         "Mindestens zehn Zentimeter Abstand zu anderen Kerzen halten.",
         "Docht vor jedem Anzünden auf fünf Millimeter kürzen.",
@@ -247,7 +277,7 @@ export const PRODUCTS: Product[] = [
     tagline: "Farbton Chalk Nude, samtmatt",
     description:
       "Eine Textur zwischen Stift und Creme. Sie legt sich in einer Schicht auf, ohne die Lippe " +
-      "zu beschweren, und trocknet zu einem trockenen Matt, das nicht abfärbt. Die Hülse ist " +
+      "zu beschweren, und trocknet zu einem trockenen Matt, das kaum abfärbt. Die Hülse ist " +
       "kreideweiss und aussen unlackiert, damit sie Fingerabdrücke annimmt statt sie zu spiegeln.",
     ritual: "Von der Mitte nach aussen auftragen, danach einmal mit dem Finger verblenden.",
     priceCents: 2800,
@@ -327,29 +357,29 @@ export const PRODUCTS: Product[] = [
     name: "Silk Cushion Foundation Compact",
     collection: "yang",
     category: "Teint",
-    tagline: "Nachfüllbare Dose in Kreideweiss",
+    tagline: "Kompakte Dose in Kreideweiss",
     description:
-      "Die Dose ist aus mattem Biokunststoff und lässt sich öffnen, ohne dass man hinsieht. " +
+      "Die Dose ist aus mattem Kunststoff und lässt sich öffnen, ohne dass man hinsieht. " +
       "Das Kissen gibt die Emulsion langsam ab, deshalb lässt sich der Auftrag steuern. " +
-      "Der Einsatz ist wechselbar, die Dose bleibt.",
+      "Der Einsatz sitzt lose in der Dose und lässt sich zum Reinigen herausnehmen.",
     ritual: "In kurzen Tupfern arbeiten, an der Nase beginnen, nach aussen auslaufen lassen.",
     priceCents: 4600,
     netQuantity: { value: 15, unit: "g" },
-    unitsLabel: "15 g, nachfüllbar",
+    unitsLabel: "15 g",
     origin: "Hergestellt in Südkorea",
     vessel: { body: "#F7F6F4", print: "#101010", cap: "#FFFFFF", shape: "compact", finish: "matte" },
     regulatory: {
       kind: "cosmetic",
       inci: [
         "Aqua",
-        "Cyclopentasiloxane",
-        "Titanium Dioxide",
+        "Dimethicone",
         "Glycerin",
         "Butylene Glycol",
         "PEG-10 Dimethicone",
         "Niacinamide",
         "Sodium Chloride",
         "Phenoxyethanol",
+        "CI 77891",
         "CI 77492",
         "CI 77491",
         "CI 77499",
@@ -358,7 +388,6 @@ export const PRODUCTS: Product[] = [
       pao: "12M",
       cpnpReference: "CPNP-DEMO-YANG03",
       warnings: [
-        "Enthält mineralische Filter. Kein Ersatz für einen Sonnenschutz.",
         "Kissen nicht mit nassen Fingern berühren.",
       ],
     },
@@ -419,4 +448,39 @@ export function getProductBySlug(slug: string): Product | undefined {
 
 export function isCosmetic(product: Product): product is Product & { regulatory: CosmeticRegulatory } {
   return product.regulatory.kind === "cosmetic";
+}
+
+/**
+ * True for a cosmetic and for a set that encloses one. The hygiene exception of
+ * section 312g Abs. 2 Nr. 3 BGB and the Article 4 responsible person statement
+ * both follow this, not the narrower isCosmetic.
+ */
+export function hasCosmeticPart(product: Product): boolean {
+  const r = product.regulatory;
+  if (r.kind === "cosmetic") return true;
+  return r.kind === "accessory" && r.cosmetic !== undefined;
+}
+
+/**
+ * Every declared allergen has to appear in the ingredient list the drawer shows,
+ * because the drawer tells the reader it does. Seed data is small enough to check
+ * at module load; in production this stays silent.
+ */
+if (process.env.NODE_ENV !== "production") {
+  for (const product of PRODUCTS) {
+    const blocks = [
+      product.regulatory.kind === "cosmetic" ? product.regulatory : null,
+      product.regulatory.kind === "accessory" ? (product.regulatory.cosmetic ?? null) : null,
+    ];
+    for (const block of blocks) {
+      if (!block) continue;
+      for (const allergen of block.allergens) {
+        if (!block.inci.includes(allergen)) {
+          throw new Error(
+            `${product.id}: declared allergen "${allergen}" is missing from the INCI list.`,
+          );
+        }
+      }
+    }
+  }
 }

@@ -120,9 +120,10 @@ function CosmeticPanel({ regulatory }: { regulatory: CosmeticRegulatory }) {
           ))}
         </ol>
         <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-          Die Reihenfolge entspricht dem Aufdruck auf der Packung, absteigend nach Gewichtsanteil.
-          Farbstoffe stehen am Ende. Der Text lässt sich markieren und kopieren, etwa für die
-          Rückfrage in einer Hautarztpraxis.
+          Die Reihenfolge entspricht dem Aufdruck auf der Packung. Bestandteile über einem Prozent
+          stehen absteigend nach Gewichtsanteil, Bestandteile unter einem Prozent danach in
+          beliebiger Reihenfolge, Farbstoffe mit ihrer CI-Nummer am Ende. Der Text lässt sich
+          markieren und kopieren, etwa für die Rückfrage in einer Hautarztpraxis.
         </p>
       </Section>
 
@@ -142,7 +143,8 @@ function CosmeticPanel({ regulatory }: { regulatory: CosmeticRegulatory }) {
             <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
               Diese Stoffe müssen nach Anhang III der Verordnung (EG) Nr. 1223/2009 gesondert
               angegeben werden, sobald sie in einem Produkt zum Verbleib auf der Haut über 0,001
-              Prozent liegen. Genannt werden sie zusätzlich in der INCI-Liste oben.
+              Prozent liegen, bei abzuspülenden Produkten über 0,01 Prozent. Genannt werden sie
+              zusätzlich in der INCI-Liste oben.
             </p>
           </>
         ) : (
@@ -219,7 +221,9 @@ function ElectricalPanel({ regulatory }: { regulatory: ElectricalRegulatory }) {
           <p className="text-[12px] leading-relaxed text-ink-2">
             Elektroaltgeräte gehören nicht in den Hausmüll, sondern in die getrennte Sammlung,
             damit Rohstoffe zurückgewonnen und Schadstoffe aus dem Restmüll gehalten werden. Du kannst
-            das Gerät an uns zurückgeben oder es bei einer kommunalen Sammelstelle abgeben. Vor
+            das Gerät kostenlos an uns zurückgeben oder es bei einer kommunalen Sammelstelle
+            abgeben. Für die Rücksendung schicken wir dir auf Anfrage ein Etikett, der Weg steht
+            unter Versand und Rückgabe. Vor
             der Rückgabe Altbatterien und, sofern vorhanden, Lampen entnehmen und getrennt
             entsorgen. Für das Löschen persönlicher Daten auf dem Altgerät bist du selbst
             verantwortlich.
@@ -273,6 +277,8 @@ function CandlePanel({ regulatory }: { regulatory: CandleRegulatory }) {
 }
 
 function AccessoryPanel({ regulatory }: { regulatory: AccessoryRegulatory }) {
+  const { cosmetic } = regulatory;
+
   return (
     <>
       <Section title="Material">
@@ -284,6 +290,30 @@ function AccessoryPanel({ regulatory }: { regulatory: AccessoryRegulatory }) {
       </Section>
 
       <Warnings items={regulatory.warnings} />
+
+      {cosmetic ? (
+        <div className="mt-10 border-t border-line pt-8">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+            {cosmetic.name}, {cosmetic.netQuantity.value} {cosmetic.netQuantity.unit}
+          </p>
+          <p className="mt-2 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
+            Dem Set liegt ein kosmetisches Mittel bei. Es fällt unter die Verordnung (EG) Nr.
+            1223/2009 und bekommt deshalb dieselben Angaben wie jedes einzeln verkaufte Produkt.
+          </p>
+          <div className="mt-6">
+            <CosmeticPanel
+              regulatory={{
+                kind: "cosmetic",
+                inci: cosmetic.inci,
+                allergens: cosmetic.allergens,
+                pao: cosmetic.pao,
+                cpnpReference: cosmetic.cpnpReference,
+                warnings: cosmetic.warnings,
+              }}
+            />
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }

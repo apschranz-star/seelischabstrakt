@@ -13,6 +13,8 @@ import {
   REGION_ORDER,
   WITHDRAWAL_DAYS,
   type PaymentMethodId,
+  type RegionCode,
+  type CurrencyCode,
 } from "@/config/site";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
@@ -26,6 +28,141 @@ import {
 } from "@/lib/utils";
 
 const SHELL = "mx-auto w-full max-w-[1240px] px-4 pb-24 pt-8 sm:px-6 sm:pt-12";
+
+/**
+ * Section 312j Abs. 2 BGB wants the essential characteristics, the total, the
+ * shipping cost and the delivery window immediately before the order button.
+ * The same block therefore renders twice: inside the form above the button on
+ * narrow screens, and in the sticky aside from lg upwards.
+ */
+function OrderSummary({
+  idSuffix,
+  lines,
+  region,
+  currency,
+  estimate,
+  regionConfig,
+}: {
+  idSuffix: string;
+  lines: ReturnType<typeof resolveLines>;
+  region: RegionCode;
+  currency: CurrencyCode;
+  estimate: ReturnType<typeof selectEstimate>;
+  regionConfig: (typeof REGIONS)[RegionCode];
+}) {
+  return (
+            <div className="border border-line bg-surface-2 p-5 sm:p-6">
+              <h2
+                id={`zusammenfassung-${idSuffix}`}
+                className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
+              >
+                Bestellübersicht
+              </h2>
+
+              <ul className="mt-4">
+                {lines.map(({ product, quantity }) => {
+                  const basePrice = formatBasePrice(product, region);
+                  const lineTotal = toRegionMinorUnits(product.priceCents, region) * quantity;
+
+                  return (
+                    <li key={product.id} className="flex gap-3 border-b border-line py-3 first:border-t">
+                      <div className="w-11 shrink-0">
+                        <PackagingViewer product={product} compact />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3">
+                          {product.code}
+                        </p>
+                        <p className="mt-0.5 font-display text-[15px] leading-tight text-ink">
+                          {product.name}
+                        </p>
+                        <p className="mt-0.5 text-[11px] leading-snug text-ink-2">
+                          {product.unitsLabel}
+                        </p>
+                        <p className="mt-1 font-mono text-[11px] tabular-nums text-ink-3">
+                          {quantity} × {formatForRegion(product.priceCents, region)}
+                        </p>
+                        {basePrice ? (
+                          <p className="font-mono text-[11px] tabular-nums text-ink-3">
+                            Grundpreis {basePrice}
+                          </p>
+                        ) : null}
+                      </div>
+                      <p className="shrink-0 font-mono text-[13px] tabular-nums text-ink">
+                        {formatMoney(lineTotal, currency)}
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <dl className="mt-4 flex flex-col gap-2 text-[13px]">
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt className="text-ink-2">Zwischensumme</dt>
+                  <dd className="font-mono tabular-nums text-ink">
+                    {formatMoney(estimate.subtotal, currency)}
+                  </dd>
+                </div>
+
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt className="text-ink-2">
+                    Versand
+                    <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
+                      {regionConfig.carrier}, {deliveryWindow(regionConfig)}
+                    </span>
+                  </dt>
+                  <dd className="font-mono tabular-nums text-ink">
+                    {estimate.shipping === 0 ? "kostenfrei" : formatMoney(estimate.shipping, currency)}
+                  </dd>
+                </div>
+
+                {estimate.clearance > 0 ? (
+                  <div className="flex items-baseline justify-between gap-4">
+                    <dt className="text-ink-2">
+                      Zollabfertigung
+                      <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
+                        {regionConfig.customs?.incoterm ?? "DDP"}, verzollt und versteuert
+                      </span>
+                    </dt>
+                    <dd className="font-mono tabular-nums text-ink">
+                      {formatMoney(estimate.clearance, currency)}
+                    </dd>
+                  </div>
+                ) : null}
+
+                <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-line pt-3">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
+                    Gesamt
+                  </dt>
+                  <dd className="font-mono text-[17px] tabular-nums text-ink">
+                    {formatMoney(estimate.total, currency)}
+                  </dd>
+                </div>
+              </dl>
+
+              <p className="mt-2 text-[11px] leading-snug text-ink-3">
+                Darin enthalten {formatMoney(estimate.vatIncluded, currency)} bei{" "}
+                {regionConfig.vatLabel}.
+              </p>
+              <p className="text-[11px] leading-snug text-ink-3">
+                {regionConfig.customs
+                  ? "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung."
+                  : "Gesamtpreis inklusive Steuer und Versandkosten."}
+              </p>
+              {regionConfig.customs ? (
+                <p className="mt-2 text-[11px] leading-snug text-ink-3">{regionConfig.customs.note}</p>
+              ) : null}
+
+              <Link
+                href="/cart"
+                className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 transition-colors hover:text-ink hover:underline"
+              >
+                Warenkorb ändern
+              </Link>
+            </div>
+  );
+}
+
 
 const FIELD_INPUT = cn(
   "mt-1.5 w-full rounded-[2px] border border-line bg-surface px-3 py-2.5",
@@ -67,7 +204,7 @@ const FIELDS: Field[] = [
     autoComplete: "email",
     required: true,
     wide: true,
-    hint: "An diese Adresse geht die Bestellbestätigung.",
+    hint: "An diese Adresse ginge im Echtbetrieb die Bestellbestätigung.",
   },
   {
     name: "company",
@@ -233,7 +370,7 @@ export default function CheckoutPage() {
     if (pending) return;
 
     if (!accepted) {
-      setError("Bitte bestätige zuerst die AGB und die Datenschutzerklärung.");
+      setError("Bitte bestätige zuerst die AGB.");
       return;
     }
     if (!selected) {
@@ -354,7 +491,7 @@ export default function CheckoutPage() {
                 ) : null}
                 {session.email ? (
                   <div className="flex flex-wrap items-baseline justify-between gap-3 border-y border-line py-3">
-                    <dt className={FIELD_LABEL}>Bestätigung an</dt>
+                    <dt className={FIELD_LABEL}>E-Mail, angegeben</dt>
                     <dd className="break-all text-right text-[14px] text-ink-2">{session.email}</dd>
                   </div>
                 ) : null}
@@ -525,6 +662,17 @@ export default function CheckoutPage() {
                 </fieldset>
               </section>
 
+              <div className="mt-10 lg:hidden">
+                <OrderSummary
+                  idSuffix="inline"
+                  lines={lines}
+                  region={region}
+                  currency={currency}
+                  estimate={estimate}
+                  regionConfig={regionConfig}
+                />
+              </div>
+
               <section aria-labelledby="abschluss-titel" className="mt-10 border-t border-line pt-8">
                 <h2
                   id="abschluss-titel"
@@ -535,8 +683,9 @@ export default function CheckoutPage() {
 
                 <p className="mt-4 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
                   Du kannst diese Bestellung innerhalb von {WITHDRAWAL_DAYS} Tagen ohne Angabe von
-                  Gründen widerrufen. Alle Einzelheiten und das Muster-Widerrufsformular stehen in
-                  der{" "}
+                  Gründen widerrufen. Ausgenommen sind versiegelte kosmetische Mittel, deren Siegel
+                  du nach der Lieferung entfernt hast. Alle Einzelheiten und das
+                  Muster-Widerrufsformular stehen in der{" "}
                   <Link href="/legal/widerruf" className="text-ink underline underline-offset-4">
                     Widerrufsbelehrung
                   </Link>
@@ -562,17 +711,18 @@ export default function CheckoutPage() {
                     <Link href="/legal/agb" className="text-ink underline underline-offset-4">
                       AGB
                     </Link>{" "}
-                    und die{" "}
-                    <Link
-                      href="/legal/datenschutz"
-                      className="text-ink underline underline-offset-4"
-                    >
-                      Datenschutzerklärung
-                    </Link>{" "}
                     gelesen und stimme ihnen zu.
                     <span aria-hidden="true"> *</span>
                   </span>
                 </label>
+
+                <p className="mt-3 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
+                  Wie wir deine Daten für die Bestellung verarbeiten, steht in der{" "}
+                  <Link href="/legal/datenschutz" className="text-ink underline underline-offset-4">
+                    Datenschutzerklärung
+                  </Link>
+                  . Grundlage ist die Vertragserfüllung, eine Einwilligung brauchen wir dafür nicht.
+                </p>
 
                 <p className="mt-4 max-w-[62ch] text-[12px] leading-relaxed text-ink-2">
                   Mit dem Absenden gibst du eine verbindliche Bestellung ab und gehst eine
@@ -614,109 +764,18 @@ export default function CheckoutPage() {
           )}
         </div>
 
-        <aside aria-labelledby="zusammenfassung-titel" className="lg:sticky lg:top-24 lg:self-start">
-          <div className="border border-line bg-surface-2 p-5 sm:p-6">
-            <h2
-              id="zusammenfassung-titel"
-              className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
-            >
-              Bestellübersicht
-            </h2>
-
-            <ul className="mt-4">
-              {lines.map(({ product, quantity }) => {
-                const basePrice = formatBasePrice(product, region);
-                const lineTotal = toRegionMinorUnits(product.priceCents, region) * quantity;
-
-                return (
-                  <li key={product.id} className="flex gap-3 border-b border-line py-3 first:border-t">
-                    <div className="w-11 shrink-0">
-                      <PackagingViewer product={product} compact />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3">
-                        {product.code}
-                      </p>
-                      <p className="mt-0.5 font-display text-[15px] leading-tight text-ink">
-                        {product.name}
-                      </p>
-                      <p className="mt-1 font-mono text-[11px] tabular-nums text-ink-3">
-                        {quantity} × {formatForRegion(product.priceCents, region)}
-                      </p>
-                      {basePrice ? (
-                        <p className="font-mono text-[11px] tabular-nums text-ink-3">
-                          Grundpreis {basePrice}
-                        </p>
-                      ) : null}
-                    </div>
-                    <p className="shrink-0 font-mono text-[13px] tabular-nums text-ink">
-                      {formatMoney(lineTotal, currency)}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <dl className="mt-4 flex flex-col gap-2 text-[13px]">
-              <div className="flex items-baseline justify-between gap-4">
-                <dt className="text-ink-2">Zwischensumme</dt>
-                <dd className="font-mono tabular-nums text-ink">
-                  {formatMoney(estimate.subtotal, currency)}
-                </dd>
-              </div>
-
-              <div className="flex items-baseline justify-between gap-4">
-                <dt className="text-ink-2">
-                  Versand
-                  <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
-                    {regionConfig.carrier}, {deliveryWindow(regionConfig)}
-                  </span>
-                </dt>
-                <dd className="font-mono tabular-nums text-ink">
-                  {estimate.shipping === 0 ? "kostenfrei" : formatMoney(estimate.shipping, currency)}
-                </dd>
-              </div>
-
-              {estimate.clearance > 0 ? (
-                <div className="flex items-baseline justify-between gap-4">
-                  <dt className="text-ink-2">
-                    Zollabfertigung
-                    <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
-                      {regionConfig.customs?.incoterm ?? "DDP"}, verzollt und versteuert
-                    </span>
-                  </dt>
-                  <dd className="font-mono tabular-nums text-ink">
-                    {formatMoney(estimate.clearance, currency)}
-                  </dd>
-                </div>
-              ) : null}
-
-              <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-line pt-3">
-                <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
-                  Gesamt
-                </dt>
-                <dd className="font-mono text-[17px] tabular-nums text-ink">
-                  {formatMoney(estimate.total, currency)}
-                </dd>
-              </div>
-            </dl>
-
-            <p className="mt-2 text-[11px] leading-snug text-ink-3">
-              Darin enthalten {formatMoney(estimate.vatIncluded, currency)} bei{" "}
-              {regionConfig.vatLabel}.
-            </p>
-            <p className="text-[11px] leading-snug text-ink-3">inkl. MwSt., zzgl. Versandkosten</p>
-            {regionConfig.customs ? (
-              <p className="mt-2 text-[11px] leading-snug text-ink-3">{regionConfig.customs.note}</p>
-            ) : null}
-
-            <Link
-              href="/cart"
-              className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 transition-colors hover:text-ink hover:underline"
-            >
-              Warenkorb ändern
-            </Link>
-          </div>
+        <aside
+          aria-labelledby="zusammenfassung-aside"
+          className="hidden lg:sticky lg:top-24 lg:block lg:self-start"
+        >
+          <OrderSummary
+            idSuffix="aside"
+            lines={lines}
+            region={region}
+            currency={currency}
+            estimate={estimate}
+            regionConfig={regionConfig}
+          />
         </aside>
       </div>
     </div>

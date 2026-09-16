@@ -371,7 +371,9 @@ export function CartDrawer() {
                     davon {formatMoney(estimate.vatIncluded, currency)} {taxNoun}
                   </p>
                   <p className="text-[11px] leading-snug text-ink-3">
-                    inkl. MwSt., zzgl. Versandkosten
+                    {regionConfig.customs
+                      ? "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung."
+                      : "Gesamtpreis inklusive Steuer und Versandkosten."}
                   </p>
                   {regionConfig.customs ? (
                     <p className="mt-2 max-w-[44ch] text-[11px] leading-snug text-ink-3">

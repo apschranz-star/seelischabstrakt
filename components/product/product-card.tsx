@@ -45,7 +45,15 @@ export function ProductCard({ product }: { product: Product }) {
           {basePrice ? (
             <p className="font-mono text-[11px] tabular-nums text-ink-3">{basePrice}</p>
           ) : null}
-          <p className="text-[11px] leading-snug text-ink-3">inkl. MwSt., zzgl. Versandkosten</p>
+          <p className="text-[11px] leading-snug text-ink-3">
+            inkl. MwSt., zzgl.{" "}
+            <Link
+              href="/legal/versand"
+              className="text-ink-2 underline underline-offset-2 transition-colors hover:text-ink"
+            >
+              Versandkosten
+            </Link>
+          </p>
         </div>
 
         <div className="mt-4">

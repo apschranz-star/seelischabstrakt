@@ -342,7 +342,9 @@ export default function CartPage() {
               {regionConfig.vatLabel}.
             </p>
             <p className="text-[11px] leading-snug text-ink-3">
-              inkl. MwSt., zzgl. Versandkosten
+              {regionConfig.customs
+                ? "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung."
+                : "Gesamtpreis inklusive Steuer und Versandkosten."}
             </p>
             {regionConfig.customs ? (
               <p className="mt-2 text-[11px] leading-snug text-ink-3">{regionConfig.customs.note}</p>
