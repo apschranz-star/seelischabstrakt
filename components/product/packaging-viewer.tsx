@@ -383,7 +383,10 @@ export function PackagingViewer({
       <div
         ref={frameRef}
         role="img"
-        tabIndex={0}
+        // A tab stop only where the tilt can actually be used. In a card the
+        // whole tile is already a link, and in the cart drawer this sits inside
+        // a focus trap, so an extra stop there is noise with nothing behind it.
+        tabIndex={compact ? -1 : 0}
         aria-label={`${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape]} mit Oberfläche ${FINISH_LABEL[vessel.finish]}. Mit den Pfeiltasten neigen.`}
         onPointerMove={handlePointerMove}
         onPointerLeave={rest}

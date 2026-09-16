@@ -19,11 +19,15 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={toggleMode}
+      // A toggle button keeps one name for the thing it controls and lets
+      // aria-pressed carry the state. Naming the action instead would say
+      // "switch to Yang" while the button reports itself as pressed, and would
+      // contradict the visible word next to it.
       aria-pressed={isYin}
-      aria-label={isYin ? "Zur Tagesansicht YANG wechseln" : "Zur Nachtansicht YIN wechseln"}
-      title={isYin ? "YANG, der Tag" : "YIN, die Nacht"}
+      aria-label="Nachtansicht Yin"
+      title={isYin ? "Yin, die Nacht. Klicken für Yang." : "Yang, der Tag. Klicken für Yin."}
       className={cn(
-        "group inline-flex items-center gap-2.5 rounded-full border border-line px-2.5 py-1.5",
+        "group inline-flex min-h-11 items-center gap-2.5 rounded-full border border-control px-2.5 py-1.5",
         "transition-colors duration-500 hover:border-ink",
         className,
       )}
@@ -48,7 +52,12 @@ export function ThemeToggle({ className }: { className?: string }) {
         <circle cx="20" cy="10.5" r="2.6" fill="var(--jing-surface)" />
         <circle cx="20" cy="29.5" r="2.6" fill="var(--jing-ink)" />
       </motion.svg>
-      <span className="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 sm:inline">
+      {/* The word shows the state to the eye. The button's own name already
+          carries it for assistive technology, so it is not announced twice. */}
+      <span
+        aria-hidden="true"
+        className="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 sm:inline"
+      >
         {isYin ? "Yin" : "Yang"}
       </span>
     </button>

@@ -87,6 +87,13 @@ function isPaymentMethodId(value: string): value is PaymentMethodId {
   return Object.hasOwn(PAYMENT_METHODS, value);
 }
 
+/** 128 bits from the platform CSPRNG, base36, for the session identifier. */
+function randomToken(): string {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
 /** FNV-1a over the basket fingerprint. Deterministic, so the reference survives a retry. */
 function hashSignature(signature: string): number {
   let hash = 2166136261;
@@ -198,7 +205,11 @@ export async function POST(
   const { lines, region, method, signature } = parsed.value;
   const estimate = estimateOrder(lines, region);
   const seed = hashSignature(signature);
-  const sessionId = `sess_${region.toLowerCase()}_${method}_${seed.toString(36)}`;
+  // The reference stays derived from the basket, so a retry of the same order
+  // reads the same. The session id must not: a deterministic id over the basket
+  // gives two buyers of the same cart the same session, and makes every other
+  // session guessable from a cart anyone can assemble. It gets real entropy.
+  const sessionId = `sess_${region.toLowerCase()}_${method}_${randomToken()}`;
 
   const payload: CheckoutPayload = {
     sessionId,

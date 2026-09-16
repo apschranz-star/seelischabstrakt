@@ -6,9 +6,10 @@ import { AddToCart } from "@/components/product/add-to-cart";
 import { InciDrawer } from "@/components/product/inci-drawer";
 import { GpsrPanel } from "@/components/product/gpsr-panel";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
+import { ProductPrice } from "@/components/product/product-price";
 import { PRODUCTS, getProductBySlug, hasCosmeticPart, type MeasureUnit } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
-import { computeBasePrice, deliveryWindow, formatMoney } from "@/lib/utils";
+import { deliveryWindow, formatMoney } from "@/lib/utils";
 
 // Every slug is known at build time, so an unknown one is a 404 and never a render.
 export const dynamicParams = false;
@@ -60,13 +61,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   if (!product) notFound();
 
-  // The server has no access to the stored region, so the page quotes euro and says
-  // where the regional price appears. The cart converts once the region is known.
-  const price = formatMoney(product.priceCents, "EUR");
-  const base = computeBasePrice(product.priceCents, product.netQuantity);
-  const basePriceLine = base
-    ? `${formatMoney(base.perReferenceMinorUnits, "EUR")} / ${base.referenceLabel}`
-    : null;
+  // The visible price block is a client component, because the delivery region
+  // lives in persisted client state. The structured data below stays in euro,
+  // which is the currency of the offer as filed.
 
   const home = REGIONS[DEFAULT_REGION];
   const isYin = product.collection === "yin";
@@ -153,22 +150,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <h2 id="preis-titel" className="sr-only">
               Preis
             </h2>
-            <p className="font-mono text-3xl tabular-nums leading-none text-ink sm:text-4xl">
-              {price}
-            </p>
-            {basePriceLine ? (
-              <p className="mt-2 font-mono text-[13px] tabular-nums text-ink-2">
-                Grundpreis {basePriceLine}
-              </p>
-            ) : null}
-            <p className="mt-2 text-[13px] leading-snug text-ink-3">
-              inkl. MwSt., zzgl.{" "}
-              <Link href="/legal/versand" className="text-ink underline underline-offset-4">
-                Versandkosten
-              </Link>
-            </p>
+            <ProductPrice product={product} />
             <p className="mt-3 max-w-[46ch] text-[12px] leading-relaxed text-ink-3">
-              Für die Schweiz weist der Warenkorb den Preis in CHF aus, verzollt und versteuert.
+              Der Preis richtet sich nach dem Lieferland oben im Kopf der Seite. Für die Schweiz
+              liefern wir verzollt und versteuert.
             </p>
           </section>
 

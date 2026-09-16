@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Check, Loader2 } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
@@ -165,9 +165,9 @@ function OrderSummary({
 
 
 const FIELD_INPUT = cn(
-  "mt-1.5 w-full rounded-[2px] border border-line bg-surface px-3 py-2.5",
+  "mt-1.5 w-full rounded-[2px] border border-control bg-surface px-3 py-2.5",
   "font-sans text-[14px] text-ink placeholder:text-ink-3",
-  "transition-colors duration-300 ease-ritual hover:border-line-2",
+  "transition-colors duration-300 ease-ritual hover:border-ink-2",
   "focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
 );
 const FIELD_LABEL = "font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3";
@@ -193,6 +193,13 @@ interface Field {
   wide?: boolean;
   hint?: string;
 }
+
+/** Digits a postcode has per delivery country, with the wording shown to the buyer. */
+const ZIP_RULES: Record<RegionCode, { digits: number; hint: string; example: string }> = {
+  DE: { digits: 5, hint: "Fünf Ziffern, zum Beispiel 10115", example: "10115" },
+  AT: { digits: 4, hint: "Vier Ziffern, zum Beispiel 1010", example: "1010" },
+  CH: { digits: 4, hint: "Vier Ziffern, zum Beispiel 8001", example: "8001" },
+};
 
 const FIELDS: Field[] = [
   { name: "firstName", label: "Vorname", type: "text", autoComplete: "given-name", required: true },
@@ -288,17 +295,30 @@ function payloadParts(payload: unknown): {
 export default function CheckoutPage() {
   const { region, setRegion, hydrated } = useYinYang();
   const items = useJingStore((state) => state.items);
+  const clearCart = useJingStore((state) => state.clearCart);
 
   const [method, setMethod] = useState<PaymentMethodId | null>(null);
   const [accepted, setAccepted] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [session, setSession] = useState<CheckoutSession | null>(null);
+  // Per field messages, so a rejected order says what is wrong and where, and
+  // says it in the page rather than in a native bubble that no screen reader
+  // announces and that vanishes on the next click.
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
+  const confirmationRef = useRef<HTMLHeadingElement>(null);
 
   // Both helpers build a fresh object on every call, so they may never be used as
   // store selectors. Memoised here they stay stable between renders.
   const lines = useMemo(() => resolveLines(items), [items]);
   const estimate = useMemo(() => selectEstimate({ items, region }), [items, region]);
+
+  // The form is gone once the order lands, so focus has to be handed to the
+  // confirmation. Without this it falls to the body and a screen reader user is
+  // left on a page that silently changed under them.
+  useEffect(() => {
+    if (session) confirmationRef.current?.focus();
+  }, [session]);
 
   // The region decides which methods exist, the method stays authoritative about
   // where it may be offered.
@@ -316,6 +336,14 @@ export default function CheckoutPage() {
     if (method && methods.some((entry) => entry.id === method)) return method;
     return methods.length > 0 ? methods[0].id : null;
   }, [method, methods]);
+
+  // A chosen method that the new delivery country does not offer is replaced
+  // silently by the fallback above. The buyer is told instead of finding a
+  // different method preselected without explanation.
+  const droppedMethod = useMemo(
+    () => (method && !methods.some((entry) => entry.id === method) ? method : null),
+    [method, methods],
+  );
 
   // No dates and no randomness in render. The fallback reference comes from the cart.
   const seed = useMemo(
@@ -354,7 +382,7 @@ export default function CheckoutPage() {
           danach führt der Weg zurück an diese Stelle.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/#yang" className={buttonClasses("solid", "md")}>
+          <Link href="/" className={buttonClasses("solid", "md")}>
             Zu den Kollektionen
           </Link>
           <Link href="/cart" className={buttonClasses("outline", "md")}>
@@ -369,18 +397,46 @@ export default function CheckoutPage() {
     event.preventDefault();
     if (pending) return;
 
-    if (!accepted) {
-      setError("Bitte bestätige zuerst die AGB.");
-      return;
+    // Read the form before the first await, the element is gone once the panel swaps.
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const email = String(data.get("email") ?? "");
+
+    const problems: Record<string, string> = {};
+    for (const field of FIELDS) {
+      if (!field.required) continue;
+      if (String(data.get(field.name) ?? "").trim()) continue;
+      problems[field.name] = `Bitte ${field.label} ausfüllen.`;
     }
-    if (!selected) {
-      setError("Bitte wähle eine Zahlungsart.");
+    if (!problems.email && email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      problems.email = "Diese Adresse sieht nicht wie eine E-Mail-Adresse aus.";
+    }
+    const zip = String(data.get("zip") ?? "").trim();
+    const zipRule = ZIP_RULES[region];
+    if (!problems.zip && zip && !new RegExp(`^[0-9]{${zipRule.digits}}$`).test(zip)) {
+      problems.zip = `Die PLZ für ${regionConfig.label} hat ${zipRule.digits} Ziffern, zum Beispiel ${zipRule.example}.`;
+    }
+    if (!accepted) problems.agb = "Bitte bestätige zuerst die AGB.";
+    if (!selected) problems.method = "Bitte wähle eine Zahlungsart.";
+
+    setFieldErrors(problems);
+
+    const first = Object.keys(problems)[0];
+    if (first) {
+      setError(
+        Object.keys(problems).length === 1
+          ? problems[first]
+          : `Die Bestellung ist noch nicht vollständig, ${Object.keys(problems).length} Angaben fehlen oder stimmen nicht.`,
+      );
+      const target = form.querySelector<HTMLElement>(
+        first === "agb" ? "#feld-agb" : first === "method" ? "[name='zahlungsart']" : `[name='${first}']`,
+      );
+      target?.focus();
       return;
     }
 
-    // Read the form before the first await, the element is gone once the panel swaps.
-    const data = new FormData(event.currentTarget);
-    const email = String(data.get("email") ?? "");
+    if (!selected) return;
+
     const methodLabel = PAYMENT_METHODS[selected].label;
     const amount = formatMoney(estimate.total, currency);
 
@@ -391,7 +447,17 @@ export default function CheckoutPage() {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, region, method: selected }),
+        // The resolved lines, not the raw persisted items: the summary, every
+        // total and the amount on the button are all computed from these, so
+        // the order must be placed for exactly the same basket.
+        body: JSON.stringify({
+          items: lines.map((line) => ({
+            productId: line.product.id,
+            quantity: line.quantity,
+          })),
+          region,
+          method: selected,
+        }),
       });
 
       const payload: unknown = await response.json().catch(() => null);
@@ -410,6 +476,10 @@ export default function CheckoutPage() {
         readString(nested, REFERENCE_KEYS) ??
         readString(root, REFERENCE_KEYS) ??
         orderReference(seed);
+
+      // The order exists now. Leaving the basket filled invites a second,
+      // identical order and makes the header badge lie about what is pending.
+      clearCart();
 
       setSession({
         reference,
@@ -444,6 +514,8 @@ export default function CheckoutPage() {
           {session ? (
             <section
               aria-labelledby="bestaetigung-titel"
+              role="status"
+              aria-live="polite"
               className="border border-line bg-surface-2 p-5 sm:p-7"
             >
               <p className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
@@ -452,7 +524,9 @@ export default function CheckoutPage() {
               </p>
               <h2
                 id="bestaetigung-titel"
-                className="mt-3 font-display text-3xl leading-tight text-ink"
+                ref={confirmationRef}
+                tabIndex={-1}
+                className="mt-3 font-display text-3xl leading-tight text-ink focus-visible:outline-none"
               >
                 Danke, die Bestellung steht bereit.
               </h2>
@@ -498,7 +572,7 @@ export default function CheckoutPage() {
               </dl>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/#yang" className={buttonClasses("solid", "md")}>
+                <Link href="/" className={buttonClasses("solid", "md")}>
                   Weiter stöbern
                 </Link>
                 <Link href="/cart" className={buttonClasses("outline", "md")}>
@@ -507,7 +581,7 @@ export default function CheckoutPage() {
               </div>
             </section>
           ) : (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
               <section aria-labelledby="adresse-titel">
                 <h2
                   id="adresse-titel"
@@ -516,14 +590,18 @@ export default function CheckoutPage() {
                   Lieferadresse
                 </h2>
                 <p className="mt-2 text-[12px] leading-snug text-ink-3">
-                  Felder mit <span aria-hidden="true">*</span> sind Pflichtfelder.
+                  Pflichtfelder sind mit einem Stern
+                  <span aria-hidden="true"> *</span> markiert.
                 </p>
 
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   {FIELDS.map((field) => {
                     const id = `feld-${field.name}`;
-                    const hintId = field.hint ? `${id}-hinweis` : undefined;
                     const isZip = field.name === "zip";
+                    const hint = isZip ? ZIP_RULES[region].hint : field.hint;
+                    const hintId = hint ? `${id}-hinweis` : undefined;
+                    const fieldError = fieldErrors[field.name];
+                    const errorId = fieldError ? `${id}-fehler` : undefined;
 
                     return (
                       <div key={field.name} className={field.wide ? "sm:col-span-2" : undefined}>
@@ -543,21 +621,19 @@ export default function CheckoutPage() {
                           autoComplete={field.autoComplete}
                           required={field.required}
                           aria-required={field.required}
-                          aria-describedby={hintId}
+                          aria-describedby={[hintId, errorId].filter(Boolean).join(" ") || undefined}
+                          aria-invalid={fieldError ? true : undefined}
                           inputMode={isZip ? "numeric" : undefined}
-                          pattern={isZip ? (region === "DE" ? "[0-9]{5}" : "[0-9]{4}") : undefined}
-                          title={
-                            isZip
-                              ? region === "DE"
-                                ? "Fünf Ziffern, zum Beispiel 10115"
-                                : "Vier Ziffern, zum Beispiel 8001"
-                              : undefined
-                          }
-                          className={FIELD_INPUT}
+                          className={cn(FIELD_INPUT, fieldError && "border-seal")}
                         />
-                        {field.hint ? (
+                        {hint ? (
                           <p id={hintId} className="mt-1 text-[11px] leading-snug text-ink-3">
-                            {field.hint}
+                            {hint}
+                          </p>
+                        ) : null}
+                        {fieldError ? (
+                          <p id={errorId} className="mt-1 text-[11px] leading-snug text-seal">
+                            {fieldError}
                           </p>
                         ) : null}
                       </div>
@@ -604,6 +680,18 @@ export default function CheckoutPage() {
                   Angeboten werden nur Verfahren, die für {regionConfig.label} freigeschaltet sind.
                 </p>
 
+                {droppedMethod ? (
+                  <p role="status" className="mt-2 max-w-[62ch] text-[12px] leading-snug text-seal">
+                    {PAYMENT_METHODS[droppedMethod].label} wird für {regionConfig.label} nicht
+                    angeboten. Wir haben {selected ? PAYMENT_METHODS[selected].label : "keine Zahlungsart"}{" "}
+                    vorausgewählt, du kannst sie ändern.
+                  </p>
+                ) : null}
+
+                {fieldErrors.method ? (
+                  <p className="mt-2 text-[12px] leading-snug text-seal">{fieldErrors.method}</p>
+                ) : null}
+
                 <fieldset className="mt-5">
                   <legend className="sr-only">Zahlungsart wählen</legend>
                   <div className="grid gap-2.5 sm:grid-cols-2">
@@ -617,7 +705,7 @@ export default function CheckoutPage() {
                             "focus-within:ring-2 focus-within:ring-ink focus-within:ring-offset-2 focus-within:ring-offset-surface",
                             active
                               ? "border-ink bg-surface-2"
-                              : "border-line hover:border-line-2 hover:bg-surface-2",
+                              : "border-control hover:border-ink-2 hover:bg-surface-2",
                           )}
                         >
                           <span className="flex items-center gap-2.5">
@@ -633,7 +721,7 @@ export default function CheckoutPage() {
                               aria-hidden="true"
                               className={cn(
                                 "inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border",
-                                active ? "border-ink" : "border-line-2",
+                                active ? "border-ink" : "border-control",
                               )}
                             >
                               <span
@@ -704,6 +792,8 @@ export default function CheckoutPage() {
                     onChange={(event) => setAccepted(event.target.checked)}
                     required
                     aria-required="true"
+                    aria-invalid={fieldErrors.agb ? true : undefined}
+                    aria-describedby={fieldErrors.agb ? "feld-agb-fehler" : undefined}
                     className="mt-0.5 h-4 w-4 shrink-0 accent-ink"
                   />
                   <span className="text-[12px] leading-relaxed text-ink-2">
@@ -715,6 +805,12 @@ export default function CheckoutPage() {
                     <span aria-hidden="true"> *</span>
                   </span>
                 </label>
+
+                {fieldErrors.agb ? (
+                  <p id="feld-agb-fehler" className="mt-1.5 text-[12px] leading-snug text-seal">
+                    {fieldErrors.agb}
+                  </p>
+                ) : null}
 
                 <p className="mt-3 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
                   Wie wir deine Daten für die Bestellung verarbeiten, steht in der{" "}
@@ -764,19 +860,23 @@ export default function CheckoutPage() {
           )}
         </div>
 
-        <aside
-          aria-labelledby="zusammenfassung-aside"
-          className="hidden lg:sticky lg:top-24 lg:block lg:self-start"
-        >
-          <OrderSummary
-            idSuffix="aside"
-            lines={lines}
-            region={region}
-            currency={currency}
-            estimate={estimate}
-            regionConfig={regionConfig}
-          />
-        </aside>
+        {/* Once the order exists the basket is empty, so an empty summary
+            beside the confirmation would only confuse. */}
+        {session ? null : (
+          <aside
+            aria-labelledby="zusammenfassung-aside"
+            className="hidden lg:sticky lg:top-24 lg:block lg:self-start"
+          >
+            <OrderSummary
+              idSuffix="aside"
+              lines={lines}
+              region={region}
+              currency={currency}
+              estimate={estimate}
+              regionConfig={regionConfig}
+            />
+          </aside>
+        )}
       </div>
     </div>
   );

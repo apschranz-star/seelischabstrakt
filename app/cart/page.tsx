@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { PaymentBadges } from "@/components/cart/payment-badges";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
@@ -43,6 +43,7 @@ export default function CartPage() {
   const setQuantity = useJingStore((state) => state.setQuantity);
   const removeItem = useJingStore((state) => state.removeItem);
   const clearCart = useJingStore((state) => state.clearCart);
+  const [confirmClear, setConfirmClear] = useState(false);
   const reduceMotion = useReducedMotion() ?? false;
 
   // Both helpers build a fresh object on every call, so they may never be used as
@@ -169,7 +170,7 @@ export default function CartPage() {
                     <div
                       role="group"
                       aria-label={`Menge, ${product.name}`}
-                      className="flex items-center rounded-[2px] border border-line"
+                      className="flex items-center rounded-[2px] border border-control"
                     >
                       <button
                         type="button"
@@ -194,6 +195,11 @@ export default function CartPage() {
                         type="button"
                         onClick={() => setQuantity(product.id, quantity + 1)}
                         disabled={quantity >= MAX_QUANTITY}
+                        title={
+                          quantity >= MAX_QUANTITY
+                            ? `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`
+                            : undefined
+                        }
                         aria-label={`Menge erhöhen, ${product.name}`}
                         className={stepButton}
                       >
@@ -228,18 +234,41 @@ export default function CartPage() {
 
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <Link
-              href="/#yang"
+              href="/"
               className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 transition-colors hover:text-ink hover:underline"
             >
               Weiter stöbern
             </Link>
-            <button
-              type="button"
-              onClick={clearCart}
-              className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3 underline-offset-4 transition-colors hover:text-ink hover:underline"
-            >
-              Warenkorb leeren
-            </button>
+            {confirmClear ? (
+              <span className="flex flex-wrap items-center gap-3">
+                <span className="text-[12px] text-ink-2">Wirklich alles entfernen?</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearCart();
+                    setConfirmClear(false);
+                  }}
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-seal underline underline-offset-4"
+                >
+                  Ja, leeren
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmClear(false)}
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 hover:text-ink hover:underline"
+                >
+                  Abbrechen
+                </button>
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setConfirmClear(true)}
+                className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3 underline-offset-4 transition-colors hover:text-ink hover:underline"
+              >
+                Warenkorb leeren
+              </button>
+            )}
           </div>
         </section>
 

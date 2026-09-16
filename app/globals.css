@@ -24,6 +24,7 @@
   --color-inverse-surface: var(--jing-inverse-surface);
   --color-inverse-ink: var(--jing-inverse-ink);
   --color-seal: var(--jing-seal);
+  --color-control: var(--jing-control);
 
   --ease-ritual: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -37,6 +38,10 @@
   --jing-ink-3: #6b6b70;
   --jing-line: #e5e5e5;
   --jing-line-2: #d2d2d6;
+  /* Boundary of an interactive control. WCAG 1.4.11 wants 3:1 against the
+     surface behind it, which the decorative hairlines above do not reach and
+     are not meant to. 3.54:1 on surface, 3.30:1 on surface-2. */
+  --jing-control: #84848a;
   --jing-inverse-surface: #0d0d0d;
   --jing-inverse-ink: #fafafa;
   --jing-seal: #8f2a1f;
@@ -51,9 +56,13 @@
   --jing-ink-3: #8f8f8f;
   --jing-line: #262626;
   --jing-line-2: #3a3a3a;
+  /* 3.38:1 on surface, 3.21:1 on surface-2. */
+  --jing-control: #666666;
   --jing-inverse-surface: #f9f9fb;
   --jing-inverse-ink: #111111;
-  --jing-seal: #c4574a;
+  /* Error text on the night surface. 4.45:1 was just under the 4.5:1 the
+     Erfolgskriterium 1.4.3 asks for, so it is lifted to 5.18:1. */
+  --jing-seal: #cd6558;
   color-scheme: dark;
 }
 

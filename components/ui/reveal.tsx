@@ -15,10 +15,18 @@ export type RevealFrom = "left" | "right" | "up" | "none";
  *    sections. An IntersectionObserver never sees them, so they would stay at
  *    opacity zero for the rest of the visit. Anything already at or above the
  *    fold is therefore revealed on sight, and a scroll listener catches the rest.
- * 2. prefers-reduced-motion, where nothing moves and nothing fades.
- * 3. No JavaScript, handled by the noscript rule in the root layout.
+ * 2. prefers-reduced-motion, where nothing moves and nothing fades. This must
+ *    never change the element tree: useReducedMotion returns null on the server
+ *    and true on a reduced-motion client, so branching on it here would make the
+ *    first client render structurally different from the server markup. React
+ *    hydrates the existing node and keeps the server's inline opacity:0, and a
+ *    plain element has no motion component left to clear it, so the page would
+ *    stay blank. The preference therefore only decides whether the element is
+ *    shown at once and with what duration.
+ * 3. No JavaScript, handled by the noscript rule in the root layout, and a
+ *    hydration that never arrives, handled by the fallback timer there.
  */
-function useRevealed(enabled: boolean) {
+function useRevealed(enabled: boolean, immediate: boolean) {
   const node = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
   // A callback ref keeps the type simple: motion renders div, section, li or
@@ -28,7 +36,7 @@ function useRevealed(enabled: boolean) {
   }, []);
 
   useEffect(() => {
-    if (!enabled) {
+    if (!enabled || immediate) {
       setShown(true);
       return;
     }
@@ -67,7 +75,7 @@ function useRevealed(enabled: boolean) {
       observer.disconnect();
       window.removeEventListener("scroll", onScroll);
     };
-  }, [enabled]);
+  }, [enabled, immediate]);
 
   return { setRef, shown };
 }
@@ -85,9 +93,11 @@ export function Reveal({
   className?: string;
   as?: "div" | "section" | "li" | "article";
 }) {
-  const reduce = useReducedMotion();
-  const enabled = !reduce && from !== "none";
-  const { setRef, shown } = useRevealed(enabled);
+  // null on the server, boolean on the client. Read as false for the first
+  // render so server and client agree, then as a request to skip the motion.
+  const reduce = useReducedMotion() === true;
+  const enabled = from !== "none";
+  const { setRef, shown } = useRevealed(enabled, reduce);
   const MotionTag = motion[as];
 
   const offset = from === "left" ? -64 : from === "right" ? 64 : 0;
@@ -99,7 +109,10 @@ export function Reveal({
       opacity: 1,
       x: 0,
       y: 0,
-      transition: { duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] },
+      // A reduced-motion visitor reaches the same end state without the travel.
+      transition: reduce
+        ? { duration: 0 }
+        : { duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] },
     },
   };
 

@@ -476,6 +476,23 @@ export function InciDrawer({ product }: { product: Product }) {
         {meta.trigger}
       </button>
 
+      {/*
+        The panel above is a modal built in JavaScript. Ingredient lists,
+        fragrance allergens and the period after opening are information a buyer
+        is entitled to before ordering, so without scripting the same content is
+        rendered inline instead of being unreachable.
+      */}
+      <noscript>
+        <div className="mt-6 border border-line-2 bg-surface-2 p-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+            {meta.title}
+          </p>
+          <div className="mt-4">
+            <RegulatoryBody regulatory={product.regulatory} />
+          </div>
+        </div>
+      </noscript>
+
       {mounted
         ? createPortal(
             <AnimatePresence>
@@ -534,7 +551,15 @@ export function InciDrawer({ product }: { product: Product }) {
                       </button>
                     </div>
 
-                    <div className="flex flex-col gap-6 overflow-y-auto overscroll-contain px-5 py-6 sm:px-6">
+                    {/* Scrollable, so it needs to be a tab stop and to name
+                        itself, otherwise a keyboard user cannot reach the text
+                        below the fold. */}
+                    <div
+                      tabIndex={0}
+                      role="group"
+                      aria-labelledby={titleId}
+                      className="flex flex-col gap-6 overflow-y-auto overscroll-contain px-5 py-6 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink sm:px-6"
+                    >
                       <RegulatoryBody regulatory={product.regulatory} />
 
                       <p className="border-t border-line pt-5 text-[11px] leading-relaxed text-ink-3">

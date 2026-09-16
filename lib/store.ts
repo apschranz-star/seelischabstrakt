@@ -35,6 +35,8 @@ interface JingState {
   removeItem: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
+  /** Drops cart entries whose product left the catalogue. */
+  pruneCart: () => void;
   openCart: () => void;
   closeCart: () => void;
   setHydrated: (value: boolean) => void;
@@ -96,6 +98,18 @@ export const useJingStore = create<JingState>()(
         })),
 
       clearCart: () => set({ items: [] }),
+
+      // A basket persisted before a catalogue change can hold an id that no
+      // longer resolves. Those entries are invisible in every list and every
+      // total, but they still travel to the checkout route, which rejects the
+      // whole order over an item the buyer cannot see. They are removed once,
+      // right after the persisted state is read back.
+      pruneCart: () =>
+        set((state) => {
+          const kept = state.items.filter((item) => productById.has(item.productId));
+          return kept.length === state.items.length ? {} : { items: kept };
+        }),
+
       openCart: () => set({ isCartOpen: true }),
       closeCart: () => set({ isCartOpen: false }),
       setHydrated: (value) => set({ hydrated: value }),
@@ -112,9 +126,9 @@ export const useJingStore = create<JingState>()(
   ),
 );
 
-/* --------------------------------------------------------------- derivations */
-
 const productById = new Map<string, Product>(PRODUCTS.map((product) => [product.id, product]));
+
+/* --------------------------------------------------------------- derivations */
 
 export function resolveLines(items: CartItem[]): OrderLine[] {
   return items
@@ -125,9 +139,12 @@ export function resolveLines(items: CartItem[]): OrderLine[] {
     .filter((line): line is OrderLine => line !== null);
 }
 
-/** Total number of units in the cart. */
+/**
+ * Total number of units in the cart, counted over resolvable lines only, so the
+ * header badge can never disagree with what the cart actually lists.
+ */
 export function selectItemCount(state: { items: CartItem[] }): number {
-  return state.items.reduce((sum, item) => sum + item.quantity, 0);
+  return resolveLines(state.items).reduce((sum, line) => sum + line.quantity, 0);
 }
 
 export function selectEstimate(state: { items: CartItem[]; region: RegionCode }): OrderEstimate {

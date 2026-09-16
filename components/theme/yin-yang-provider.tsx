@@ -33,24 +33,44 @@ export function YinYangProvider({ children }: { children: ReactNode }) {
   const toggleInStore = useJingStore((state) => state.toggleMode);
   const setRegionInStore = useJingStore((state) => state.setRegion);
   const setHydrated = useJingStore((state) => state.setHydrated);
+  const pruneCart = useJingStore((state) => state.pruneCart);
 
   const [mounted, setMounted] = useState(false);
 
   // Read the persisted state once, on the client, after the first paint.
+  // Corrupt or unreadable storage must never take the shop down with it: a
+  // private window, a quota error or a half written entry would otherwise throw
+  // out of this effect and leave the visitor on a blank page. A failed rehydrate
+  // simply means an empty cart and the default mode.
   useEffect(() => {
     let cancelled = false;
-    void useJingStore.persist.rehydrate()?.then?.(() => {
-      if (!cancelled) setHydrated(true);
-    });
-    if (!useJingStore.persist.hasHydrated()) {
-      // Older storage engines resolve synchronously and return undefined above.
+    // Tells the fallback timer in the root layout that React is running, so the
+    // reveal animation is allowed to keep its opacity:0 starting state.
+    document.documentElement.setAttribute("data-hydrated", "");
+    try {
+      void useJingStore.persist.rehydrate()?.then?.(
+        () => {
+          if (cancelled) return;
+          pruneCart();
+          setHydrated(true);
+        },
+        () => {
+          if (!cancelled) setHydrated(true);
+        },
+      );
+      if (!useJingStore.persist.hasHydrated()) {
+        // Older storage engines resolve synchronously and return undefined above.
+        pruneCart();
+        setHydrated(true);
+      }
+    } catch {
       setHydrated(true);
     }
     setMounted(true);
     return () => {
       cancelled = true;
     };
-  }, [setHydrated]);
+  }, [setHydrated, pruneCart]);
 
   // The document element carries the mode so CSS can invert the whole surface.
   useEffect(() => {

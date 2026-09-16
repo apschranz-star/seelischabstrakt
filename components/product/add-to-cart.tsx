@@ -24,6 +24,10 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
   // A counter, not a timestamp. Dates in render would desync server and client,
   // and bumping it restarts the timer when the button is pressed twice in a row.
   const [addCount, setAddCount] = useState(0);
+  // What the cart actually holds after the press, read back from the store.
+  // The stepper value is not the same thing: the line is capped at ten, and the
+  // stepper keeps moving after the confirmation appears.
+  const [confirmedLine, setConfirmedLine] = useState(0);
 
   useEffect(() => {
     if (addCount === 0) return;
@@ -37,6 +41,10 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
 
   function handleAdd() {
     addItem(product.id, quantity);
+    const line = useJingStore
+      .getState()
+      .items.find((item) => item.productId === product.id);
+    setConfirmedLine(line?.quantity ?? quantity);
     setAddCount((count) => count + 1);
   }
 
@@ -52,7 +60,7 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
         <div
           role="group"
           aria-label={`Menge, ${product.name}`}
-          className="flex items-center rounded-[2px] border border-line"
+          className="flex items-center rounded-[2px] border border-control"
         >
           <button
             type="button"
@@ -80,6 +88,7 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
             type="button"
             onClick={() => setQuantity((value) => Math.min(MAX_QUANTITY, value + 1))}
             disabled={stepDisabled || quantity >= MAX_QUANTITY}
+            title={quantity >= MAX_QUANTITY ? `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich` : undefined}
             aria-label="Menge erhöhen"
             className={stepButton}
           >
@@ -117,7 +126,11 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
           compact ? "text-[10px]" : "text-[11px]",
         )}
       >
-        {confirmed ? `${quantity} × ${product.code} liegt im Warenkorb` : ""}
+        {confirmed
+          ? confirmedLine >= MAX_QUANTITY
+            ? `${product.code}: ${confirmedLine} im Warenkorb, mehr geht pro Bestellung nicht`
+            : `${product.code}: ${confirmedLine} im Warenkorb`
+          : ""}
       </p>
     </div>
   );

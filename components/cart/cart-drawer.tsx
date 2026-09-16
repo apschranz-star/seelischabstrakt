@@ -43,6 +43,7 @@ export function CartDrawer() {
 
   const [mounted, setMounted] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const reduceMotion = useReducedMotion() ?? false;
 
@@ -51,6 +52,22 @@ export function CartDrawer() {
   // Both helpers build a fresh object on every call, so they may never be used as
   // store selectors. Memoised here they stay stable between renders.
   const lines = useMemo(() => resolveLines(items), [items]);
+
+  /**
+   * Removing a line or disabling the control that was just pressed drops focus
+   * to document.body. Inside a focus trap that means the next Tab restarts at
+   * the top and a screen reader loses its place, so every destructive control
+   * hands focus on explicitly before the render that removes it.
+   */
+  const focusAfterRender = (select: () => HTMLElement | null) => {
+    requestAnimationFrame(() => {
+      const next = select();
+      (next ?? closeRef.current)?.focus();
+    });
+  };
+
+  const stepTarget = (productId: string, role: "plus" | "remove") =>
+    panelRef.current?.querySelector<HTMLElement>(`[data-step="${role}:${productId}"]`) ?? null;
   const estimate = useMemo(() => selectEstimate({ items, region }), [items, region]);
 
   const open = hydrated && isCartOpen;
@@ -185,10 +202,11 @@ export function CartDrawer() {
               </div>
 
               <button
+                ref={closeRef}
                 type="button"
                 onClick={closeCart}
                 aria-label="Warenkorb schließen"
-                className="-mr-1 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-2 transition-colors duration-300 ease-ritual hover:border-ink hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                className="-mr-1 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-control text-ink-2 transition-colors duration-300 ease-ritual hover:border-ink hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
               >
                 <X size={16} aria-hidden="true" />
               </button>
@@ -200,7 +218,7 @@ export function CartDrawer() {
                   Noch nichts gewählt. Der Warenkorb wartet, ohne Eile.
                 </p>
                 <Link
-                  href="/#yang"
+                  href="/"
                   onClick={closeCart}
                   className={buttonClasses("outline", "md")}
                 >
@@ -259,11 +277,17 @@ export function CartDrawer() {
                               <div
                                 role="group"
                                 aria-label={`Menge, ${product.name}`}
-                                className="flex items-center rounded-[2px] border border-line"
+                                className="flex items-center rounded-[2px] border border-control"
                               >
                                 <button
                                   type="button"
-                                  onClick={() => setQuantity(product.id, quantity - 1)}
+                                  onClick={() => {
+                                    setQuantity(product.id, quantity - 1);
+                                    // At one the control disables itself.
+                                    if (quantity - 1 <= 1) {
+                                      focusAfterRender(() => stepTarget(product.id, "plus"));
+                                    }
+                                  }}
                                   disabled={quantity <= 1}
                                   aria-label={`Menge verringern, ${product.name}`}
                                   className={stepButton}
@@ -282,8 +306,19 @@ export function CartDrawer() {
 
                                 <button
                                   type="button"
-                                  onClick={() => setQuantity(product.id, quantity + 1)}
+                                  data-step={`plus:${product.id}`}
+                                  onClick={() => {
+                                    setQuantity(product.id, quantity + 1);
+                                    if (quantity + 1 >= MAX_QUANTITY) {
+                                      focusAfterRender(() => stepTarget(product.id, "remove"));
+                                    }
+                                  }}
                                   disabled={quantity >= MAX_QUANTITY}
+                                  title={
+                                    quantity >= MAX_QUANTITY
+                                      ? `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`
+                                      : undefined
+                                  }
                                   aria-label={`Menge erhöhen, ${product.name}`}
                                   className={stepButton}
                                 >
@@ -293,7 +328,17 @@ export function CartDrawer() {
 
                               <button
                                 type="button"
-                                onClick={() => removeItem(product.id)}
+                                data-step={`remove:${product.id}`}
+                                onClick={() => {
+                                  // Decided before the row leaves the DOM.
+                                  const rest = lines.filter((entry) => entry.product.id !== product.id);
+                                  const index = lines.findIndex((entry) => entry.product.id === product.id);
+                                  const neighbour = rest[index] ?? rest[index - 1] ?? null;
+                                  removeItem(product.id);
+                                  focusAfterRender(() =>
+                                    neighbour ? stepTarget(neighbour.product.id, "remove") : null,
+                                  );
+                                }}
                                 aria-label={`${product.name} entfernen`}
                                 className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-transparent px-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-3 transition-colors duration-300 ease-ritual hover:border-line hover:text-ink"
                               >

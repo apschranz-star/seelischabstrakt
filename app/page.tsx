@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect } from "react";
 
@@ -69,18 +71,29 @@ function RitualHalf({
       onClick={() => onSelect(collection)}
       aria-pressed={active}
       aria-controls={collection}
-      aria-label={`${copy.title}, ${copy.daypart}, Ritualfenster ${copy.hours} Uhr, Kollektion anzeigen`}
+      aria-label={`${copy.title}, ${copy.daypart}, Ritualfenster ${copy.hours} Uhr, ${
+        active ? "Aktive Ansicht" : "Ansicht wechseln"
+      }`}
       className={cn(
         "flex min-h-[24rem] flex-col justify-between py-12 text-left",
         "transition-opacity duration-700 ease-ritual md:min-h-[38rem] md:py-20",
         collection === "yang"
           ? "border-b border-line md:border-b-0 md:pr-14"
           : "pt-12 md:pl-14 md:pt-20",
-        active ? "opacity-100" : "opacity-45 hover:opacity-80",
+        // The inactive half is dimmed, not hidden. At opacity 0.45 its small
+        // type fell to 1.86:1, well under the 4.5:1 of Erfolgskriterium 1.4.3.
+        // 0.75 with ink-2 instead of ink-3 keeps the recessed look and lands at
+        // 4.98:1 on the day surface and 6.91:1 on the night surface.
+        active ? "opacity-100" : "opacity-75 hover:opacity-90",
       )}
     >
       <span className="block">
-        <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
+        <span
+          className={cn(
+            "font-mono text-[11px] uppercase tracking-[0.22em]",
+            active ? "text-ink-3" : "text-ink-2",
+          )}
+        >
           {copy.kicker}
         </span>
         <span className="mt-6 block font-display text-[clamp(3.25rem,11vw,6rem)] leading-[0.85] tracking-[0.06em] text-ink">
@@ -90,7 +103,12 @@ function RitualHalf({
       </span>
 
       <span className="mt-14 block">
-        <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+        <span
+          className={cn(
+            "block font-mono text-[10px] uppercase tracking-[0.22em]",
+            active ? "text-ink-3" : "text-ink-2",
+          )}
+        >
           Ritualfenster
         </span>
         <span className="mt-2 block font-mono text-[13px] tabular-nums text-ink">
@@ -99,7 +117,7 @@ function RitualHalf({
         <span
           className={cn(
             "mt-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em]",
-            active ? "text-ink" : "text-ink-3",
+            active ? "text-ink" : "text-ink-2",
           )}
         >
           <span
@@ -199,6 +217,26 @@ function CollectionSection({
               <Button variant="outline" size="sm" onClick={() => onActivate(collection)}>
                 {copy.cta}
               </Button>
+
+              {/*
+                Opening the other side is a JavaScript switch, so without it half
+                the catalogue would have no link anywhere on the page. These go
+                straight to the product pages, which are static.
+              */}
+              <noscript>
+                <ul role="list" className="flex w-full flex-wrap gap-x-5 gap-y-2">
+                  {products.map((product) => (
+                    <li key={product.id}>
+                      <Link
+                        href={`/products/${product.slug}`}
+                        className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-2 underline underline-offset-4 hover:text-ink"
+                      >
+                        {product.code}, {product.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </noscript>
             </motion.div>
           )}
         </AnimatePresence>
@@ -217,6 +255,13 @@ export default function HomePage() {
   const activeRegion = REGIONS[hydrated ? region : DEFAULT_REGION];
 
   // A deep link such as /#yin should open the night side, not only scroll to it.
+  //
+  // hashchange alone is not enough. The App Router navigates with
+  // history.pushState, which fires no hashchange, so clicking Yin in the header
+  // while already on the home page would scroll to a section that is still
+  // showing its dimmed placeholder. Listening to click in the capture phase
+  // catches the in page link before the router handles it; hashchange and
+  // popstate still cover the browser's own back and forward.
   useEffect(() => {
     if (!hydrated) return;
 
@@ -225,9 +270,22 @@ export default function HomePage() {
       if (hash === "yin" || hash === "yang") setMode(hash);
     };
 
+    const onClick = (event: MouseEvent) => {
+      const anchor = (event.target as Element | null)?.closest?.("a[href]");
+      const href = anchor?.getAttribute("href");
+      if (href === "#yin" || href === "/#yin") setMode("yin");
+      if (href === "#yang" || href === "/#yang") setMode("yang");
+    };
+
     applyHash();
+    document.addEventListener("click", onClick, true);
     window.addEventListener("hashchange", applyHash);
-    return () => window.removeEventListener("hashchange", applyHash);
+    window.addEventListener("popstate", applyHash);
+    return () => {
+      document.removeEventListener("click", onClick, true);
+      window.removeEventListener("hashchange", applyHash);
+      window.removeEventListener("popstate", applyHash);
+    };
   }, [hydrated, setMode]);
 
   const facts = [
