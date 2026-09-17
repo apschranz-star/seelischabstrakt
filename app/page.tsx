@@ -3,137 +3,23 @@
 import Link from "next/link";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
+import { RITUAL } from "@/components/home/ritual-copy";
+import { RitualHero } from "@/components/home/ritual-hero";
 import { ProductCard } from "@/components/product/product-card";
-import { Reveal } from "@/components/ui/reveal";
+import { Reveal, STAGGER } from "@/components/ui/reveal";
+import { SectionHandoff } from "@/components/ui/section-handoff";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
 import { DURATION } from "@/lib/motion";
 import { useJingStore, type Mode } from "@/lib/store";
-import { cn, deliveryWindow } from "@/lib/utils";
+import { deliveryWindow } from "@/lib/utils";
 
 /** The store opens on yang, so server markup and first client render agree on it. */
 const FALLBACK_MODE: Mode = "yang";
-
-interface RitualCopy {
-  kicker: string;
-  title: string;
-  daypart: string;
-  /** Hours of the day this collection belongs to, straight from the site config. */
-  hours: string;
-  lead: string;
-  invite: string;
-  cta: string;
-}
-
-const RITUAL: Record<Mode, RitualCopy> = {
-  yang: {
-    kicker: "Kollektion 01",
-    title: "YANG",
-    daypart: "der Tag",
-    hours: SITE.ritualWindow.yang,
-    lead:
-      "Fünf Stücke für das Licht. Texturen, die einen Arbeitstag überstehen, eine Essenz, " +
-      "die darunter weiterarbeitet, und ein Atemzug für den Kopf.",
-    invite: "Yang liegt gerade im Hintergrund. Ein Klick, und der Shop dreht sich auf den Tag.",
-    cta: "Zu Yang wechseln",
-  },
-  yin: {
-    kicker: "Kollektion 02",
-    title: "YIN",
-    daypart: "die Nacht",
-    hours: SITE.ritualWindow.yin,
-    lead:
-      "Fünf Stücke für das Halbdunkel. Öl, Stein und Duft, ein Gerät, das den Raum vorbereitet, und ein Atemzug zum Schluss.",
-    invite: "Yin liegt gerade im Hintergrund. Ein Klick, und der Shop dreht sich auf die Nacht.",
-    cta: "Zu Yin wechseln",
-  },
-};
-
-/* --------------------------------------------------------------------- hero */
-
-function RitualHalf({
-  collection,
-  active,
-  onSelect,
-}: {
-  collection: Mode;
-  active: boolean;
-  onSelect: (mode: Mode) => void;
-}) {
-  const copy = RITUAL[collection];
-
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(collection)}
-      aria-pressed={active}
-      aria-controls={collection}
-      aria-label={`${copy.title}, ${copy.daypart}, Ritualfenster ${copy.hours} Uhr, ${
-        active ? "Aktive Ansicht" : "Ansicht wechseln"
-      }`}
-      className={cn(
-        "flex min-h-[24rem] flex-col justify-between py-12 text-left",
-        "transition-opacity duration-700 ease-ritual md:min-h-[38rem] md:py-20",
-        collection === "yang"
-          ? "border-b border-line md:border-b-0 md:pr-14"
-          : "pt-12 md:pl-14 md:pt-20",
-        // The inactive half is dimmed, not hidden. At opacity 0.45 its small
-        // type fell to 1.86:1, well under the 4.5:1 of Erfolgskriterium 1.4.3.
-        // 0.75 with ink-2 instead of ink-3 keeps the recessed look and lands at
-        // 4.98:1 on the day surface and 6.91:1 on the night surface.
-        active ? "opacity-100" : "opacity-75 hover:opacity-90",
-      )}
-    >
-      <span className="block">
-        <span
-          className={cn(
-            "font-mono text-[11px] uppercase tracking-[0.22em]",
-            active ? "text-ink-3" : "text-ink-2",
-          )}
-        >
-          {copy.kicker}
-        </span>
-        <span className="mt-6 block font-display text-[clamp(3.25rem,11vw,6rem)] leading-[0.85] tracking-[0.06em] text-ink">
-          {copy.title}
-        </span>
-        <span className="mt-4 block text-sm text-ink-2">{copy.daypart}</span>
-      </span>
-
-      <span className="mt-14 block">
-        <span
-          className={cn(
-            "block font-mono text-[10px] uppercase tracking-[0.22em]",
-            active ? "text-ink-3" : "text-ink-2",
-          )}
-        >
-          Ritualfenster
-        </span>
-        <span className="mt-2 block font-mono text-[13px] tabular-nums text-ink">
-          {copy.hours} Uhr
-        </span>
-        <span
-          className={cn(
-            "mt-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em]",
-            active ? "text-ink" : "text-ink-2",
-          )}
-        >
-          <span
-            aria-hidden="true"
-            className={cn(
-              "h-px w-10 transition-colors duration-700 ease-ritual",
-              active ? "bg-ink" : "bg-line-2",
-            )}
-          />
-          {active ? "Aktive Ansicht" : "Ansicht wechseln"}
-        </span>
-      </span>
-    </button>
-  );
-}
 
 /* --------------------------------------------------------------- collections */
 
@@ -161,9 +47,12 @@ function CollectionSection({
     [instant],
   );
   const reduceMotion = useReducedMotion() ?? false;
+  const section = useRef<HTMLElement>(null);
   const copy = RITUAL[collection];
   const products = getProductsByCollection(collection);
   const headingId = `${collection}-titel`;
+  const side = collection === "yang" ? "left" : "right";
+  const otherSide = collection === "yang" ? "right" : "left";
 
   // Durations are the only thing that reacts to the motion preference. Rendered styles
   // stay identical, otherwise the server markup and the first client render diverge.
@@ -171,14 +60,18 @@ function CollectionSection({
 
   return (
     <section
+      ref={section}
       id={collection}
       aria-labelledby={headingId}
-      className="scroll-mt-24 border-b border-line py-14 sm:py-20"
+      className="relative scroll-mt-24 border-b border-line py-[var(--space-section)]"
     >
+      <SectionHandoff target={section} />
       <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-        <Reveal from={collection === "yang" ? "left" : "right"}>
-          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line pb-6">
-          <div>
+        {/* The heading row closes toward the centre like the two halves of the
+            hero: the heading from the collection's own side, the hours from the
+            other. The rule under them belongs to a plain div and never moves. */}
+        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line pb-6">
+          <Reveal from={side}>
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
               {copy.kicker}
             </p>
@@ -189,12 +82,13 @@ function CollectionSection({
               {copy.title}, {copy.daypart}
             </h2>
             <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink-2">{copy.lead}</p>
-          </div>
-          <p className="font-mono text-[11px] tabular-nums uppercase tracking-[0.18em] text-ink-3">
-            {copy.hours} Uhr
-          </p>
-          </div>
-        </Reveal>
+          </Reveal>
+          <Reveal from={otherSide} delay={STAGGER}>
+            <p className="font-mono text-[11px] tabular-nums uppercase tracking-[0.18em] text-ink-3">
+              {copy.hours} Uhr
+            </p>
+          </Reveal>
+        </div>
 
         <AnimatePresence initial={false} mode="wait">
           {active ? (
@@ -213,7 +107,7 @@ function CollectionSection({
                   key={product.id}
                   as="li"
                   from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
-                  delay={instant ? 0 : (index % 4) * 0.07}
+                  delay={instant ? 0 : (index % 4) * STAGGER}
                   className="h-full"
                 >
                   <ProductCard product={product} />
@@ -266,6 +160,7 @@ function CollectionSection({
 export default function HomePage() {
   const { mode, setMode, region, hydrated } = useYinYang();
   const modeSwitched = useJingStore((state) => state.modeSwitched);
+  const thesis = useRef<HTMLElement>(null);
 
   // Persisted values only after rehydration, so the first paint matches the server.
   const activeMode = hydrated ? mode : FALLBACK_MODE;
@@ -315,29 +210,7 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="relative mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-          <h1
-            className={cn(
-              "pt-12 text-center font-display text-[clamp(2rem,9vw,2.75rem)] leading-tight tracking-[0.04em] text-ink",
-              "md:pointer-events-none md:absolute md:left-1/2 md:top-1/2 md:z-10 md:whitespace-nowrap",
-              "md:-translate-x-1/2 md:-translate-y-1/2 md:pt-0 md:text-[clamp(1.75rem,4vw,3.5rem)]",
-            )}
-          >
-            {SITE.claim}
-          </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <RitualHalf collection="yang" active={activeMode === "yang"} onSelect={setMode} />
-            <RitualHalf collection="yin" active={activeMode === "yin"} onSelect={setMode} />
-          </div>
-
-          <span
-            aria-hidden="true"
-            className="jing-spine absolute inset-y-0 left-1/2 hidden w-px md:block"
-          />
-        </div>
-      </section>
+      <RitualHero activeMode={activeMode} onSelect={setMode} />
 
       <section aria-label="Versand, Lieferzeit und Widerruf" className="border-b border-line">
         <ul
@@ -349,7 +222,7 @@ export default function HomePage() {
               key={fact.label}
               as="li"
               from={index === 1 ? "up" : index === 0 ? "left" : "right"}
-              delay={index * 0.06}
+              delay={index * STAGGER}
               className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line py-4 last:border-b-0 sm:border-b-0 sm:py-5"
             >
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
@@ -376,7 +249,12 @@ export default function HomePage() {
 
       {/* Stays inside the active palette. An inverted band read as a white block
           slammed into the night view; the section now sits on surface-2 in both. */}
-      <section aria-labelledby="these-titel" className="border-t border-line bg-surface-2 text-ink">
+      <section
+        ref={thesis}
+        aria-labelledby="these-titel"
+        className="relative border-t border-line bg-surface-2 text-ink"
+      >
+        <SectionHandoff target={thesis} />
         <div className="mx-auto w-full max-w-[1240px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal from="left">
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
@@ -391,18 +269,18 @@ export default function HomePage() {
           </Reveal>
 
           <div className="mt-12 grid gap-8 border-t border-line pt-10 md:grid-cols-3">
-            <Reveal from="left" delay={0.05}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
+            <Reveal from="left" delay={0}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Der Tag verlangt etwas anderes als die Nacht. Am Morgen zählt, was Struktur gibt und
               bis zum letzten Termin hält. Am Abend zählt, was zurücknimmt und der Haut die Arbeit
               überlässt.
             </p></Reveal>
-            <Reveal from="up" delay={0.12}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
+            <Reveal from="up" delay={STAGGER}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang
               gehört zu den Stunden von {SITE.ritualWindow.yang} Uhr, Yin zu den Stunden von{" "}
               {SITE.ritualWindow.yin} Uhr. Jede Hälfte hat fünf Stücke, mehr braucht ein
               Ritual nicht.
             </p></Reveal>
-            <Reveal from="right" delay={0.19}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
+            <Reveal from="right" delay={2 * STAGGER}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit mit zwei Seiten. Du
               entscheidest, welche gerade gilt, und der Shop richtet sich danach aus, in der Ansicht
               wie im Sortiment.

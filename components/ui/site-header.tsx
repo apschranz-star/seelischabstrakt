@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useScroll } from "framer-motion";
 import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
+import { useHysteresis } from "@/lib/motion";
 import { useJingStore, selectItemCount } from "@/lib/store";
 import { REGIONS, REGION_ORDER } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -35,6 +37,18 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+
+  // The header answers scroll only by firming up: its surface goes from 85 to
+  // 96 percent and its rule from line to line-2, see header[data-scrolled] in
+  // globals.css. The attribute is written straight to the element, so a scroll
+  // causes no render, and the server markup carries no trace of the position.
+  // Two thresholds, on above 24 px and off below 8 px, keep it from flickering
+  // when the page rests near the top.
+  const { scrollY } = useScroll();
+  useHysteresis(scrollY, 24, 8, (active) => {
+    headerRef.current?.toggleAttribute("data-scrolled", active);
+  });
 
   // The menu covers the page on a phone, so it has to close the way every other
   // overlay does: Escape, and a tap anywhere outside it. Focus goes back to the
@@ -64,7 +78,10 @@ export function SiteHeader() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur-md">
+    <header
+      ref={headerRef}
+      className="jing-header sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur-md"
+    >
       <div className="mx-auto flex w-full max-w-[1240px] items-center gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"

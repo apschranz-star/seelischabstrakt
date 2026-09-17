@@ -151,6 +151,41 @@ body {
   );
 }
 
+/*
+  The hero. Its deep plane lags behind the page by up to 56 px, so the section
+  clips what would otherwise cross the hairline into the facts band. clip, not
+  hidden, so nothing inside becomes a scroll container.
+*/
+.jing-hero {
+  overflow: clip;
+}
+
+/*
+  The handoff hairline. It draws down from the centre as a section arrives,
+  scaleY from 0 to 1 with the origin at the top. Positioned by the component,
+  coloured here so it follows the palette.
+*/
+.jing-handoff {
+  background-color: var(--jing-line-2);
+  transform-origin: top;
+}
+
+/*
+  The header firms up on scroll and changes nothing else. The blur stays at
+  the same strength in both states, so the paint cost does not change with the
+  position. Height, padding and every control are untouched.
+*/
+.jing-header {
+  transition:
+    background-color var(--duration-swift) var(--ease-ritual),
+    border-color var(--duration-swift) var(--ease-ritual);
+}
+
+header[data-scrolled] {
+  background-color: color-mix(in srgb, var(--jing-surface) 96%, transparent);
+  border-color: var(--jing-line-2);
+}
+
 /* The vertical rule that separates the two rituals in the hero. */
 .jing-spine {
   background: linear-gradient(

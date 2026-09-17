@@ -3,7 +3,12 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
+import { DISTANCE, DURATION, EASE_RITUAL, STAGGER } from "@/lib/motion";
+
 export type RevealFrom = "left" | "right" | "up" | "none";
+
+/** Callers space their siblings in multiples of this. */
+export { STAGGER };
 
 /**
  * Scroll choreography. Sections and cards glide in from the side they belong to,
@@ -103,19 +108,27 @@ export function Reveal({
   const { setRef, shown } = useRevealed(enabled, reduce);
   const MotionTag = motion[as];
 
-  const offset = from === "left" ? -64 : from === "right" ? 64 : 0;
-  const lift = from === "up" ? 28 : 12;
+  // One reveal system. A glide of DISTANCE.glide from the element's own side,
+  // a lift of 24 px when it comes from below, DISTANCE.lift otherwise, and a
+  // scale a hair under one so the element settles rather than slides.
+  const hidden = {
+    opacity: 0,
+    x: from === "left" ? -DISTANCE.glide : from === "right" ? DISTANCE.glide : 0,
+    y: from === "up" ? 24 : DISTANCE.lift,
+    scale: 0.985,
+  };
 
   const variants: Variants = {
-    hidden: { opacity: 0, x: offset, y: lift },
+    hidden,
     shown: {
       opacity: 1,
       x: 0,
       y: 0,
+      scale: 1,
       // A reduced-motion visitor reaches the same end state without the travel.
       transition: reduce
         ? { duration: 0 }
-        : { duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] },
+        : { duration: DURATION.slow, delay, ease: EASE_RITUAL },
     },
   };
 

@@ -45,7 +45,7 @@ ein Prompt für einen GPT mit GitHub- und Netlify-Anbindung steht in `LAUNCH.md`
 app/
   globals.css                Tailwind-Import, @theme-Tokens und beide Paletten, einzige Stelle mit Farbwerten
   layout.tsx                 Wurzel-Layout, Schriften, Metadaten, Bootstrap-Skript, Kopf, Fuß, Warenkorb
-  page.tsx                   Startseite, Hero je Ritual und die beiden Kollektionsabschnitte #yang und #yin
+  page.tsx                   Startseite, Faktenband, die beiden Kollektionsabschnitte #yang und #yin, die These
   products/[slug]/page.tsx   Produktseite, Server Component, statisch vorgerendert, mit Pflichtangaben
   cart/page.tsx              Warenkorb als eigene Seite, Lieferland, Versandschwelle, Kostenrechnung
   checkout/page.tsx          Kasse, Zahlartwahl, Bestellübersicht, ruft den Mock-Endpunkt auf
@@ -55,6 +55,10 @@ app/
   legal/widerruf/page.tsx    Widerrufsbelehrung mit Muster-Widerrufsformular
   api/products/route.ts      Katalog als JSON, optional nach Kollektion gefiltert
   api/checkout/route.ts      Mock-Zahlungssitzung, validiert streng, rechnet serverseitig, bucht nichts ab
+
+components/home/
+  ritual-hero.tsx            der Hero in drei Ebenen, die großen Worte bleiben beim Scrollen zurück, der Claim geht voraus
+  ritual-copy.ts             die Worte beider Rituale, Kicker, Titel, Tageszeit und Lead, gelesen von Hero und Abschnitten
 
 components/theme/
   yin-yang-provider.tsx      Context über den Store, hält mode, region und das Flag hydrated
@@ -73,7 +77,9 @@ components/cart/
 components/ui/
   button.tsx                 Button und buttonClasses, drei Varianten, drei Größen
   modal.tsx                  Dialog mit role="dialog", aria-modal, Escape und Fokusrückgabe
-  site-header.tsx            Kopfzeile mit Navigation, Warenkorbzähler, Lieferland und Ritualumschalter
+  site-header.tsx            Kopfzeile mit Navigation, Warenkorbzähler, Lieferland und Ritualumschalter, wird beim Scrollen fester
+  section-handoff.tsx        die Haarlinie, die sich beim Erreichen eines Abschnitts von der Mitte nach unten zeichnet
+  reveal.tsx                 das eine Einblendsystem, 32 Pixel Gleitweg von der eigenen Seite, 60 Millisekunden Versatz
   site-footer.tsx            Fußzeile mit den drei Rechtsseiten und der Preistransparenzzeile
 
 config/
@@ -81,6 +87,7 @@ config/
   products.ts                Katalog und Produkttypen, inklusive des regulatorischen Blocks je Produkt
 
 lib/
+  motion.ts                  das eine Zeitmodul, sechs Dauern, zwei Kurven, ein Versatz, geteilt mit den CSS-Variablen
   utils.ts                   Formatierung, Umrechnung, Grundpreis, Steuer, Bestellsummen, Bestellreferenz
   store.ts                   Zustand-Store für Ritual, Lieferland und Warenkorb, plus Selektoren
 ```
