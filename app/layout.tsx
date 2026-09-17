@@ -82,6 +82,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}>
         <YinYangProvider>
+          {process.env.NEXT_PUBLIC_JING_STATIC_DEMO === "1" ? (
+            <p
+              role="note"
+              className="border-b border-line bg-surface-2 px-4 py-2 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-ink-2"
+            >
+              Demonstration. Kein Verkauf, keine Zahlung. Produkte, Preise und Firmendaten sind
+              Beispieldaten.
+            </p>
+          ) : null}
           <a
             href="#inhalt"
             className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-surface"

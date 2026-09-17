@@ -272,9 +272,11 @@ export default function HomePage() {
 
     const onClick = (event: MouseEvent) => {
       const anchor = (event.target as Element | null)?.closest?.("a[href]");
-      const href = anchor?.getAttribute("href");
-      if (href === "#yin" || href === "/#yin") setMode("yin");
-      if (href === "#yang" || href === "/#yang") setMode("yang");
+      // endsWith, because a basePath (the static demo under /seelischabstrakt/jing)
+      // is prepended to every href and would otherwise defeat the exact match.
+      const href = anchor?.getAttribute("href") ?? "";
+      if (href.endsWith("#yin")) setMode("yin");
+      if (href.endsWith("#yang")) setMode("yang");
     };
 
     applyHash();

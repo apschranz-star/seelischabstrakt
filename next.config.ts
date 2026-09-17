@@ -29,12 +29,35 @@ const CSP = [
   "upgrade-insecure-requests",
 ].join("; ");
 
+/**
+ * Static demo build.
+ *
+ * JING_STATIC_DEMO=1 turns the same source into a folder of HTML that any static
+ * host can serve, GitHub Pages included, under the path in JING_BASE_PATH. The
+ * route handlers cannot be exported, so scripts/build-static-demo.sh builds from
+ * a copy of the tree without app/api, and the checkout computes its mock session
+ * in the browser instead (see app/checkout/page.tsx). Nothing about the real
+ * deployment changes: without the flag this file is what it always was.
+ */
+const STATIC_DEMO = process.env.JING_STATIC_DEMO === "1";
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    unoptimized: STATIC_DEMO,
   },
+  ...(STATIC_DEMO
+    ? {
+        output: "export" as const,
+        // Its own build directory, so a demo build never disturbs a running
+        // production build of the same checkout.
+        distDir: ".next-demo",
+        basePath: process.env.JING_BASE_PATH ?? "",
+        trailingSlash: true,
+      }
+    : {}),
 
   async headers() {
     return [

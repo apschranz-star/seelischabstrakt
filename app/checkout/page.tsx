@@ -443,6 +443,24 @@ export default function CheckoutPage() {
     setPending(true);
     setError(null);
 
+    // The static demo has no server. Its mock session comes from the same
+    // estimateOrder the summary uses, so the figures cannot disagree, and the
+    // reference is derived the same way the route derives it. The real build
+    // never takes this branch: the amount is recomputed server side there.
+    if (process.env.NEXT_PUBLIC_JING_STATIC_DEMO === "1") {
+      clearCart();
+      setSession({
+        reference: orderReference(seed),
+        redirectUrl: null,
+        status: "demo",
+        methodLabel,
+        amount,
+        email,
+      });
+      setPending(false);
+      return;
+    }
+
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",
