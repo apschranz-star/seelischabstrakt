@@ -1,29 +1,56 @@
 {
   "_help": "The whole personal site lives in this file. Every text is {\"en\": \"...\", \"de\": \"...\"}. Anything with \"draft\": true is written but not published, so it is safe to leave half finished. Photos go into img/ and are referenced as img/name.jpg. The optional \"size\" is the pixel size of the file, for example 1400x1000, it only reserves the space while the photo loads. Comments only appear here after Alexander has approved them.",
-
   "profile": {
     "name": "Alexander Schranz",
-    "tagline": { "en": "Creating is in our nature.", "de": "Erschaffen ist in unserer Natur." },
+    "tagline": {
+      "en": "Creating is in our nature.",
+      "de": "Erschaffen ist in unserer Natur."
+    },
     "intro": {
       "en": "I am Alexander. I live in Vienna, I paint on the floor of my flat, and I write here about the things that made me the person doing that.",
       "de": "Ich bin Alexander. Ich lebe in Wien, ich male am Boden meiner Wohnung, und hier schreibe ich über die Dinge, die mich zu dem gemacht haben, der das tut."
     },
     "portrait": "img/alexander-schranz.jpg",
     "portraitSize": "1050x1400",
-    "portraitAlt": { "en": "Alexander Schranz", "de": "Alexander Schranz" },
+    "portraitAlt": {
+      "en": "Alexander Schranz",
+      "de": "Alexander Schranz"
+    },
     "email": "a.p.schranz@icloud.com",
-    "place": { "en": "Vienna, Austria", "de": "Wien, Österreich" },
+    "place": {
+      "en": "Vienna, Austria",
+      "de": "Wien, Österreich"
+    },
     "defaultLang": "en"
   },
-
   "nav": [
-    { "id": "story", "label": { "en": "My story", "de": "Meine Geschichte" } },
-    { "id": "writing", "label": { "en": "Writing", "de": "Texte" } },
-    { "id": "contact", "label": { "en": "Say hello", "de": "Schreib mir" } }
+    {
+      "id": "story",
+      "label": {
+        "en": "My story",
+        "de": "Meine Geschichte"
+      }
+    },
+    {
+      "id": "writing",
+      "label": {
+        "en": "Writing",
+        "de": "Texte"
+      }
+    },
+    {
+      "id": "contact",
+      "label": {
+        "en": "Say hello",
+        "de": "Schreib mir"
+      }
+    }
   ],
-
   "story": {
-    "title": { "en": "My story", "de": "Meine Geschichte" },
+    "title": {
+      "en": "My story",
+      "de": "Meine Geschichte"
+    },
     "intro": {
       "en": "Not a timeline. The parts that changed the direction.",
       "de": "Keine Zeittafel. Die Stellen, an denen sich die Richtung geändert hat."
@@ -31,8 +58,14 @@
     "chapters": [
       {
         "id": "making",
-        "title": { "en": "I learned by making", "de": "Gelernt hab ich beim Machen" },
-        "period": { "en": "How I got here", "de": "Wie ich hierher kam" },
+        "title": {
+          "en": "I learned by making",
+          "de": "Gelernt hab ich beim Machen"
+        },
+        "period": {
+          "en": "How I got here",
+          "de": "Wie ich hierher kam"
+        },
         "paragraphs": {
           "en": [
             "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero.",
@@ -48,14 +81,23 @@
         "image": {
           "src": "img/fear-cut.jpg",
           "size": "1400x1400",
-          "caption": { "en": "Paint as thick as a crust, and a strip of open red beside it.", "de": "Farbe, dick wie eine Kruste, daneben ein Streifen offenes Rot." }
+          "caption": {
+            "en": "Paint as thick as a crust, and a strip of open red beside it.",
+            "de": "Farbe, dick wie eine Kruste, daneben ein Streifen offenes Rot."
+          }
         }
       },
       {
         "draft": true,
         "id": "roots",
-        "title": { "en": "Where I come from", "de": "Wo ich herkomme" },
-        "period": { "en": "Childhood", "de": "Kindheit" },
+        "title": {
+          "en": "Where I come from",
+          "de": "Wo ich herkomme"
+        },
+        "period": {
+          "en": "Childhood",
+          "de": "Kindheit"
+        },
         "paragraphs": {
           "en": [
             "DRAFT. Alexander, this chapter is for your roots. Not dates and not names, you chose feelings and turning points.",
@@ -68,13 +110,25 @@
             "Schreib drei, vier kurze Absätze, dann setz draft auf false."
           ]
         },
-        "image": { "src": "", "caption": { "en": "", "de": "" } }
+        "image": {
+          "src": "",
+          "caption": {
+            "en": "",
+            "de": ""
+          }
+        }
       },
       {
         "draft": true,
         "id": "turn",
-        "title": { "en": "The turn", "de": "Die Wendung" },
-        "period": { "en": "What changed", "de": "Was sich geändert hat" },
+        "title": {
+          "en": "The turn",
+          "de": "Die Wendung"
+        },
+        "period": {
+          "en": "What changed",
+          "de": "Was sich geändert hat"
+        },
         "paragraphs": {
           "en": [
             "DRAFT. The moment something shifted. It does not need a date or a place.",
@@ -87,13 +141,25 @@
             "Ein Absatz reicht, wenn es der richtige ist."
           ]
         },
-        "image": { "src": "", "caption": { "en": "", "de": "" } }
+        "image": {
+          "src": "",
+          "caption": {
+            "en": "",
+            "de": ""
+          }
+        }
       },
       {
         "draft": true,
         "id": "now",
-        "title": { "en": "Where I am now", "de": "Wo ich jetzt bin" },
-        "period": { "en": "Today", "de": "Heute" },
+        "title": {
+          "en": "Where I am now",
+          "de": "Wo ich jetzt bin"
+        },
+        "period": {
+          "en": "Today",
+          "de": "Heute"
+        },
         "paragraphs": {
           "en": [
             "DRAFT. What a normal day looks like, and what you are still working on in yourself.",
@@ -104,24 +170,41 @@
             "Dieses Kapitel lesen die Leute zweimal. Halt es einfach."
           ]
         },
-        "image": { "src": "", "caption": { "en": "", "de": "" } }
+        "image": {
+          "src": "",
+          "caption": {
+            "en": "",
+            "de": ""
+          }
+        }
       }
     ]
   },
-
   "writing": {
-    "title": { "en": "Writing", "de": "Texte" },
+    "title": {
+      "en": "Writing",
+      "de": "Texte"
+    },
     "intro": {
       "en": "Short pieces, written next to the work. You can leave a thought under any of them.",
       "de": "Kurze Texte, neben der Arbeit geschrieben. Unter jedem kannst du einen Gedanken hinterlassen."
     },
-    "readMore": { "en": "Read", "de": "Lesen" },
-    "backLabel": { "en": "All writing", "de": "Alle Texte" },
+    "readMore": {
+      "en": "Read",
+      "de": "Lesen"
+    },
+    "backLabel": {
+      "en": "All writing",
+      "de": "Alle Texte"
+    },
     "posts": [
       {
         "id": "creating-is-in-our-nature",
         "date": "2026-09-14",
-        "title": { "en": "Creating is in our nature", "de": "Erschaffen ist in unserer Natur" },
+        "title": {
+          "en": "Creating is in our nature",
+          "de": "Erschaffen ist in unserer Natur"
+        },
         "excerpt": {
           "en": "People ask why I paint. I do not have a long answer.",
           "de": "Leute fragen, warum ich male. Eine lange Antwort hab ich nicht."
@@ -146,7 +229,10 @@
           {
             "src": "img/enter-the-void-cut.jpg",
             "size": "1400x1000",
-            "caption": { "en": "A red eye, wide open, black running down from the lid.", "de": "Ein rotes Auge, weit offen, vom Lid rinnt Schwarz herunter." }
+            "caption": {
+              "en": "A red eye, wide open, black running down from the lid.",
+              "de": "Ein rotes Auge, weit offen, vom Lid rinnt Schwarz herunter."
+            }
           }
         ]
       },
@@ -154,8 +240,14 @@
         "draft": true,
         "id": "a-first-memory",
         "date": "2026-09-14",
-        "title": { "en": "A first memory", "de": "Eine erste Erinnerung" },
-        "excerpt": { "en": "DRAFT, waiting for you.", "de": "ENTWURF, wartet auf dich." },
+        "title": {
+          "en": "A first memory",
+          "de": "Eine erste Erinnerung"
+        },
+        "excerpt": {
+          "en": "DRAFT, waiting for you.",
+          "de": "ENTWURF, wartet auf dich."
+        },
         "paragraphs": {
           "en": [
             "DRAFT. A good first personal post is one memory, told plainly, with one thing you understood only later.",
@@ -170,18 +262,35 @@
       }
     ]
   },
-
   "commentForm": {
-    "title": { "en": "Share your thoughts", "de": "Teile deine Gedanken" },
+    "title": {
+      "en": "Share your thoughts",
+      "de": "Teile deine Gedanken"
+    },
     "intro": {
       "en": "Anything this brought up for you. I read every message and put the ones that belong here on the page.",
       "de": "Was dir dazu durch den Kopf gegangen ist. Ich lese jede Nachricht und stelle die, die hierher passen, auf die Seite."
     },
-    "nameLabel": { "en": "Your name", "de": "Dein Name" },
-    "namePlaceholder": { "en": "However you want to be called", "de": "Wie du genannt werden willst" },
-    "textLabel": { "en": "Your thought", "de": "Dein Gedanke" },
-    "button": { "en": "Send", "de": "Senden" },
-    "sending": { "en": "Sending", "de": "Wird gesendet" },
+    "nameLabel": {
+      "en": "Your name",
+      "de": "Dein Name"
+    },
+    "namePlaceholder": {
+      "en": "However you want to be called",
+      "de": "Wie du genannt werden willst"
+    },
+    "textLabel": {
+      "en": "Your thought",
+      "de": "Dein Gedanke"
+    },
+    "button": {
+      "en": "Send",
+      "de": "Senden"
+    },
+    "sending": {
+      "en": "Sending",
+      "de": "Wird gesendet"
+    },
     "thanks": {
       "en": "Thank you. It reached me. If it belongs on the page, it will appear here in a day or two.",
       "de": "Danke. Es ist angekommen. Wenn es auf die Seite passt, steht es in ein, zwei Tagen hier."
@@ -194,26 +303,45 @@
       "en": "Your name and your text appear on this page if I publish them. Nothing else is stored, no account, no tracking.",
       "de": "Dein Name und dein Text erscheinen auf dieser Seite, wenn ich sie veröffentliche. Sonst wird nichts gespeichert, kein Konto, kein Tracking."
     },
-    "emptyLabel": { "en": "No thoughts here yet. Yours can be the first.", "de": "Hier steht noch nichts. Deiner kann der erste sein." },
-    "headingLabel": { "en": "Thoughts", "de": "Gedanken" },
-    "replyLabel": { "en": "Alexander", "de": "Alexander" }
+    "emptyLabel": {
+      "en": "No thoughts here yet. Yours can be the first.",
+      "de": "Hier steht noch nichts. Deiner kann der erste sein."
+    },
+    "headingLabel": {
+      "en": "Thoughts",
+      "de": "Gedanken"
+    },
+    "replyLabel": {
+      "en": "Alexander",
+      "de": "Alexander"
+    }
   },
-
   "comments": [],
-
   "contact": {
-    "title": { "en": "Say hello", "de": "Schreib mir" },
+    "title": {
+      "en": "Say hello",
+      "de": "Schreib mir"
+    },
     "text": {
       "en": "If something here landed, or if you just want to say hello, write to me. I answer every message.",
       "de": "Wenn dich hier etwas erwischt hat, oder du einfach hallo sagen willst, schreib mir. Ich beantworte jede Nachricht."
     }
   },
-
   "footer": {
-    "text": { "en": "© {year} Alexander Schranz. Vienna.", "de": "© {year} Alexander Schranz. Wien." },
-    "links": []
+    "text": {
+      "en": "© {year} Alexander Schranz. Vienna.",
+      "de": "© {year} Alexander Schranz. Wien."
+    },
+    "links": [
+      {
+        "url": "https://seelischabstrakt.netlify.app/",
+        "label": {
+          "en": "Shop",
+          "de": "Shop"
+        }
+      }
+    ]
   },
-
   "seo": {
     "title": "Alexander Schranz",
     "description": {
