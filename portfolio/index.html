@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alexander Schranz</title>
+<meta name="description" content="Alexander Schranz, Vienna. My story, short pieces of writing, and a place to share your thoughts.">
+<link rel="canonical" href="https://alexanderschranz.netlify.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alexander Schranz">
+<meta property="og:url" content="https://alexanderschranz.netlify.app/">
+<meta property="og:description" content="Alexander Schranz, Vienna. My story, short pieces of writing, and a place to share your thoughts.">
+<meta property="og:image" content="https://alexanderschranz.netlify.app/img/og-person.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Alexander Schranz. Creating is in our nature.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexanderschranz.netlify.app/img/og-person.jpg">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..600;1,8..60,300..500&display=swap">
+<style>
+:root{
+  --paper:#FAF7F2; --paper-2:#F1EBE1; --ink:#2A2521; --ink-2:#5C5249; --ink-3:#8A7D71;
+  --line:#E3D9CC; --line-2:#CFC2B1; --accent:#8C5A3C;
+  --display:"Fraunces",Georgia,serif; --text:"Source Serif 4",Georgia,serif;
+  --page:1120px; --r:3px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-mode="light"]){ --paper:#17140F; --paper-2:#211C16; --ink:#EFE8DD; --ink-2:#C9BFB2; --ink-3:#978C7E; --line:#332D25; --line-2:#4A4136; --accent:#D09A70; }
+}
+:root[data-mode="dark"]{ --paper:#17140F; --paper-2:#211C16; --ink:#EFE8DD; --ink-2:#C9BFB2; --ink-3:#978C7E; --line:#332D25; --line-2:#4A4136; --accent:#D09A70; }
+*{box-sizing:border-box}
+html{background:var(--paper)}
+@media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth} }
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.62 var(--text);-webkit-font-smoothing:antialiased;
+  padding-inline:clamp(20px,5vw,64px)}
+.page{max-width:var(--page);margin:0 auto}
+img{display:block;max-width:100%;height:auto;border-radius:var(--r);background:var(--paper-2)}
+a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:-.015em;margin:0}
+.label{font-family:var(--text);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:22px 10px}
+.brand{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.01em;text-decoration:none}
+.top nav{display:flex;gap:18px;flex-wrap:wrap}
+.top nav a{font-size:15px;text-decoration:none;color:var(--ink-2);border-bottom:1px solid transparent;padding-bottom:2px}
+.top nav a:hover{border-bottom-color:var(--ink-2)}
+.tools{display:flex;gap:6px}
+.tools button{font:600 11px/1 var(--text);letter-spacing:.12em;text-transform:uppercase;background:none;color:var(--ink-3);
+  border:1px solid var(--line-2);border-radius:999px;padding:7px 11px;cursor:pointer}
+.tools button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* hero */
+.hero{display:grid;gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(26px,5vw,64px) clamp(30px,6vw,72px);border-bottom:1px solid var(--line)}
+@media (min-width:860px){ .hero{grid-template-columns:1fr minmax(300px,420px)} }
+.hero h1{font-size:clamp(2.6rem,7vw,4.8rem);line-height:1.02;font-weight:300}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(1.15rem,2.4vw,1.6rem);color:var(--accent);margin:14px 0 0}
+.hero .intro{font-size:clamp(1.05rem,1.8vw,1.28rem);line-height:1.6;color:var(--ink-2);max-width:46ch;margin:20px 0 0}
+.hero .where{margin:18px 0 0}
+.hero img{width:100%;box-shadow:0 18px 40px rgba(60,42,28,.14)}
+@media (prefers-color-scheme: dark){ :root:not([data-mode="light"]) .hero img{box-shadow:0 18px 40px rgba(0,0,0,.5)} }
+
+/* sections */
+section{padding-block:clamp(40px,7vw,84px)}
+.sec-head{max-width:52ch;margin-bottom:clamp(26px,4vw,46px)}
+.sec-head h2{font-size:clamp(1.9rem,4.2vw,3rem);line-height:1.08;margin-top:10px}
+.sec-head p{color:var(--ink-2);margin:12px 0 0;font-size:1.08rem}
+
+/* story chapters */
+.chapter{display:grid;gap:clamp(20px,3.5vw,48px);align-items:start;padding-block:clamp(24px,4vw,52px);border-top:1px solid var(--line)}
+.chapter:first-of-type{border-top:0;padding-top:0}
+@media (min-width:860px){
+  .chapter{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+  .chapter.flip .body{order:2}
+  .chapter.flip figure{order:1}
+}
+.chapter h3{font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.12;margin:8px 0 0}
+.chapter .body p{margin:16px 0 0;max-width:58ch}
+.chapter figure{margin:0}
+.chapter figure img{width:100%}
+figcaption{font-size:14px;line-height:1.45;color:var(--ink-3);margin-top:10px}
+
+/* writing list */
+.posts{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.posts li{border-top:1px solid var(--line)}
+.posts li:last-child{border-bottom:1px solid var(--line)}
+.posts a{display:grid;gap:6px;padding:26px 0;text-decoration:none}
+@media (min-width:760px){ .posts a{grid-template-columns:130px minmax(0,1fr);gap:28px;align-items:baseline} }
+.posts .when{font-size:13px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+.posts h3{font-size:clamp(1.3rem,2.6vw,1.8rem);line-height:1.15}
+.posts p{margin:6px 0 0;color:var(--ink-2);max-width:58ch}
+.posts .more{margin-top:10px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+
+/* single post */
+.post{padding-block:clamp(26px,5vw,56px)}
+.post .when{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.post h1{font-size:clamp(2.1rem,5.2vw,3.6rem);line-height:1.06;margin-top:12px;max-width:20ch;font-weight:300}
+.post .body{max-width:62ch;margin-top:26px;font-size:1.12rem;line-height:1.68}
+.post .body p{margin:0 0 20px}
+.post figure{margin:34px 0}
+.post figure img{width:100%}
+.back{display:inline-block;margin-top:8px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-decoration:none}
+.back:hover{color:var(--ink)}
+
+/* comments */
+.comments{border-top:1px solid var(--line);margin-top:clamp(32px,5vw,60px);padding-top:clamp(26px,4vw,44px);max-width:62ch}
+.comments h2{font-size:clamp(1.4rem,2.8vw,1.9rem)}
+.clist{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:22px}
+.clist li{background:var(--paper-2);border-radius:var(--r);padding:18px 20px}
+.clist .who{font-family:var(--display);font-size:1.05rem}
+.clist .when{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-left:8px}
+.clist p{margin:8px 0 0;color:var(--ink-2)}
+.clist li.mine{background:none;border:1px solid var(--line-2)}
+.clist li.mine .who{color:var(--accent)}
+.cempty{color:var(--ink-3);margin-top:20px}
+form.say{margin-top:30px;display:grid;gap:14px}
+form.say label{display:grid;gap:6px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+form.say input,form.say textarea{font:400 17px/1.5 var(--text);color:var(--ink);background:var(--paper);
+  border:1px solid var(--line-2);border-radius:var(--r);padding:12px 14px;width:100%}
+form.say textarea{min-height:130px;resize:vertical}
+form.say input:focus,form.say textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+form.say .hp{position:absolute;left:-9999px}
+.btn{font:600 14px/1 var(--text);letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper);
+  border:0;border-radius:999px;padding:15px 26px;cursor:pointer;justify-self:start}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.note{font-size:13px;line-height:1.5;color:var(--ink-3)}
+.said{background:var(--paper-2);border-radius:var(--r);padding:18px 20px;margin-top:22px;color:var(--ink-2)}
+
+/* contact and footer */
+.contact{border-top:1px solid var(--line)}
+.contact .mail{font-family:var(--display);font-size:clamp(1.5rem,4vw,2.6rem);text-decoration:none;border-bottom:1px solid var(--accent);color:var(--accent)}
+footer{border-top:1px solid var(--line);padding-block:24px 48px;display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap;
+  font-size:13px;color:var(--ink-3)}
+footer p{margin:0}
+
+.rv{opacity:0}
+.rv.in{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){ .rv{opacity:1} .rv.in{animation:none} }
+</style>
+</head>
+<body>
+
+<!-- Netlify picks the comment form up from this hidden copy at build time -->
+<form name="comment" data-netlify="true" netlify-honeypot="website" hidden>
+  <input type="text" name="post"><input type="text" name="name"><textarea name="thought"></textarea><input type="text" name="website">
+</form>
+
+<div class="page">
+  <header class="top">
+    <a class="brand" href="./" id="brand"></a>
+    <nav id="nav" aria-label="Sections"></nav>
+    <span class="tools" id="tools"></span>
+  </header>
+  <main id="main"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+let D=null, lang="en";
+const $=s=>document.querySelector(s);
+const L=v=>v==null?"":(typeof v==="string"?v:(v[lang]||v.en||v.de||""));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dim=o=>{ const m=/^(\d+)x(\d+)$/.exec(String((o&&o.size)||"")); return m?` width="${m[1]}" height="${m[2]}"`:""; };
+const nice=d=>{ const m=/^(\d{4})-(\d{2})(?:-(\d{2}))?/.exec(String(d||"")); if(!m) return esc(d||"");
+  const months={en:["January","February","March","April","May","June","July","August","September","October","November","December"],
+                de:["Jänner","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"]};
+  const mo=months[lang]?months[lang][+m[2]-1]:months.en[+m[2]-1];
+  return m[3]?(lang==="de"?`${+m[3]}. ${mo} ${m[1]}`:`${mo} ${+m[3]}, ${m[1]}`):`${mo} ${m[1]}`; };
+const figure=f=>f&&f.src?`<figure><img src="${esc(f.src)}" alt="${esc(L(f.caption))}"${dim(f)} loading="lazy" decoding="async">${L(f.caption)?`<figcaption>${esc(L(f.caption))}</figcaption>`:""}</figure>`:"";
+const livePosts=()=>((D.writing&&D.writing.posts)||[]).filter(p=>!p.draft).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+const hasDe=o=>JSON.stringify(o).includes('"de":');
+const postId=()=>new URLSearchParams(location.search).get("post");
+
+function setMode(v){ if(v==="auto") document.documentElement.removeAttribute("data-mode"); else document.documentElement.dataset.mode=v;
+  try{ localStorage.setItem("as-mode",v); }catch(e){} paintTools(); }
+function paintTools(){
+  if(!D) return;
+  const cur=document.documentElement.dataset.mode||"auto";
+  const langs=hasDe(D)?`<button type="button" data-lang="en" aria-pressed="${lang==="en"}">EN</button><button type="button" data-lang="de" aria-pressed="${lang==="de"}">DE</button>`:"";
+  const dark=cur==="dark";
+  $("#tools").innerHTML=langs+`<button type="button" id="mode" aria-pressed="${dark}">${dark?(lang==="de"?"Hell":"Light"):(lang==="de"?"Dunkel":"Dark")}</button>`;
+  $("#tools").querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{ lang=b.dataset.lang; try{localStorage.setItem("as-lang",lang);}catch(e){} render(); });
+  $("#mode").onclick=()=>setMode((document.documentElement.dataset.mode||"auto")==="dark"?"light":"dark");
+}
+
+function commentsFor(id){
+  return ((D.comments)||[]).filter(c=>c.post===id&&c.approved!==false)
+    .slice().sort((a,b)=>String(a.date||"").localeCompare(String(b.date||"")));
+}
+function commentsHtml(post){
+  const f=D.commentForm||{}, list=commentsFor(post.id);
+  const items=list.length?`<ul class="clist">${list.map(c=>
+    `<li${c.author==="me"?' class="mine"':""}><span class="who">${esc(c.author==="me"?(L(f.replyLabel)||"Alexander"):c.name)}</span>${c.date?`<span class="when">${nice(c.date)}</span>`:""}<p>${esc(c.text)}</p></li>`).join("")}</ul>`
+    :`<p class="cempty">${esc(L(f.emptyLabel))}</p>`;
+  const form=post.commentsClosed?"":`
+    <form class="say" id="say" name="comment" method="POST" data-netlify="true" netlify-honeypot="website">
+      <input type="hidden" name="form-name" value="comment">
+      <input type="hidden" name="post" value="${esc(post.id)}">
+      <p class="note" style="margin:0">${esc(L(f.intro))}</p>
+      <label>${esc(L(f.nameLabel))}<input name="name" required maxlength="60" placeholder="${esc(L(f.namePlaceholder))}" autocomplete="name"></label>
+      <label>${esc(L(f.textLabel))}<textarea name="thought" required maxlength="2000"></textarea></label>
+      <p class="hp"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></p>
+      <button class="btn" type="submit">${esc(L(f.button))}</button>
+      <p class="note">${esc(L(f.note))}</p>
+    </form>`;
+  return `<section class="comments rv"><h2>${esc(L(f.headingLabel))}</h2>${items}${form}</section>`;
+}
+
+function bindForm(){
+  const form=$("#say"); if(!form) return;
+  const f=D.commentForm||{};
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();
+    const btn=form.querySelector("button"); btn.disabled=true; const was=btn.textContent; btn.textContent=L(f.sending)||"…";
+    const data=new FormData(form);
+    let ok=false;
+    try{ const r=await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(data).toString()}); ok=r.ok; }catch(err){ ok=false; }
+    const note=document.createElement("div"); note.className="said"; note.textContent=ok?L(f.thanks):L(f.failed);
+    form.replaceWith(note);
+    if(!ok){ btn.disabled=false; btn.textContent=was; }
+  });
+}
+
+function home(){
+  const p=D.profile||{}, st=D.story||{}, wr=D.writing||{}, ct=D.contact||{};
+  const chapters=(st.chapters||[]).filter(c=>!c.draft);
+  const posts=livePosts();
+  return `
+  <div class="hero rv">
+    <div>
+      <h1>${esc(p.name)}</h1>
+      ${L(p.tagline)?`<p class="tag">${esc(L(p.tagline))}</p>`:""}
+      ${L(p.intro)?`<p class="intro">${esc(L(p.intro))}</p>`:""}
+      ${L(p.place)?`<p class="where label">${esc(L(p.place))}</p>`:""}
+    </div>
+    ${p.portrait?`<img src="${esc(p.portrait)}" alt="${esc(L(p.portraitAlt)||p.name)}"${dim({size:p.portraitSize})} decoding="async">`:""}
+  </div>
+
+  ${chapters.length?`<section id="story">
+    <div class="sec-head rv"><span class="label">${esc(L(st.title))}</span><h2>${esc(L(st.intro))}</h2></div>
+    ${chapters.map((c,i)=>`<article class="chapter rv${i%2?" flip":""}">
+      <div class="body">${L(c.period)?`<span class="label">${esc(L(c.period))}</span>`:""}<h3>${esc(L(c.title))}</h3>
+        ${(c.paragraphs&&(c.paragraphs[lang]||c.paragraphs.en)||[]).map(x=>`<p>${esc(x)}</p>`).join("")}</div>
+      ${figure(c.image)}
+    </article>`).join("")}
+  </section>`:""}
+
+  ${posts.length?`<section id="writing">
+    <div class="sec-head rv"><span class="label">${esc(L(wr.title))}</span><h2>${esc(L(wr.intro))}</h2></div>
+    <ul class="posts rv">${posts.map(x=>`<li><a href="?post=${encodeURIComponent(x.id)}">
+      <span class="when">${nice(x.date)}</span>
+      <span><h3>${esc(L(x.title))}</h3>${L(x.excerpt)?`<p>${esc(L(x.excerpt))}</p>`:""}
+      <span class="more">${esc(L(wr.readMore)||"Read")}</span></span></a></li>`).join("")}</ul>
+  </section>`:""}
+
+  <section id="contact" class="contact rv">
+    <div class="sec-head"><span class="label">${esc(L(ct.title))}</span><h2>${esc(L(ct.text))}</h2></div>
+    ${(D.profile||{}).email?`<a class="mail" href="mailto:${encodeURIComponent(D.profile.email)}">${esc(D.profile.email)}</a>`:""}
+  </section>`;
+}
+
+function single(post){
+  const wr=D.writing||{};
+  return `<article class="post">
+    <a class="back" href="./">${esc(L(wr.backLabel)||"Back")}</a>
+    <p class="when" style="margin-top:18px">${nice(post.date)}</p>
+    <h1>${esc(L(post.title))}</h1>
+    <div class="body">${(post.paragraphs&&(post.paragraphs[lang]||post.paragraphs.en)||[]).map(x=>`<p>${esc(x)}</p>`).join("")}</div>
+    ${(post.images||[]).map(figure).join("")}
+  </article>
+  ${commentsHtml(post)}`;
+}
+
+function render(){
+  const p=D.profile||{};
+  document.documentElement.lang=lang;
+  const id=postId();
+  const post=id?((D.writing&&D.writing.posts)||[]).find(x=>x.id===id&&!x.draft):null;
+  document.title=post?`${L(post.title)} · ${p.name}`:((D.seo&&D.seo.title)||p.name||"");
+  const md=document.querySelector('meta[name="description"]');
+  if(md) md.content=post?(L(post.excerpt)||L((D.seo||{}).description)):L((D.seo||{}).description);
+  $("#brand").textContent=p.name||"";
+  $("#nav").innerHTML=(D.nav||[]).filter(n=>n.id==="contact"||D[n.id]||(n.id==="writing"&&livePosts().length)||(n.id==="story"&&((D.story||{}).chapters||[]).some(c=>!c.draft)))
+    .map(n=>`<a href="${post?"./":""}#${esc(n.id)}">${esc(L(n.label))}</a>`).join("");
+  $("#main").innerHTML=post?single(post):home();
+  const f=D.footer||{};
+  $("#foot").innerHTML=`<p>${esc(L(f.text)).replace("{year}",new Date().getFullYear())}</p>`+
+    ((f.links||[]).length?`<p>${(f.links||[]).map(l=>`<a href="${esc(l.url)}">${esc(L(l.label))}</a>`).join(" · ")}</p>`:"");
+  paintTools(); bindForm(); reveal();
+}
+
+let io=null;
+function reveal(){
+  if(!("IntersectionObserver" in window)){ document.querySelectorAll(".rv").forEach(e=>e.classList.add("in")); return; }
+  io=io||new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{threshold:.05,rootMargin:"0px 0px -5% 0px"});
+  void document.body.offsetHeight;
+  requestAnimationFrame(()=>document.querySelectorAll(".rv:not(.in)").forEach(el=>io.observe(el)));
+}
+
+try{ const m=localStorage.getItem("as-mode"); if(m&&m!=="auto") document.documentElement.dataset.mode=m; }catch(e){}
+fetch("journal.json?v="+Date.now()).then(r=>r.json()).then(j=>{
+  D=j;
+  const q=new URLSearchParams(location.search).get("lang");
+  let saved=null; try{ saved=localStorage.getItem("as-lang"); }catch(e){}
+  const nav=(navigator.language||"").toLowerCase().startsWith("de")?"de":null;
+  lang=q||saved||nav||(j.profile&&j.profile.defaultLang)||"en";
+  if(!hasDe(j)) lang="en";
+  render();
+}).catch(err=>{ document.getElementById("main").innerHTML=`<p class="note" style="padding:40px 0">journal.json could not be read. Check it for a missing comma at jsonlint.com. ${esc(err)}</p>`; });
+</script>
+</body>
+</html>
