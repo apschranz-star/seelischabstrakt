@@ -27,6 +27,8 @@ interface JingState {
   items: CartItem[];
   isCartOpen: boolean;
   hydrated: boolean;
+  /** True once the visitor changed the mode in this visit. Not persisted. */
+  modeSwitched: boolean;
 
   setMode: (mode: Mode) => void;
   toggleMode: () => void;
@@ -58,9 +60,15 @@ export const useJingStore = create<JingState>()(
       items: [],
       isCartOpen: false,
       hydrated: false,
+      modeSwitched: false,
 
-      setMode: (mode) => set({ mode }),
-      toggleMode: () => set((state) => ({ mode: state.mode === "yin" ? "yang" : "yin" })),
+      // A mode change made in this visit is remembered, because the grid that
+      // appears afterwards must not play the scroll-in choreography: the
+      // visitor is looking straight at it and wants the products, not a wait.
+      setMode: (mode) =>
+        set((state) => (state.mode === mode ? {} : { mode, modeSwitched: true })),
+      toggleMode: () =>
+        set((state) => ({ mode: state.mode === "yin" ? "yang" : "yin", modeSwitched: true })),
       setRegion: (region) => set({ region }),
 
       addItem: (productId, quantity = 1) =>

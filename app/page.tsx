@@ -11,7 +11,7 @@ import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
-import type { Mode } from "@/lib/store";
+import { useJingStore, type Mode } from "@/lib/store";
 import { cn, deliveryWindow } from "@/lib/utils";
 
 /** The store opens on yang, so server markup and first client render agree on it. */
@@ -140,10 +140,13 @@ function CollectionSection({
   collection,
   active,
   onActivate,
+  instant,
 }: {
   collection: Mode;
   active: boolean;
   onActivate: (mode: Mode) => void;
+  /** Cards appear at once instead of gliding in, after a switch the visitor made. */
+  instant: boolean;
 }) {
   const reduceMotion = useReducedMotion() ?? false;
   const copy = RITUAL[collection];
@@ -196,8 +199,8 @@ function CollectionSection({
                 <Reveal
                   key={product.id}
                   as="li"
-                  from={index % 2 === 0 ? "left" : "right"}
-                  delay={(index % 4) * 0.07}
+                  from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
+                  delay={instant ? 0 : (index % 4) * 0.07}
                   className="h-full"
                 >
                   <ProductCard product={product} />
@@ -249,6 +252,7 @@ function CollectionSection({
 
 export default function HomePage() {
   const { mode, setMode, region, hydrated } = useYinYang();
+  const modeSwitched = useJingStore((state) => state.modeSwitched);
 
   // Persisted values only after rehydration, so the first paint matches the server.
   const activeMode = hydrated ? mode : FALLBACK_MODE;
@@ -366,8 +370,14 @@ export default function HomePage() {
         collection="yang"
         active={activeMode === "yang"}
         onActivate={setMode}
+        instant={modeSwitched}
       />
-      <CollectionSection collection="yin" active={activeMode === "yin"} onActivate={setMode} />
+      <CollectionSection
+        collection="yin"
+        active={activeMode === "yin"}
+        onActivate={setMode}
+        instant={modeSwitched}
+      />
 
       {/* Stays inside the active palette. An inverted band read as a white block
           slammed into the night view; the section now sits on surface-2 in both. */}
