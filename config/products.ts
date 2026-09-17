@@ -241,6 +241,81 @@ export const PRODUCTS: Product[] = [
     order: 3,
   },
   {
+    id: "yin-05",
+    slug: "daily-ritual-inhaler-night",
+    code: "YIN 05",
+    name: "Daily Ritual Inhaler, Night",
+    collection: "yin",
+    category: "Atem",
+    tagline: "Der Nacht-Inhalator in Schwarz, Lavendel und Zeder, mit Balsam",
+    description:
+      "Derselbe Stick in Schwarz, für den Abend gestimmt. Oben der Inhalator mit wenig Menthol, " +
+      "dafür Lavendel, Zeder und Vetiver, ein langsamer Zug, der den Tag zurücknimmt. Unten unter " +
+      "der Kappe ein Balsam für Schläfen und Nacken. Das Gegenstück für den Morgen ist der weisse " +
+      "Stick aus Yang.",
+    ritual: "Vor dem Schlafen eine Hälfte ans Nasenloch, drei ruhige Züge je Seite. Den Balsam an Schläfen und Nacken tupfen.",
+    priceCents: 1800,
+    netQuantity: null,
+    unitsLabel: "1 Stick, Inhalator 2 g, Balsam 4 g",
+    origin: "Hergestellt in Thailand",
+    vessel: { body: "#0E0E0E", print: "#F2F2F2", cap: "#1A1A1A", shape: "column", finish: "matte" },
+    regulatory: {
+      kind: "accessory",
+      material: "Hülse aus Polypropylen mit Baumwolldocht, Kappe aus Polypropylen",
+      care: "Verschlossen aufbewahren, nicht über 30 Grad, nicht in der Sonne liegen lassen.",
+      // Same reasoning as the day stick: the inhaled part is not a cosmetic and
+      // carries a composition list and CLP label elements. Classification to be
+      // confirmed against the manufacturer's safety data sheet before sale.
+      ingredients: [
+        "Lavandula Angustifolia Oil",
+        "Cedrus Atlantica Bark Oil",
+        "Menthol",
+        "Vetiveria Zizanoides Root Oil",
+        "Chamaecyparis Obtusa Wood Oil",
+        "Camphor",
+        "Borneol",
+      ],
+      clpSignalWord: "Achtung",
+      clpStatements: [
+        "H315 Verursacht Hautreizungen.",
+        "H319 Verursacht schwere Augenreizung.",
+        "H317 Kann allergische Hautreaktionen verursachen.",
+        "P102 Darf nicht in die Hände von Kindern gelangen.",
+        "P305+P351+P338 Bei Kontakt mit den Augen: Einige Minuten lang behutsam mit Wasser spülen.",
+      ],
+      warnings: [
+        "Nur zum Einatmen durch die Nase, nicht verschlucken.",
+        "Nicht für Kinder unter zwölf Jahren.",
+        "Nicht bei Asthma oder Atemwegserkrankungen ohne ärztlichen Rat anwenden.",
+        "Kein Arzneimittel. Lindert oder heilt keine Krankheit, auch keine Schlafstörung.",
+      ],
+      cosmetic: {
+        name: "Balsam unter der Kappe",
+        netQuantity: { value: 4, unit: "g" },
+        inci: [
+          "Petrolatum",
+          "Lavandula Angustifolia Oil",
+          "Cedrus Atlantica Bark Oil",
+          "Menthol",
+          "Vetiveria Zizanoides Root Oil",
+          "Chamaecyparis Obtusa Wood Oil",
+          "Linalool",
+          "Limonene",
+          "Geraniol",
+        ],
+        allergens: ["Linalool", "Limonene", "Geraniol"],
+        pao: "12M",
+        cpnpReference: "CPNP-DEMO-YIN05-BALSAM",
+        warnings: [
+          "Nur äusserlich, dünn auf Schläfen oder Nacken.",
+          "Nicht auf Schleimhäute, nicht in die Augen, nicht auf verletzte Haut.",
+          "Nicht bei Kindern unter drei Jahren anwenden.",
+        ],
+      },
+    },
+    order: 5,
+  },
+  {
     id: "yin-04",
     slug: "smoked-hinoki-candle",
     code: "YIN 04",
@@ -403,16 +478,17 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: "yang-05",
-    slug: "hinoki-mint-breath-inhaler",
+    slug: "daily-ritual-inhaler-day",
     code: "YANG 05",
-    name: "Hinoki Mint Breath Inhaler",
+    name: "Daily Ritual Inhaler, Day",
     collection: "yang",
     category: "Atem",
-    tagline: "Kräuterinhalator mit Balsam, nach thailändischem Vorbild",
+    tagline: "Der Tag-Inhalator in Weiss, Menthol und Hinoki, mit Balsam",
     description:
-      "Ein Stick in zwei Hälften, wie die Kräuterinhalatoren aus Thailand. Oben der Inhalator " +
-      "mit Menthol, Kampfer, Borneol und Hinoki, ein Zug durch die Nase, kalt und klar. Unten " +
-      "unter der Kappe ein fester Balsam für Schläfen und Nacken. Passt in jede Tasche.",
+      "Ein Stick in zwei Hälften, wie die Kräuterinhalatoren aus Thailand, in Weiss für den Tag. " +
+      "Oben der Inhalator mit Menthol, Kampfer, Borneol und Hinoki, ein Zug durch die Nase, kalt " +
+      "und klar. Unten unter der Kappe ein fester Balsam für Schläfen und Nacken. Das Gegenstück " +
+      "für den Abend ist der schwarze Stick aus Yin.",
     ritual: "Eine Hälfte ans Nasenloch, ruhig einatmen, drei Züge je Seite. Den Balsam mit der Fingerspitze an die Schläfen tupfen.",
     priceCents: 1800,
     netQuantity: null,

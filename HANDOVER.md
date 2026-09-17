@@ -13,7 +13,7 @@ JING ist ein Shop-Frontend für eine monochrome Beauty-Eigenmarke im DACH-Raum. 
 
 Alles, was ein Mensch ändert, liegt in drei Dateien. Der Rest ist Bauplan und wird nur angefasst, wenn sich die Seite anders verhalten soll.
 
-    config/products.ts    die neun Produkte: Name, Text, Ritual, Preis in Cent, Füllmenge,
+    config/products.ts    die zehn Produkte: Name, Text, Ritual, Preis in Cent, Füllmenge,
                           Herkunft, Verpackung, und der regulatorische Block je Produkt
                           (INCI, Allergene, Haltbarkeit, CPNP, Warnhinweise, CLP, WEEE)
     config/site.ts        Firma, Adresse, Rechtsdaten, Regionen DE AT CH mit Steuer, Versand,

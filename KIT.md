@@ -14,7 +14,7 @@ Der Zugangscode hält Suchmaschinen und Zufallsbesucher fern, mehr nicht. Ein st
 
 ## Stand
 
-- Code: Next.js 16.3.5, TypeScript strict, Tailwind v4, zustand. Neun Produkte. CI mit Typecheck, Lint, Build bei jedem Push. npm audit ohne Befund.
+- Code: Next.js 16.3.5, TypeScript strict, Tailwind v4, zustand. Zehn Produkte. CI mit Typecheck, Lint, Build bei jedem Push. npm audit ohne Befund.
 - Geprüft: zwei Audits mit 58 unabhängig bestätigten Befunden, 57 behoben. Lighthouse auf dem finalen Build 100 für Barrierefreiheit, Best Practices und SEO auf jeder Seite, Performance 100 Desktop, 91 bis 98 Handy.
 - Regulatorik im Code: Grundpreis nach PAngV, Bestellübersicht über dem Bestellknopf (§ 312j BGB), Widerrufsbelehrung nach dem Muster, Hygiene-Ausnahme im Kaufweg, GPSR-Block mit verantwortlicher Person, INCI mit Allergenen und PAO, CLP-Kennzeichnung für Kerze und Inhalator, Schweizer Preise verzollt und versteuert.
 - Nicht live im Verkauf. Kasse ist eine Attrappe. Firmendaten sind Platzhalter in eckigen Klammern.
@@ -27,13 +27,14 @@ Der Zugangscode hält Suchmaschinen und Zufallsbesucher fern, mehr nicht. Ein st
 | YANG 02 | Monochrome Glass Eye Glaze | 24,00 € | 15 ml | cosmetic | /products/monochrome-glass-eye-glaze |
 | YANG 03 | Silk Cushion Foundation Compact | 46,00 € | 15 g | cosmetic | /products/silk-cushion-foundation-compact |
 | YANG 04 | Dual-Phase Hydration Essence | 38,00 € | 100 ml | cosmetic | /products/dual-phase-hydration-essence |
-| YANG 05 | Hinoki Mint Breath Inhaler | 18,00 € | 1 Stick, Inhalator 2 g, Balsam 4 g | accessory | /products/hinoki-mint-breath-inhaler |
+| YANG 05 | Daily Ritual Inhaler, Day | 18,00 € | 1 Stick, Inhalator 2 g, Balsam 4 g | accessory | /products/daily-ritual-inhaler-day |
 | YIN 01 | Nocturne Ambient Scent Diffuser | 89,00 € | 1 Gerät | electrical | /products/nocturne-ambient-diffuser |
 | YIN 02 | Kuro Botanical Night Recovery Oil | 54,00 € | 50 ml | cosmetic | /products/kuro-night-recovery-oil |
 | YIN 03 | Obsidian Gua Sha und Ritualöl | 62,00 € | 1 Stein, 1 Flasche 30 ml | accessory | /products/obsidian-gua-sha-set |
 | YIN 04 | Smoked Hinoki Candle Ritual | 42,00 € | 220 g | candle | /products/smoked-hinoki-candle |
+| YIN 05 | Daily Ritual Inhaler, Night | 18,00 € | 1 Stick, Inhalator 2 g, Balsam 4 g | accessory | /products/daily-ritual-inhaler-night |
 
-Preise brutto. Grundpreis, CHF-Umrechnung und alle Summen rechnet der Code. Der Inhalator YANG 05 folgt dem Format der thailändischen Kräuterinhalatoren: oben Inhalator (Menthol, Kampfer, Borneol, Hinoki), unter der Kappe ein Balsam für die Schläfen. Der eingeatmete Teil ist kein Kosmetikum und trägt Zusammensetzung plus CLP-Kennzeichnung, der Balsam ist Kosmetikum mit INCI, Allergenen, PAO und CPNP-Platz. Die CLP-Einstufung ist die übliche für eine Menthol-Kampfer-Mischung und muss vor dem Verkauf gegen das Sicherheitsdatenblatt des Herstellers bestätigt werden. Keine medizinischen Aussagen, der Inhalator ist kein Arzneimittel.
+Preise brutto. Grundpreis, CHF-Umrechnung und alle Summen rechnet der Code. Die zwei Inhalatoren "Daily Ritual" folgen dem Format der thailändischen Kräuterinhalatoren: YANG 05 in Weiss für den Tag (Menthol, Kampfer, Borneol, Hinoki), YIN 05 in Schwarz für die Nacht (Lavendel, Zeder, Vetiver, wenig Menthol), jeweils oben Inhalator und unter der Kappe ein Balsam für die Schläfen. Der eingeatmete Teil ist kein Kosmetikum und trägt Zusammensetzung plus CLP-Kennzeichnung, der Balsam ist Kosmetikum mit INCI, Allergenen, PAO und CPNP-Platz. Die CLP-Einstufung ist die übliche für eine Menthol-Kampfer-Mischung und muss vor dem Verkauf gegen das Sicherheitsdatenblatt des Herstellers bestätigt werden. Keine medizinischen Aussagen, der Inhalator ist kein Arzneimittel.
 
 ## Regionen
 
@@ -120,7 +121,7 @@ JING ist ein Shop-Frontend für eine monochrome Beauty-Eigenmarke im DACH-Raum. 
 
 Alles, was ein Mensch ändert, liegt in drei Dateien. Der Rest ist Bauplan und wird nur angefasst, wenn sich die Seite anders verhalten soll.
 
-    config/products.ts    die neun Produkte: Name, Text, Ritual, Preis in Cent, Füllmenge,
+    config/products.ts    die zehn Produkte: Name, Text, Ritual, Preis in Cent, Füllmenge,
                           Herkunft, Verpackung, und der regulatorische Block je Produkt
                           (INCI, Allergene, Haltbarkeit, CPNP, Warnhinweise, CLP, WEEE)
     config/site.ts        Firma, Adresse, Rechtsdaten, Regionen DE AT CH mit Steuer, Versand,
