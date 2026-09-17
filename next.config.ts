@@ -51,9 +51,6 @@ const nextConfig: NextConfig = {
   ...(STATIC_DEMO
     ? {
         output: "export" as const,
-        // Its own build directory, so a demo build never disturbs a running
-        // production build of the same checkout.
-        distDir: ".next-demo",
         basePath: process.env.JING_BASE_PATH ?? "",
         trailingSlash: true,
       }

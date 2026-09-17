@@ -13,7 +13,12 @@ import { hasCosmeticPart, type Product } from "@/config/products";
  * under Regulation EC 1272/2008, not house copy.
  */
 function mandatoryLabelText(regulatory: Product["regulatory"]): string[] {
-  const clp = regulatory.kind === "candle" ? regulatory.clpStatements : [];
+  const clp =
+    regulatory.kind === "candle"
+      ? regulatory.clpStatements
+      : regulatory.kind === "accessory"
+        ? (regulatory.clpStatements ?? [])
+        : [];
   const enclosed = regulatory.kind === "accessory" ? (regulatory.cosmetic?.warnings ?? []) : [];
   return [...clp, ...regulatory.warnings, ...enclosed];
 }

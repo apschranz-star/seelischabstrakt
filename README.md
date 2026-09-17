@@ -3,7 +3,7 @@
 ## Was JING ist
 
 JING ist ein Shop für den DACH-Markt, gebaut mit Next.js 15 im App Router, React 19 und TypeScript im
-strict-Modus. Der Katalog umfasst acht Produkte einer Eigenmarke, vier Objekte für den Abend und vier
+strict-Modus. Der Katalog umfasst neun Produkte einer Eigenmarke, vier Objekte für den Abend und fünf
 für den Tag, gepflegt als statische Daten in `config/products.ts`. Geliefert und abgerechnet wird in
 drei Regionen, Deutschland, Österreich und die Schweiz, jeweils mit eigener Währung, eigenem
 Steuersatz, eigenem Versand und, im Fall der Schweiz, mit Verzollung.

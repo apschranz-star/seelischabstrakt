@@ -68,6 +68,14 @@ export interface AccessoryRegulatory {
    * rather than disappearing into the accessory branch.
    */
   cosmetic?: Omit<CosmeticRegulatory, "kind"> & { name: string; netQuantity: NetQuantity };
+  /**
+   * Declared composition of a non cosmetic part, for example the herbal blend
+   * of an inhaler stick, which is inhaled and therefore not a cosmetic.
+   */
+  ingredients?: string[];
+  /** CLP label elements of a hazardous mixture, empty when not classified. */
+  clpSignalWord?: string;
+  clpStatements?: string[];
 }
 
 export type Regulatory =
@@ -392,6 +400,82 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 3,
+  },
+  {
+    id: "yang-05",
+    slug: "hinoki-mint-breath-inhaler",
+    code: "YANG 05",
+    name: "Hinoki Mint Breath Inhaler",
+    collection: "yang",
+    category: "Atem",
+    tagline: "Kräuterinhalator mit Balsam, nach thailändischem Vorbild",
+    description:
+      "Ein Stick in zwei Hälften, wie die Kräuterinhalatoren aus Thailand. Oben der Inhalator " +
+      "mit Menthol, Kampfer, Borneol und Hinoki, ein Zug durch die Nase, kalt und klar. Unten " +
+      "unter der Kappe ein fester Balsam für Schläfen und Nacken. Passt in jede Tasche.",
+    ritual: "Eine Hälfte ans Nasenloch, ruhig einatmen, drei Züge je Seite. Den Balsam mit der Fingerspitze an die Schläfen tupfen.",
+    priceCents: 1800,
+    netQuantity: null,
+    unitsLabel: "1 Stick, Inhalator 2 g, Balsam 4 g",
+    origin: "Hergestellt in Thailand",
+    vessel: { body: "#F2F1EE", print: "#111111", cap: "#101010", shape: "column", finish: "matte" },
+    regulatory: {
+      kind: "accessory",
+      material: "Hülse aus Polypropylen mit Baumwolldocht, Kappe aus Polypropylen",
+      care: "Verschlossen aufbewahren, nicht über 30 Grad, nicht in der Sonne liegen lassen.",
+      // Declared blend of the inhaled part. Not a cosmetic, it is not applied to
+      // the body, so it carries a composition list and CLP label elements
+      // instead of an INCI list. The classification below is the usual one for
+      // a menthol and camphor blend and must be confirmed against the
+      // manufacturer's safety data sheet before sale, like the CPNP references.
+      ingredients: [
+        "Menthol",
+        "Camphor",
+        "Borneol",
+        "Eucalyptus Globulus Leaf Oil",
+        "Mentha Piperita Oil",
+        "Chamaecyparis Obtusa Wood Oil",
+        "Eugenia Caryophyllus Flower Oil",
+      ],
+      clpSignalWord: "Achtung",
+      clpStatements: [
+        "H315 Verursacht Hautreizungen.",
+        "H319 Verursacht schwere Augenreizung.",
+        "H317 Kann allergische Hautreaktionen verursachen.",
+        "P102 Darf nicht in die Hände von Kindern gelangen.",
+        "P305+P351+P338 Bei Kontakt mit den Augen: Einige Minuten lang behutsam mit Wasser spülen.",
+      ],
+      warnings: [
+        "Nur zum Einatmen durch die Nase, nicht verschlucken.",
+        "Nicht für Kinder unter zwölf Jahren.",
+        "Nicht bei Asthma oder Atemwegserkrankungen ohne ärztlichen Rat anwenden.",
+        "Kein Arzneimittel. Lindert oder heilt keine Krankheit.",
+      ],
+      cosmetic: {
+        name: "Balsam unter der Kappe",
+        netQuantity: { value: 4, unit: "g" },
+        inci: [
+          "Petrolatum",
+          "Menthol",
+          "Camphor",
+          "Eucalyptus Globulus Leaf Oil",
+          "Mentha Piperita Oil",
+          "Chamaecyparis Obtusa Wood Oil",
+          "Eugenia Caryophyllus Flower Oil",
+          "Limonene",
+          "Eugenol",
+        ],
+        allergens: ["Limonene", "Eugenol"],
+        pao: "12M",
+        cpnpReference: "CPNP-DEMO-YANG05-BALSAM",
+        warnings: [
+          "Nur äusserlich, dünn auf Schläfen oder Nacken.",
+          "Nicht auf Schleimhäute, nicht in die Augen, nicht auf verletzte Haut.",
+          "Nicht bei Kindern unter drei Jahren anwenden.",
+        ],
+      },
+    },
+    order: 5,
   },
   {
     id: "yang-04",

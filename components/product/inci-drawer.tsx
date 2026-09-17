@@ -290,6 +290,39 @@ function AccessoryPanel({ regulatory }: { regulatory: AccessoryRegulatory }) {
         <p className="select-text text-[13px] leading-relaxed text-ink-2">{regulatory.care}</p>
       </Section>
 
+      {regulatory.ingredients?.length ? (
+        <Section title="Zusammensetzung">
+          <ol className="flex select-text flex-col gap-1.5">
+            {regulatory.ingredients.map((item, index) => (
+              <li key={`${index}-${item}`} className="flex gap-3 font-mono text-[12px] leading-relaxed">
+                <span className="w-6 shrink-0 tabular-nums text-ink-3">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-ink">{item}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
+            Der eingeatmete Teil ist kein kosmetisches Mittel, er wird nicht auf den Körper
+            aufgetragen. Er trägt deshalb eine Zusammensetzung nach Gewichtsanteil und, wo die
+            Mischung eingestuft ist, die Kennzeichnung nach CLP.
+          </p>
+        </Section>
+      ) : null}
+
+      {regulatory.clpStatements?.length ? (
+        <Section title="Einstufung nach CLP">
+          {regulatory.clpSignalWord ? (
+            <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-seal">
+              {regulatory.clpSignalWord}
+            </p>
+          ) : null}
+          <ul className="mt-2 flex select-text flex-col gap-1.5 text-[13px] leading-relaxed text-ink-2">
+            {regulatory.clpStatements.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
       <Warnings items={regulatory.warnings} />
 
       {cosmetic ? (

@@ -7,6 +7,7 @@ import { YinYangProvider } from "@/components/theme/yin-yang-provider";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { SiteHeader } from "@/components/ui/site-header";
 import { SiteFooter } from "@/components/ui/site-footer";
+import { AccessGate } from "@/components/ui/access-gate";
 import { SITE } from "@/config/site";
 
 const display = Bodoni_Moda({
@@ -44,7 +45,11 @@ export const metadata: Metadata = {
     url: SITE.url,
     siteName: SITE.name,
   },
-  robots: { index: true, follow: true },
+  // Behind an access link nothing may be indexed, the pre-rendered HTML is the
+  // gate anyway (see components/ui/access-gate.tsx).
+  robots: process.env.NEXT_PUBLIC_JING_ACCESS_KEY
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -97,10 +102,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             Zum Inhalt springen
           </a>
-          <SiteHeader />
-          <main id="inhalt">{children}</main>
-          <SiteFooter />
-          <CartDrawer />
+          <AccessGate>
+            <SiteHeader />
+            <main id="inhalt">{children}</main>
+            <SiteFooter />
+            <CartDrawer />
+          </AccessGate>
         </YinYangProvider>
       </body>
     </html>

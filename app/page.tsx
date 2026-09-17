@@ -35,8 +35,8 @@ const RITUAL: Record<Mode, RitualCopy> = {
     daypart: "der Tag",
     hours: SITE.ritualWindow.yang,
     lead:
-      "Vier Stücke für das Licht. Texturen, die einen Arbeitstag überstehen, dazu eine Essenz, " +
-      "die darunter weiterarbeitet.",
+      "Fünf Stücke für das Licht. Texturen, die einen Arbeitstag überstehen, eine Essenz, " +
+      "die darunter weiterarbeitet, und ein Atemzug für den Kopf.",
     invite: "Yang liegt gerade im Hintergrund. Ein Klick, und der Shop dreht sich auf den Tag.",
     cta: "Zu Yang wechseln",
   },
@@ -394,7 +394,7 @@ export default function HomePage() {
             <Reveal from="up" delay={0.12}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang
               gehört zu den Stunden von {SITE.ritualWindow.yang} Uhr, Yin zu den Stunden von{" "}
-              {SITE.ritualWindow.yin} Uhr. Jede Hälfte besteht aus vier Stücken, mehr braucht ein
+              {SITE.ritualWindow.yin} Uhr. Yang hat fünf Stücke, Yin vier, mehr braucht ein
               Ritual nicht.
             </p></Reveal>
             <Reveal from="right" delay={0.19}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
