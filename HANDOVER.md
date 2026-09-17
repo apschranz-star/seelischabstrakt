@@ -5,8 +5,14 @@ Drei Websites, ein GitHub-Repository, ein Netlify-Konto. Alles Tägliche geht ü
     seelischabstrakt.netlify.app     der Shop, Ordner / im Repo
     alexanderschranz.netlify.app     die persönliche Seite, Ordner /portfolio im Repo
     faridabenslimane.netlify.app     die Praxisseite von Farida Benslimane, Ordner /farida im Repo
+    JING                             der Beauty-Shop, eigener Branch jing in diesem Repo,
+                                     eigene Anleitung dort: HANDOVER.md, Start: LAUNCH.md
 
 Beide bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
+
+## JING
+
+JING liegt nicht in einem Ordner, sondern im Branch jing dieses Repositorys, weil es ein eigener Code ist (Next.js) und später in ein eigenes Repository umzieht. Der Custom GPT für JING arbeitet über den GitHub-Connector direkt an den Dateien, seine Instructions stehen in HANDOVER.md im Branch jing. Der Start auf Netlify ist ein Prompt, er steht in LAUNCH.md im selben Branch. Eine statische Demo läuft unter apschranz-star.github.io/seelischabstrakt/jing/ auf dem Branch gh-pages neben der Praxisseite; der Workflow der Praxisseite lässt den Ordner jing dort in Ruhe.
 
 ## Teil 1: Netlify einrichten (einmalig)
 
