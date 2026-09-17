@@ -369,10 +369,12 @@ export default function HomePage() {
       />
       <CollectionSection collection="yin" active={activeMode === "yin"} onActivate={setMode} />
 
-      <section aria-labelledby="these-titel" className="bg-inverse-surface text-inverse-ink">
+      {/* Stays inside the active palette. An inverted band read as a white block
+          slammed into the night view; the section now sits on surface-2 in both. */}
+      <section aria-labelledby="these-titel" className="border-t border-line bg-surface-2 text-ink">
         <div className="mx-auto w-full max-w-[1240px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal from="left">
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-inverse-ink/60">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
               Die These
             </p>
             <h2
@@ -383,19 +385,19 @@ export default function HomePage() {
             </h2>
           </Reveal>
 
-          <div className="mt-12 grid gap-8 border-t border-line-2 pt-10 md:grid-cols-3">
-            <Reveal from="left" delay={0.05}><p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
+          <div className="mt-12 grid gap-8 border-t border-line pt-10 md:grid-cols-3">
+            <Reveal from="left" delay={0.05}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Der Tag verlangt etwas anderes als die Nacht. Am Morgen zählt, was Struktur gibt und
               bis zum letzten Termin hält. Am Abend zählt, was zurücknimmt und der Haut die Arbeit
               überlässt.
             </p></Reveal>
-            <Reveal from="up" delay={0.12}><p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
+            <Reveal from="up" delay={0.12}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang
               gehört zu den Stunden von {SITE.ritualWindow.yang} Uhr, Yin zu den Stunden von{" "}
               {SITE.ritualWindow.yin} Uhr. Jede Hälfte besteht aus vier Stücken, mehr braucht ein
               Ritual nicht.
             </p></Reveal>
-            <Reveal from="right" delay={0.19}><p className="max-w-[46ch] text-sm leading-relaxed text-inverse-ink/80">
+            <Reveal from="right" delay={0.19}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit mit zwei Seiten. Du
               entscheidest, welche gerade gilt, und der Shop richtet sich danach aus, in der Ansicht
               wie im Sortiment.
