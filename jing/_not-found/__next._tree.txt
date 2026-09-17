@@ -1,2 +1,2 @@
-:HL["/seelischabstrakt/jing/_next/static/chunks/3dg0zmz01rn6f.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"M4oHH6DbYVKPRAANr_02q"}
+:HL["/seelischabstrakt/jing/_next/static/chunks/0c5q6w9-a7ynk.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"NeoJHuZQvslh76oor9OKf"}
