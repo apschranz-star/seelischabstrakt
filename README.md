@@ -61,8 +61,8 @@ components/home/
   ritual-copy.ts             die Worte beider Rituale, Kicker, Titel, Tageszeit und Lead, gelesen von Hero und Abschnitten
 
 components/theme/
-  yin-yang-provider.tsx      Context über den Store, hält mode, region und das Flag hydrated
-  theme-toggle.tsx           der Umschalter zwischen den Ritualen, mit aria-pressed und echtem Label
+  yin-yang-provider.tsx      Context über den Store, hält mode, region und das Flag hydrated. Der Wechsel ist eine Eklipse: eine View Transition lässt die neue Palette als harte Scheibe vom berührten Punkt wachsen, dazu schreibt der Provider data-switching="to-yin" oder "to-yang" und die Variablen --jing-switch-x, -y und -r an das html-Element, die das CSS ausliest; ohne die API, unter prefers-reduced-motion, in einem verdeckten Tab oder mit instant bleibt es beim Token-Crossfade von 620 Millisekunden.
+  theme-toggle.tsx           der Umschalter zwischen den Ritualen, mit aria-pressed und echtem Label. Er ist das einzige Element mit data-switch-mark und liegt damit auf einer eigenen Ebene über der Eklipse, das Zeichen dreht sich live, das Wort daneben gleitet aus und ein.
 
 components/product/
   packaging-viewer.tsx       zeichnet die Verpackung als CSS und SVG, es gibt keine Bilddateien im Projekt
@@ -88,6 +88,7 @@ config/
 
 lib/
   motion.ts                  das eine Zeitmodul, sechs Dauern, zwei Kurven, ein Versatz, geteilt mit den CSS-Variablen
+  switch-origin.ts           SwitchOptions für den Wechsel, Ursprungspunkt oder instant, und originFromEvent, das aus Zeiger oder Tastatur den Punkt liest
   utils.ts                   Formatierung, Umrechnung, Grundpreis, Steuer, Bestellsummen, Bestellreferenz
   store.ts                   Zustand-Store für Ritual, Lieferland und Warenkorb, plus Selektoren
 ```

@@ -111,6 +111,90 @@ body {
     color var(--duration-ritual) var(--ease-ritual);
 }
 
+/* Mode switch: the eclipse */
+
+/*
+  Pressing the mark opens the new palette as a hard-edged disc that grows from
+  the pressed point until it covers the far corner (yang to yin), or lets the
+  night leave as the same disc shrinking back (yin to yang). The provider in
+  components/theme/yin-yang-provider.tsx starts a view transition and stamps
+  three inline custom properties and data-switching on the root; the pseudo
+  elements below are children of the root, so the properties inherit into the
+  keyframes. Without the API, under reduced motion or in a hidden tab the
+  provider skips all of this and the body transition above does the crossfade.
+*/
+
+/* The live page stays clickable underneath the transition. */
+::view-transition {
+  pointer-events: none;
+}
+
+/* No fade, no blend. The two snapshots are opaque and one of them is cut. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* The night arrives: the new snapshot grows as a disc over the old one. */
+:root[data-switching="to-yin"]::view-transition-new(root) {
+  animation: jing-eclipse-in var(--duration-ritual) var(--ease-ritual) both;
+}
+
+/* The night leaves: the old snapshot, lifted on top, shrinks to the point. */
+:root[data-switching="to-yang"]::view-transition-old(root) {
+  z-index: 1;
+  animation: jing-eclipse-out var(--duration-ritual) var(--ease-ritual) both;
+}
+
+@keyframes jing-eclipse-in {
+  from {
+    clip-path: circle(0px at var(--jing-switch-x) var(--jing-switch-y));
+  }
+  to {
+    clip-path: circle(var(--jing-switch-r) at var(--jing-switch-x) var(--jing-switch-y));
+  }
+}
+
+@keyframes jing-eclipse-out {
+  from {
+    clip-path: circle(var(--jing-switch-r) at var(--jing-switch-x) var(--jing-switch-y));
+  }
+  to {
+    clip-path: circle(0px at var(--jing-switch-x) var(--jing-switch-y));
+  }
+}
+
+/*
+  Load-bearing. The new snapshot is live, so every colour transition on body,
+  a card border or a button would otherwise still be running inside the disc
+  and smear the palette behind the limb. For the duration of the switch every
+  transition completes at once.
+*/
+:root[data-switching] *,
+:root[data-switching] *::before,
+:root[data-switching] *::after {
+  transition-duration: 0s !important;
+}
+
+/*
+  The mark rides above the eclipse on its own layer, live, so its half turn
+  is seen while the disc passes under it. There is exactly one element with
+  this name in the tree; a second one would make the browser skip the whole
+  transition without a word.
+*/
+[data-switch-mark] {
+  view-transition-name: jing-mark;
+}
+
+::view-transition-old(jing-mark) {
+  display: none;
+}
+
+::view-transition-new(jing-mark) {
+  animation: none;
+}
+
 ::selection {
   background-color: var(--jing-ink);
   color: var(--jing-surface);
@@ -306,6 +390,13 @@ header[data-scrolled] {
 @media (prefers-reduced-motion: reduce) {
   body {
     transition: none;
+  }
+
+  /* The provider never starts an eclipse under the preference. Belt and braces. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 
   *,

@@ -16,6 +16,7 @@ import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
 import { DURATION } from "@/lib/motion";
 import { useJingStore, type Mode } from "@/lib/store";
+import { originFromEvent, type SwitchOptions } from "@/lib/switch-origin";
 import { deliveryWindow } from "@/lib/utils";
 
 /** The store opens on yang, so server markup and first client render agree on it. */
@@ -31,7 +32,7 @@ function CollectionSection({
 }: {
   collection: Mode;
   active: boolean;
-  onActivate: (mode: Mode) => void;
+  onActivate: (mode: Mode, options?: SwitchOptions) => void;
   /** Cards appear at once instead of gliding in, after a switch the visitor made. */
   instant: boolean;
 }) {
@@ -124,7 +125,11 @@ function CollectionSection({
               className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-5"
             >
               <p className="max-w-[48ch] text-sm leading-relaxed text-ink-3">{copy.invite}</p>
-              <Button variant="outline" size="sm" onClick={() => onActivate(collection)}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(event) => onActivate(collection, { origin: originFromEvent(event) })}
+              >
                 {copy.cta}
               </Button>
 
@@ -174,12 +179,16 @@ export default function HomePage() {
   // showing its dimmed placeholder. Listening to click in the capture phase
   // catches the in page link before the router handles it; hashchange and
   // popstate still cover the browser's own back and forward.
+  //
+  // Only the click is a moment, so only the click grows the eclipse from the
+  // pointer. A deep link on load or a history step switches instantly with the
+  // token crossfade.
   useEffect(() => {
     if (!hydrated) return;
 
     const applyHash = () => {
       const hash = window.location.hash.slice(1);
-      if (hash === "yin" || hash === "yang") setMode(hash);
+      if (hash === "yin" || hash === "yang") setMode(hash, { instant: true });
     };
 
     const onClick = (event: MouseEvent) => {
@@ -187,8 +196,9 @@ export default function HomePage() {
       // endsWith, because a basePath (the static demo under /seelischabstrakt/jing)
       // is prepended to every href and would otherwise defeat the exact match.
       const href = anchor?.getAttribute("href") ?? "";
-      if (href.endsWith("#yin")) setMode("yin");
-      if (href.endsWith("#yang")) setMode("yang");
+      const options: SwitchOptions = { origin: { x: event.clientX, y: event.clientY } };
+      if (href.endsWith("#yin")) setMode("yin", options);
+      if (href.endsWith("#yang")) setMode("yang", options);
     };
 
     applyHash();

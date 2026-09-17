@@ -28,23 +28,20 @@
  */
 
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { useRef, type MouseEvent } from "react";
+import { useRef } from "react";
 
 import { RITUAL } from "@/components/home/ritual-copy";
 import { DISTANCE, useReduceRef, useScrollDrive } from "@/lib/motion";
 import type { Mode } from "@/lib/store";
+import { originFromEvent, type SwitchOptions } from "@/lib/switch-origin";
 import { SITE } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
- * Where the visitor touched a half. Carried along for the mode switch, which
- * may later grow the new palette from this point. Nothing reads it yet.
+ * A half was chosen. The point the visitor touched travels along, and the
+ * provider grows the new palette as an eclipse from there.
  */
-export interface RitualSelectOptions {
-  origin?: { x: number; y: number };
-}
-
-export type RitualSelect = (mode: Mode, options?: RitualSelectOptions) => void;
+export type RitualSelect = (mode: Mode, options?: SwitchOptions) => void;
 
 /** How far the claim runs ahead of the page. */
 const CLAIM_LEAD = -48;
@@ -63,14 +60,10 @@ function RitualHalf({
 }) {
   const copy = RITUAL[collection];
 
-  const select = (event: MouseEvent<HTMLButtonElement>) => {
-    onSelect(collection, { origin: { x: event.clientX, y: event.clientY } });
-  };
-
   return (
     <button
       type="button"
-      onClick={select}
+      onClick={(event) => onSelect(collection, { origin: originFromEvent(event) })}
       aria-pressed={active}
       aria-controls={collection}
       aria-label={`${copy.title}, ${copy.daypart}, Ritualfenster ${copy.hours} Uhr, ${
