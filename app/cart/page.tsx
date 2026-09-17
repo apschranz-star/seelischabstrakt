@@ -10,6 +10,7 @@ import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
 import { REGIONS, REGION_ORDER } from "@/config/site";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
   cn,
@@ -294,7 +295,7 @@ export default function CartPage() {
                       key={code}
                       className={cn(
                         "flex flex-1 cursor-pointer flex-col gap-0.5 rounded-[2px] border px-2.5 py-2 transition-colors duration-300 ease-ritual",
-                        "focus-within:ring-2 focus-within:ring-ink focus-within:ring-offset-2 focus-within:ring-offset-surface-2",
+                        "jing-focus-within",
                         active
                           ? "border-ink bg-surface text-ink"
                           : "border-line text-ink-3 hover:border-line-2 hover:text-ink-2",
@@ -392,7 +393,7 @@ export default function CartPage() {
                   className="h-full w-full origin-left bg-ink"
                   initial={false}
                   animate={{ scaleX: progress }}
-                  transition={{ duration: reduceMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: reduceMotion ? 0 : DURATION.ritual, ease: EASE_RITUAL }}
                 />
               </div>
               <p aria-live="polite" className="mt-2 text-[12px] leading-snug text-ink-2">

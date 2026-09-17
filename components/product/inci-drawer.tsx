@@ -15,7 +15,9 @@ import type {
   Regulatory,
 } from "@/config/products";
 import { SITE } from "@/config/site";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { useMounted } from "@/lib/use-mounted";
+import { cn } from "@/lib/utils";
 
 const FOCUSABLE = [
   "a[href]",
@@ -489,7 +491,7 @@ export function InciDrawer({ product }: { product: Product }) {
     };
   }, [open]);
 
-  const duration = reduceMotion ? 0 : 0.42;
+  const duration = reduceMotion ? 0 : DURATION.panel;
 
   return (
     <>
@@ -535,7 +537,7 @@ export function InciDrawer({ product }: { product: Product }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration, ease: EASE_RITUAL }}
                   />
 
                   <motion.div
@@ -550,7 +552,7 @@ export function InciDrawer({ product }: { product: Product }) {
                     initial={reduceMotion ? { opacity: 0 } : { x: "100%" }}
                     animate={reduceMotion ? { opacity: 1 } : { x: 0 }}
                     exit={reduceMotion ? { opacity: 0 } : { x: "100%" }}
-                    transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration, ease: EASE_RITUAL }}
                   >
                     <div className="flex items-start gap-4 border-b border-line px-5 py-4 sm:px-6">
                       <div className="min-w-0 flex-1">
@@ -575,7 +577,7 @@ export function InciDrawer({ product }: { product: Product }) {
                         type="button"
                         onClick={close}
                         aria-label="Angaben schließen"
-                        className="-mr-1 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-2 transition-colors duration-300 ease-ritual hover:border-ink hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                        className={cn(buttonClasses("control", "icon"), "-mr-1 shrink-0")}
                       >
                         <X size={16} aria-hidden="true" />
                       </button>
@@ -588,7 +590,8 @@ export function InciDrawer({ product }: { product: Product }) {
                       tabIndex={0}
                       role="group"
                       aria-labelledby={titleId}
-                      className="flex flex-col gap-6 overflow-y-auto overscroll-contain px-5 py-6 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ink sm:px-6"
+                      data-focus-inset=""
+                      className="flex flex-col gap-6 overflow-y-auto overscroll-contain px-5 py-6 sm:px-6"
                     >
                       <RegulatoryBody regulatory={product.regulatory} />
 

@@ -1,14 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
+import { buttonClasses } from "@/components/ui/button";
 import { useJingStore, selectItemCount } from "@/lib/store";
 import { REGIONS, REGION_ORDER } from "@/config/site";
 import { cn } from "@/lib/utils";
+
+/*
+ * The region pill. appearance-none takes the OS chevron away and the one from
+ * lucide sits in its place, drawn in currentColor, so the pill looks the same
+ * in every browser and in both modes. pr-8 keeps the text clear of it.
+ */
+const REGION_SELECT = cn(
+  "min-h-11 appearance-none rounded-full border border-control bg-transparent py-1.5 pl-3 pr-8",
+  "font-mono uppercase tracking-[0.14em] text-ink-2",
+  "transition-colors duration-[var(--duration-state)] ease-ritual hover:border-ink",
+);
 
 const NAV = [
   { href: "/#yang", label: "Yang" },
@@ -78,30 +90,39 @@ export function SiteHeader() {
           <label className="sr-only" htmlFor="region-select">
             Lieferland
           </label>
-          <select
-            id="region-select"
-            data-slot="region"
-            value={region}
-            onChange={(event) => setRegion(event.target.value as typeof region)}
-            className="hidden min-h-11 rounded-full border border-control bg-transparent px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-2 transition-colors hover:border-ink sm:block"
-          >
-            {REGION_ORDER.map((code) => (
-              <option key={code} value={code}>
-                {code} · {REGIONS[code].currency}
-              </option>
-            ))}
-          </select>
+          <span className="relative hidden sm:block">
+            <select
+              id="region-select"
+              data-slot="region"
+              value={region}
+              onChange={(event) => setRegion(event.target.value as typeof region)}
+              className={cn(REGION_SELECT, "text-[11px]")}
+            >
+              {REGION_ORDER.map((code) => (
+                <option key={code} value={code}>
+                  {code} · {REGIONS[code].currency}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              size={14}
+              aria-hidden="true"
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-2"
+            />
+          </span>
 
           <ThemeToggle />
 
           <button
             type="button"
             onClick={openCart}
-            className="relative inline-flex min-h-11 items-center gap-2 rounded-full border border-control px-3 py-1.5 transition-colors hover:border-ink"
+            // The icon size carries no padding of its own, so the pill's own
+            // px-3 py-1.5 is the only padding and the height stays at 44.
+            className={cn(buttonClasses("control", "icon"), "relative px-3 py-1.5")}
             aria-label={`Warenkorb öffnen, ${hydrated ? count : 0} Artikel`}
           >
             <ShoppingBag size={16} aria-hidden="true" />
-            <span className="font-mono text-[11px] tabular-nums text-ink-2">
+            <span className="font-mono text-[11px] tabular-nums">
               {hydrated ? count : 0}
             </span>
           </button>
@@ -110,7 +131,7 @@ export function SiteHeader() {
             ref={menuButtonRef}
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-control p-2 md:hidden"
+            className={cn(buttonClasses("control", "icon"), "md:hidden")}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
             aria-label="Menü"
@@ -133,18 +154,25 @@ export function SiteHeader() {
             >
               Lieferland
             </label>
-            <select
-              id="region-select-mobile"
-              value={region}
-              onChange={(event) => setRegion(event.target.value as typeof region)}
-              className="min-h-11 rounded-full border border-control bg-transparent px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.14em] text-ink-2"
-            >
-              {REGION_ORDER.map((code) => (
-                <option key={code} value={code}>
-                  {code} · {REGIONS[code].currency}
-                </option>
-              ))}
-            </select>
+            <span className="relative">
+              <select
+                id="region-select-mobile"
+                value={region}
+                onChange={(event) => setRegion(event.target.value as typeof region)}
+                className={cn(REGION_SELECT, "text-[12px]")}
+              >
+                {REGION_ORDER.map((code) => (
+                  <option key={code} value={code}>
+                    {code} · {REGIONS[code].currency}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={14}
+                aria-hidden="true"
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-2"
+              />
+            </span>
           </div>
           {NAV.map((item) => (
             <Link

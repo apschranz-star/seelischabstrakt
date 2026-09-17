@@ -10,6 +10,7 @@ import { PaymentBadges } from "@/components/cart/payment-badges";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
   cn,
@@ -153,7 +154,7 @@ export function CartDrawer() {
   // vatLabel carries the regional name of the tax, MwSt. in Germany, USt. in Austria,
   // MWST in Switzerland.
   const taxNoun = regionConfig.vatLabel.split(" ").at(-1) ?? "MwSt.";
-  const duration = reduceMotion ? 0 : 0.36;
+  const duration = reduceMotion ? 0 : DURATION.panel;
   const stepButton = cn(
     "inline-flex h-9 w-9 items-center justify-center text-ink-2",
     "transition-colors duration-300 ease-ritual hover:text-ink",
@@ -171,7 +172,7 @@ export function CartDrawer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration, ease: EASE_RITUAL }}
           />
 
           <motion.div
@@ -184,7 +185,7 @@ export function CartDrawer() {
             initial={reduceMotion ? { opacity: 0 } : { x: "100%" }}
             animate={reduceMotion ? { opacity: 1 } : { x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { x: "100%" }}
-            transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration, ease: EASE_RITUAL }}
           >
             <div className="flex items-start gap-4 border-b border-line px-5 py-4">
               <div className="min-w-0 flex-1">
@@ -203,7 +204,7 @@ export function CartDrawer() {
                 type="button"
                 onClick={closeCart}
                 aria-label="Warenkorb schließen"
-                className="-mr-1 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-control text-ink-2 transition-colors duration-300 ease-ritual hover:border-ink hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                className={cn(buttonClasses("control", "icon"), "-mr-1 shrink-0")}
               >
                 <X size={16} aria-hidden="true" />
               </button>
@@ -363,7 +364,7 @@ export function CartDrawer() {
                       className="h-full w-full origin-left bg-ink"
                       initial={false}
                       animate={{ scaleX: progress }}
-                      transition={{ duration: reduceMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: reduceMotion ? 0 : DURATION.ritual, ease: EASE_RITUAL }}
                     />
                   </div>
 

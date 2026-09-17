@@ -4,7 +4,10 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { buttonClasses } from "@/components/ui/button";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { useMounted } from "@/lib/use-mounted";
+import { cn } from "@/lib/utils";
 
 export interface ModalProps {
   open: boolean;
@@ -106,7 +109,7 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
 
   if (!mounted) return null;
 
-  const duration = reduceMotion ? 0 : 0.32;
+  const duration = reduceMotion ? 0 : DURATION.panel;
 
   return createPortal(
     <AnimatePresence>
@@ -119,7 +122,7 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration, ease: EASE_RITUAL }}
           />
 
           <motion.div
@@ -133,7 +136,7 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.99 }}
-            transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration, ease: EASE_RITUAL }}
           >
             <div className="flex items-start gap-4 border-b border-line px-5 py-4 sm:px-6">
               <div className="min-w-0 flex-1">
@@ -151,7 +154,7 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
                 type="button"
                 onClick={onClose}
                 aria-label="Dialog schließen"
-                className="-mr-1 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-2 transition-colors duration-300 ease-ritual hover:border-ink hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                className={cn(buttonClasses("control", "icon"), "-mr-1 shrink-0")}
               >
                 <X size={16} aria-hidden="true" />
               </button>

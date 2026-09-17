@@ -27,6 +27,26 @@
   --color-control: var(--jing-control);
 
   --ease-ritual: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* The floor a vessel stands on. Greys only, a shade off the surface. */
+  --color-stage: var(--jing-stage);
+  --color-stage-2: var(--jing-stage-2);
+}
+
+/*
+  Timing. The same six numbers live in lib/motion.ts for framer, so CSS and
+  script share one clock. ritual is the mode switch on body and the anchor of
+  the scale. The reduced-motion block at the end overrides all of them.
+*/
+:root {
+  --duration-state: 180ms;
+  --duration-swap: 240ms;
+  --duration-swift: 280ms;
+  --duration-panel: 360ms;
+  --duration-ritual: 620ms;
+  --duration-slow: 900ms;
+  --space-section: clamp(3.5rem, 8vw, 6rem);
 }
 
 :root,
@@ -45,6 +65,9 @@
   --jing-inverse-surface: #0d0d0d;
   --jing-inverse-ink: #fafafa;
   --jing-seal: #8f2a1f;
+  --jing-stage: #f1f1f4;
+  --jing-stage-2: #e9e9ed;
+  --jing-shadow: rgb(17 17 17 / 0.34);
   color-scheme: light;
 }
 
@@ -63,6 +86,9 @@
   /* Error text on the night surface. 4.45:1 was just under the 4.5:1 the
      Erfolgskriterium 1.4.3 asks for, so it is lifted to 5.18:1. */
   --jing-seal: #cd6558;
+  --jing-stage: #161616;
+  --jing-stage-2: #1c1c1c;
+  --jing-shadow: rgb(0 0 0 / 0.62);
   color-scheme: dark;
 }
 
@@ -81,8 +107,8 @@ body {
   color: var(--jing-ink);
   font-family: var(--font-sans);
   transition:
-    background-color 620ms var(--ease-ritual),
-    color 620ms var(--ease-ritual);
+    background-color var(--duration-ritual) var(--ease-ritual),
+    color var(--duration-ritual) var(--ease-ritual);
 }
 
 ::selection {
@@ -90,13 +116,39 @@ body {
   color: var(--jing-surface);
 }
 
+/*
+  The focus system. One native outline, two pixels of ink, for every element
+  that can take focus. Components add nothing of their own, so a visitor on the
+  keyboard sees the same mark on a button, a link, a field and a radio card.
+*/
 :focus-visible {
   outline: 2px solid var(--jing-ink);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+/* Scrollable regions draw the outline inside, otherwise it is clipped away. */
+[data-focus-inset]:focus-visible {
+  outline-offset: -2px;
+}
+
+/* A card whose radio is sr-only shows the focus on its own perimeter. */
+.jing-focus-within:focus-within {
+  outline: 2px solid var(--jing-ink);
+  outline-offset: 2px;
 }
 
 .jing-hairline {
   border-color: var(--jing-line);
+}
+
+/* The floor. Lit from above, a shade darker toward the bottom edge. */
+.jing-stage {
+  background: linear-gradient(
+    to bottom,
+    var(--jing-stage) 0%,
+    var(--jing-stage) 58%,
+    var(--jing-stage-2) 100%
+  );
 }
 
 /* The vertical rule that separates the two rituals in the hero. */
@@ -108,6 +160,112 @@ body {
     var(--jing-line-2) 88%,
     transparent
   );
+}
+
+/*
+  Type roles. Six voices, opt in only. A component that takes a role drops its
+  hand-written size and tracking classes.
+*/
+@utility type-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+
+@utility type-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+@utility type-nav {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+@utility type-meta {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@utility type-body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+@utility type-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+
+/* A hairline that draws itself under a link from the left. */
+@utility jing-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-swap) var(--ease-ritual);
+
+  &:hover,
+  &:focus-visible,
+  &[aria-current="page"] {
+    background-size: 100% 1px;
+  }
+}
+
+/* Micro-interactions. Only a hairline or a few pixels ever move. */
+@keyframes jing-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* A freshly added row: its rule turns ink and settles back to the hairline. */
+@keyframes jing-settle {
+  from {
+    border-color: var(--jing-ink);
+  }
+  to {
+    border-color: var(--jing-line);
+  }
+}
+
+/* A drawer edge drawing down from the top. */
+@keyframes jing-draw-edge {
+  from {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+@keyframes jing-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -119,7 +119,7 @@ export function AccessGate({ children }: { children: ReactNode }) {
             }}
             aria-invalid={rejected || undefined}
             aria-describedby={rejected ? "zugangscode-fehler" : undefined}
-            className="w-full rounded-[2px] border border-control bg-surface px-3 py-2.5 font-sans text-[14px] text-ink focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="w-full rounded-[2px] border border-control bg-surface px-3 py-2.5 font-sans text-[14px] text-ink focus-visible:border-ink"
           />
           <button
             type="submit"

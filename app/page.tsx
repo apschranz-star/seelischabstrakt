@@ -11,6 +11,7 @@ import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
+import { DURATION } from "@/lib/motion";
 import { useJingStore, type Mode } from "@/lib/store";
 import { cn, deliveryWindow } from "@/lib/utils";
 
@@ -166,7 +167,7 @@ function CollectionSection({
 
   // Durations are the only thing that reacts to the motion preference. Rendered styles
   // stay identical, otherwise the server markup and the first client render diverge.
-  const swap = { duration: reduceMotion ? 0 : 0.28, ease: "easeOut" } as const;
+  const swap = { duration: reduceMotion ? 0 : DURATION.swift, ease: "easeOut" } as const;
 
   return (
     <section

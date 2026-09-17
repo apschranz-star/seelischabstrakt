@@ -168,7 +168,7 @@ const FIELD_INPUT = cn(
   "mt-1.5 w-full rounded-[2px] border border-control bg-surface px-3 py-2.5",
   "font-sans text-[14px] text-ink placeholder:text-ink-3",
   "transition-colors duration-300 ease-ritual hover:border-ink-2",
-  "focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+  "focus-visible:border-ink",
 );
 const FIELD_LABEL = "font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3";
 
@@ -544,7 +544,7 @@ export default function CheckoutPage() {
                 id="bestaetigung-titel"
                 ref={confirmationRef}
                 tabIndex={-1}
-                className="mt-3 font-display text-3xl leading-tight text-ink focus-visible:outline-none"
+                className="mt-3 font-display text-3xl leading-tight text-ink"
               >
                 Danke, die Bestellung steht bereit.
               </h2>
@@ -720,7 +720,7 @@ export default function CheckoutPage() {
                           key={entry.id}
                           className={cn(
                             "flex cursor-pointer flex-col gap-1 rounded-[2px] border px-4 py-3.5 transition-colors duration-300 ease-ritual",
-                            "focus-within:ring-2 focus-within:ring-ink focus-within:ring-offset-2 focus-within:ring-offset-surface",
+                            "jing-focus-within",
                             active
                               ? "border-ink bg-surface-2"
                               : "border-control hover:border-ink-2 hover:bg-surface-2",
