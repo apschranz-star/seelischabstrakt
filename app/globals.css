@@ -328,7 +328,10 @@ header[data-scrolled] {
   text-wrap: balance;
 }
 
-/* A hairline that draws itself under a link from the left. */
+/*
+  A hairline that draws itself under a link from the left. Inside a .group, the
+  group's hover or focus draws it too, so a card title answers the whole tile.
+*/
 @utility jing-underline {
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
@@ -338,7 +341,9 @@ header[data-scrolled] {
 
   &:hover,
   &:focus-visible,
-  &[aria-current="page"] {
+  &[aria-current="page"],
+  :where(.group):hover &,
+  :where(.group):focus-visible & {
     background-size: 100% 1px;
   }
 }

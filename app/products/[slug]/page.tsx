@@ -131,8 +131,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <div className="border border-line bg-surface-2 p-4 sm:p-8">
-            <PackagingViewer product={product} className="h-[380px] w-full sm:h-[520px]" />
+          <div className="jing-stage border border-line p-4 sm:p-8">
+            <PackagingViewer product={product} variant="page" className="h-[380px] w-full sm:h-[520px]" />
           </div>
         </div>
 

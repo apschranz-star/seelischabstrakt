@@ -239,7 +239,7 @@ export function CartDrawer() {
                           className="flex gap-4 border-b border-line py-4 last:border-b-0"
                         >
                           <div className="w-16 shrink-0">
-                            <PackagingViewer product={product} compact />
+                            <PackagingViewer product={product} variant="thumb" />
                           </div>
 
                           <div className="min-w-0 flex-1">

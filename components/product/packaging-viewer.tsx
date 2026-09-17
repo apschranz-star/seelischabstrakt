@@ -11,11 +11,15 @@ import {
   motion,
   useMotionValue,
   useReducedMotion,
+  useScroll,
   useSpring,
   useTransform,
+  useVelocity,
+  type MotionValue,
 } from "framer-motion";
 
 import type { Product } from "@/config/products";
+import { useReduceRef } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -23,21 +27,43 @@ import { cn } from "@/lib/utils";
  * and CSS. There are no product photographs in this project, so the silhouette, the
  * finish and the debossed type have to carry the whole object.
  *
+ * One studio, ten objects. Every vessel is lit by the same key light from the upper
+ * left, stands on the same floor line and casts the same kind of contact shadow.
+ * The finish decides how the surface answers the light, and the amplitude of the
+ * shading follows the luminance of the body: a white pack falls off gently toward
+ * its edges and reads as pearl, a black pack is edged with rim light so it
+ * separates from the night. Everything is gradients, there is no filter and no
+ * blur anywhere in here, so ten cards on a grid stay cheap.
+ *
  * The literal colours in here all come from `product.vessel`. They are product data,
  * not theme, which is why they may appear next to the design tokens. Everything that
- * belongs to the surface around the object goes through the tokens instead, so the
- * Yin Yang inversion keeps working.
+ * belongs to the surface around the object, the stage and the shadow included, goes
+ * through the tokens instead, so the Yin Yang inversion keeps working.
  */
 
 type VesselShape = Product["vessel"]["shape"];
 type VesselFinish = Product["vessel"]["finish"];
 
-const VIEW_WIDTH = 320;
-const VIEW_HEIGHT = 460;
+export type ViewerVariant = "page" | "card" | "thumb";
 
-/** Maximum tilt in degrees. Beyond this the flat silhouette starts to look wrong. */
-const MAX_TILT = 13;
+/** The key light, as a fraction of the object's bounding box. */
+const LIGHT = { x: 0.32, y: 0.18 };
+
 const KEY_STEP = 3.25;
+
+/**
+ * Per variant: the outer clamp of the tilt in degrees, how far the sheen travels
+ * in user units, where the floor line sits as a fraction of the stage height and
+ * the aspect ratio of the stage the viewBox describes.
+ */
+const TUNING: Record<
+  ViewerVariant,
+  { tilt: number; sheen: number; floor: number; aspect: number }
+> = {
+  page: { tilt: 13, sheen: 14, floor: 0.78, aspect: 0.8 },
+  card: { tilt: 7, sheen: 8, floor: 0.62, aspect: 1 },
+  thumb: { tilt: 0, sheen: 0, floor: 0.78, aspect: 0.8 },
+};
 
 const SHAPE_LABEL: Record<VesselShape, string> = {
   bottle: "Flakon",
@@ -54,16 +80,36 @@ const FINISH_LABEL: Record<VesselFinish, string> = {
   glass: "Glas",
 };
 
+type Stops = [number, number, number, number, number];
+
 /**
- * How far the body of revolution falls off towards its edges, per finish. Glass needs
- * dark edges and a lifted core, otherwise a white flacon on a white surface has no
- * body at all. Soft touch swallows the light and stays flat on purpose.
+ * How the body of revolution falls off toward its edges, per finish, for a light
+ * body. The core sits under the key light and the far edge turns away from it.
  */
-const BODY_SHADING: Record<VesselFinish, [number, number, number, number, number]> = {
-  matte: [-0.42, -0.12, 0, -0.2, -0.48],
-  "soft-touch": [-0.5, -0.18, -0.02, -0.26, -0.56],
-  ceramic: [-0.4, -0.1, 0.05, -0.18, -0.46],
-  glass: [-0.62, -0.2, 0.16, -0.32, -0.68],
+const LIGHT_BODY_STOPS: Record<VesselFinish, Stops> = {
+  matte: [-0.16, -0.05, 0.02, -0.08, -0.2],
+  "soft-touch": [-0.12, -0.04, 0, -0.06, -0.15],
+  ceramic: [-0.14, -0.03, 0.05, -0.07, -0.18],
+  glass: [-0.3, -0.06, 0.1, -0.12, -0.34],
+};
+
+/** For a dark body the outer stops go positive: rim light instead of shadow. */
+const DARK_BODY_STOPS: Record<VesselFinish, Stops> = {
+  matte: [0.16, 0.04, 0, 0.02, 0.1],
+  "soft-touch": [0.1, 0.02, 0, 0.01, 0.06],
+  ceramic: [0.22, 0.06, 0.03, 0.04, 0.14],
+  glass: [0.3, 0.08, 0.06, 0.05, 0.2],
+};
+
+/** Stop offsets across the body, with the core under the key light. */
+const STOP_OFFSETS = [0, 0.12, 0.42, 0.8, 1] as const;
+
+/** How much of the body the floor gives back, per finish. */
+const REFLECTION: Record<VesselFinish, number> = {
+  matte: 0.14,
+  "soft-touch": 0.06,
+  ceramic: 0.22,
+  glass: 0.22,
 };
 
 /* ------------------------------------------------------------------- colours */
@@ -95,6 +141,21 @@ function shade(hex: string, amount: number): string {
   return `rgb(${mix(r)} ${mix(g)} ${mix(b)})`;
 }
 
+/** Relative luminance of a colour, 0 for black and 1 for white. */
+function luminance(hex: string): number {
+  const [r, g, b] = parseHex(hex).map((channel) => {
+    const s = channel / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** The five shading stops for a finish, scaled by the amplitude of the body's tone. */
+function bodyStops(finish: VesselFinish, lum: number, amplitude = 1): Stops {
+  const table = lum > 0.5 ? LIGHT_BODY_STOPS : DARK_BODY_STOPS;
+  return table[finish].map((stop) => stop * amplitude) as Stops;
+}
+
 /* ------------------------------------------------------------------ geometry */
 
 interface Geometry {
@@ -107,7 +168,7 @@ interface Geometry {
   /** First baseline of the debossed block plus the type metrics for this silhouette. */
   label: { x: number; y: number; width: number; size: number; line: number };
   stamp: { x: number; y: number };
-  /** Contact ellipse on the ground. */
+  /** Contact ellipse on the ground. Its cy is the floor line of this silhouette. */
   foot: { cx: number; cy: number; rx: number };
   /** Crimped seal, tubes only. */
   crimp?: { x: number; y: number; width: number; height: number };
@@ -167,6 +228,44 @@ const GEOMETRY: Record<VesselShape, Geometry> = {
 };
 
 /**
+ * The envelope all ten objects share. The silhouettes are drawn to one scale, a
+ * compact really is smaller than a flacon, and the stage keeps that scale: its
+ * height is what the tallest object needs with 8 percent of air above it and 22
+ * percent of floor below for shadow and reflection, its width what the widest
+ * object needs with 10 percent on either side. Every object is then framed so its
+ * own foot sits on the floor line of the variant.
+ */
+const TALLEST = Math.max(...Object.values(GEOMETRY).map((geo) => geo.box.height));
+const WIDEST = Math.max(...Object.values(GEOMETRY).map((geo) => geo.box.width));
+
+interface Stage {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  /** The floor line in user units, where every foot stands. */
+  floorY: number;
+}
+
+function stageFor(variant: ViewerVariant, geo: Geometry): Stage {
+  const { floor, aspect } = TUNING[variant];
+  const height = Math.max(
+    (TALLEST * 1.08) / floor,
+    (TALLEST * 0.22) / (1 - floor),
+    (WIDEST * 1.2) / aspect,
+  );
+  const width = height * aspect;
+  const floorY = geo.foot.cy;
+  return {
+    x: geo.foot.cx - width / 2,
+    y: floorY - floor * height,
+    width,
+    height,
+    floorY,
+  };
+}
+
+/**
  * Speckle field for the ceramic glaze. Generated once at module scope from a fixed
  * seed, so server and client draw exactly the same dots.
  */
@@ -176,7 +275,7 @@ const SPECKLES = (() => {
     seed = (seed * 1664525 + 1013904223) % 4294967296;
     return seed / 4294967296;
   };
-  return Array.from({ length: 48 }, (_unused, index) => ({
+  return Array.from({ length: 32 }, (_unused, index) => ({
     key: `speckle-${index}`,
     x: next(),
     y: next(),
@@ -219,13 +318,16 @@ interface DebossedLineProps {
   print: string;
   light: string;
   dark: string;
+  /** On a light body the dark copy sits above, which is where the pressed edge shades. */
+  lightBody: boolean;
   opacity?: number;
 }
 
 /**
- * Three passes of the same word. A light copy one pixel up, a dark copy one pixel
- * down, the print colour on top. That is what reads as pressed into the surface.
- * textLength keeps every line inside the vessel without measuring the font.
+ * Three passes of the same word. A light copy and a dark copy, each 0.6 units off
+ * the baseline on opposite sides, the print colour on top. That is what reads as
+ * pressed into the surface. textLength keeps every line inside the vessel without
+ * measuring the font.
  */
 function DebossedLine({
   label,
@@ -238,6 +340,7 @@ function DebossedLine({
   print,
   light,
   dark,
+  lightBody,
   opacity = 0.92,
 }: DebossedLineProps) {
   if (label.length === 0) return null;
@@ -254,12 +357,15 @@ function DebossedLine({
     className: family,
   };
 
+  const above = lightBody ? { fill: dark, opacity: 0.4 } : { fill: light, opacity: 0.32 };
+  const below = lightBody ? { fill: light, opacity: 0.32 } : { fill: dark, opacity: 0.4 };
+
   return (
     <g>
-      <text {...shared} y={y - 1} fill={light} opacity={0.5}>
+      <text {...shared} y={y - 0.6} fill={above.fill} opacity={above.opacity}>
         {label}
       </text>
-      <text {...shared} y={y + 1} fill={dark} opacity={0.58}>
+      <text {...shared} y={y + 0.6} fill={below.fill} opacity={below.opacity}>
         {label}
       </text>
       <text {...shared} y={y} fill={print} opacity={opacity}>
@@ -271,33 +377,95 @@ function DebossedLine({
 
 /* ------------------------------------------------------------------ the view */
 
+/** Sum of two motion values, for the pointer tilt and the scroll tilt. */
+function useSum(a: MotionValue<number>, b: MotionValue<number>): MotionValue<number> {
+  return useTransform([a, b], ([first, second]: number[]) => first + second);
+}
+
 export function PackagingViewer({
   product,
   className,
+  variant: variantProp,
   compact = false,
+  lifted = false,
 }: {
   product: Product;
   className?: string;
-  /** Inside a card the object has to fit a fixed box and the tilt hint has no room. */
+  /**
+   * page: the product page, tilt to 13 degrees, the hint below, a tab stop.
+   * card: the square stage in a product card, tilt to 7 degrees, scroll drive.
+   * thumb: 64 px in the cart drawer, silhouette, finish and shadow only.
+   */
+  variant?: ViewerVariant;
+  /** @deprecated Use variant="card". Kept for the cart and checkout rows. */
   compact?: boolean;
+  /**
+   * Lifts the object 6 px off the floor and narrows its shadow. The card passes
+   * its own hover state; it starts false on server and client alike and changes
+   * only through pointer events after mount.
+   */
+  lifted?: boolean;
 }) {
+  const variant: ViewerVariant = variantProp ?? (compact ? "card" : "page");
+  const tuning = TUNING[variant];
+  const MAX_TILT = tuning.tilt;
+  // useTransform maps over a range. A thumb never tilts, so its range would be
+  // empty; a range of one degree keeps the maths finite while the value stays 0.
+  const tiltRange = Math.max(MAX_TILT, 1);
+
   const reduceMotion = useReducedMotion() ?? false;
+  const reduce = useReduceRef();
   const frameRef = useRef<HTMLDivElement>(null);
   const rawId = useId();
   const uid = rawId.replace(/[^a-zA-Z0-9]/g, "");
 
   const tiltX = useMotionValue(0);
   const tiltY = useMotionValue(0);
-  const rotateX = useSpring(tiltX, { stiffness: 150, damping: 17, mass: 0.7 });
+  const rotateXPointer = useSpring(tiltX, { stiffness: 150, damping: 17, mass: 0.7 });
   const rotateY = useSpring(tiltY, { stiffness: 150, damping: 17, mass: 0.7 });
 
+  // Scroll response, so a visitor on touch gets the depth the pointer gives the
+  // desktop. In a card the object leans with its progress through the viewport,
+  // 3 degrees toward the visitor as it enters, 3 away as it leaves, and the
+  // sheen travels 10 units with it. On the page the object leans back while
+  // scrolling down, by up to 4 degrees on the smoothed scroll velocity, and
+  // settles at rest. Both read the preference through the ref, so the server,
+  // the first client render and a reduced-motion visitor all get identity.
+  const { scrollYProgress, scrollY } = useScroll(
+    variant === "card"
+      ? { target: frameRef, offset: ["start end", "end start"] }
+      : undefined,
+  );
+  const progressTilt = useTransform(scrollYProgress, (v) =>
+    variant === "card" && !reduce.current ? 3 - 6 * v : 0,
+  );
+  const progressSheen = useTransform(scrollYProgress, (v) =>
+    variant === "card" && !reduce.current ? -10 + 20 * v : 0,
+  );
+  const velocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(velocity, { stiffness: 110, damping: 20, mass: 0.8 });
+  const lean = useTransform(smoothVelocity, (v) =>
+    variant === "page" && !reduce.current ? Math.max(-4, Math.min(4, -v / 300)) : 0,
+  );
+  const scrollTiltX = variant === "page" ? lean : progressTilt;
+
+  // The combined tilt feeds the object and, from the same value, the shadow and
+  // the sheen, so light and ground keep following whatever moves the object.
+  const rotateXSum = useSum(rotateXPointer, scrollTiltX);
+  const rotateX = useTransform(rotateXSum, (v) => Math.max(-tiltRange, Math.min(tiltRange, v)));
+
   // The shadow lags behind the object and travels the other way, which is what makes
-  // the tilt read as a real object standing on a surface.
-  const shadowX = useTransform(rotateY, [-MAX_TILT, MAX_TILT], [26, -26]);
-  const shadowY = useTransform(rotateX, [-MAX_TILT, MAX_TILT], [-8, 12]);
-  const shadowOpacity = useTransform(rotateX, [-MAX_TILT, 0, MAX_TILT], [0.55, 1, 0.75]);
-  const sheenX = useTransform(rotateY, [-MAX_TILT, MAX_TILT], [14, -14]);
-  const sheenY = useTransform(rotateX, [-MAX_TILT, MAX_TILT], [-7, 7]);
+  // the tilt read as a real object standing on a surface. Values in user units.
+  const shadowX = useTransform(rotateY, [-tiltRange, tiltRange], [24, -24]);
+  const shadowY = useTransform(rotateX, [-tiltRange, tiltRange], [-8, 8]);
+  const shadowOpacity = useTransform(rotateX, [-tiltRange, 0, tiltRange], [0.6, 1, 0.8]);
+  const sheenX = useTransform(rotateY, [-tiltRange, tiltRange], [tuning.sheen, -tuning.sheen]);
+  const sheenTilt = useTransform(
+    rotateX,
+    [-tiltRange, tiltRange],
+    [-tuning.sheen / 2, tuning.sheen / 2],
+  );
+  const sheenY = useSum(sheenTilt, progressSheen);
 
   const setTilt = useCallback(
     (nextX: number, nextY: number) => {
@@ -305,7 +473,7 @@ export function PackagingViewer({
       tiltX.set(clamp(nextX));
       tiltY.set(clamp(nextY));
     },
-    [tiltX, tiltY],
+    [MAX_TILT, tiltX, tiltY],
   );
 
   const rest = useCallback(() => {
@@ -315,7 +483,7 @@ export function PackagingViewer({
 
   const handlePointerMove = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (reduceMotion) return;
+      if (reduceMotion || MAX_TILT === 0) return;
       const frame = frameRef.current;
       if (!frame) return;
       const rect = frame.getBoundingClientRect();
@@ -325,12 +493,12 @@ export function PackagingViewer({
       // Pointing pushes the surface away at that point.
       setTilt(-offsetY * 2 * MAX_TILT, offsetX * 2 * MAX_TILT);
     },
-    [reduceMotion, setTilt],
+    [MAX_TILT, reduceMotion, setTilt],
   );
 
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
-      if (reduceMotion) return;
+      if (reduceMotion || MAX_TILT === 0) return;
       const current = { x: tiltX.get(), y: tiltY.get() };
 
       switch (event.key) {
@@ -355,119 +523,218 @@ export function PackagingViewer({
 
       event.preventDefault();
     },
-    [reduceMotion, rest, setTilt, tiltX, tiltY],
+    [MAX_TILT, reduceMotion, rest, setTilt, tiltX, tiltY],
   );
 
   const { vessel } = product;
   const geo = GEOMETRY[vessel.shape];
-  const { box, label } = geo;
+  const { box, label, foot } = geo;
   const crimp = geo.crimp;
+  const stage = stageFor(variant, geo);
+  const viewBox = `${stage.x} ${stage.y} ${stage.width} ${stage.height}`;
 
-  const shading = BODY_SHADING[vessel.finish];
+  const lum = luminance(vessel.body);
+  const lightBody = lum > 0.5;
+  const shading = bodyStops(vessel.finish, lum);
+  const capShading = bodyStops(vessel.finish, luminance(vessel.cap), 0.8);
   const bodyLight = shade(vessel.body, 0.55);
   const bodyDark = shade(vessel.body, -0.55);
   const nameLines = wrapLabel(product.name, vessel.shape === "compact" ? 20 : 16, 3);
+
+  const isThumb = variant === "thumb";
+  const isPage = variant === "page";
 
   const bodyClip = `${uid}-clip`;
   const bodyFill = `${uid}-body`;
   const capFill = `${uid}-cap`;
   const softLight = `${uid}-soft`;
+  const specular = `${uid}-spec`;
   const glassLight = `${uid}-glass`;
+  const shadowFill = `${uid}-shadow`;
+  const reflectionFade = `${uid}-fade`;
+  const reflectionMask = `${uid}-mask`;
+  const reflectionClip = `${uid}-rclip`;
 
-  const shadowLeft = ((geo.foot.cx - geo.foot.rx) / VIEW_WIDTH) * 100;
-  const shadowWidth = ((geo.foot.rx * 2) / VIEW_WIDTH) * 100;
-  const shadowTop = ((geo.foot.cy - 12) / VIEW_HEIGHT) * 100;
+  const reflectionDepth = box.height * 0.18;
+  const reflectionAmount = REFLECTION[vessel.finish];
+
+  // Duration is the only thing the preference changes. The tree, the variants and
+  // the resting values are the same on the server, on the client and under it.
+  const liftTransition = reduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 260, damping: 24, mass: 0.8 };
+  const liftState = lifted ? "lift" : "rest";
+
+  const svgProps = {
+    viewBox,
+    preserveAspectRatio: "xMidYMid meet",
+    "aria-hidden": true as const,
+    focusable: "false" as const,
+  };
 
   return (
-    <div className={cn("flex w-full flex-col", compact && "h-full min-h-0", className)}>
+    <div
+      className={cn(isPage ? "flex h-full w-full flex-col" : "relative w-full", className)}
+      style={isPage ? undefined : { aspectRatio: `${stage.width} / ${stage.height}` }}
+    >
       <div
         ref={frameRef}
         role="img"
         // A tab stop only where the tilt can actually be used. In a card the
         // whole tile is already a link, and in the cart drawer this sits inside
         // a focus trap, so an extra stop there is noise with nothing behind it.
-        tabIndex={compact ? -1 : 0}
-        aria-label={`${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape]} mit Oberfläche ${FINISH_LABEL[vessel.finish]}. Mit den Pfeiltasten neigen.`}
+        tabIndex={isPage ? 0 : -1}
+        aria-label={
+          isPage
+            ? `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape]} mit Oberfläche ${FINISH_LABEL[vessel.finish]}. Mit den Pfeiltasten neigen.`
+            : `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape]} mit Oberfläche ${FINISH_LABEL[vessel.finish]}.`
+        }
         onPointerMove={handlePointerMove}
         onPointerLeave={rest}
         onPointerCancel={rest}
         onBlur={rest}
         onKeyDown={handleKeyDown}
         className={cn(
-          "relative mx-auto w-full max-w-[26rem] rounded-[2rem] outline-none",
-          compact && "h-full min-h-0",
-          "focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-4",
+          "rounded-[2px] outline-none",
+          isPage ? "relative min-h-0 w-full flex-1" : "absolute inset-0",
         )}
         style={{ perspective: 1200, touchAction: "pan-y" }}
       >
-        <div
-          className={cn("relative mx-auto w-full", compact && "h-full max-h-full")}
-          style={{ aspectRatio: `${VIEW_WIDTH} / ${VIEW_HEIGHT}`, maxWidth: compact ? "100%" : undefined }}
-        >
-          <motion.div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{ x: shadowX, y: shadowY, opacity: shadowOpacity }}
-          >
-            <div
-              className="absolute rounded-[50%] bg-ink opacity-[0.13] blur-2xl"
-              style={{
-                left: `${shadowLeft - 6}%`,
-                width: `${shadowWidth + 12}%`,
-                top: `${shadowTop}%`,
-                height: 38,
-              }}
-            />
-            <div
-              className="absolute rounded-[50%] blur-[6px]"
-              style={{
-                left: `${shadowLeft + 4}%`,
-                width: `${shadowWidth - 8}%`,
-                top: `${shadowTop + 1.6}%`,
-                height: 16,
-                background: bodyDark,
-                opacity: 0.38,
-              }}
-            />
-          </motion.div>
+        {/* The ground. Shadow and reflection stay flat on the floor while the
+            object above tilts; the same viewBox keeps the two drawings aligned. */}
+        <svg {...svgProps} className="pointer-events-none absolute inset-0 block h-full w-full">
+          <defs>
+            {/* Cylindrical shading. Every silhouette is a body of revolution. */}
+            <linearGradient id={bodyFill} x1="0" y1="0" x2="1" y2="0">
+              {STOP_OFFSETS.map((offset, index) => (
+                <stop
+                  key={offset}
+                  offset={offset}
+                  stopColor={shade(vessel.body, shading[index])}
+                />
+              ))}
+            </linearGradient>
 
+            {/* The contact shadow, in the shadow token so it deepens on the night. */}
+            <radialGradient id={shadowFill} cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" style={{ stopColor: "var(--jing-shadow)" }} stopOpacity="1" />
+              <stop
+                offset="0.55"
+                style={{ stopColor: "var(--jing-shadow)" }}
+                stopOpacity="0.45"
+              />
+              <stop offset="1" style={{ stopColor: "var(--jing-shadow)" }} stopOpacity="0" />
+            </radialGradient>
+
+            {isThumb ? null : (
+              <>
+                <linearGradient id={reflectionFade} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#fff" stopOpacity={reflectionAmount} />
+                  <stop offset="1" stopColor="#fff" stopOpacity="0" />
+                </linearGradient>
+                <mask id={reflectionMask} maskUnits="userSpaceOnUse">
+                  <rect
+                    x={stage.x}
+                    y={stage.floorY}
+                    width={stage.width}
+                    height={reflectionDepth}
+                    fill={`url(#${reflectionFade})`}
+                  />
+                </mask>
+                <clipPath id={reflectionClip}>
+                  <rect
+                    x={stage.x}
+                    y={stage.floorY}
+                    width={stage.width}
+                    height={reflectionDepth}
+                  />
+                </clipPath>
+              </>
+            )}
+          </defs>
+
+          <motion.g
+            variants={{
+              rest: { scaleX: 1, opacity: 1 },
+              lift: { scaleX: 0.94, opacity: 0.78 },
+            }}
+            initial="rest"
+            animate={liftState}
+            transition={liftTransition}
+          >
+            <motion.g style={{ x: shadowX, y: shadowY, opacity: shadowOpacity }}>
+              <ellipse
+                cx={foot.cx}
+                cy={foot.cy + 2}
+                rx={foot.rx * 1.15}
+                ry={14}
+                fill={`url(#${shadowFill})`}
+                opacity="0.45"
+              />
+              <ellipse
+                cx={foot.cx}
+                cy={foot.cy + 2}
+                rx={foot.rx * 0.62}
+                ry={6}
+                fill={`url(#${shadowFill})`}
+              />
+            </motion.g>
+
+            {/* The floor gives a little of the body back, mirrored and pressed
+                flat, fading out within the first fifth of the object's height. */}
+            {isThumb ? null : (
+              <g clipPath={`url(#${reflectionClip})`} mask={`url(#${reflectionMask})`}>
+                <g transform={`matrix(1 0 0 -0.32 0 ${2 * foot.cy})`}>
+                  <path d={geo.body} fill={`url(#${bodyFill})`} />
+                </g>
+              </g>
+            )}
+          </motion.g>
+        </svg>
+
+        {/* The object. Lifted six pixels when the pointer arrives, tilted by the
+            pointer and by the scroll, with the light staying where the light is. */}
+        <motion.div
+          data-vessel=""
+          className="absolute inset-0"
+          variants={{ rest: { y: 0 }, lift: { y: -6 } }}
+          initial="rest"
+          animate={liftState}
+          transition={liftTransition}
+        >
           <motion.div
             className="absolute inset-0"
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           >
-            <svg
-              viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
-              className="block h-full w-full"
-              aria-hidden="true"
-              focusable="false"
-            >
+            <svg {...svgProps} className="block h-full w-full">
               <defs>
                 <clipPath id={bodyClip}>
                   <path d={geo.body} />
                   <path d={geo.cap} />
                 </clipPath>
 
-                {/* Cylindrical shading. Every silhouette is a body of revolution. */}
-                <linearGradient id={bodyFill} x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stopColor={shade(vessel.body, shading[0])} />
-                  <stop offset="0.16" stopColor={shade(vessel.body, shading[1])} />
-                  <stop offset="0.46" stopColor={shade(vessel.body, shading[2])} />
-                  <stop offset="0.82" stopColor={shade(vessel.body, shading[3])} />
-                  <stop offset="1" stopColor={shade(vessel.body, shading[4])} />
-                </linearGradient>
-
                 <linearGradient id={capFill} x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stopColor={shade(vessel.cap, -0.4)} />
-                  <stop offset="0.18" stopColor={shade(vessel.cap, -0.08)} />
-                  <stop offset="0.5" stopColor={vessel.cap} />
-                  <stop offset="0.84" stopColor={shade(vessel.cap, -0.18)} />
-                  <stop offset="1" stopColor={shade(vessel.cap, -0.46)} />
+                  {STOP_OFFSETS.map((offset, index) => (
+                    <stop
+                      key={offset}
+                      offset={offset}
+                      stopColor={shade(vessel.cap, capShading[index])}
+                    />
+                  ))}
                 </linearGradient>
 
+                {/* The key light as it lands on a diffuse surface. */}
                 <radialGradient id={softLight} cx="0.5" cy="0.5" r="0.5">
                   <stop offset="0" stopColor={shade(vessel.body, 0.62)} stopOpacity="0.9" />
                   <stop offset="0.5" stopColor={shade(vessel.body, 0.4)} stopOpacity="0.4" />
                   <stop offset="1" stopColor={shade(vessel.body, 0.3)} stopOpacity="0" />
+                </radialGradient>
+
+                {/* The key light as a hard reflection in a glaze. */}
+                <radialGradient id={specular} cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0" stopColor={shade(vessel.body, 0.9)} stopOpacity="0.85" />
+                  <stop offset="0.55" stopColor={shade(vessel.body, 0.9)} stopOpacity="0.35" />
+                  <stop offset="1" stopColor={shade(vessel.body, 0.9)} stopOpacity="0" />
                 </radialGradient>
 
                 <linearGradient id={glassLight} x1="0" y1="0" x2="0" y2="1">
@@ -512,109 +779,126 @@ export function PackagingViewer({
               <g clipPath={`url(#${bodyClip})`}>
                 <motion.g style={{ x: sheenX, y: sheenY }}>
                   {vessel.finish === "matte" ? (
-                    <>
-                      <ellipse
-                        cx={box.x + box.width * 0.4}
-                        cy={box.y + box.height * 0.36}
-                        rx={box.width * 0.66}
-                        ry={box.height * 0.46}
-                        fill={`url(#${softLight})`}
-                        opacity="0.42"
-                      />
-                      <ellipse
-                        cx={box.x + box.width * 0.58}
-                        cy={box.y + box.height * 0.92}
-                        rx={box.width * 0.5}
-                        ry={box.height * 0.14}
-                        fill={`url(#${softLight})`}
-                        opacity="0.16"
-                      />
-                    </>
+                    <ellipse
+                      cx={box.x + box.width * LIGHT.x}
+                      cy={box.y + box.height * (LIGHT.y + 0.14)}
+                      rx={box.width * 0.62}
+                      ry={box.height * 0.4}
+                      fill={`url(#${softLight})`}
+                      opacity="0.22"
+                    />
                   ) : null}
 
                   {vessel.finish === "soft-touch" ? (
-                    <ellipse
-                      cx={box.x + box.width * 0.44}
-                      cy={box.y + box.height * 0.42}
-                      rx={box.width * 0.78}
-                      ry={box.height * 0.52}
-                      fill={`url(#${softLight})`}
-                      opacity="0.1"
-                    />
+                    <g fill="none" stroke={bodyLight}>
+                      <path d={geo.body} strokeWidth="6" opacity="0.08" />
+                      <path d={geo.body} strokeWidth="2" opacity="0.12" />
+                    </g>
                   ) : null}
 
                   {vessel.finish === "ceramic" ? (
                     <>
                       <ellipse
-                        cx={box.x + box.width * 0.36}
-                        cy={box.y + box.height * 0.3}
-                        rx={box.width * 0.32}
-                        ry={box.height * 0.3}
-                        fill={`url(#${softLight})`}
-                        opacity="0.55"
+                        cx={box.x + box.width * LIGHT.x}
+                        cy={box.y + box.height * LIGHT.y}
+                        rx={box.width * 0.09}
+                        ry={box.height * 0.06}
+                        fill={`url(#${specular})`}
                       />
-                      <g>
-                        {SPECKLES.map((speckle) => (
-                          <circle
-                            key={speckle.key}
-                            cx={box.x + speckle.x * box.width}
-                            cy={box.y + speckle.y * box.height}
-                            r={speckle.r}
-                            fill={
-                              speckle.light
-                                ? shade(vessel.body, 0.7)
-                                : shade(vessel.body, -0.6)
-                            }
-                            opacity={speckle.opacity}
-                          />
-                        ))}
-                      </g>
+                      <line
+                        x1={geo.seam.x1 + 3}
+                        x2={geo.seam.x2 - 3}
+                        y1={geo.seam.y + 3}
+                        y2={geo.seam.y + 3}
+                        stroke={bodyLight}
+                        strokeWidth="1.4"
+                        opacity="0.35"
+                      />
+                      {isThumb ? null : (
+                        <g>
+                          {SPECKLES.map((speckle) => (
+                            <circle
+                              key={speckle.key}
+                              cx={box.x + speckle.x * box.width}
+                              cy={box.y + speckle.y * box.height}
+                              r={speckle.r}
+                              fill={
+                                speckle.light
+                                  ? shade(vessel.body, 0.7)
+                                  : shade(vessel.body, -0.6)
+                              }
+                              opacity={speckle.opacity}
+                            />
+                          ))}
+                        </g>
+                      )}
                     </>
                   ) : null}
 
                   {vessel.finish === "glass" ? (
                     <>
-                      {/* The dark companion next to the highlight is what makes glass
-                          legible on a white pack, where a bright stripe alone vanishes. */}
+                      {/* The back wall, seen through the front. */}
                       <rect
-                        x={box.x + box.width * 0.145}
+                        x={box.x + box.width * 0.22}
+                        y={box.y}
+                        width={box.width * 0.56}
+                        height={box.height}
+                        fill={shade(vessel.body, lightBody ? 0.06 : 0.12)}
+                        opacity="0.5"
+                      />
+                      {/* The fill level, with its meniscus. */}
+                      <rect
+                        x={box.x}
+                        y={box.y + box.height * 0.72}
+                        width={box.width}
+                        height={box.height * 0.28}
+                        fill={shade(vessel.body, -0.1)}
+                        opacity="0.35"
+                      />
+                      <line
+                        x1={box.x}
+                        x2={box.x + box.width}
+                        y1={box.y + box.height * 0.72}
+                        y2={box.y + box.height * 0.72}
+                        stroke={bodyLight}
+                        strokeWidth="1"
+                        opacity="0.7"
+                      />
+                      {/* One specular streak and its dark companion. The companion is
+                          what makes glass legible on a white pack, where a bright stripe
+                          alone vanishes. */}
+                      <rect
+                        x={box.x + box.width * 0.15}
                         y={box.y + box.height * 0.1}
-                        width={Math.max(1.5, box.width * 0.016)}
+                        width={Math.max(1.5, box.width * 0.014)}
                         height={box.height * 0.78}
                         rx={1}
                         fill={shade(vessel.body, -0.5)}
-                        opacity="0.45"
+                        opacity="0.5"
                       />
                       <rect
                         x={box.x + box.width * 0.19}
                         y={box.y + box.height * 0.08}
-                        width={Math.max(3, box.width * 0.055)}
+                        width={Math.max(3, box.width * 0.045)}
                         height={box.height * 0.82}
-                        rx={Math.max(1.5, box.width * 0.028)}
+                        rx={2}
                         fill={`url(#${glassLight})`}
-                        opacity="0.9"
-                      />
-                      <rect
-                        x={box.x + box.width * 0.29}
-                        y={box.y + box.height * 0.14}
-                        width={Math.max(1.5, box.width * 0.02)}
-                        height={box.height * 0.66}
-                        rx={1}
-                        fill={`url(#${glassLight})`}
-                        opacity="0.5"
-                      />
-                      <rect
-                        x={box.x + box.width * 0.9}
-                        y={box.y + box.height * 0.1}
-                        width={Math.max(1.5, box.width * 0.022)}
-                        height={box.height * 0.78}
-                        rx={1}
-                        fill={`url(#${glassLight})`}
-                        opacity="0.42"
+                        opacity="0.92"
                       />
                     </>
                   ) : null}
                 </motion.g>
+
+                {/* The wall of the glass, an inner stroke that stays put. */}
+                {vessel.finish === "glass" ? (
+                  <path
+                    d={geo.body}
+                    fill="none"
+                    stroke={bodyDark}
+                    strokeWidth="1.6"
+                    opacity="0.6"
+                  />
+                ) : null}
               </g>
 
               {/* Seam between cap and body, and the rim light along the shoulder. */}
@@ -637,69 +921,74 @@ export function PackagingViewer({
                 opacity="0.22"
               />
 
-              <g clipPath={`url(#${bodyClip})`}>
-                <DebossedLine
-                  label={product.code}
-                  x={label.x}
-                  y={label.y}
-                  maxWidth={label.width * 0.8}
-                  fontSize={label.size - 2}
-                  family="font-mono"
-                  spacing={2.4}
-                  print={vessel.print}
-                  light={bodyLight}
-                  dark={bodyDark}
-                  opacity={0.7}
-                />
-
-                {nameLines.map((line, index) => (
+              {isThumb ? null : (
+                <g clipPath={`url(#${bodyClip})`}>
                   <DebossedLine
-                    key={`${product.id}-name-${index}`}
-                    label={line}
+                    label={product.code}
                     x={label.x}
-                    y={label.y + 22 + index * label.line}
-                    maxWidth={label.width}
-                    fontSize={label.size}
-                    family="font-display"
+                    y={label.y}
+                    maxWidth={label.width * 0.8}
+                    fontSize={label.size - 2}
+                    family="font-mono"
+                    spacing={2.4}
                     print={vessel.print}
                     light={bodyLight}
                     dark={bodyDark}
+                    lightBody={lightBody}
+                    opacity={0.7}
                   />
-                ))}
 
-                <DebossedLine
-                  label="LOT JG-2401"
-                  x={geo.stamp.x}
-                  y={geo.stamp.y}
-                  maxWidth={label.width * 0.78}
-                  fontSize={7.5}
-                  family="font-mono"
-                  spacing={1.4}
-                  print={vessel.print}
-                  light={bodyLight}
-                  dark={bodyDark}
-                  opacity={0.42}
-                />
-              </g>
+                  {nameLines.map((line, index) => (
+                    <DebossedLine
+                      key={`${product.id}-name-${index}`}
+                      label={line}
+                      x={label.x}
+                      y={label.y + 22 + index * label.line}
+                      maxWidth={label.width}
+                      fontSize={label.size}
+                      family="font-display"
+                      print={vessel.print}
+                      light={bodyLight}
+                      dark={bodyDark}
+                      lightBody={lightBody}
+                    />
+                  ))}
+
+                  <DebossedLine
+                    label="LOT JG-2401"
+                    x={geo.stamp.x}
+                    y={geo.stamp.y}
+                    maxWidth={label.width * 0.78}
+                    fontSize={7.5}
+                    family="font-mono"
+                    spacing={1.4}
+                    print={vessel.print}
+                    light={bodyLight}
+                    dark={bodyDark}
+                    lightBody={lightBody}
+                    opacity={0.36}
+                  />
+                </g>
+              )}
 
               {/* Outline last. Both rims are drawn: the dark one carries a pale pack on
                   the light surface, the light one keeps a black pack off the dark one. */}
               <g fill="none" strokeWidth="0.9">
                 <path d={geo.body} stroke={bodyDark} opacity="0.45" />
                 <path d={geo.cap} stroke={shade(vessel.cap, -0.5)} opacity="0.45" />
-                <path d={geo.body} stroke={bodyLight} opacity="0.26" />
-                <path d={geo.cap} stroke={shade(vessel.cap, 0.55)} opacity="0.26" />
+                <path d={geo.body} stroke={bodyLight} opacity={lightBody ? 0.26 : 0.4} />
+                <path d={geo.cap} stroke={shade(vessel.cap, 0.55)} opacity={lightBody ? 0.26 : 0.4} />
               </g>
             </svg>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
-      {compact ? null : (
-        <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3 motion-reduce:hidden">
+      {isPage ? (
+        <p className="mt-3 shrink-0 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3 motion-reduce:hidden">
           Mit dem Zeiger oder den Pfeiltasten neigen
         </p>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 import { AddToCart } from "@/components/product/add-to-cart";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
@@ -12,13 +14,22 @@ import { formatBasePrice, formatForRegion } from "@/lib/utils";
 export function ProductCard({ product }: { product: Product }) {
   const { region, hydrated } = useYinYang();
 
+  // The pointer arriving on the card lifts the object off its stage. The state
+  // starts false on the server and on the client and only ever changes through
+  // pointer events after mount, so the markup never depends on it at first render.
+  const [hovered, setHovered] = useState(false);
+
   // Before the persisted region is read, the card quotes euro for Germany,
   // which is exactly what the server rendered.
   const activeRegion = hydrated ? region : DEFAULT_REGION;
   const basePrice = formatBasePrice(product, activeRegion);
 
   return (
-    <article className="flex h-full flex-col border border-line bg-surface p-4 transition-colors duration-500 ease-ritual hover:border-line-2 sm:p-5">
+    <motion.article
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="flex h-full flex-col border border-line bg-surface p-4 transition-colors duration-500 ease-ritual hover:border-line-2 sm:p-5"
+    >
       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">{product.code}</p>
 
       <Link
@@ -26,10 +37,10 @@ export function ProductCard({ product }: { product: Product }) {
         className="group mt-3 block rounded-[2px]"
         aria-label={`${product.name}, Produktdetails`}
       >
-        <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
-          <PackagingViewer product={product} compact className="absolute inset-0" />
+        <div className="jing-stage relative aspect-square w-full overflow-hidden p-3">
+          <PackagingViewer product={product} variant="card" lifted={hovered} />
         </div>
-        <h3 className="mt-4 font-display text-xl leading-tight text-ink transition-opacity duration-300 ease-ritual group-hover:opacity-70">
+        <h3 className="jing-underline mt-4 pb-1 font-display text-xl leading-tight text-ink">
           {product.name}
         </h3>
       </Link>
@@ -60,6 +71,6 @@ export function ProductCard({ product }: { product: Product }) {
           <AddToCart product={product} size="sm" />
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

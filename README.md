@@ -65,7 +65,12 @@ components/theme/
   theme-toggle.tsx           der Umschalter zwischen den Ritualen, mit aria-pressed und echtem Label. Er ist das einzige Element mit data-switch-mark und liegt damit auf einer eigenen Ebene über der Eklipse, das Zeichen dreht sich live, das Wort daneben gleitet aus und ein.
 
 components/product/
-  packaging-viewer.tsx       zeichnet die Verpackung als CSS und SVG, es gibt keine Bilddateien im Projekt
+  packaging-viewer.tsx       zeichnet die Verpackung als SVG, es gibt keine Bilddateien im Projekt. Ein Studio für alle
+                             zehn Objekte: ein Schlüssellicht von oben links, eine Bodenlinie, ein Kontaktschatten und eine
+                             Spiegelung aus Verläufen, keine Filter. Drei Varianten: page (Produktseite, 13 Grad Neigung,
+                             lehnt sich mit der Scrollgeschwindigkeit zurück), card (quadratische Bühne in der Kachel, 7 Grad,
+                             neigt sich mit dem Scrollfortschritt, hebt sich bei Hover 6 Pixel) und thumb (64 Pixel im
+                             Warenkorb, nur Silhouette, Oberfläche und Schatten)
   product-card.tsx           Kachel mit Preis, Grundpreis und Preistransparenzzeile
   add-to-cart.tsx            Mengenwahl und Schaltfläche, schreibt in den Store
   inci-drawer.tsx            Tafel mit den Pflichtangaben, Inhalt je nach Produktart
