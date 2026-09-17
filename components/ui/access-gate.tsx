@@ -93,15 +93,13 @@ export function AccessGate({ children }: { children: ReactNode }) {
       </h1>
       <p className="mt-3 text-sm leading-relaxed text-ink-2">
         Wer den Link bekommen hat, ist bereits drin. Sonst hier den Zugangscode eingeben.
+        {mounted ? "" : " Die Seite lädt noch, das Feld funktioniert trotzdem."}
       </p>
-      {/* The gate renders on the server and for the first client render, so the
-          form is there before the stored code is read. Hidden until then, so a
-          returning visitor sees no flash of it. */}
-      <form
-        onSubmit={submit}
-        className={mounted ? "mt-8" : "mt-8 invisible"}
-        aria-hidden={!mounted}
-      >
+      {/* A plain GET form. With JavaScript the submit handler grants access in
+          place; without it, or while the scripts have not arrived yet, the
+          browser reloads the page with ?zugang=<code>, which the effect above
+          accepts as soon as it runs. The gate is never a dead end. */}
+      <form method="get" action="" onSubmit={submit} className="mt-8">
         <label
           htmlFor="zugangscode"
           className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3"
@@ -111,7 +109,7 @@ export function AccessGate({ children }: { children: ReactNode }) {
         <div className="mt-1.5 flex gap-2">
           <input
             id="zugangscode"
-            name="zugangscode"
+            name={PARAM}
             type="password"
             autoComplete="off"
             value={attempt}
