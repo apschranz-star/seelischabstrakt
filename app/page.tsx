@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 
 import { ProductCard } from "@/components/product/product-card";
 import { Reveal } from "@/components/ui/reveal";
@@ -148,6 +148,17 @@ function CollectionSection({
   /** Cards appear at once instead of gliding in, after a switch the visitor made. */
   instant: boolean;
 }) {
+  // After a switch the visitor made, the grid that appears is what they want
+  // to see. It mounts once the old one has faded out, so the scroll happens
+  // here, on mount, not on the click. The first load never scrolls.
+  const gridMounted = useCallback(
+    (node: HTMLUListElement | null) => {
+      if (!node || !instant) return;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      node.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    },
+    [instant],
+  );
   const reduceMotion = useReducedMotion() ?? false;
   const copy = RITUAL[collection];
   const products = getProductsByCollection(collection);
@@ -188,12 +199,13 @@ function CollectionSection({
           {active ? (
             <motion.ul
               key="grid"
+              ref={gridMounted}
               role="list"
               initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, y: -8 }}
               transition={swap}
-              className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
+              className="mt-8 scroll-mt-24 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
             >
               {products.map((product, index) => (
                 <Reveal
@@ -257,24 +269,6 @@ export default function HomePage() {
   // Persisted values only after rehydration, so the first paint matches the server.
   const activeMode = hydrated ? mode : FALLBACK_MODE;
   const activeRegion = REGIONS[hydrated ? region : DEFAULT_REGION];
-
-  // Switching the mode swaps which section carries the products. Done from the
-  // header while the visitor is looking at the other grid, that swap happens
-  // out of sight: the grid under them turns into the invite line and the
-  // products appear a screen further down. So a change the visitor made brings
-  // the active collection into view. The first render after hydration only
-  // restores the stored mode and must not move the page.
-  const previousMode = useRef<Mode | null>(null);
-  useEffect(() => {
-    if (!hydrated) return;
-    const previous = previousMode.current;
-    previousMode.current = activeMode;
-    if (previous === null || previous === activeMode) return;
-    const section = document.getElementById(activeMode);
-    if (!section) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    section.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-  }, [activeMode, hydrated]);
 
   // A deep link such as /#yin should open the night side, not only scroll to it.
   //
