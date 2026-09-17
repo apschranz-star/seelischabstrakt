@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Minus, Plus, Trash2, X } from "lucide-react";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import { PaymentBadges } from "@/components/cart/payment-badges";
@@ -20,6 +20,7 @@ import {
   freeShippingProgress,
   toRegionMinorUnits,
 } from "@/lib/utils";
+import { useMounted } from "@/lib/use-mounted";
 
 /** Mirrors MAX_PER_LINE in lib/store, which caps a single line at ten units. */
 const MAX_QUANTITY = 10;
@@ -41,7 +42,8 @@ export function CartDrawer() {
   const removeItem = useJingStore((state) => state.removeItem);
   const closeCart = useJingStore((state) => state.closeCart);
 
-  const [mounted, setMounted] = useState(false);
+  // The portal target only exists in the browser, so nothing renders before mount.
+  const mounted = useMounted();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -71,11 +73,6 @@ export function CartDrawer() {
   const estimate = useMemo(() => selectEstimate({ items, region }), [items, region]);
 
   const open = hydrated && isCartOpen;
-
-  // The portal target only exists in the browser, so nothing renders until after mount.
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Remember the trigger, move focus into the drawer, hand focus back on close.
   useEffect(() => {

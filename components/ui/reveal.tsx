@@ -36,9 +36,12 @@ function useRevealed(enabled: boolean, immediate: boolean) {
   }, []);
 
   useEffect(() => {
+    // Both immediate paths resolve in the next frame. That keeps the state
+    // change out of the effect body itself, and one frame at the hidden
+    // starting value is what the animated path shows anyway.
     if (!enabled || immediate) {
-      setShown(true);
-      return;
+      const frame = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(frame);
     }
     const element = node.current;
     if (!element) return;
@@ -46,8 +49,8 @@ function useRevealed(enabled: boolean, immediate: boolean) {
     const isWithinReach = () => element.getBoundingClientRect().top < window.innerHeight * 0.92;
 
     if (isWithinReach()) {
-      setShown(true);
-      return;
+      const frame = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(

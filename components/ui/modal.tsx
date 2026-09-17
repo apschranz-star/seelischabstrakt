@@ -2,8 +2,9 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useMounted } from "@/lib/use-mounted";
 
 export interface ModalProps {
   open: boolean;
@@ -23,7 +24,8 @@ const FOCUSABLE = [
 ].join(",");
 
 export function Modal({ open, onClose, title, description, children }: ModalProps) {
-  const [mounted, setMounted] = useState(false);
+  // The portal target only exists in the browser, so nothing renders before mount.
+  const mounted = useMounted();
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const reduceMotion = useReducedMotion();
@@ -31,11 +33,6 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
   const id = useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-description`;
-
-  // The portal target only exists in the browser, so nothing renders until after mount.
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Remember the trigger, move focus into the dialog, hand focus back on close.
   useEffect(() => {

@@ -6,12 +6,12 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
 
 import { useJingStore, type Mode } from "@/lib/store";
 import type { RegionCode } from "@/config/site";
+import { useMounted } from "@/lib/use-mounted";
 
 interface YinYangContextValue {
   mode: Mode;
@@ -35,7 +35,7 @@ export function YinYangProvider({ children }: { children: ReactNode }) {
   const setHydrated = useJingStore((state) => state.setHydrated);
   const pruneCart = useJingStore((state) => state.pruneCart);
 
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
   // Read the persisted state once, on the client, after the first paint.
   // Corrupt or unreadable storage must never take the shop down with it: a
@@ -66,7 +66,6 @@ export function YinYangProvider({ children }: { children: ReactNode }) {
     } catch {
       setHydrated(true);
     }
-    setMounted(true);
     return () => {
       cancelled = true;
     };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Minus, Plus } from "lucide-react";
 
 import { useYinYang } from "@/components/theme/yin-yang-provider";
@@ -21,20 +21,15 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
 
   const [quantity, setQuantity] = useState(1);
   const [confirmed, setConfirmed] = useState(false);
-  // A counter, not a timestamp. Dates in render would desync server and client,
-  // and bumping it restarts the timer when the button is pressed twice in a row.
-  const [addCount, setAddCount] = useState(0);
+  // The confirmation hides itself after a moment. The timer is started by the
+  // click and restarted by the next click, and cleared if the card unmounts.
+  const confirmTimer = useRef<number | undefined>(undefined);
   // What the cart actually holds after the press, read back from the store.
   // The stepper value is not the same thing: the line is capped at ten, and the
   // stepper keeps moving after the confirmation appears.
   const [confirmedLine, setConfirmedLine] = useState(0);
 
-  useEffect(() => {
-    if (addCount === 0) return;
-    setConfirmed(true);
-    const timer = window.setTimeout(() => setConfirmed(false), CONFIRM_MS);
-    return () => window.clearTimeout(timer);
-  }, [addCount]);
+  useEffect(() => () => window.clearTimeout(confirmTimer.current), []);
 
   const compact = size === "sm";
   const stepDisabled = !hydrated;
@@ -45,7 +40,9 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
       .getState()
       .items.find((item) => item.productId === product.id);
     setConfirmedLine(line?.quantity ?? quantity);
-    setAddCount((count) => count + 1);
+    setConfirmed(true);
+    window.clearTimeout(confirmTimer.current);
+    confirmTimer.current = window.setTimeout(() => setConfirmed(false), CONFIRM_MS);
   }
 
   const stepButton = cn(

@@ -15,6 +15,7 @@ import type {
   Regulatory,
 } from "@/config/products";
 import { SITE } from "@/config/site";
+import { useMounted } from "@/lib/use-mounted";
 
 const FOCUSABLE = [
   "a[href]",
@@ -370,7 +371,8 @@ function panelMeta(regulatory: Regulatory): PanelMeta {
 
 export function InciDrawer({ product }: { product: Product }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // The portal target only exists in the browser, so nothing renders before mount.
+  const mounted = useMounted();
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const reduceMotion = useReducedMotion();
@@ -382,11 +384,6 @@ export function InciDrawer({ product }: { product: Product }) {
 
   const meta = panelMeta(product.regulatory);
   const close = useCallback(() => setOpen(false), []);
-
-  // The portal target only exists in the browser, so nothing renders before mount.
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Focus moves into the panel on open and back to the trigger on close.
   useEffect(() => {
