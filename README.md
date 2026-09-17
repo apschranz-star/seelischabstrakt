@@ -35,6 +35,10 @@ leer ist, bleibt die Kasse im Mock-Betrieb, und das ist derzeit der einzige unte
 Eine Testsuite gibt es nicht. Die Prüfkette besteht aus `lint`, `typecheck` und `build`. Alle drei
 müssen sauber durchlaufen, bevor etwas gemerged wird.
 
+Betrieb auf Netlify: `netlify.toml` liegt bei, Environment-Variablen sind nicht nötig. Der Start als
+ein Prompt für einen GPT mit GitHub- und Netlify-Anbindung steht in `LAUNCH.md`, die Pflege in
+`HANDOVER.md`.
+
 ## Verzeichnisbaum
 
 ```

@@ -158,7 +158,9 @@ export const SITE = {
     "JING kuratiert ostasiatische Kosmetik und moderne Duftobjekte. Zwei Kollektionen, " +
     "ein Prinzip: YANG für den Tag, YIN für die Nacht.",
   locale: "de-DE",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://jing.example",
+  // Netlify sets URL to the site's main address during a build, so canonical
+  // and Open Graph tags are right on the first deploy without any configuration.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? process.env.URL ?? "https://jing.example",
   email: "service@jing.example",
   /** Placeholders. Replace before the shop is reachable in public. */
   legalEntity: {

@@ -1,0 +1,16 @@
+# JING on Netlify.
+#
+# The Next.js runtime turns the App Router build into Netlify functions and
+# static assets. Nothing here needs an environment variable: the site URL comes
+# from Netlify's own URL variable at build time (see config/site.ts), and the
+# checkout stays in mock mode until PAYMENT_PROVIDER_KEY is set on the site.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

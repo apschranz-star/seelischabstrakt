@@ -6,7 +6,8 @@ JING ist ein Shop-Frontend für eine monochrome Beauty-Eigenmarke im DACH-Raum. 
                   (später ein eigenes Repository apschranz-star/jing, siehe Teil 6)
     Demo          https://apschranz-star.github.io/seelischabstrakt/jing/
                   statisch, ohne Server, mit Hinweisband "Demonstration"
-    Später        Vercel, aus demselben Code, mit funktionierender Kasse
+    Betrieb       Netlify, aus demselben Code, mit serverseitiger Kasse.
+                  Der Start ist ein Prompt an den GPT, siehe LAUNCH.md
 
 ## Teil 1: Was wo steht
 
@@ -96,7 +97,7 @@ Demo neu bauen und veröffentlichen:
 
 Das schreibt den Ordner out. Dessen Inhalt gehört auf den Branch gh-pages des Repositories seelischabstrakt in den Unterordner jing. Der Workflow der Praxisseite lässt diesen Ordner in Ruhe.
 
-Echter Betrieb: Vercel, Add New Project, das Repository importieren, Branch jing (oder main im eigenen Repository). Next.js wird erkannt, keine Environment-Variablen nötig. Danach hat jeder Push seinen eigenen Link, und die Kasse rechnet serverseitig.
+Echter Betrieb: Netlify. Die Datei netlify.toml im Code sagt Netlify alles, was es wissen muss, Environment-Variablen braucht es keine. Der Start steht in LAUNCH.md als ein Prompt für den GPT, mit dem Weg über die Netlify-Oberfläche als Ersatz. Danach baut jeder Push auf den Branch die Seite neu, und die Kasse rechnet serverseitig.
 
 ## Teil 5: Vor dem Verkauf
 
@@ -111,4 +112,4 @@ GitHub, New repository, Name jing, Private, keine Häkchen bei README, .gitignor
     git remote set-url origin https://github.com/apschranz-star/jing.git
     git push -u origin jing:main
 
-Danach den Branch jing im alten Repository löschen und in den GPT-Instructions das neue Repository eintragen. Der Demo-Ordner auf gh-pages bleibt, bis Vercel läuft.
+Danach den Branch jing im alten Repository löschen, in den GPT-Instructions das neue Repository eintragen und in Netlify unter Site configuration, Build and deploy, Repository das neue Repository verbinden. Der Demo-Ordner auf gh-pages bleibt, bis die Netlify-Seite läuft.
