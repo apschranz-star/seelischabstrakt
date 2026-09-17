@@ -15,7 +15,7 @@ import type {
   Regulatory,
 } from "@/config/products";
 import { SITE } from "@/config/site";
-import { DURATION, EASE_RITUAL } from "@/lib/motion";
+import { panelTransition } from "@/lib/motion";
 import { useMounted } from "@/lib/use-mounted";
 import { cn } from "@/lib/utils";
 
@@ -406,11 +406,14 @@ function panelMeta(regulatory: Regulatory): PanelMeta {
 
 export function InciDrawer({ product }: { product: Product }) {
   const [open, setOpen] = useState(false);
+  // True once the body has scrolled, so the header's rule firms up. Written by
+  // the body's scroll handler, an event, never by an effect.
+  const [scrolled, setScrolled] = useState(false);
   // The portal target only exists in the browser, so nothing renders before mount.
   const mounted = useMounted();
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotion() === true;
 
   const id = useId();
   const panelId = `${id}-panel`;
@@ -418,7 +421,10 @@ export function InciDrawer({ product }: { product: Product }) {
   const descriptionId = `${id}-description`;
 
   const meta = panelMeta(product.regulatory);
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => {
+    setOpen(false);
+    setScrolled(false);
+  }, []);
 
   // Focus moves into the panel on open and back to the trigger on close.
   useEffect(() => {
@@ -491,8 +497,6 @@ export function InciDrawer({ product }: { product: Product }) {
     };
   }, [open]);
 
-  const duration = reduceMotion ? 0 : DURATION.panel;
-
   return (
     <>
       <button
@@ -536,8 +540,8 @@ export function InciDrawer({ product }: { product: Product }) {
                     className="absolute inset-0 bg-inverse-surface/45 backdrop-blur-sm"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration, ease: EASE_RITUAL }}
+                    exit={{ opacity: 0, transition: panelTransition(reduceMotion, true) }}
+                    transition={panelTransition(reduceMotion)}
                   />
 
                   <motion.div
@@ -548,27 +552,36 @@ export function InciDrawer({ product }: { product: Product }) {
                     aria-labelledby={titleId}
                     aria-describedby={descriptionId}
                     tabIndex={-1}
-                    className="relative flex h-full w-full max-w-full flex-col border-l border-line-2 bg-surface focus:outline-none sm:w-[420px]"
+                    className="relative flex h-full w-full max-w-full flex-col bg-surface focus:outline-none sm:w-[420px]"
                     initial={reduceMotion ? { opacity: 0 } : { x: "100%" }}
                     animate={reduceMotion ? { opacity: 1 } : { x: 0 }}
-                    exit={reduceMotion ? { opacity: 0 } : { x: "100%" }}
-                    transition={{ duration, ease: EASE_RITUAL }}
+                    exit={
+                      reduceMotion
+                        ? { opacity: 0, transition: panelTransition(true, true) }
+                        : { x: "100%", transition: panelTransition(false, true) }
+                    }
+                    transition={panelTransition(reduceMotion)}
                   >
-                    <div className="flex items-start gap-4 border-b border-line px-5 py-4 sm:px-6">
+                    {/* The edge draws itself down from the top while the panel arrives. */}
+                    <span
+                      aria-hidden="true"
+                      className="jing-edge absolute inset-y-0 left-0 z-10 w-px bg-line-2"
+                    />
+
+                    <div
+                      data-panel-head=""
+                      data-scrolled={scrolled ? "" : undefined}
+                      className="jing-enter flex items-start gap-4 border-b border-line bg-surface px-5 py-4 sm:px-6"
+                    >
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                          {product.code}
-                        </p>
+                        <p className="type-kicker text-ink-3">{product.code}</p>
                         <h2
                           id={titleId}
                           className="mt-1.5 font-display text-xl leading-tight text-ink"
                         >
                           {meta.title}
                         </h2>
-                        <p
-                          id={descriptionId}
-                          className="mt-1 text-[12px] leading-relaxed text-ink-3"
-                        >
+                        <p id={descriptionId} className="type-meta mt-1 text-ink-3">
                           {product.name}. {meta.description}
                         </p>
                       </div>
@@ -591,6 +604,8 @@ export function InciDrawer({ product }: { product: Product }) {
                       role="group"
                       aria-labelledby={titleId}
                       data-focus-inset=""
+                      data-panel-body=""
+                      onScroll={(event) => setScrolled(event.currentTarget.scrollTop > 4)}
                       className="flex flex-col gap-6 overflow-y-auto overscroll-contain px-5 py-6 sm:px-6"
                     >
                       <RegulatoryBody regulatory={product.regulatory} />

@@ -25,7 +25,7 @@ import {
 /** Mirrors MAX_PER_LINE in lib/store, which caps a single line at ten units. */
 const MAX_QUANTITY = 10;
 
-const SHELL = "mx-auto w-full max-w-[1240px] px-4 pb-24 pt-8 sm:px-6 sm:pt-12";
+const SHELL = "mx-auto min-h-svh w-full max-w-[1240px] px-4 pb-24 pt-8 sm:px-6 sm:pt-12";
 
 /*
  * One template for the header row and for every line, so the columns line up.

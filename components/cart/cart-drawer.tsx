@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Minus, Plus, Trash2, X } from "lucide-react";
-import { useEffect, useId, useMemo, useRef } from "react";
+import { useEffect, useId, useMemo, useRef, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 
 import { PaymentBadges } from "@/components/cart/payment-badges";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
-import { DURATION, EASE_RITUAL } from "@/lib/motion";
+import { EmptyState } from "@/components/ui/empty-state";
+import { DURATION, EASE_RITUAL, panelTransition } from "@/lib/motion";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
   cn,
@@ -39,6 +40,7 @@ export function CartDrawer() {
   const { region, hydrated } = useYinYang();
   const isCartOpen = useJingStore((state) => state.isCartOpen);
   const items = useJingStore((state) => state.items);
+  const lastAdded = useJingStore((state) => state.lastAdded);
   const setQuantity = useJingStore((state) => state.setQuantity);
   const removeItem = useJingStore((state) => state.removeItem);
   const closeCart = useJingStore((state) => state.closeCart);
@@ -154,7 +156,9 @@ export function CartDrawer() {
   // vatLabel carries the regional name of the tax, MwSt. in Germany, USt. in Austria,
   // MWST in Switzerland.
   const taxNoun = regionConfig.vatLabel.split(" ").at(-1) ?? "MwSt.";
-  const duration = reduceMotion ? 0 : DURATION.panel;
+  // The stagger index of a child, as the CSS reads it: header 0, rows from 1,
+  // capped so a long list never waits, the summary right after the last row.
+  const enterAt = (index: number) => ({ "--i": Math.min(index, 4) } as CSSProperties);
   const stepButton = cn(
     "inline-flex h-9 w-9 items-center justify-center text-ink-2",
     "transition-colors duration-300 ease-ritual hover:text-ink",
@@ -171,8 +175,8 @@ export function CartDrawer() {
             className="absolute inset-0 bg-inverse-surface/45 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration, ease: EASE_RITUAL }}
+            exit={{ opacity: 0, transition: panelTransition(reduceMotion, true) }}
+            transition={panelTransition(reduceMotion)}
           />
 
           <motion.div
@@ -181,18 +185,28 @@ export function CartDrawer() {
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className="absolute inset-y-0 right-0 flex w-full max-w-[26rem] flex-col border-l border-line-2 bg-surface focus:outline-none"
+            className="absolute inset-y-0 right-0 flex w-full max-w-[26rem] flex-col bg-surface focus:outline-none"
             initial={reduceMotion ? { opacity: 0 } : { x: "100%" }}
             animate={reduceMotion ? { opacity: 1 } : { x: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { x: "100%" }}
-            transition={{ duration, ease: EASE_RITUAL }}
+            exit={
+              reduceMotion
+                ? { opacity: 0, transition: panelTransition(true, true) }
+                : { x: "100%", transition: panelTransition(false, true) }
+            }
+            transition={panelTransition(reduceMotion)}
           >
-            <div className="flex items-start gap-4 border-b border-line px-5 py-4">
+            {/* The edge draws itself down from the top while the panel arrives. */}
+            <span aria-hidden="true" className="jing-edge absolute inset-y-0 left-0 w-px bg-line-2" />
+
+            <div
+              className="jing-enter flex items-start gap-4 border-b border-line px-5 py-4"
+              style={enterAt(0)}
+            >
               <div className="min-w-0 flex-1">
                 <h2 id={titleId} className="font-display text-xl leading-tight text-ink">
                   Warenkorb
                 </h2>
-                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">
+                <p className="type-nav mt-1 text-ink-3">
                   {estimate.itemCount === 1 ? "1 Artikel" : `${estimate.itemCount} Artikel`}
                   {" · "}
                   {regionConfig.label}
@@ -211,32 +225,40 @@ export function CartDrawer() {
             </div>
 
             {lines.length === 0 ? (
-              <div className="flex flex-1 flex-col items-start justify-center gap-5 px-5 py-14">
-                <p className="max-w-[30ch] text-sm leading-relaxed text-ink-2">
-                  Noch nichts gewählt. Der Warenkorb wartet, ohne Eile.
-                </p>
-                <Link
-                  href="/"
-                  onClick={closeCart}
-                  className={buttonClasses("outline", "md")}
-                >
-                  Zu den Kollektionen
-                </Link>
+              <div className="jing-enter flex flex-1 flex-col justify-center px-5 py-14" style={enterAt(1)}>
+                <EmptyState
+                  compact
+                  title="Noch nichts gewählt"
+                  text="Der Warenkorb wartet, ohne Eile."
+                  actions={
+                    <Link href="/" onClick={closeCart} className={buttonClasses("outline", "md")}>
+                      Zu den Kollektionen
+                    </Link>
+                  }
+                />
               </div>
             ) : (
               <>
                 <div className="flex-1 overflow-y-auto px-5">
                   <ul>
-                    {lines.map((line) => {
+                    {lines.map((line, index) => {
                       const { product, quantity } = line;
                       const basePrice = formatBasePrice(product, region);
                       const lineTotal =
                         toRegionMinorUnits(product.priceCents, region) * quantity;
+                      // The row the last add touched is keyed on the add's
+                      // stamp, so it remounts on every add and its rule turns
+                      // ink and settles back each time (see .jing-fresh).
+                      const fresh = lastAdded?.productId === product.id;
 
                       return (
                         <li
-                          key={product.id}
-                          className="flex gap-4 border-b border-line py-4 last:border-b-0"
+                          key={fresh ? `${product.id}-${lastAdded.stamp}` : product.id}
+                          className={cn(
+                            "flex gap-4 border-b border-line py-4 last:border-b-0",
+                            fresh ? "jing-fresh" : "jing-enter",
+                          )}
+                          style={fresh ? undefined : enterAt(index + 1)}
                         >
                           <div className="w-16 shrink-0">
                             <PackagingViewer product={product} variant="thumb" />
@@ -351,7 +373,10 @@ export function CartDrawer() {
                   </ul>
                 </div>
 
-                <div className="border-t border-line px-5 py-4">
+                <div
+                  className="jing-enter border-t border-line px-5 py-4"
+                  style={enterAt(lines.length + 1)}
+                >
                   <div
                     role="progressbar"
                     aria-valuemin={0}

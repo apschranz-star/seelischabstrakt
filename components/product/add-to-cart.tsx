@@ -1,11 +1,13 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Check, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/config/products";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { useJingStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -15,9 +17,35 @@ const MAX_QUANTITY = 10;
 /** How long the confirmation stays on screen, in milliseconds. */
 const CONFIRM_MS = 2400;
 
+/** The check is drawn, not shown: one stroke from the left foot to the right tip. */
+function DrawnCheck({ size, reduce }: { size: number; reduce: boolean }) {
+  return (
+    <motion.svg
+      viewBox="0 0 16 16"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      focusable="false"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <motion.path
+        d="M3 8.5 L6.5 12 L13 4.5"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: reduce ? 0 : 0.32, ease: EASE_RITUAL }}
+      />
+    </motion.svg>
+  );
+}
+
 export function AddToCart({ product, size = "lg" }: { product: Product; size?: "sm" | "lg" }) {
   const addItem = useJingStore((state) => state.addItem);
   const { hydrated } = useYinYang();
+  const reduce = useReducedMotion() === true;
 
   const [quantity, setQuantity] = useState(1);
   const [confirmed, setConfirmed] = useState(false);
@@ -50,6 +78,14 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
     "hover:text-ink disabled:cursor-not-allowed disabled:text-ink-3",
     compact ? "h-9 w-9" : "h-11 w-11",
   );
+
+  const swap = { duration: reduce ? 0 : DURATION.swap, ease: EASE_RITUAL };
+
+  const statusLine = confirmed
+    ? confirmedLine >= MAX_QUANTITY
+      ? `${product.code}: ${confirmedLine} im Warenkorb, mehr geht pro Bestellung nicht`
+      : `${product.code}: ${confirmedLine} im Warenkorb`
+    : "";
 
   return (
     <div className={cn("flex flex-col", compact ? "gap-1.5" : "gap-2.5")}>
@@ -102,19 +138,45 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
             onClick={handleAdd}
             disabled={!hydrated}
           >
-            {confirmed ? (
-              <span className="inline-flex items-center gap-2">
-                <Check size={compact ? 13 : 15} aria-hidden="true" />
-                Hinzugefügt
+            {/* Both labels share one grid cell, so the button is always as wide
+                as the longer one and never jumps while they crossfade. */}
+            <span className="grid [&>*]:col-start-1 [&>*]:row-start-1">
+              <span className="invisible inline-flex items-center gap-2 whitespace-nowrap" aria-hidden="true">
+                In den Warenkorb
               </span>
-            ) : (
-              "In den Warenkorb"
-            )}
+              <AnimatePresence initial={false} mode="wait">
+                {confirmed ? (
+                  <motion.span
+                    key="done"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={swap}
+                  >
+                    <DrawnCheck size={compact ? 13 : 15} reduce={reduce} />
+                    Hinzugefügt
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="add"
+                    className="inline-flex items-center justify-center whitespace-nowrap"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={swap}
+                  >
+                    In den Warenkorb
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </span>
           </Button>
         </div>
       </div>
 
-      {/* Always rendered so the confirmation does not push the layout around. */}
+      {/* Always rendered so the confirmation does not push the layout around.
+          Keyed on the line, so a new confirmation rises once and stays. */}
       <p
         role="status"
         aria-live="polite"
@@ -123,11 +185,9 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
           compact ? "text-[10px]" : "text-[11px]",
         )}
       >
-        {confirmed
-          ? confirmedLine >= MAX_QUANTITY
-            ? `${product.code}: ${confirmedLine} im Warenkorb, mehr geht pro Bestellung nicht`
-            : `${product.code}: ${confirmedLine} im Warenkorb`
-          : ""}
+        <span key={statusLine} className={cn("block", statusLine && "jing-rise")}>
+          {statusLine}
+        </span>
       </p>
     </div>
   );

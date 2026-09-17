@@ -392,6 +392,147 @@ header[data-scrolled] {
   }
 }
 
+/*
+  Where the micro-interactions land. Every rule here is opt in through a class
+  or a data attribute that only the scripted tree carries, so the noscript copy
+  of a panel and a page without JavaScript never start at opacity 0.
+*/
+
+/* A nav link whose ritual is the live one keeps its hairline drawn. */
+.jing-underline[data-active] {
+  background-size: 100% 1px;
+}
+
+/* The mobile menu: its links rise one after the other, 30 ms apart. */
+#mobile-nav[data-open] a {
+  animation: jing-rise var(--duration-swift) var(--ease-ritual) both;
+  animation-delay: calc(var(--i, 0) * 30ms);
+}
+
+/* A line of text arriving: four pixels of rise, nothing more. */
+.jing-rise {
+  animation: jing-rise var(--duration-swift) var(--ease-ritual) both;
+}
+
+/* A drawer's left edge, drawing down while the panel arrives. */
+.jing-edge {
+  animation: jing-draw-edge var(--duration-panel) var(--ease-ritual) 60ms both;
+}
+
+/* Header, rows and summary of a drawer follow the panel, 30 ms apart. */
+.jing-enter {
+  animation: jing-rise var(--duration-swift) var(--ease-ritual) both;
+  animation-delay: calc(80ms + var(--i, 0) * 30ms);
+}
+
+/*
+  The freshly added row. It rises at once, ahead of the staggered rows, and its
+  rule turns ink and settles back over 1200 ms. The rule is forced on, because
+  the newest row is usually the last one and would otherwise have none.
+*/
+.jing-fresh {
+  border-bottom-width: 1px;
+  animation:
+    jing-rise var(--duration-swift) var(--ease-ritual) both,
+    jing-settle 1200ms var(--ease-ritual) both;
+}
+
+/*
+  The sections of the regulatory panel, staggered by their position alone, so
+  RegulatoryBody carries no markup for it and its noscript copy is untouched.
+*/
+[data-panel-body] > section {
+  --i: 6;
+  animation: jing-rise var(--duration-swift) var(--ease-ritual) both;
+  animation-delay: calc(80ms + var(--i) * 30ms);
+}
+
+[data-panel-body] > section:nth-child(1) {
+  --i: 0;
+}
+
+[data-panel-body] > section:nth-child(2) {
+  --i: 1;
+}
+
+[data-panel-body] > section:nth-child(3) {
+  --i: 2;
+}
+
+[data-panel-body] > section:nth-child(4) {
+  --i: 3;
+}
+
+[data-panel-body] > section:nth-child(5) {
+  --i: 4;
+}
+
+[data-panel-body] > section:nth-child(6) {
+  --i: 5;
+}
+
+/* A panel header whose rule firms up once the body below it has scrolled. */
+[data-panel-head] {
+  transition: border-color var(--duration-swap) var(--ease-ritual);
+}
+
+[data-panel-head][data-scrolled] {
+  border-color: var(--jing-line-2);
+}
+
+/*
+  The thread under a field. A 2 px line of ink draws from the left on focus;
+  a rejected field draws it in seal and keeps it. The border stays the control
+  hairline, so the field's box never changes size.
+*/
+.jing-field {
+  background-image: linear-gradient(var(--jing-ink), var(--jing-ink));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition:
+    background-size var(--duration-swap) var(--ease-ritual),
+    border-color var(--duration-state) var(--ease-ritual);
+}
+
+.jing-field:focus {
+  background-size: 100% 2px;
+}
+
+.jing-field[aria-invalid="true"] {
+  background-image: linear-gradient(var(--jing-seal), var(--jing-seal));
+  background-size: 100% 2px;
+  border-color: var(--jing-seal);
+}
+
+/*
+  The checkbox. appearance-none takes the OS box away; the check is two edges
+  of a rotated square in the surface colour, drawn by ::after once checked.
+*/
+.jing-check {
+  appearance: none;
+  display: inline-grid;
+  place-items: center;
+  transition:
+    background-color var(--duration-state) var(--ease-ritual),
+    border-color var(--duration-state) var(--ease-ritual);
+}
+
+.jing-check::after {
+  content: "";
+  width: 4px;
+  height: 8px;
+  margin-top: -2px;
+  border-right: 1.5px solid var(--jing-surface);
+  border-bottom: 1.5px solid var(--jing-surface);
+  transform: rotate(45deg) scale(0);
+  transition: transform var(--duration-state) var(--ease-ritual);
+}
+
+.jing-check:checked::after {
+  transform: rotate(45deg) scale(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   body {
     transition: none;
@@ -408,8 +549,10 @@ header[data-scrolled] {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 }

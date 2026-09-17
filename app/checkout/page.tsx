@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, Loader2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button, buttonClasses } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Field, FIELD_INPUT, FIELD_LABEL } from "@/components/ui/field";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import {
   PAYMENT_METHODS,
   REGIONS,
@@ -27,7 +31,7 @@ import {
   toRegionMinorUnits,
 } from "@/lib/utils";
 
-const SHELL = "mx-auto w-full max-w-[1240px] px-4 pb-24 pt-8 sm:px-6 sm:pt-12";
+const SHELL = "mx-auto min-h-svh w-full max-w-[1240px] px-4 pb-[var(--space-section)] pt-8 sm:px-6 sm:pt-12";
 
 /**
  * Section 312j Abs. 2 BGB wants the essential characteristics, the total, the
@@ -52,10 +56,7 @@ function OrderSummary({
 }) {
   return (
             <div className="border border-line bg-surface-2 p-5 sm:p-6">
-              <h2
-                id={`zusammenfassung-${idSuffix}`}
-                className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
-              >
+              <h2 id={`zusammenfassung-${idSuffix}`} className="type-kicker text-ink-3">
                 Bestellübersicht
               </h2>
 
@@ -70,9 +71,7 @@ function OrderSummary({
                         <PackagingViewer product={product} compact />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3">
-                          {product.code}
-                        </p>
+                        <p className="type-label text-ink-3">{product.code}</p>
                         <p className="mt-0.5 font-display text-[15px] leading-tight text-ink">
                           {product.name}
                         </p>
@@ -131,9 +130,7 @@ function OrderSummary({
                 ) : null}
 
                 <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-line pt-3">
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
-                    Gesamt
-                  </dt>
+                  <dt className="type-nav text-ink">Gesamt</dt>
                   <dd className="font-mono text-[17px] tabular-nums text-ink">
                     {formatMoney(estimate.total, currency)}
                   </dd>
@@ -155,7 +152,7 @@ function OrderSummary({
 
               <Link
                 href="/cart"
-                className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 transition-colors hover:text-ink hover:underline"
+                className="type-nav jing-underline mt-4 inline-block pb-0.5 text-ink-2 transition-colors hover:text-ink"
               >
                 Warenkorb ändern
               </Link>
@@ -163,14 +160,6 @@ function OrderSummary({
   );
 }
 
-
-const FIELD_INPUT = cn(
-  "mt-1.5 w-full rounded-[2px] border border-control bg-surface px-3 py-2.5",
-  "font-sans text-[14px] text-ink placeholder:text-ink-3",
-  "transition-colors duration-300 ease-ritual hover:border-ink-2",
-  "focus-visible:border-ink",
-);
-const FIELD_LABEL = "font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3";
 
 type FieldName =
   | "firstName"
@@ -307,6 +296,7 @@ export default function CheckoutPage() {
   // announces and that vanishes on the next click.
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   const confirmationRef = useRef<HTMLHeadingElement>(null);
+  const reduce = useReducedMotion() === true;
 
   // Both helpers build a fresh object on every call, so they may never be used as
   // store selectors. Memoised here they stay stable between renders.
@@ -362,10 +352,9 @@ export default function CheckoutPage() {
   if (!hydrated) {
     return (
       <div className={SHELL} aria-busy="true">
-        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">Kasse</h1>
-        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">
-          Bestellung wird geladen
-        </p>
+        <h1 className="type-display text-ink">Kasse</h1>
+        <span aria-hidden="true" className="mt-4 block h-px w-24 bg-line-2 [animation:jing-breathe_1.4s_ease-in-out_infinite]" />
+        <p className="type-nav mt-4 text-ink-3">Bestellung wird geladen</p>
       </div>
     );
   }
@@ -376,19 +365,22 @@ export default function CheckoutPage() {
   if (lines.length === 0 && !session) {
     return (
       <div className={SHELL}>
-        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">Kasse</h1>
-        <p className="mt-6 max-w-[42ch] text-[15px] leading-relaxed text-ink-2">
-          Der Warenkorb ist leer, deshalb gibt es hier nichts zu bezahlen. Leg zuerst etwas ab,
-          danach führt der Weg zurück an diese Stelle.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/" className={buttonClasses("solid", "md")}>
-            Zu den Kollektionen
-          </Link>
-          <Link href="/cart" className={buttonClasses("outline", "md")}>
-            Warenkorb ansehen
-          </Link>
-        </div>
+        <h1 className="type-display text-ink">Kasse</h1>
+        <EmptyState
+          className="mt-10"
+          title="Nichts zu bezahlen"
+          text="Der Warenkorb ist leer, deshalb gibt es hier nichts zu bezahlen. Leg zuerst etwas ab, danach führt der Weg zurück an diese Stelle."
+          actions={
+            <>
+              <Link href="/" className={buttonClasses("solid", "md")}>
+                Zu den Kollektionen
+              </Link>
+              <Link href="/cart" className={buttonClasses("outline", "md")}>
+                Warenkorb ansehen
+              </Link>
+            </>
+          }
+        />
       </div>
     );
   }
@@ -431,7 +423,13 @@ export default function CheckoutPage() {
       const target = form.querySelector<HTMLElement>(
         first === "agb" ? "#feld-agb" : first === "method" ? "[name='zahlungsart']" : `[name='${first}']`,
       );
-      target?.focus();
+      // Under the sticky header a focused field can sit hidden behind it, so it
+      // is centred first. The scroll is instant where motion is not wanted.
+      target?.scrollIntoView({
+        block: "center",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      });
+      target?.focus({ preventScroll: true });
       return;
     }
 
@@ -519,9 +517,9 @@ export default function CheckoutPage() {
   return (
     <div className={SHELL}>
       <header>
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">Schritt 2</p>
-        <h1 className="mt-3 font-display text-4xl leading-[1.05] text-ink sm:text-5xl">Kasse</h1>
-        <p className="mt-3 max-w-[54ch] text-[14px] leading-relaxed text-ink-2">
+        <p className="type-kicker text-ink-3">Schritt 2</p>
+        <h1 className="type-display mt-3 text-ink">Kasse</h1>
+        <p className="type-body mt-3 max-w-[54ch] text-ink-2">
           Diese Kasse ist eine Demonstration. Es wird keine Zahlung ausgelöst und keine Adresse
           gespeichert, die Bestellung legt nur eine Mock-Session an.
         </p>
@@ -536,7 +534,7 @@ export default function CheckoutPage() {
               aria-live="polite"
               className="border border-line bg-surface-2 p-5 sm:p-7"
             >
-              <p className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+              <p className="type-kicker inline-flex items-center gap-2 text-ink-3">
                 <Check size={14} aria-hidden="true" />
                 Session angelegt
               </p>
@@ -548,7 +546,7 @@ export default function CheckoutPage() {
               >
                 Danke, die Bestellung steht bereit.
               </h2>
-              <p className="mt-3 max-w-[50ch] text-[14px] leading-relaxed text-ink-2">
+              <p className="type-body mt-3 max-w-[50ch] text-ink-2">
                 Die Zahlungsstelle hat eine Mock-Session erzeugt. In einem echten Shop würde die
                 Weiterleitung jetzt zum Zahlungsanbieter führen, hier bleibt alles an Ort und
                 Stelle. Es wurde nichts abgebucht.
@@ -601,13 +599,10 @@ export default function CheckoutPage() {
           ) : (
             <form onSubmit={handleSubmit} noValidate>
               <section aria-labelledby="adresse-titel">
-                <h2
-                  id="adresse-titel"
-                  className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
-                >
+                <h2 id="adresse-titel" className="type-kicker text-ink-3">
                   Lieferadresse
                 </h2>
-                <p className="mt-2 text-[12px] leading-snug text-ink-3">
+                <p className="type-meta mt-2 text-ink-3">
                   Pflichtfelder sind mit einem Stern
                   <span aria-hidden="true"> *</span> markiert.
                 </p>
@@ -622,43 +617,38 @@ export default function CheckoutPage() {
                     const errorId = fieldError ? `${id}-fehler` : undefined;
 
                     return (
-                      <div key={field.name} className={field.wide ? "sm:col-span-2" : undefined}>
-                        <label htmlFor={id} className={FIELD_LABEL}>
-                          {field.label}
-                          {field.required ? (
-                            <>
-                              <span aria-hidden="true"> *</span>
-                              <span className="sr-only">, Pflichtfeld</span>
-                            </>
-                          ) : null}
-                        </label>
-                        <input
-                          id={id}
-                          name={field.name}
-                          type={field.type}
-                          autoComplete={field.autoComplete}
-                          required={field.required}
-                          aria-required={field.required}
-                          aria-describedby={[hintId, errorId].filter(Boolean).join(" ") || undefined}
-                          aria-invalid={fieldError ? true : undefined}
-                          inputMode={isZip ? "numeric" : undefined}
-                          className={cn(FIELD_INPUT, fieldError && "border-seal")}
-                        />
-                        {hint ? (
-                          <p id={hintId} className="mt-1 text-[11px] leading-snug text-ink-3">
-                            {hint}
-                          </p>
-                        ) : null}
-                        {fieldError ? (
-                          <p id={errorId} className="mt-1 text-[11px] leading-snug text-seal">
-                            {fieldError}
-                          </p>
-                        ) : null}
-                      </div>
+                      <Field
+                        key={field.name}
+                        id={id}
+                        className={field.wide ? "sm:col-span-2" : undefined}
+                        label={
+                          <>
+                            {field.label}
+                            {field.required ? (
+                              <>
+                                <span aria-hidden="true"> *</span>
+                                <span className="sr-only">, Pflichtfeld</span>
+                              </>
+                            ) : null}
+                          </>
+                        }
+                        name={field.name}
+                        type={field.type}
+                        autoComplete={field.autoComplete}
+                        required={field.required}
+                        aria-required={field.required}
+                        aria-describedby={[hintId, errorId].filter(Boolean).join(" ") || undefined}
+                        aria-invalid={fieldError ? true : undefined}
+                        inputMode={isZip ? "numeric" : undefined}
+                        hint={hint}
+                        hintId={hintId}
+                        error={fieldError}
+                        errorId={errorId}
+                      />
                     );
                   })}
 
-                  <div className="sm:col-span-2">
+                  <div className="group scroll-mt-28 sm:col-span-2">
                     <label htmlFor="feld-land" className={FIELD_LABEL}>
                       Land
                       <span aria-hidden="true"> *</span>
@@ -688,18 +678,15 @@ export default function CheckoutPage() {
               </section>
 
               <section aria-labelledby="zahlung-titel" className="mt-10 border-t border-line pt-8">
-                <h2
-                  id="zahlung-titel"
-                  className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
-                >
+                <h2 id="zahlung-titel" className="type-kicker text-ink-3">
                   Zahlungsart
                 </h2>
-                <p className="mt-2 text-[12px] leading-snug text-ink-3">
+                <p className="type-meta mt-2 text-ink-3">
                   Angeboten werden nur Verfahren, die für {regionConfig.label} freigeschaltet sind.
                 </p>
 
                 {droppedMethod ? (
-                  <p role="status" className="mt-2 max-w-[62ch] text-[12px] leading-snug text-seal">
+                  <p role="status" className="type-meta mt-2 max-w-[62ch] text-seal">
                     {PAYMENT_METHODS[droppedMethod].label} wird für {regionConfig.label} nicht
                     angeboten. Wir haben {selected ? PAYMENT_METHODS[selected].label : "keine Zahlungsart"}{" "}
                     vorausgewählt, du kannst sie ändern.
@@ -707,7 +694,7 @@ export default function CheckoutPage() {
                 ) : null}
 
                 {fieldErrors.method ? (
-                  <p className="mt-2 text-[12px] leading-snug text-seal">{fieldErrors.method}</p>
+                  <p className="jing-rise type-meta mt-2 text-seal">{fieldErrors.method}</p>
                 ) : null}
 
                 <fieldset className="mt-5">
@@ -719,8 +706,9 @@ export default function CheckoutPage() {
                         <label
                           key={entry.id}
                           className={cn(
-                            "flex cursor-pointer flex-col gap-1 rounded-[2px] border px-4 py-3.5 transition-colors duration-300 ease-ritual",
-                            "jing-focus-within",
+                            "flex cursor-pointer flex-col gap-1 rounded-[2px] border px-4 py-3.5",
+                            "transition-colors duration-[var(--duration-swap)] ease-ritual",
+                            "jing-focus-within scroll-mt-28",
                             active
                               ? "border-ink bg-surface-2"
                               : "border-control hover:border-ink-2 hover:bg-surface-2",
@@ -739,28 +727,29 @@ export default function CheckoutPage() {
                               aria-hidden="true"
                               className={cn(
                                 "inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border",
+                                "transition-colors duration-[var(--duration-state)] ease-ritual",
                                 active ? "border-ink" : "border-control",
                               )}
                             >
+                              {/* The dot grows from nothing; its colour never changes. */}
                               <span
                                 className={cn(
-                                  "h-1.5 w-1.5 rounded-full",
-                                  active ? "bg-ink" : "bg-transparent",
+                                  "h-1.5 w-1.5 rounded-full bg-ink",
+                                  "transition-transform duration-[var(--duration-state)] ease-ritual",
+                                  active ? "scale-100" : "scale-0",
                                 )}
                               />
                             </span>
                             <span
                               className={cn(
-                                "font-mono text-[11px] uppercase tracking-[0.16em]",
+                                "type-nav transition-colors duration-[var(--duration-state)] ease-ritual",
                                 active ? "text-ink" : "text-ink-2",
                               )}
                             >
                               {entry.label}
                             </span>
                           </span>
-                          <span className="pl-6 text-[12px] leading-snug text-ink-3">
-                            {entry.note}
-                          </span>
+                          <span className="type-meta pl-6 text-ink-3">{entry.note}</span>
                         </label>
                       );
                     })}
@@ -780,19 +769,16 @@ export default function CheckoutPage() {
               </div>
 
               <section aria-labelledby="abschluss-titel" className="mt-10 border-t border-line pt-8">
-                <h2
-                  id="abschluss-titel"
-                  className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
-                >
+                <h2 id="abschluss-titel" className="type-kicker text-ink-3">
                   Bestellung abschließen
                 </h2>
 
-                <p className="mt-4 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
+                <p className="type-meta mt-4 max-w-[62ch] text-ink-3">
                   Du kannst diese Bestellung innerhalb von {WITHDRAWAL_DAYS} Tagen ohne Angabe von
                   Gründen widerrufen. Ausgenommen sind versiegelte kosmetische Mittel, deren Siegel
                   du nach der Lieferung entfernt hast. Alle Einzelheiten und das
                   Muster-Widerrufsformular stehen in der{" "}
-                  <Link href="/legal/widerruf" className="text-ink underline underline-offset-4">
+                  <Link href="/legal/widerruf" className="jing-underline text-ink">
                     Widerrufsbelehrung
                   </Link>
                   .
@@ -800,7 +786,7 @@ export default function CheckoutPage() {
 
                 <label
                   htmlFor="feld-agb"
-                  className="mt-4 flex max-w-[62ch] cursor-pointer items-start gap-3"
+                  className="mt-4 flex max-w-[62ch] scroll-mt-28 cursor-pointer items-start gap-3"
                 >
                   <input
                     id="feld-agb"
@@ -812,11 +798,15 @@ export default function CheckoutPage() {
                     aria-required="true"
                     aria-invalid={fieldErrors.agb ? true : undefined}
                     aria-describedby={fieldErrors.agb ? "feld-agb-fehler" : undefined}
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-ink"
+                    className={cn(
+                      "jing-check mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded-[2px] border border-control bg-surface",
+                      "checked:border-ink checked:bg-ink",
+                      fieldErrors.agb && "border-seal",
+                    )}
                   />
-                  <span className="text-[12px] leading-relaxed text-ink-2">
+                  <span className="type-meta text-ink-2">
                     Ich habe die{" "}
-                    <Link href="/legal/agb" className="text-ink underline underline-offset-4">
+                    <Link href="/legal/agb" className="jing-underline text-ink">
                       AGB
                     </Link>{" "}
                     gelesen und stimme ihnen zu.
@@ -825,20 +815,20 @@ export default function CheckoutPage() {
                 </label>
 
                 {fieldErrors.agb ? (
-                  <p id="feld-agb-fehler" className="mt-1.5 text-[12px] leading-snug text-seal">
+                  <p id="feld-agb-fehler" className="jing-rise type-meta mt-1.5 text-seal">
                     {fieldErrors.agb}
                   </p>
                 ) : null}
 
-                <p className="mt-3 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
+                <p className="type-meta mt-3 max-w-[62ch] text-ink-3">
                   Wie wir deine Daten für die Bestellung verarbeiten, steht in der{" "}
-                  <Link href="/legal/datenschutz" className="text-ink underline underline-offset-4">
+                  <Link href="/legal/datenschutz" className="jing-underline text-ink">
                     Datenschutzerklärung
                   </Link>
                   . Grundlage ist die Vertragserfüllung, eine Einwilligung brauchen wir dafür nicht.
                 </p>
 
-                <p className="mt-4 max-w-[62ch] text-[12px] leading-relaxed text-ink-2">
+                <p className="type-meta mt-4 max-w-[62ch] text-ink-2">
                   Mit dem Absenden gibst du eine verbindliche Bestellung ab und gehst eine
                   Zahlungsverpflichtung über {formatMoney(estimate.total, currency)} ein.
                 </p>
@@ -851,27 +841,55 @@ export default function CheckoutPage() {
                     fullWidth
                     disabled={pending || !selected || lines.length === 0}
                   >
-                    {pending ? (
-                      <span className="inline-flex items-center gap-2">
-                        <Loader2 size={14} aria-hidden="true" className="animate-spin" />
-                        Wird übermittelt
+                    {/* Both labels share one grid cell, so the button keeps
+                        the width of the longer one while they crossfade. */}
+                    <span className="grid [&>*]:col-start-1 [&>*]:row-start-1">
+                      <span className="invisible whitespace-nowrap" aria-hidden="true">
+                        Zahlungspflichtig bestellen
                       </span>
-                    ) : (
-                      "Zahlungspflichtig bestellen"
-                    )}
+                      <AnimatePresence initial={false} mode="wait">
+                        {pending ? (
+                          <motion.span
+                            key="pending"
+                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: reduce ? 0 : DURATION.swap, ease: EASE_RITUAL }}
+                          >
+                            <Loader2 size={14} aria-hidden="true" className="animate-spin" />
+                            Wird übermittelt
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            key="order"
+                            className="inline-flex items-center justify-center whitespace-nowrap"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: reduce ? 0 : DURATION.swap, ease: EASE_RITUAL }}
+                          >
+                            Zahlungspflichtig bestellen
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </span>
                   </Button>
                 </div>
 
-                <p role="status" aria-live="polite" className="mt-2 min-h-4 text-[12px] text-ink-3">
+                <p role="status" aria-live="polite" className="type-meta mt-2 min-h-4 text-ink-3">
                   {pending ? "Die Bestellung wird an die Zahlungsstelle übermittelt." : ""}
                 </p>
 
                 <p
                   role="alert"
                   aria-live="assertive"
-                  className="mt-1 min-h-4 max-w-[62ch] text-[12px] leading-snug text-seal"
+                  className="type-meta mt-1 min-h-4 max-w-[62ch] text-seal"
                 >
-                  {error ?? ""}
+                  {/* Keyed on the message, so each new message rises once. */}
+                  <span key={error ?? ""} className={cn("block", error && "jing-rise")}>
+                    {error ?? ""}
+                  </span>
                 </p>
               </section>
             </form>

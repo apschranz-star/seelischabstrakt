@@ -29,6 +29,14 @@ interface JingState {
   hydrated: boolean;
   /** True once the visitor changed the mode in this visit. Not persisted. */
   modeSwitched: boolean;
+  /**
+   * The line the last addItem touched, with a stamp that grows by one per add.
+   * The cart drawer keys the freshly added row on it so the row's rule turns
+   * ink and settles back on every add, not only on the first. A counter, never
+   * Date.now, so nothing in render depends on the clock. Not persisted.
+   */
+  lastAdded: { productId: string; stamp: number } | null;
+  addStamp: number;
 
   setMode: (mode: Mode) => void;
   toggleMode: () => void;
@@ -61,6 +69,8 @@ export const useJingStore = create<JingState>()(
       isCartOpen: false,
       hydrated: false,
       modeSwitched: false,
+      lastAdded: null,
+      addStamp: 0,
 
       // A mode change made in this visit is remembered, because the grid that
       // appears afterwards must not play the scroll-in choreography: the
@@ -74,10 +84,12 @@ export const useJingStore = create<JingState>()(
       addItem: (productId, quantity = 1) =>
         set((state) => {
           const existing = state.items.find((item) => item.productId === productId);
+          const stamp = state.addStamp + 1;
+          const mark = { lastAdded: { productId, stamp }, addStamp: stamp, isCartOpen: true };
           if (!existing) {
             return {
               items: [...state.items, { productId, quantity: Math.min(quantity, MAX_PER_LINE) }],
-              isCartOpen: true,
+              ...mark,
             };
           }
           return {
@@ -86,7 +98,7 @@ export const useJingStore = create<JingState>()(
                 ? { ...item, quantity: Math.min(item.quantity + quantity, MAX_PER_LINE) }
                 : item,
             ),
-            isCartOpen: true,
+            ...mark,
           };
         }),
 
