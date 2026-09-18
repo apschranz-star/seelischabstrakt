@@ -241,7 +241,7 @@ export function CartDrawer() {
                   text={t({ de: "Der Warenkorb wartet, ohne Eile.", en: "The cart is waiting, in no hurry." })}
                   actions={
                     <Link href="/" onClick={closeCart} className={buttonClasses("outline", "md")}>
-                      {t({ de: "Zu den Kollektionen", en: "To the collections" })}
+                      {t({ de: "Zur Kollektion", en: "To the collection" })}
                     </Link>
                   }
                 />

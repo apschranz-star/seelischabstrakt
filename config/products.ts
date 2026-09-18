@@ -148,7 +148,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yin-01",
     slug: "nocturne-ambient-diffuser",
-    code: "YIN 01",
+    code: "JING 06",
     name: "Nocturne Ambient Scent Diffuser",
     collection: "yin",
     category: "Duftarchitektur",
@@ -198,7 +198,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yin-02",
     slug: "kuro-night-recovery-oil",
-    code: "YIN 02",
+    code: "JING 07",
     name: "Kuro Botanical Night Recovery Oil",
     collection: "yin",
     category: "Nachtpflege",
@@ -230,7 +230,7 @@ export const PRODUCTS: Product[] = [
       ],
       allergens: ["Linalool", "Limonene"],
       pao: "12M",
-      cpnpReference: "CPNP-DEMO-YIN02",
+      cpnpReference: "CPNP-DEMO-07",
       warnings: [
         "Nur zur äusseren Anwendung.",
         "Kontakt mit den Augen vermeiden.",
@@ -260,7 +260,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yin-03",
     slug: "obsidian-gua-sha-set",
-    code: "YIN 03",
+    code: "JING 08",
     name: "Obsidian Gua Sha und Ritualöl",
     collection: "yin",
     category: "Ritualwerkzeug",
@@ -294,7 +294,7 @@ export const PRODUCTS: Product[] = [
         ],
         allergens: [],
         pao: "12M",
-        cpnpReference: "CPNP-DEMO-YIN03-OEL",
+        cpnpReference: "CPNP-DEMO-08-OEL",
         warnings: [
           "Nur zur äusseren Anwendung.",
           "Kontakt mit den Augen vermeiden.",
@@ -331,16 +331,16 @@ export const PRODUCTS: Product[] = [
   {
     id: "yin-05",
     slug: "daily-ritual-inhaler-night",
-    code: "YIN 05",
-    name: "Daily Ritual Inhaler, Night",
+    code: "JING 10",
+    name: "Daily Ritual Inhaler, Black",
     collection: "yin",
     category: "Atem",
-    tagline: "Der Nacht-Inhalator in Schwarz, Lavendel und Zeder, mit Balsam",
+    tagline: "Der Inhalator in Schwarz, Lavendel und Zeder, mit Balsam",
     description:
       "Derselbe Stick in Schwarz, für den Abend gestimmt. Oben der Inhalator mit wenig Menthol, " +
       "dafür Lavendel, Zeder und Vetiver, ein langsamer Zug, der den Tag zurücknimmt. Unten unter " +
-      "der Kappe ein Balsam für Schläfen und Nacken. Das Gegenstück für den Morgen ist der weisse " +
-      "Stick aus Yang.",
+      "der Kappe ein Balsam für Schläfen und Nacken. Für den Morgen gibt es denselben Stick in " +
+      "Weiss, mit Menthol statt Lavendel.",
     ritual: "Vor dem Schlafen eine Hälfte ans Nasenloch, drei ruhige Züge je Seite. Den Balsam an Schläfen und Nacken tupfen.",
     priceCents: 1800,
     netQuantity: null,
@@ -393,7 +393,7 @@ export const PRODUCTS: Product[] = [
         ],
         allergens: ["Linalool", "Limonene", "Geraniol"],
         pao: "12M",
-        cpnpReference: "CPNP-DEMO-YIN05-BALSAM",
+        cpnpReference: "CPNP-DEMO-10-BALSAM",
         warnings: [
           "Nur äusserlich, dünn auf Schläfen oder Nacken.",
           "Nicht auf Schleimhäute, nicht in die Augen, nicht auf verletzte Haut.",
@@ -405,12 +405,12 @@ export const PRODUCTS: Product[] = [
     translations: {
       en: {
         category: "Breath",
-        tagline: "The night inhaler in black, lavender and cedar, with balm",
+        tagline: "The inhaler in black, lavender and cedar, with balm",
         description:
           "The same stick in black, tuned for the evening. At the top, the inhaler with little " +
           "menthol and instead lavender, cedar and vetiver, a slow breath that takes back the day. " +
-          "At the bottom, under the cap, a balm for the temples and neck. Its counterpart for the " +
-          "morning is the white stick from Yang.",
+          "At the bottom, under the cap, a balm for the temples and neck. For the morning there is " +
+          "the same stick in white, with menthol instead of lavender.",
         ritual: "Before sleep, hold one half to the nostril, three calm breaths on each side. Dab the balm on the temples and neck.",
         unitsLabel: "1 stick, inhaler 2 g, balm 4 g",
         origin: "Made in Thailand",
@@ -441,7 +441,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yin-04",
     slug: "smoked-hinoki-candle",
-    code: "YIN 04",
+    code: "JING 09",
     name: "Smoked Hinoki Candle Ritual",
     collection: "yin",
     category: "Duftkerze",
@@ -497,7 +497,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yang-01",
     slug: "sculpted-matte-lip-clay",
-    code: "YANG 01",
+    code: "JING 01",
     name: "Sculpted Matte Lip Clay",
     collection: "yang",
     category: "Lippen",
@@ -528,7 +528,7 @@ export const PRODUCTS: Product[] = [
       ],
       allergens: [],
       pao: "12M",
-      cpnpReference: "CPNP-DEMO-YANG01",
+      cpnpReference: "CPNP-DEMO-01",
       warnings: [
         "Bei Kontakt mit den Augen gründlich mit Wasser ausspülen.",
         "Nicht anwenden bei aufgesprungenen oder verletzten Lippen.",
@@ -557,7 +557,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yang-02",
     slug: "monochrome-glass-eye-glaze",
-    code: "YANG 02",
+    code: "JING 02",
     name: "Monochrome Glass Eye Glaze",
     collection: "yang",
     category: "Augen",
@@ -587,7 +587,7 @@ export const PRODUCTS: Product[] = [
       ],
       allergens: [],
       pao: "6M",
-      cpnpReference: "CPNP-DEMO-YANG02",
+      cpnpReference: "CPNP-DEMO-02",
       warnings: [
         "Nicht im Bereich der Wasserlinie anwenden.",
         "Bei Kontaktlinsen vorsichtig auftragen, bei Reizung absetzen.",
@@ -613,7 +613,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yang-03",
     slug: "silk-cushion-foundation-compact",
-    code: "YANG 03",
+    code: "JING 03",
     name: "Silk Cushion Foundation Compact",
     collection: "yang",
     category: "Teint",
@@ -646,7 +646,7 @@ export const PRODUCTS: Product[] = [
       ],
       allergens: [],
       pao: "12M",
-      cpnpReference: "CPNP-DEMO-YANG03",
+      cpnpReference: "CPNP-DEMO-03",
       warnings: [
         "Kissen nicht mit nassen Fingern berühren.",
       ],
@@ -671,16 +671,16 @@ export const PRODUCTS: Product[] = [
   {
     id: "yang-05",
     slug: "daily-ritual-inhaler-day",
-    code: "YANG 05",
-    name: "Daily Ritual Inhaler, Day",
+    code: "JING 05",
+    name: "Daily Ritual Inhaler, White",
     collection: "yang",
     category: "Atem",
-    tagline: "Der Tag-Inhalator in Weiss, Menthol und Hinoki, mit Balsam",
+    tagline: "Der Inhalator in Weiss, Menthol und Hinoki, mit Balsam",
     description:
-      "Ein Stick in zwei Hälften, wie die Kräuterinhalatoren aus Thailand, in Weiss für den Tag. " +
-      "Oben der Inhalator mit Menthol, Kampfer, Borneol und Hinoki, ein Zug durch die Nase, kalt " +
-      "und klar. Unten unter der Kappe ein fester Balsam für Schläfen und Nacken. Das Gegenstück " +
-      "für den Abend ist der schwarze Stick aus Yin.",
+      "Ein Stick in zwei Hälften, wie die Kräuterinhalatoren aus Thailand, in Weiss. Oben der " +
+      "Inhalator mit Menthol, Kampfer, Borneol und Hinoki, ein Zug durch die Nase, kalt und klar. " +
+      "Unten unter der Kappe ein fester Balsam für Schläfen und Nacken. Denselben Stick gibt es " +
+      "auch in Schwarz, mit Lavendel statt Menthol.",
     ritual: "Eine Hälfte ans Nasenloch, ruhig einatmen, drei Züge je Seite. Den Balsam mit der Fingerspitze an die Schläfen tupfen.",
     priceCents: 1800,
     netQuantity: null,
@@ -735,7 +735,7 @@ export const PRODUCTS: Product[] = [
         ],
         allergens: ["Limonene", "Eugenol"],
         pao: "12M",
-        cpnpReference: "CPNP-DEMO-YANG05-BALSAM",
+        cpnpReference: "CPNP-DEMO-05-BALSAM",
         warnings: [
           "Nur äusserlich, dünn auf Schläfen oder Nacken.",
           "Nicht auf Schleimhäute, nicht in die Augen, nicht auf verletzte Haut.",
@@ -747,12 +747,12 @@ export const PRODUCTS: Product[] = [
     translations: {
       en: {
         category: "Breath",
-        tagline: "The day inhaler in white, menthol and hinoki, with balm",
+        tagline: "The inhaler in white, menthol and hinoki, with balm",
         description:
-          "A stick in two halves, like the herbal inhalers from Thailand, in white for the day. At " +
-          "the top, the inhaler with menthol, camphor, borneol and hinoki, one breath through the " +
-          "nose, cold and clear. At the bottom, under the cap, a solid balm for the temples and " +
-          "neck. Its counterpart for the evening is the black stick from Yin.",
+          "A stick in two halves, like the herbal inhalers from Thailand, in white. At the top, " +
+          "the inhaler with menthol, camphor, borneol and hinoki, one breath through the nose, " +
+          "cold and clear. At the bottom, under the cap, a solid balm for the temples and neck. " +
+          "The same stick also comes in black, with lavender instead of menthol.",
         ritual: "Hold one half to the nostril, breathe in calmly, three breaths on each side. Dab the balm onto the temples with a fingertip.",
         unitsLabel: "1 stick, inhaler 2 g, balm 4 g",
         origin: "Made in Thailand",
@@ -783,7 +783,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "yang-04",
     slug: "dual-phase-hydration-essence",
-    code: "YANG 04",
+    code: "JING 04",
     name: "Dual-Phase Hydration Essence",
     collection: "yang",
     category: "Pflege",
@@ -815,7 +815,7 @@ export const PRODUCTS: Product[] = [
       ],
       allergens: [],
       pao: "6M",
-      cpnpReference: "CPNP-DEMO-YANG04",
+      cpnpReference: "CPNP-DEMO-04",
       warnings: [
         "Vor jedem Gebrauch kräftig schütteln.",
         "Kühl und vor direkter Sonne geschützt lagern.",

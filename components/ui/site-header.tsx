@@ -26,17 +26,25 @@ const REGION_SELECT = cn(
   "transition-colors duration-[var(--duration-state)] ease-ritual hover:border-ink",
 );
 
+/*
+ * The menu names no ritual.
+ *
+ * It used to carry Yang and Yin side by side, which put both times of day on the
+ * screen at once and made them look like two places to go. They are not two
+ * places: the shop is in one of them, and the switch beside this menu is the way
+ * from one to the other. What is left here are the pages that exist regardless
+ * of the hour.
+ */
 const NAV = [
-  { href: "/#yang", label: { de: "Yang", en: "Yang" }, mode: "yang" },
-  { href: "/#yin", label: { de: "Yin", en: "Yin" }, mode: "yin" },
-  { href: "/cart", label: { de: "Warenkorb", en: "Cart" }, mode: null },
+  { href: "/", label: { de: "Start", en: "Home" } },
+  { href: "/cart", label: { de: "Warenkorb", en: "Cart" } },
 ] as const;
 
 /** The link's hairline: drawn on hover and focus, kept while the ritual is live. */
 const NAV_LINK = "type-nav jing-underline pb-0.5 text-ink-2 transition-colors hover:text-ink";
 
 export function SiteHeader() {
-  const { mode, region, setRegion, hydrated } = useYinYang();
+  const { region, setRegion, hydrated } = useYinYang();
   const lang = useLang();
   const setLang = useJingStore((state) => state.setLang);
   const t = useT();
@@ -91,15 +99,9 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
-  /**
-   * aria-current marks the page the visitor is on. The two ritual links carry
-   * data-active instead once the live ritual is known: before rehydration the
-   * attribute is absent, exactly as the server rendered it, so the first client
-   * render never disagrees with the markup.
-   */
+  /** aria-current marks the page the visitor is on. */
   const linkState = (item: (typeof NAV)[number]) => ({
-    "aria-current": item.mode === null && pathname === item.href ? ("page" as const) : undefined,
-    "data-active": hydrated && item.mode !== null && item.mode === mode ? "" : undefined,
+    "aria-current": pathname === item.href ? ("page" as const) : undefined,
   });
 
   return (

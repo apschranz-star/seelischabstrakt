@@ -174,9 +174,12 @@ export const CHF_PER_EUR = 0.94;
 export const SITE = {
   name: "JING",
   claim: "Duality in Daily Rituals",
+  // Der Satz nennt kein Ritual beim Namen. Er steht im Tab, in einer geteilten
+  // Vorschau und im Suchergebnis, also an Stellen, an denen niemand umschalten
+  // kann; beide Namen nebeneinander waeren dort dauerhaft zu sehen.
   description:
     "JING kuratiert ostasiatische Kosmetik und moderne Duftobjekte. Zwei Kollektionen, " +
-    "ein Prinzip: YANG für den Tag, YIN für die Nacht.",
+    "ein Prinzip: eine für jede Tageszeit, und der Shop steht immer in einer davon.",
   locale: "de-DE",
   // Netlify sets URL to the site's main address during a build, so canonical
   // and Open Graph tags are right on the first deploy without any configuration.

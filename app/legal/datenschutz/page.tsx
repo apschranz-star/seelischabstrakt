@@ -54,7 +54,7 @@ export default function DatenschutzPage() {
         </p>
         <p>
           Unter dem Schlüssel <code className="font-mono text-[13px]">jing-store</code> stehen der
-          Warenkorb, das gewählte Lieferland, die gewählte Ansicht Yin oder Yang und die gewählte
+          Warenkorb, das gewählte Lieferland, die gewählte Tageszeit und die gewählte
           Sprache Deutsch oder Englisch. Damit findest du deinen Warenkorb und deine Einstellungen
           beim nächsten Aufruf wieder.
         </p>

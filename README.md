@@ -55,7 +55,7 @@ app/
   legal/impressum/page.tsx   Impressum
   legal/agb/page.tsx         Allgemeine Geschäftsbedingungen
   legal/widerruf/page.tsx    Widerrufsbelehrung mit Muster-Widerrufsformular
-  api/products/route.ts      Katalog als JSON, optional nach Kollektion gefiltert
+  api/products/route.ts      Katalog als JSON, eine Kollektion je Anfrage. Der Parameter collection ist Pflicht: eine Antwort mit beiden Ritualen wäre die einzige Stelle, an der der Shop beide zugleich zeigt
   api/checkout/route.ts      Mock-Zahlungssitzung, validiert streng, rechnet serverseitig, bucht nichts ab
 
 components/home/

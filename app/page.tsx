@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -215,8 +214,6 @@ export default function HomePage() {
   }, [hydrated, setMode]);
 
   const regionLabel = lang === "en" ? activeRegion.labelEn : activeRegion.label;
-  const otherMode: Mode = activeMode === "yang" ? "yin" : "yang";
-  const otherCopy = { titleText: t(RITUAL[otherMode].title) };
   const facts = [
     {
       label: t({ de: "Versand", en: "Shipping" }),
@@ -243,7 +240,7 @@ export default function HomePage() {
 
   return (
     <>
-      <RitualHero activeMode={activeMode} onSelect={setMode} />
+      <RitualHero activeMode={activeMode} />
 
       <section
         aria-label={t({
@@ -296,34 +293,12 @@ export default function HomePage() {
       </div>
 
       {/*
-        Without JavaScript there is no switch, so the other half would have no
-        link anywhere on the page. These go straight to the product pages, which
-        are static. With JavaScript the browser ignores the block.
+        There used to be a noscript block here listing the pieces of the other
+        ritual, so a browser without scripting had a way to them at all. It is
+        gone: it put both collections into the same document, which is the one
+        thing this shop does not do. Without scripting the shop is the ritual the
+        markup carries, and that is the whole of it.
       */}
-      <noscript>
-        <section
-          aria-label={otherCopy.titleText}
-          className="border-b border-line py-10"
-        >
-          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
-              {otherCopy.titleText}
-            </p>
-            <ul role="list" className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-              {getProductsByCollection(otherMode).map((product) => (
-                <li key={product.id}>
-                  <Link
-                    href={`/products/${product.slug}`}
-                    className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-2 underline underline-offset-4 hover:text-ink"
-                  >
-                    {product.code}, {product.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      </noscript>
 
       {/* Stays inside the active palette. An inverted band read as a white block
           slammed into the night view; the section now sits on surface-2 in both. */}
@@ -342,45 +317,60 @@ export default function HomePage() {
               id="these-titel"
               className="mt-5 max-w-[22ch] font-display text-3xl leading-tight tracking-[0.04em] sm:text-5xl"
             >
-              {t({ de: "Zwei Hälften, ein Regal", en: "Two halves, one shelf" })}
+              {t({ de: "Ein Regal, das der Stunde folgt", en: "One shelf that follows the hour" })}
             </h2>
           </Reveal>
 
           <div className="mt-12 grid gap-8 border-t border-line pt-10 md:grid-cols-3">
+            {/* Der Absatz spricht nur von der Stunde, in der der Shop steht.
+                Vorher stellte er Morgen und Abend als Paar gegeneinander, und
+                damit standen beide Tageszeiten in einem Satz. */}
             <Reveal from="left" delay={0}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
-              {t({
-                de:
-                  "Der Tag verlangt etwas anderes als die Nacht. Am Morgen zählt, was Struktur gibt und " +
-                  "bis zum letzten Termin hält. Am Abend zählt, was zurücknimmt und der Haut die Arbeit " +
-                  "überlässt.",
-                en:
-                  "The day asks for something other than the night. In the morning, what counts is " +
-                  "what gives structure and holds until the last appointment. In the evening, what " +
-                  "counts is what takes back and leaves the work to the skin.",
-              })}
+              {t(
+                activeMode === "yang"
+                  ? {
+                      de:
+                        "Jede Stunde verlangt etwas anderes. Am Morgen zählt, was Struktur gibt, was " +
+                        "sich nicht verschiebt und was bis zum letzten Termin hält.",
+                      en:
+                        "Every hour asks for something different. In the morning, what counts is what " +
+                        "gives structure, what does not move and what holds until the last appointment.",
+                    }
+                  : {
+                      de:
+                        "Jede Stunde verlangt etwas anderes. Am Abend zählt, was zurücknimmt, was den " +
+                        "Raum vorbereitet und was der Haut die Arbeit überlässt.",
+                      en:
+                        "Every hour asks for something different. In the evening, what counts is what " +
+                        "takes back, what prepares the room and what leaves the work to the skin.",
+                    },
+              )}
             </p></Reveal>
+            {/* Der Satz nennt die Stunden, in denen der Shop gerade steht, und
+                nicht die der anderen Tageszeit. Vorher standen beide Rituale mit
+                Namen und Uhrzeit in einem Satz. */}
             <Reveal from="up" delay={STAGGER}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               {t({
                 de:
-                  "Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang " +
-                  `gehört zu den Stunden von ${RITUAL.yang.hours.de} Uhr, Yin zu den Stunden von ` +
-                  `${RITUAL.yin.hours.de} Uhr. Jede Hälfte hat fünf Stücke, mehr braucht ein ` +
-                  "Ritual nicht.",
+                  "Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. " +
+                  `${t(RITUAL[activeMode].title)} gehört zu den Stunden von ${RITUAL[activeMode].hours.de} Uhr ` +
+                  "und hat fünf Stücke, mehr braucht ein Ritual nicht.",
                 en:
-                  "That is why the range is not ordered by category but by time of day. Yang " +
-                  `belongs to the hours from ${RITUAL.yang.hours.en}, Yin to the hours from ` +
-                  `${RITUAL.yin.hours.en}. Each half has five pieces, a ritual needs no more.`,
+                  "That is why the range is not ordered by category but by time of day. " +
+                  `${t(RITUAL[activeMode].title)} belongs to the hours from ${RITUAL[activeMode].hours.en} ` +
+                  "and has five pieces, a ritual needs no more.",
               })}
             </p></Reveal>
             <Reveal from="right" delay={2 * STAGGER}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
               {t({
                 de:
-                  "Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit mit zwei Seiten. Du " +
-                  "entscheidest, welche gerade gilt, und der Shop richtet sich danach aus, in der Ansicht " +
-                  "wie im Sortiment.",
+                  "Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit, die sich mit der " +
+                  "Stunde dreht. Du entscheidest mit dem Schalter im Kopf der Seite, welche gerade gilt, " +
+                  "und der Shop richtet sich danach aus, in der Ansicht wie im Sortiment.",
                 en:
-                  "What comes of it is less a routine than a habit with two sides. You decide which " +
-                  "one applies right now, and the shop follows, in the view as in the range.",
+                  "What comes of it is less a routine than a habit that turns with the hour. The switch " +
+                  "at the top of the page decides which one applies right now, and the shop follows, in " +
+                  "the view as in the range.",
               })}
             </p></Reveal>
           </div>

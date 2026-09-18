@@ -62,19 +62,24 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       data-switch-mark=""
       onClick={(event) => toggleMode({ origin: originFromEvent(event) })}
-      // Ein Umschalter behält einen Namen für die Sache, die er steuert, und
-      // überlässt aria-pressed den Zustand. Ein Name, der die Handlung nennt,
-      // würde "auf Yang schalten" sagen, während der Knopf sich als gedrückt
-      // meldet, und dem sichtbaren Wort daneben widersprechen.
-      aria-pressed={isYin}
-      aria-label={t({ de: "Nachtansicht Yin", en: "Night view Yin" })}
-      title={
-        isYin
-          ? t({ de: "Yin, die Nacht. Klicken für Yang.", en: "Yin, the night. Click for Yang." })
-          : t({ de: "Yang, der Tag. Klicken für Yin.", en: "Yang, the day. Click for Yin." })
-      }
+      // Der Knopf nennt die Tageszeit, in der der Shop steht, und sonst nichts.
+      //
+      // Vorher stand hier ein aria-label mit dem einen Ritual und ein title, der
+      // das andere beim Namen nannte: "Yang, der Tag. Klicken für Yin." Damit
+      // standen beide zugleich auf dem Schirm, sobald jemand mit der Maus
+      // stehenblieb, und genau das soll nirgends passieren.
+      //
+      // Den Namen trägt jetzt der Text im Knopf selbst. Das sichtbare Wort ist
+      // dekorativ und wird nicht zweimal angesagt; daneben steht dasselbe Wort
+      // für die Vorlesehilfe, mit der Sache davor. So enthält der Name den
+      // sichtbaren Text, Erfolgskriterium 2.5.3, und nennt trotzdem nur die
+      // Tageszeit, die gerade gilt.
+      title={t({ de: "Tageszeit umschalten", en: "Switch the time of day" })}
       className={cn("group inline-flex min-h-11 items-center gap-2.5 px-1", className)}
     >
+      <span className="sr-only">
+        {t({ de: `Tageszeit, gerade ${word}`, en: `Time of day, currently ${word}` })}
+      </span>
       <span
         aria-hidden="true"
         style={{ width: TRACK_W, height: TRACK_H }}
@@ -165,13 +170,16 @@ export function ThemeToggle({ className }: { className?: string }) {
 
       {/* Das Wort nennt das Ritual, in dem der Shop steht. Den Zustand trägt der
           Knopf schon in seinem Namen, deshalb wird er nicht zweimal angesagt.
-          Die Hülle reserviert die Breite des längeren Wortes und schneidet auf
-          eine Zeile, damit der Kopf beim Wechsel nicht springt. */}
+          Die Hülle hält eine feste Breite und schneidet auf eine Zeile, damit der
+          Kopf beim Wechsel nicht springt. Die Breite stand vorher als unsichtbares
+          "Yang" im Baum, also stand das eine Wort im Dokument, während das andere
+          zu lesen war. Vier Nullen sind in einer dicktengleichen Schrift genau so
+          breit wie vier Buchstaben, samt Sperrung, und nennen kein Ritual. */}
       <span
         aria-hidden="true"
         className="relative hidden h-[1em] overflow-hidden font-mono text-[11px] uppercase leading-none tracking-[0.18em] text-ink-2 sm:inline-grid"
       >
-        <span className="invisible col-start-1 row-start-1">Yang</span>
+        <span className="invisible col-start-1 row-start-1">0000</span>
         <AnimatePresence initial={false} mode="popLayout">
           <motion.span
             key={word}

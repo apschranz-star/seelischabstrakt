@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { PaymentBadges } from "@/components/cart/payment-badges";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
+import { RITUAL } from "@/components/home/ritual-copy";
 import { buttonClasses } from "@/components/ui/button";
 import { localizeProduct } from "@/config/products";
 import { REGIONS, REGION_ORDER } from "@/config/site";
@@ -41,7 +42,7 @@ const MOBILE_LABEL = "font-mono text-[10px] uppercase tracking-[0.18em] text-ink
 const STACKED_CELL = "col-start-2 sm:col-start-auto";
 
 export default function CartPage() {
-  const { region, setRegion, hydrated } = useYinYang();
+  const { mode, region, setRegion, hydrated } = useYinYang();
   const lang = useLang();
   const t = useT();
   const items = useJingStore((state) => state.items);
@@ -87,28 +88,33 @@ export default function CartPage() {
     "disabled:cursor-not-allowed disabled:text-ink-3",
   );
 
+  // Das Ritual, in dem der Shop gerade steht. Vor der Rehydrierung ist das yang,
+  // genau das hat auch der Server gerendert, also stimmt der erste Client-Render
+  // mit dem ausgelieferten HTML ueberein.
+  const activeMode = hydrated ? mode : "yang";
+  const ritual = RITUAL[activeMode];
+  const ritualTitle = t(ritual.title);
+  const ritualDaypart = t(ritual.daypart);
+
   if (lines.length === 0) {
     return (
       <div className={SHELL}>
         <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
           {t({ de: "Warenkorb", en: "Cart" })}
         </h1>
+        {/* Der leere Warenkorb schickt dorthin zurueck, wo der Besucher war: in
+            das Ritual, in dem der Shop steht. Vorher standen hier zwei Knoepfe,
+            einer fuer jede Kollektion, und damit beide Tageszeiten nebeneinander
+            auf dem Schirm. Es gibt nur eine, und sie hat nur einen Weg. */}
         <p className="mt-6 max-w-[42ch] text-[15px] leading-relaxed text-ink-2">
           {t({
-            de:
-              "Noch nichts gewählt. Der Warenkorb wartet, ohne Eile. Beide Kollektionen liegen einen " +
-              "Klick entfernt, YANG für den Tag und YIN für die Nacht.",
-            en:
-              "Nothing chosen yet. The cart is waiting, in no hurry. Both collections are one " +
-              "click away, YANG for the day and YIN for the night.",
+            de: `Noch nichts gewählt. Der Warenkorb wartet, ohne Eile. ${ritualTitle}, ${ritualDaypart}, liegt einen Klick entfernt.`,
+            en: `Nothing chosen yet. The cart is waiting, in no hurry. ${ritualTitle}, ${ritualDaypart}, is one click away.`,
           })}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/#yang" className={buttonClasses("solid", "md")}>
-            {t({ de: "Yang ansehen", en: "View Yang" })}
-          </Link>
-          <Link href="/#yin" className={buttonClasses("outline", "md")}>
-            {t({ de: "Yin ansehen", en: "View Yin" })}
+          <Link href={`/#${activeMode}`} className={buttonClasses("solid", "md")}>
+            {t({ de: `${ritualTitle} ansehen`, en: `View ${ritualTitle}` })}
           </Link>
         </div>
       </div>

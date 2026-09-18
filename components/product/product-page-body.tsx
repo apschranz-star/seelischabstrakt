@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 
+import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { AddToCart } from "@/components/product/add-to-cart";
 import { InciDrawer } from "@/components/product/inci-drawer";
 import { GpsrPanel } from "@/components/product/gpsr-panel";
@@ -20,11 +23,42 @@ import { deliveryWindow, formatMoney } from "@/lib/utils";
  * reads lives here instead, because the words follow the language in the
  * persisted client state. The tree is the same in both languages, only the
  * strings change, so the server markup and the first client render agree.
+ *
+ * The shop follows the piece, and then the piece follows the shop.
+ *
+ * Opening a piece of the night while the shop stood in the day put both times on
+ * one screen: the palette and the switch said one thing, the collection line on
+ * this page said the other. So arriving here sets the ritual to the one this
+ * piece belongs to. Plainly, without the eclipse: nobody pressed anything, the
+ * visitor followed a link, and a disc growing out of nowhere would be an answer
+ * to a question they did not ask.
+ *
+ * Pressing the switch afterwards means the visitor wants the other time of day.
+ * There is none of it on this page, so the page steps aside and the start page
+ * of that ritual takes over. The switch keeps one meaning everywhere: it moves
+ * the shop from one time of day to the other, and nothing is ever left standing
+ * that belongs to the time the shop just left.
  */
 export function ProductPageBody({ product: source }: { product: Product }) {
   const lang = useLang();
   const t = useT();
   const product = localizeProduct(source, lang);
+  const { mode, setMode, hydrated } = useYinYang();
+  const router = useRouter();
+  /** False until the ritual of this piece has been taken on once. */
+  const angekommen = useRef(false);
+
+  // After rehydration, so the palette the bootstrap script stamped before the
+  // first paint is not written over and then written back.
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!angekommen.current) {
+      angekommen.current = true;
+      if (mode !== source.collection) setMode(source.collection, { instant: true });
+      return;
+    }
+    if (mode !== source.collection) router.push("/");
+  }, [hydrated, mode, setMode, source.collection, router]);
 
   const home = REGIONS[DEFAULT_REGION];
   const homeLabel = lang === "en" ? home.labelEn : home.label;

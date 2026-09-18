@@ -18,6 +18,21 @@ export type Mode = Collection;
 /** Kept here rather than in lib/i18n.ts so the store has no import cycle. */
 export type StoreLang = "de" | "en";
 
+/**
+ * Eine Zeile im Warenkorb.
+ *
+ * Bewusst ohne Kollektion. Der Shop zeigt immer nur ein Ritual, der Warenkorb
+ * aber ist die Auswahl des Besuchers, nicht die Auslage des Shops: wer am Morgen
+ * ein Stueck des Tages und am Abend eines der Nacht nimmt, soll beide in einer
+ * Bestellung bezahlen koennen. Er nach Kollektion zu trennen hiesse, jemanden
+ * zwei Bestellungen aufgeben zu lassen, oder den Korb beim Umschalten zu leeren.
+ *
+ * Damit dabei trotzdem nie beide Rituale nebeneinander dastehen, traegt kein
+ * sichtbarer Wert eines Stueckes den Namen seiner Kollektion: die Katalognummern
+ * heissen JING 01 bis JING 10 und nicht mehr YANG 01 und YIN 02, und kein
+ * Produktname und keine Beschreibung nennt eine Tageszeit der anderen Haelfte.
+ * Siehe config/products.ts.
+ */
 export interface CartItem {
   productId: string;
   quantity: number;

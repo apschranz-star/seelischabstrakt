@@ -468,7 +468,7 @@ export default function CheckoutPage() {
           actions={
             <>
               <Link href="/" className={buttonClasses("solid", "md")}>
-                {t({ de: "Zu den Kollektionen", en: "To the collections" })}
+                {t({ de: "Zur Kollektion", en: "To the collection" })}
               </Link>
               <Link href="/cart" className={buttonClasses("outline", "md")}>
                 {t({ de: "Warenkorb ansehen", en: "View cart" })}
