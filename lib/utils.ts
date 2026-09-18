@@ -27,14 +27,20 @@ export function cn(...values: Array<string | false | null | undefined>): string 
 
 /* ------------------------------------------------------------------ currency */
 
-const MONEY_LOCALE: Record<CurrencyCode, string> = {
-  EUR: "de-DE",
-  CHF: "de-CH",
+export type MoneyLang = "de" | "en";
+
+const MONEY_LOCALE: Record<MoneyLang, Record<CurrencyCode, string>> = {
+  de: { EUR: "de-DE", CHF: "de-CH" },
+  en: { EUR: "en-IE", CHF: "en-CH" },
 };
 
-/** Format minor units of the given currency, for example 8900 EUR cents to "89,00 €". */
-export function formatMoney(minorUnits: number, currency: CurrencyCode = "EUR"): string {
-  return new Intl.NumberFormat(MONEY_LOCALE[currency], {
+/** Format minor units of the given currency, for example 8900 EUR cents to "89,00 €" or "€89.00". */
+export function formatMoney(
+  minorUnits: number,
+  currency: CurrencyCode = "EUR",
+  lang: MoneyLang = "de",
+): string {
+  return new Intl.NumberFormat(MONEY_LOCALE[lang][currency], {
     style: "currency",
     currency,
     minimumFractionDigits: 2,
@@ -53,8 +59,8 @@ export function toRegionMinorUnits(eurCents: number, region: RegionCode): number
   return Math.round(eurCents * CHF_PER_EUR);
 }
 
-export function formatForRegion(eurCents: number, region: RegionCode): string {
-  return formatMoney(toRegionMinorUnits(eurCents, region), REGIONS[region].currency);
+export function formatForRegion(eurCents: number, region: RegionCode, lang: MoneyLang = "de"): string {
+  return formatMoney(toRegionMinorUnits(eurCents, region), REGIONS[region].currency, lang);
 }
 
 /* ---------------------------------------------------------------- PAngV maths */
@@ -96,13 +102,17 @@ export function computeBasePrice(
 }
 
 /** The full Grundpreis line, for example "108,00 € / 100 ml". Null when not required. */
-export function formatBasePrice(product: Product, region: RegionCode): string | null {
+export function formatBasePrice(
+  product: Product,
+  region: RegionCode,
+  lang: MoneyLang = "de",
+): string | null {
   const base = computeBasePrice(
     toRegionMinorUnits(product.priceCents, region),
     product.netQuantity,
   );
   if (!base) return null;
-  return `${formatMoney(base.perReferenceMinorUnits, REGIONS[region].currency)} / ${base.referenceLabel}`;
+  return `${formatMoney(base.perReferenceMinorUnits, REGIONS[region].currency, lang)} / ${base.referenceLabel}`;
 }
 
 /* --------------------------------------------------------------------- taxes */
@@ -174,9 +184,10 @@ export function freeShippingProgress(subtotal: number, region: Region): number {
   return Math.max(0, Math.min(1, subtotal / region.freeShippingCents));
 }
 
-/** Delivery promise such as "1 bis 2 Werktage". */
-export function deliveryWindow(region: Region): string {
+/** Delivery promise such as "1 bis 2 Werktage" or "1 to 2 working days". */
+export function deliveryWindow(region: Region, lang: MoneyLang = "de"): string {
   const [from, to] = region.deliveryDays;
+  if (lang === "en") return from === to ? `${from} working day` : `${from} to ${to} working days`;
   return from === to ? `${from} Werktag` : `${from} bis ${to} Werktage`;
 }
 

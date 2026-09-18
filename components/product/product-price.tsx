@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import type { Product } from "@/config/products";
 import { DEFAULT_REGION } from "@/config/site";
+import { useLang, useT } from "@/lib/i18n";
 import { formatBasePrice, formatForRegion } from "@/lib/utils";
 
 /**
@@ -19,23 +20,25 @@ import { formatBasePrice, formatForRegion } from "@/lib/utils";
  */
 export function ProductPrice({ product }: { product: Product }) {
   const { region, hydrated } = useYinYang();
+  const lang = useLang();
+  const t = useT();
   const activeRegion = hydrated ? region : DEFAULT_REGION;
 
-  const price = formatForRegion(product.priceCents, activeRegion);
-  const basePriceLine = formatBasePrice(product, activeRegion);
+  const price = formatForRegion(product.priceCents, activeRegion, lang);
+  const basePriceLine = formatBasePrice(product, activeRegion, lang);
 
   return (
     <>
       <p className="font-mono text-3xl tabular-nums leading-none text-ink sm:text-4xl">{price}</p>
       {basePriceLine ? (
         <p className="mt-2 font-mono text-[13px] tabular-nums text-ink-2">
-          Grundpreis {basePriceLine}
+          {t({ de: "Grundpreis", en: "Base price" })} {basePriceLine}
         </p>
       ) : null}
       <p className="mt-2 text-[13px] leading-snug text-ink-3">
-        inkl. MwSt., zzgl.{" "}
+        {t({ de: "inkl. MwSt., zzgl.", en: "incl. VAT, plus" })}{" "}
         <Link href="/legal/versand" className="text-ink underline underline-offset-4">
-          Versandkosten
+          {t({ de: "Versandkosten", en: "shipping" })}
         </Link>
       </p>
     </>

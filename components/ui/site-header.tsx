@@ -9,6 +9,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
+import { useLang, useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL, useHysteresis } from "@/lib/motion";
 import { useJingStore, selectItemCount } from "@/lib/store";
 import { REGIONS, REGION_ORDER } from "@/config/site";
@@ -26,9 +27,9 @@ const REGION_SELECT = cn(
 );
 
 const NAV = [
-  { href: "/#yang", label: "Yang", mode: "yang" },
-  { href: "/#yin", label: "Yin", mode: "yin" },
-  { href: "/cart", label: "Warenkorb", mode: null },
+  { href: "/#yang", label: { de: "Yang", en: "Yang" }, mode: "yang" },
+  { href: "/#yin", label: { de: "Yin", en: "Yin" }, mode: "yin" },
+  { href: "/cart", label: { de: "Warenkorb", en: "Cart" }, mode: null },
 ] as const;
 
 /** The link's hairline: drawn on hover and focus, kept while the ritual is live. */
@@ -36,6 +37,9 @@ const NAV_LINK = "type-nav jing-underline pb-0.5 text-ink-2 transition-colors ho
 
 export function SiteHeader() {
   const { mode, region, setRegion, hydrated } = useYinYang();
+  const lang = useLang();
+  const setLang = useJingStore((state) => state.setLang);
+  const t = useT();
   const count = useJingStore(selectItemCount);
   const openCart = useJingStore((state) => state.openCart);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -107,22 +111,34 @@ export function SiteHeader() {
         <Link
           href="/"
           className="font-display text-2xl leading-none tracking-[0.18em] text-ink"
-          aria-label="JING, zur Startseite"
+          aria-label={t({ de: "JING, zur Startseite", en: "JING, to the start page" })}
         >
           JING
         </Link>
 
-        <nav aria-label="Hauptmenü" className="ml-8 hidden items-center gap-7 md:flex">
+        <nav aria-label={t({ de: "Hauptmenü", en: "Main menu" })} className="ml-8 hidden items-center gap-7 md:flex">
           {NAV.map((item) => (
             <Link key={item.href} href={item.href} className={NAV_LINK} {...linkState(item)}>
-              {item.label}
+              {t(item.label)}
             </Link>
           ))}
         </nav>
 
         <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          {/* The language switch names the language it switches to, in that
+              language, so an English reader who landed in German finds it. */}
+          <button
+            type="button"
+            lang={lang === "de" ? "en" : "de"}
+            onClick={() => setLang(lang === "de" ? "en" : "de")}
+            aria-label={lang === "de" ? "Switch to English" : "Auf Deutsch wechseln"}
+            className={cn(buttonClasses("control", "icon"), "px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em]")}
+          >
+            {lang === "de" ? "EN" : "DE"}
+          </button>
+
           <label className="sr-only" htmlFor="region-select">
-            Lieferland
+            {t({ de: "Lieferland", en: "Delivery country" })}
           </label>
           <span className="relative hidden sm:block">
             <select
@@ -153,7 +169,7 @@ export function SiteHeader() {
             // The icon size carries no padding of its own, so the pill's own
             // px-3 py-1.5 is the only padding and the height stays at 44.
             className={cn(buttonClasses("control", "icon"), "relative px-3 py-1.5")}
-            aria-label={`Warenkorb öffnen, ${shown} Artikel`}
+            aria-label={t({ de: `Warenkorb öffnen, ${shown} Artikel`, en: `Open cart, ${shown} items` })}
           >
             <ShoppingBag size={16} aria-hidden="true" />
             {/* The count ticks behind a fixed window: the old digit leaves
@@ -186,7 +202,7 @@ export function SiteHeader() {
             className={cn(buttonClasses("control", "icon"), "md:hidden")}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
-            aria-label="Menü"
+            aria-label={t({ de: "Menü", en: "Menu" })}
           >
             {menuOpen ? <X size={16} aria-hidden="true" /> : <Menu size={16} aria-hidden="true" />}
           </button>
@@ -199,10 +215,10 @@ export function SiteHeader() {
         data-open={menuOpen ? "" : undefined}
         className={cn("border-t border-line md:hidden", menuOpen ? "block" : "hidden")}
       >
-        <nav aria-label="Menü" className="mx-auto flex w-full max-w-[1240px] flex-col px-4 py-2">
+        <nav aria-label={t({ de: "Menü", en: "Menu" })} className="mx-auto flex w-full max-w-[1240px] flex-col px-4 py-2">
           <div className="flex items-center justify-between border-b border-line py-3 sm:hidden">
             <label htmlFor="region-select-mobile" className="type-nav text-ink-3">
-              Lieferland
+              {t({ de: "Lieferland", en: "Delivery country" })}
             </label>
             <span className="relative">
               <select
@@ -233,7 +249,7 @@ export function SiteHeader() {
               className="type-nav border-b border-line py-3 text-ink-2 last:border-b-0"
               {...linkState(item)}
             >
-              {item.label}
+              {t(item.label)}
             </Link>
           ))}
         </nav>

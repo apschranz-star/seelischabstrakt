@@ -1,10 +1,23 @@
+"use client";
+
 import { AlertTriangle } from "lucide-react";
+
+import { useLang } from "@/lib/i18n";
 
 /**
  * Every legal page carries this. The texts in this repository are drafting aids,
  * not legal advice, and the company details are placeholders.
+ *
+ * The legal pages stay German on purpose, the German text is the binding one.
+ * A visitor reading the shop in English gets one extra sentence here that says
+ * so. The element is always rendered, only its text changes, so the server
+ * markup and the first client render agree.
  */
 export function TemplateNotice() {
+  const lang = useLang();
+  const languageNote =
+    lang === "en" ? " Legal texts are provided in German. The German version is binding." : "";
+
   return (
     <aside
       role="note"
@@ -18,6 +31,7 @@ export function TemplateNotice() {
         dem Livegang müssen die Platzhalter ersetzt und der gesamte Text von einer Anwältin oder
         einem Anwalt für IT- und Wettbewerbsrecht geprüft werden. JING übernimmt für diesen Entwurf
         keine Haftung.
+        {languageNote}
       </p>
     </aside>
   );

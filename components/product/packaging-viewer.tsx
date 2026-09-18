@@ -20,6 +20,7 @@ import {
 
 import type { Product } from "@/config/products";
 import { useReduceRef } from "@/lib/motion";
+import { useT, type Text } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /**
@@ -65,19 +66,20 @@ const TUNING: Record<
   thumb: { tilt: 0, sheen: 0, floor: 0.78, aspect: 0.8 },
 };
 
-const SHAPE_LABEL: Record<VesselShape, string> = {
-  bottle: "Flakon",
-  compact: "Dose",
-  jar: "Tiegel",
-  tube: "Tube",
-  column: "Säule",
+/** Spoken names of the silhouettes and finishes, for the image label only. */
+const SHAPE_LABEL: Record<VesselShape, Text> = {
+  bottle: { de: "Flakon", en: "Bottle" },
+  compact: { de: "Dose", en: "Compact" },
+  jar: { de: "Tiegel", en: "Jar" },
+  tube: { de: "Tube", en: "Tube" },
+  column: { de: "Säule", en: "Column" },
 };
 
-const FINISH_LABEL: Record<VesselFinish, string> = {
-  matte: "matt",
-  "soft-touch": "soft touch",
-  ceramic: "Keramik",
-  glass: "Glas",
+const FINISH_LABEL: Record<VesselFinish, Text> = {
+  matte: { de: "matt", en: "matte" },
+  "soft-touch": { de: "soft touch", en: "soft touch" },
+  ceramic: { de: "Keramik", en: "ceramic" },
+  glass: { de: "Glas", en: "glass" },
 };
 
 type Stops = [number, number, number, number, number];
@@ -408,6 +410,7 @@ export function PackagingViewer({
 }) {
   const variant: ViewerVariant = variantProp ?? (compact ? "card" : "page");
   const tuning = TUNING[variant];
+  const t = useT();
   const MAX_TILT = tuning.tilt;
   // useTransform maps over a range. A thumb never tilts, so its range would be
   // empty; a range of one degree keeps the maths finite while the value stays 0.
@@ -586,8 +589,14 @@ export function PackagingViewer({
         tabIndex={isPage ? 0 : -1}
         aria-label={
           isPage
-            ? `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape]} mit Oberfläche ${FINISH_LABEL[vessel.finish]}. Mit den Pfeiltasten neigen.`
-            : `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape]} mit Oberfläche ${FINISH_LABEL[vessel.finish]}.`
+            ? t({
+                de: `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape].de} mit Oberfläche ${FINISH_LABEL[vessel.finish].de}. Mit den Pfeiltasten neigen.`,
+                en: `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape].en} with a ${FINISH_LABEL[vessel.finish].en} finish. Tilt with the arrow keys.`,
+              })
+            : t({
+                de: `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape].de} mit Oberfläche ${FINISH_LABEL[vessel.finish].de}.`,
+                en: `${product.code}, ${product.name}. ${SHAPE_LABEL[vessel.shape].en} with a ${FINISH_LABEL[vessel.finish].en} finish.`,
+              })
         }
         onPointerMove={handlePointerMove}
         onPointerLeave={rest}
@@ -986,7 +995,10 @@ export function PackagingViewer({
 
       {isPage ? (
         <p className="mt-3 shrink-0 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3 motion-reduce:hidden">
-          Mit dem Zeiger oder den Pfeiltasten neigen
+          {t({
+            de: "Mit dem Zeiger oder den Pfeiltasten neigen",
+            en: "Tilt with the pointer or the arrow keys",
+          })}
         </p>
       ) : null}
     </div>

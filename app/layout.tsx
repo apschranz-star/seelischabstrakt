@@ -93,7 +93,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               className="border-b border-line bg-surface-2 px-4 py-2 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-ink-2"
             >
               Demonstration. Kein Verkauf, keine Zahlung. Produkte, Preise und Firmendaten sind
-              Beispieldaten.
+              Beispieldaten · Demonstration. No sale, no payment. Products, prices and company
+              details are sample data.
             </p>
           ) : null}
           <a

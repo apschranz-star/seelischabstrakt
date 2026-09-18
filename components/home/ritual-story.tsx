@@ -18,10 +18,13 @@ import { ArrowDown } from "lucide-react";
 
 import { RITUAL } from "@/components/home/ritual-copy";
 import { Reveal, STAGGER } from "@/components/ui/reveal";
-import { getProductById } from "@/config/products";
+import { getProductById, localizeProduct } from "@/config/products";
+import { useLang, useT } from "@/lib/i18n";
 import type { Mode } from "@/lib/store";
 
 export function RitualStory({ collection, instant }: { collection: Mode; instant: boolean }) {
+  const lang = useLang();
+  const t = useT();
   const story = RITUAL[collection].story;
   const headingId = `${collection}-ritual`;
   const side = collection === "yang" ? "left" : "right";
@@ -30,20 +33,21 @@ export function RitualStory({ collection, instant }: { collection: Mode; instant
     <div aria-labelledby={headingId} role="region" className="mt-12 border-b border-line pb-12">
       <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
         <Reveal from={instant ? "none" : side} delay={0}>
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">{story.kicker}</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">{t(story.kicker)}</p>
           <h3
             id={headingId}
             className="mt-4 max-w-[16ch] font-display text-3xl leading-[1.05] tracking-[0.04em] text-ink sm:text-4xl md:text-5xl"
           >
-            {story.title}
+            {t(story.title)}
           </h3>
-          <p className="mt-6 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">{story.lead}</p>
+          <p className="mt-6 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">{t(story.lead)}</p>
         </Reveal>
 
         <ol role="list" className="border-t border-line">
           {story.steps.map((step, index) => {
-            const product = getProductById(step.productId);
-            if (!product) return null;
+            const raw = getProductById(step.productId);
+            if (!raw) return null;
+            const product = localizeProduct(raw, lang);
             return (
               <Reveal
                 key={step.productId}
@@ -56,7 +60,7 @@ export function RitualStory({ collection, instant }: { collection: Mode; instant
                   0{index + 1}
                 </span>
                 <span className="font-mono text-[11px] uppercase leading-6 tracking-[0.18em] text-ink-3">
-                  {step.cue}
+                  {t(step.cue)}
                 </span>
                 <span className="col-span-2 mt-2 block sm:col-span-1 sm:mt-0">
                   <Link
@@ -75,13 +79,13 @@ export function RitualStory({ collection, instant }: { collection: Mode; instant
 
       <Reveal from={instant ? "none" : "up"} delay={instant ? 0 : 6 * STAGGER}>
         <div className="mt-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-          <p className="max-w-[52ch] text-[15px] leading-relaxed text-ink-2">{story.close}</p>
+          <p className="max-w-[52ch] text-[15px] leading-relaxed text-ink-2">{t(story.close)}</p>
           <a
             href={`#${collection}-produkte`}
             className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink"
           >
             <span aria-hidden="true" className="h-px w-10 bg-ink" />
-            {story.toProducts}
+            {t(story.toProducts)}
             <ArrowDown size={14} aria-hidden="true" />
           </a>
         </div>

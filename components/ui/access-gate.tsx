@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
 
+import { useT } from "@/lib/i18n";
 import { useMounted } from "@/lib/use-mounted";
 import { SITE } from "@/config/site";
 
@@ -54,6 +55,7 @@ function grant() {
 
 export function AccessGate({ children }: { children: ReactNode }) {
   const mounted = useMounted();
+  const t = useT();
   const granted = useSyncExternalStore(subscribe, readGranted, () => false);
   const [attempt, setAttempt] = useState("");
   const [rejected, setRejected] = useState(false);
@@ -89,11 +91,19 @@ export function AccessGate({ children }: { children: ReactNode }) {
     >
       <p className="font-display text-3xl tracking-[0.3em] text-ink">{SITE.name}</p>
       <h1 className="mt-8 font-display text-2xl leading-tight text-ink">
-        Diese Vorschau ist nicht öffentlich.
+        {t({ de: "Diese Vorschau ist nicht öffentlich.", en: "This preview is not public." })}
       </h1>
       <p className="mt-3 text-sm leading-relaxed text-ink-2">
-        Wer den Link bekommen hat, ist bereits drin. Sonst hier den Zugangscode eingeben.
-        {mounted ? "" : " Die Seite lädt noch, das Feld funktioniert trotzdem."}
+        {t({
+          de: "Wer den Link bekommen hat, ist bereits drin. Sonst hier den Zugangscode eingeben.",
+          en: "If you received the link, you are already in. Otherwise enter the access code here.",
+        })}
+        {mounted
+          ? ""
+          : t({
+              de: " Die Seite lädt noch, das Feld funktioniert trotzdem.",
+              en: " The page is still loading, the field works anyway.",
+            })}
       </p>
       {/* A plain GET form. With JavaScript the submit handler grants access in
           place; without it, or while the scripts have not arrived yet, the
@@ -104,7 +114,7 @@ export function AccessGate({ children }: { children: ReactNode }) {
           htmlFor="zugangscode"
           className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3"
         >
-          Zugangscode
+          {t({ de: "Zugangscode", en: "Access code" })}
         </label>
         <div className="mt-1.5 flex gap-2">
           <input
@@ -125,12 +135,12 @@ export function AccessGate({ children }: { children: ReactNode }) {
             type="submit"
             className="shrink-0 rounded-full border border-transparent bg-inverse-surface px-5 font-mono text-[11px] uppercase tracking-[0.16em] text-inverse-ink hover:opacity-90"
           >
-            Öffnen
+            {t({ de: "Öffnen", en: "Open" })}
           </button>
         </div>
         {rejected ? (
           <p id="zugangscode-fehler" className="mt-2 text-[12px] text-seal">
-            Der Code stimmt nicht.
+            {t({ de: "Der Code stimmt nicht.", en: "The code is not correct." })}
           </p>
         ) : null}
       </form>

@@ -9,7 +9,9 @@ import { PaymentBadges } from "@/components/cart/payment-badges";
 import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
+import { localizeProduct } from "@/config/products";
 import { REGIONS, REGION_ORDER } from "@/config/site";
+import { intlLocale, useLang, useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
@@ -40,6 +42,8 @@ const STACKED_CELL = "col-start-2 sm:col-start-auto";
 
 export default function CartPage() {
   const { region, setRegion, hydrated } = useYinYang();
+  const lang = useLang();
+  const t = useT();
   const items = useJingStore((state) => state.items);
   const setQuantity = useJingStore((state) => state.setQuantity);
   const removeItem = useJingStore((state) => state.removeItem);
@@ -56,9 +60,11 @@ export default function CartPage() {
   if (!hydrated) {
     return (
       <div className={SHELL} aria-busy="true">
-        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">Warenkorb</h1>
+        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
+          {t({ de: "Warenkorb", en: "Cart" })}
+        </h1>
         <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">
-          Warenkorb wird geladen
+          {t({ de: "Warenkorb wird geladen", en: "Loading the cart" })}
         </p>
       </div>
     );
@@ -67,6 +73,14 @@ export default function CartPage() {
   const regionConfig = estimate.region;
   const currency = estimate.currency;
   const progress = freeShippingProgress(estimate.subtotal, regionConfig);
+  const regionLabel = t({ de: regionConfig.label, en: regionConfig.labelEn });
+  // The carrier is a name; only its Swiss suffix is a German word.
+  const carrier = t({ de: regionConfig.carrier, en: regionConfig.carrier.replace("verzollt", "duty paid") });
+  // vatLabel is the regional German wording, English states the rate and says VAT.
+  const vatLabel = t({
+    de: regionConfig.vatLabel,
+    en: `${new Intl.NumberFormat(intlLocale("en", currency)).format(regionConfig.vatRate * 100)}% VAT`,
+  });
   const stepButton = cn(
     "inline-flex h-9 w-9 items-center justify-center text-ink-2",
     "transition-colors duration-300 ease-ritual hover:text-ink",
@@ -76,17 +90,25 @@ export default function CartPage() {
   if (lines.length === 0) {
     return (
       <div className={SHELL}>
-        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">Warenkorb</h1>
+        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
+          {t({ de: "Warenkorb", en: "Cart" })}
+        </h1>
         <p className="mt-6 max-w-[42ch] text-[15px] leading-relaxed text-ink-2">
-          Noch nichts gewählt. Der Warenkorb wartet, ohne Eile. Beide Kollektionen liegen einen
-          Klick entfernt, YANG für den Tag und YIN für die Nacht.
+          {t({
+            de:
+              "Noch nichts gewählt. Der Warenkorb wartet, ohne Eile. Beide Kollektionen liegen einen " +
+              "Klick entfernt, YANG für den Tag und YIN für die Nacht.",
+            en:
+              "Nothing chosen yet. The cart is waiting, in no hurry. Both collections are one " +
+              "click away, YANG for the day and YIN for the night.",
+          })}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/#yang" className={buttonClasses("solid", "md")}>
-            Yang ansehen
+            {t({ de: "Yang ansehen", en: "View Yang" })}
           </Link>
           <Link href="/#yin" className={buttonClasses("outline", "md")}>
-            Yin ansehen
+            {t({ de: "Yin ansehen", en: "View Yin" })}
           </Link>
         </div>
       </div>
@@ -96,18 +118,22 @@ export default function CartPage() {
   return (
     <div className={SHELL}>
       <header>
-        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">Warenkorb</h1>
+        <h1 className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
+          {t({ de: "Warenkorb", en: "Cart" })}
+        </h1>
         <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">
-          {estimate.itemCount === 1 ? "1 Artikel" : `${estimate.itemCount} Artikel`}
-          {" · Lieferung nach "}
-          {regionConfig.label}
+          {estimate.itemCount === 1
+            ? t({ de: "1 Artikel", en: "1 item" })
+            : t({ de: `${estimate.itemCount} Artikel`, en: `${estimate.itemCount} items` })}
+          {t({ de: " · Lieferung nach ", en: " · Delivery to " })}
+          {regionLabel}
         </p>
       </header>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_23rem] lg:gap-14">
         <section aria-labelledby="positionen-titel">
           <h2 id="positionen-titel" className="sr-only">
-            Positionen
+            {t({ de: "Positionen", en: "Items" })}
           </h2>
 
           {/* The visible column titles only exist on wide screens, each line repeats
@@ -121,15 +147,17 @@ export default function CartPage() {
             )}
           >
             <span />
-            <span>Artikel</span>
-            <span className="text-right">Einzelpreis</span>
-            <span className="text-center">Menge</span>
-            <span className="text-right">Summe</span>
+            <span>{t({ de: "Artikel", en: "Item" })}</span>
+            <span className="text-right">{t({ de: "Einzelpreis", en: "Unit price" })}</span>
+            <span className="text-center">{t({ de: "Menge", en: "Quantity" })}</span>
+            <span className="text-right">{t({ de: "Summe", en: "Total" })}</span>
           </div>
 
           <ul className="border-t border-line sm:border-t-0">
-            {lines.map(({ product, quantity }) => {
-              const basePrice = formatBasePrice(product, region);
+            {lines.map((line) => {
+              const product = localizeProduct(line.product, lang);
+              const { quantity } = line;
+              const basePrice = formatBasePrice(product, region, lang);
               const lineTotal = toRegionMinorUnits(product.priceCents, region) * quantity;
 
               return (
@@ -157,12 +185,12 @@ export default function CartPage() {
 
                   <div className={cn(STACKED_CELL, "sm:text-right")}>
                     <p className="font-mono text-[13px] tabular-nums text-ink">
-                      <span className={MOBILE_LABEL}>Einzelpreis </span>
-                      {formatForRegion(product.priceCents, region)}
+                      <span className={MOBILE_LABEL}>{t({ de: "Einzelpreis ", en: "Unit price " })}</span>
+                      {formatForRegion(product.priceCents, region, lang)}
                     </p>
                     {basePrice ? (
                       <p className="mt-1 font-mono text-[11px] tabular-nums text-ink-3">
-                        Grundpreis {basePrice}
+                        {t({ de: `Grundpreis ${basePrice}`, en: `Base price ${basePrice}` })}
                       </p>
                     ) : null}
                   </div>
@@ -170,14 +198,17 @@ export default function CartPage() {
                   <div className={cn(STACKED_CELL, "flex flex-col items-start gap-2 sm:items-center")}>
                     <div
                       role="group"
-                      aria-label={`Menge, ${product.name}`}
+                      aria-label={t({ de: `Menge, ${product.name}`, en: `Quantity, ${product.name}` })}
                       className="flex items-center rounded-[2px] border border-control"
                     >
                       <button
                         type="button"
                         onClick={() => setQuantity(product.id, quantity - 1)}
                         disabled={quantity <= 1}
-                        aria-label={`Menge verringern, ${product.name}`}
+                        aria-label={t({
+                          de: `Menge verringern, ${product.name}`,
+                          en: `Decrease quantity, ${product.name}`,
+                        })}
                         className={stepButton}
                       >
                         <Minus size={13} aria-hidden="true" />
@@ -189,7 +220,7 @@ export default function CartPage() {
                         className="min-w-7 text-center font-mono text-[12px] tabular-nums text-ink"
                       >
                         {quantity}
-                        <span className="sr-only"> Stück</span>
+                        <span className="sr-only">{t({ de: " Stück", en: " units" })}</span>
                       </span>
 
                       <button
@@ -198,10 +229,16 @@ export default function CartPage() {
                         disabled={quantity >= MAX_QUANTITY}
                         title={
                           quantity >= MAX_QUANTITY
-                            ? `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`
+                            ? t({
+                                de: `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`,
+                                en: `No more than ${MAX_QUANTITY} of one item per order`,
+                              })
                             : undefined
                         }
-                        aria-label={`Menge erhöhen, ${product.name}`}
+                        aria-label={t({
+                          de: `Menge erhöhen, ${product.name}`,
+                          en: `Increase quantity, ${product.name}`,
+                        })}
                         className={stepButton}
                       >
                         <Plus size={13} aria-hidden="true" />
@@ -211,11 +248,11 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => removeItem(product.id)}
-                      aria-label={`${product.name} entfernen`}
+                      aria-label={t({ de: `${product.name} entfernen`, en: `Remove ${product.name}` })}
                       className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-transparent px-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-3 transition-colors duration-300 ease-ritual hover:border-line hover:text-ink"
                     >
                       <Trash2 size={13} aria-hidden="true" />
-                      Entfernen
+                      {t({ de: "Entfernen", en: "Remove" })}
                     </button>
                   </div>
 
@@ -225,8 +262,8 @@ export default function CartPage() {
                       "font-mono text-[15px] tabular-nums text-ink sm:text-right",
                     )}
                   >
-                    <span className={MOBILE_LABEL}>Summe </span>
-                    {formatMoney(lineTotal, currency)}
+                    <span className={MOBILE_LABEL}>{t({ de: "Summe ", en: "Total " })}</span>
+                    {formatMoney(lineTotal, currency, lang)}
                   </p>
                 </li>
               );
@@ -238,11 +275,13 @@ export default function CartPage() {
               href="/"
               className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 transition-colors hover:text-ink hover:underline"
             >
-              Weiter stöbern
+              {t({ de: "Weiter stöbern", en: "Keep browsing" })}
             </Link>
             {confirmClear ? (
               <span className="flex flex-wrap items-center gap-3">
-                <span className="text-[12px] text-ink-2">Wirklich alles entfernen?</span>
+                <span className="text-[12px] text-ink-2">
+                  {t({ de: "Wirklich alles entfernen?", en: "Remove everything?" })}
+                </span>
                 <button
                   type="button"
                   onClick={() => {
@@ -251,14 +290,14 @@ export default function CartPage() {
                   }}
                   className="font-mono text-[11px] uppercase tracking-[0.18em] text-seal underline underline-offset-4"
                 >
-                  Ja, leeren
+                  {t({ de: "Ja, leeren", en: "Yes, empty it" })}
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmClear(false)}
                   className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 underline-offset-4 hover:text-ink hover:underline"
                 >
-                  Abbrechen
+                  {t({ de: "Abbrechen", en: "Cancel" })}
                 </button>
               </span>
             ) : (
@@ -267,7 +306,7 @@ export default function CartPage() {
                 onClick={() => setConfirmClear(true)}
                 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3 underline-offset-4 transition-colors hover:text-ink hover:underline"
               >
-                Warenkorb leeren
+                {t({ de: "Warenkorb leeren", en: "Empty cart" })}
               </button>
             )}
           </div>
@@ -279,12 +318,12 @@ export default function CartPage() {
               id="summe-titel"
               className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3"
             >
-              Kostenübersicht
+              {t({ de: "Kostenübersicht", en: "Cost summary" })}
             </h2>
 
             <fieldset className="mt-5">
               <legend className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3">
-                Lieferland
+                {t({ de: "Lieferland", en: "Delivery country" })}
               </legend>
               <div className="mt-2 flex gap-2">
                 {REGION_ORDER.map((code) => {
@@ -313,71 +352,93 @@ export default function CartPage() {
                         {code}
                       </span>
                       <span className="text-[11px] leading-snug">{option.currency}</span>
-                      <span className="sr-only">{option.label}</span>
+                      <span className="sr-only">{t({ de: option.label, en: option.labelEn })}</span>
                     </label>
                   );
                 })}
               </div>
               <p className="mt-2 text-[11px] leading-snug text-ink-3">
-                Das Lieferland entscheidet über Währung, Steuersatz und Versand.
+                {t({
+                  de: "Das Lieferland entscheidet über Währung, Steuersatz und Versand.",
+                  en: "The delivery country sets the currency, the tax rate and the shipping.",
+                })}
               </p>
             </fieldset>
 
             <dl className="mt-6 flex flex-col gap-2 text-[13px]">
               <div className="flex items-baseline justify-between gap-4">
-                <dt className="text-ink-2">Zwischensumme</dt>
+                <dt className="text-ink-2">{t({ de: "Zwischensumme", en: "Subtotal" })}</dt>
                 <dd className="font-mono tabular-nums text-ink">
-                  {formatMoney(estimate.subtotal, currency)}
+                  {formatMoney(estimate.subtotal, currency, lang)}
                 </dd>
               </div>
 
               <div className="flex items-baseline justify-between gap-4">
                 <dt className="text-ink-2">
-                  Versand
+                  {t({ de: "Versand", en: "Shipping" })}
                   <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
-                    {regionConfig.carrier}, {deliveryWindow(regionConfig)}
+                    {carrier}, {deliveryWindow(regionConfig, lang)}
                   </span>
                 </dt>
                 <dd className="font-mono tabular-nums text-ink">
-                  {estimate.shipping === 0 ? "kostenfrei" : formatMoney(estimate.shipping, currency)}
+                  {estimate.shipping === 0
+                    ? t({ de: "kostenfrei", en: "free" })
+                    : formatMoney(estimate.shipping, currency, lang)}
                 </dd>
               </div>
 
               {estimate.clearance > 0 ? (
                 <div className="flex items-baseline justify-between gap-4">
                   <dt className="text-ink-2">
-                    Zollabfertigung
+                    {t({ de: "Zollabfertigung", en: "Customs clearance" })}
                     <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
-                      {regionConfig.customs?.incoterm ?? "DDP"}, verzollt und versteuert
+                      {regionConfig.customs?.incoterm ?? "DDP"}
+                      {t({ de: ", verzollt und versteuert", en: ", duty and tax paid" })}
                     </span>
                   </dt>
                   <dd className="font-mono tabular-nums text-ink">
-                    {formatMoney(estimate.clearance, currency)}
+                    {formatMoney(estimate.clearance, currency, lang)}
                   </dd>
                 </div>
               ) : null}
 
               <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-line pt-3">
                 <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
-                  Gesamt
+                  {t({ de: "Gesamt", en: "Total" })}
                 </dt>
                 <dd className="font-mono text-[17px] tabular-nums text-ink">
-                  {formatMoney(estimate.total, currency)}
+                  {formatMoney(estimate.total, currency, lang)}
                 </dd>
               </div>
             </dl>
 
             <p className="mt-2 text-[11px] leading-snug text-ink-3">
-              Darin enthalten {formatMoney(estimate.vatIncluded, currency)} bei{" "}
-              {regionConfig.vatLabel}.
+              {t({
+                de: `Darin enthalten ${formatMoney(estimate.vatIncluded, currency, lang)} bei ${vatLabel}.`,
+                en: `Includes ${formatMoney(estimate.vatIncluded, currency, lang)} at ${vatLabel}.`,
+              })}
             </p>
             <p className="text-[11px] leading-snug text-ink-3">
               {regionConfig.customs
-                ? "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung."
-                : "Gesamtpreis inklusive Steuer und Versandkosten."}
+                ? t({
+                    de: "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung.",
+                    en: "Total price including tax, shipping and customs clearance.",
+                  })
+                : t({
+                    de: "Gesamtpreis inklusive Steuer und Versandkosten.",
+                    en: "Total price including tax and shipping costs.",
+                  })}
             </p>
             {regionConfig.customs ? (
-              <p className="mt-2 text-[11px] leading-snug text-ink-3">{regionConfig.customs.note}</p>
+              <p className="mt-2 text-[11px] leading-snug text-ink-3">
+                {t({
+                  de: regionConfig.customs.note,
+                  en:
+                    "Switzerland lies outside the EU customs union. We ship duty and tax paid. " +
+                    "Import tax is included in the price, and customs clearance is shown above as " +
+                    "a separate line. There are no further costs at the door.",
+                })}
+              </p>
             ) : null}
 
             <div className="mt-5">
@@ -386,7 +447,10 @@ export default function CartPage() {
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={Math.round(progress * 100)}
-                aria-label="Fortschritt bis zum kostenfreien Versand"
+                aria-label={t({
+                  de: "Fortschritt bis zum kostenfreien Versand",
+                  en: "Progress towards free shipping",
+                })}
                 className="h-[3px] w-full overflow-hidden bg-line"
               >
                 <motion.div
@@ -398,21 +462,33 @@ export default function CartPage() {
               </div>
               <p aria-live="polite" className="mt-2 text-[12px] leading-snug text-ink-2">
                 {estimate.freeShippingReached
-                  ? `Versand frei. ${regionConfig.carrier} liefert in ${deliveryWindow(regionConfig)}.`
-                  : `Noch ${formatMoney(estimate.freeShippingGap, currency)} bis zum kostenfreien Versand, ab ${formatMoney(regionConfig.freeShippingCents, currency)}.`}
+                  ? t({
+                      de: `Versand frei. ${carrier} liefert in ${deliveryWindow(regionConfig, lang)}.`,
+                      en: `Free shipping. ${carrier} delivers in ${deliveryWindow(regionConfig, lang)}.`,
+                    })
+                  : t({
+                      de: `Noch ${formatMoney(estimate.freeShippingGap, currency, lang)} bis zum kostenfreien Versand, ab ${formatMoney(regionConfig.freeShippingCents, currency, lang)}.`,
+                      en: `${formatMoney(estimate.freeShippingGap, currency, lang)} more for free shipping, which starts at ${formatMoney(regionConfig.freeShippingCents, currency, lang)}.`,
+                    })}
               </p>
             </div>
 
             <PaymentBadges region={region} className="mt-5" />
 
             <Link href="/checkout" className={cn(buttonClasses("solid", "lg", true), "mt-5")}>
-              Zur Kasse
+              {t({ de: "Zur Kasse", en: "Checkout" })}
               <ArrowRight size={14} aria-hidden="true" />
             </Link>
 
             <p className="mt-3 text-[11px] leading-snug text-ink-3">
-              Im nächsten Schritt wählst du Lieferadresse und Zahlungsart. Erst danach wird die
-              Bestellung verbindlich.
+              {t({
+                de:
+                  "Im nächsten Schritt wählst du Lieferadresse und Zahlungsart. Erst danach wird die " +
+                  "Bestellung verbindlich.",
+                en:
+                  "In the next step you choose the delivery address and the payment method. Only " +
+                  "then does the order become binding.",
+              })}
             </p>
           </div>
         </aside>

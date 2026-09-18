@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
+import { useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ import { cn } from "@/lib/utils";
  * so the server markup and the first client render carry the same nodes.
  */
 export function EmptyState({
-  kicker = "Leer",
+  kicker,
   title,
   text,
   actions,
@@ -31,6 +32,7 @@ export function EmptyState({
   compact?: boolean;
   className?: string;
 }) {
+  const t = useT();
   const reduce = useReducedMotion() === true;
   const draw = {
     duration: reduce ? 0 : DURATION.slow,
@@ -67,7 +69,9 @@ export function EmptyState({
         />
       </motion.svg>
 
-      <p className={cn("type-kicker text-ink-3", compact ? "mt-5" : "mt-7")}>{kicker}</p>
+      <p className={cn("type-kicker text-ink-3", compact ? "mt-5" : "mt-7")}>
+        {kicker ?? t({ de: "Leer", en: "Empty" })}
+      </p>
       <h2
         className={cn(
           "mt-3 font-display leading-tight text-ink",

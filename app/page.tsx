@@ -15,6 +15,7 @@ import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
+import { useLang, useT } from "@/lib/i18n";
 import { DURATION } from "@/lib/motion";
 import { useJingStore, type Mode } from "@/lib/store";
 import { originFromEvent, type SwitchOptions } from "@/lib/switch-origin";
@@ -51,7 +52,9 @@ function CollectionSection({
     [instant],
   );
   const reduceMotion = useReducedMotion() ?? false;
+  const t = useT();
   const copy = RITUAL[collection];
+  const title = t(copy.title);
   const products = getProductsByCollection(collection);
   const headingId = `${collection}-titel`;
   const side = collection === "yang" ? "left" : "right";
@@ -76,19 +79,19 @@ function CollectionSection({
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line pb-6">
           <Reveal from={side}>
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
-              {copy.kicker}
+              {t(copy.kicker)}
             </p>
             <h2
               id={headingId}
               className="mt-3 font-display text-3xl tracking-[0.06em] text-ink sm:text-4xl"
             >
-              {copy.title}, {copy.daypart}
+              {title}, {t(copy.daypart)}
             </h2>
-            <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink-2">{copy.lead}</p>
+            <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink-2">{t(copy.lead)}</p>
           </Reveal>
           <Reveal from={otherSide} delay={STAGGER}>
             <p className="font-mono text-[11px] tabular-nums uppercase tracking-[0.18em] text-ink-3">
-              {copy.hours} Uhr
+              {t({ de: `${copy.hours.de} Uhr`, en: copy.hours.en })}
             </p>
           </Reveal>
         </div>
@@ -107,7 +110,10 @@ function CollectionSection({
               <ul
                 id={`${collection}-produkte`}
                 role="list"
-                aria-label={`Die fünf Stücke von ${copy.title}`}
+                aria-label={t({
+                  de: `Die fünf Stücke von ${title}`,
+                  en: `The five pieces of ${title}`,
+                })}
                 className="mt-10 scroll-mt-24 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
               >
                 {products.map((product, index) => (
@@ -132,13 +138,13 @@ function CollectionSection({
               transition={swap}
               className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-5"
             >
-              <p className="max-w-[48ch] text-sm leading-relaxed text-ink-3">{copy.invite}</p>
+              <p className="max-w-[48ch] text-sm leading-relaxed text-ink-3">{t(copy.invite)}</p>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={(event) => onActivate(collection, { origin: originFromEvent(event) })}
               >
-                {copy.cta}
+                {t(copy.cta)}
               </Button>
 
               {/*
@@ -173,6 +179,8 @@ function CollectionSection({
 export default function HomePage() {
   const { mode, setMode, region, hydrated } = useYinYang();
   const modeSwitched = useJingStore((state) => state.modeSwitched);
+  const lang = useLang();
+  const t = useT();
   const thesis = useRef<HTMLElement>(null);
 
   // Persisted values only after rehydration, so the first paint matches the server.
@@ -220,17 +228,42 @@ export default function HomePage() {
     };
   }, [hydrated, setMode]);
 
+  const regionLabel = lang === "en" ? activeRegion.labelEn : activeRegion.label;
   const facts = [
-    { label: "Versand", value: `aus ${SITE.warehouse.city}, ${SITE.warehouse.country}` },
-    { label: "Lieferzeit", value: `${deliveryWindow(activeRegion)} nach ${activeRegion.label}` },
-    { label: "Widerruf", value: `${WITHDRAWAL_DAYS} Tage, ohne Angabe von Gründen` },
+    {
+      label: t({ de: "Versand", en: "Shipping" }),
+      value: t({
+        de: `aus ${SITE.warehouse.city}, ${SITE.warehouse.country}`,
+        en: `from ${SITE.warehouse.city}, the Netherlands`,
+      }),
+    },
+    {
+      label: t({ de: "Lieferzeit", en: "Delivery" }),
+      value: t({
+        de: `${deliveryWindow(activeRegion, lang)} nach ${regionLabel}`,
+        en: `${deliveryWindow(activeRegion, lang)} to ${regionLabel}`,
+      }),
+    },
+    {
+      label: t({ de: "Widerruf", en: "Withdrawal" }),
+      value: t({
+        de: `${WITHDRAWAL_DAYS} Tage, ohne Angabe von Gründen`,
+        en: `${WITHDRAWAL_DAYS} days, no reasons required`,
+      }),
+    },
   ];
 
   return (
     <>
       <RitualHero activeMode={activeMode} onSelect={setMode} />
 
-      <section aria-label="Versand, Lieferzeit und Widerruf" className="border-b border-line">
+      <section
+        aria-label={t({
+          de: "Versand, Lieferzeit und Widerruf",
+          en: "Shipping, delivery and withdrawal",
+        })}
+        className="border-b border-line"
+      >
         <ul
           role="list"
           className="mx-auto grid w-full max-w-[1240px] grid-cols-1 px-4 sm:grid-cols-3 sm:px-6"
@@ -276,32 +309,52 @@ export default function HomePage() {
         <div className="mx-auto w-full max-w-[1240px] px-4 py-16 sm:px-6 sm:py-24">
           <Reveal from="left">
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
-              Die These
+              {t({ de: "Die These", en: "The thesis" })}
             </p>
             <h2
               id="these-titel"
               className="mt-5 max-w-[22ch] font-display text-3xl leading-tight tracking-[0.04em] sm:text-5xl"
             >
-              Zwei Hälften, ein Regal
+              {t({ de: "Zwei Hälften, ein Regal", en: "Two halves, one shelf" })}
             </h2>
           </Reveal>
 
           <div className="mt-12 grid gap-8 border-t border-line pt-10 md:grid-cols-3">
             <Reveal from="left" delay={0}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
-              Der Tag verlangt etwas anderes als die Nacht. Am Morgen zählt, was Struktur gibt und
-              bis zum letzten Termin hält. Am Abend zählt, was zurücknimmt und der Haut die Arbeit
-              überlässt.
+              {t({
+                de:
+                  "Der Tag verlangt etwas anderes als die Nacht. Am Morgen zählt, was Struktur gibt und " +
+                  "bis zum letzten Termin hält. Am Abend zählt, was zurücknimmt und der Haut die Arbeit " +
+                  "überlässt.",
+                en:
+                  "The day asks for something other than the night. In the morning, what counts is " +
+                  "what gives structure and holds until the last appointment. In the evening, what " +
+                  "counts is what takes back and leaves the work to the skin.",
+              })}
             </p></Reveal>
             <Reveal from="up" delay={STAGGER}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
-              Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang
-              gehört zu den Stunden von {SITE.ritualWindow.yang} Uhr, Yin zu den Stunden von{" "}
-              {SITE.ritualWindow.yin} Uhr. Jede Hälfte hat fünf Stücke, mehr braucht ein
-              Ritual nicht.
+              {t({
+                de:
+                  "Deshalb ist das Sortiment nicht nach Kategorien geordnet, sondern nach Tageszeit. Yang " +
+                  `gehört zu den Stunden von ${RITUAL.yang.hours.de} Uhr, Yin zu den Stunden von ` +
+                  `${RITUAL.yin.hours.de} Uhr. Jede Hälfte hat fünf Stücke, mehr braucht ein ` +
+                  "Ritual nicht.",
+                en:
+                  "That is why the range is not ordered by category but by time of day. Yang " +
+                  `belongs to the hours from ${RITUAL.yang.hours.en}, Yin to the hours from ` +
+                  `${RITUAL.yin.hours.en}. Each half has five pieces, a ritual needs no more.`,
+              })}
             </p></Reveal>
             <Reveal from="right" delay={2 * STAGGER}><p className="max-w-[46ch] text-sm leading-relaxed text-ink-2">
-              Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit mit zwei Seiten. Du
-              entscheidest, welche gerade gilt, und der Shop richtet sich danach aus, in der Ansicht
-              wie im Sortiment.
+              {t({
+                de:
+                  "Was daraus entsteht, ist weniger eine Routine als eine Gewohnheit mit zwei Seiten. Du " +
+                  "entscheidest, welche gerade gilt, und der Shop richtet sich danach aus, in der Ansicht " +
+                  "wie im Sortiment.",
+                en:
+                  "What comes of it is less a routine than a habit with two sides. You decide which " +
+                  "one applies right now, and the shop follows, in the view as in the range.",
+              })}
             </p></Reveal>
           </div>
         </div>

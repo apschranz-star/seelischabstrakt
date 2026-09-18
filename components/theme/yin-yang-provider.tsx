@@ -92,6 +92,14 @@ export function YinYangProvider({ children }: { children: ReactNode }) {
   //
   // The browser chrome follows the surface: the theme-color metas get the live
   // token, read back from the computed style, so no colour literal lives here.
+  // The document language follows the visitor's choice, for screen readers,
+  // hyphenation and the browser's translate prompt.
+  const lang = useJingStore((state) => state.lang);
+  useEffect(() => {
+    if (!mounted || !hydrated) return;
+    document.documentElement.lang = lang;
+  }, [lang, mounted, hydrated]);
+
   useEffect(() => {
     if (!mounted || !hydrated) return;
     const root = document.documentElement;

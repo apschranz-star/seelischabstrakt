@@ -2,6 +2,8 @@
 
 ## Was JING ist
 
+The shop reads in German and English. The visitor switches in the header, the choice is kept next to mode and region. Every string in the code is a pair { de, en }, product texts carry a translations.en block in config/products.ts, and the legal pages stay German with an English notice that the German version is binding.
+
 JING ist ein Shop für den DACH-Markt, gebaut mit Next.js 15 im App Router, React 19 und TypeScript im
 strict-Modus. Der Katalog umfasst zehn Produkte einer Eigenmarke, fünf Objekte für den Abend und fünf
 für den Tag, gepflegt als statische Daten in `config/products.ts`. Geliefert und abgerechnet wird in

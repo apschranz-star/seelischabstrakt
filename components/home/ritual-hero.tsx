@@ -31,6 +31,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "framer-motion
 import { useRef } from "react";
 
 import { RITUAL } from "@/components/home/ritual-copy";
+import { useT } from "@/lib/i18n";
 import { DISTANCE, useReduceRef, useScrollDrive } from "@/lib/motion";
 import type { Mode } from "@/lib/store";
 import { originFromEvent, type SwitchOptions } from "@/lib/switch-origin";
@@ -58,7 +59,12 @@ function RitualHalf({
   /** The shared lag of plane 0, in pixels. */
   depth: MotionValue<number>;
 }) {
+  const t = useT();
   const copy = RITUAL[collection];
+  const hours = t({ de: `${copy.hours.de} Uhr`, en: copy.hours.en });
+  const state = active
+    ? t({ de: "Aktive Ansicht", en: "Active view" })
+    : t({ de: "Ansicht wechseln", en: "Switch view" });
 
   return (
     <button
@@ -66,9 +72,10 @@ function RitualHalf({
       onClick={(event) => onSelect(collection, { origin: originFromEvent(event) })}
       aria-pressed={active}
       aria-controls={collection}
-      aria-label={`${copy.title}, ${copy.daypart}, Ritualfenster ${copy.hours} Uhr, ${
-        active ? "Aktive Ansicht" : "Ansicht wechseln"
-      }`}
+      aria-label={`${t(copy.title)}, ${t(copy.daypart)}, ${t({
+        de: "Ritualfenster",
+        en: "Ritual window",
+      })} ${hours}, ${state}`}
       className={cn(
         "flex min-h-[24rem] flex-col justify-between py-12 text-left",
         "transition-opacity duration-[var(--duration-ritual)] ease-ritual md:min-h-[38rem] md:py-20",
@@ -90,12 +97,12 @@ function RitualHalf({
             active ? "text-ink-3" : "text-ink-2",
           )}
         >
-          {copy.kicker}
+          {t(copy.kicker)}
         </span>
         <span className="mt-6 block font-display text-[clamp(3.25rem,11vw,6rem)] leading-[0.85] tracking-[0.06em] text-ink">
-          {copy.title}
+          {t(copy.title)}
         </span>
-        <span className="mt-4 block text-sm text-ink-2">{copy.daypart}</span>
+        <span className="mt-4 block text-sm text-ink-2">{t(copy.daypart)}</span>
       </motion.span>
 
       {/* Plane 1. Scrolls with the page. */}
@@ -106,11 +113,9 @@ function RitualHalf({
             active ? "text-ink-3" : "text-ink-2",
           )}
         >
-          Ritualfenster
+          {t({ de: "Ritualfenster", en: "Ritual window" })}
         </span>
-        <span className="mt-2 block font-mono text-[13px] tabular-nums text-ink">
-          {copy.hours} Uhr
-        </span>
+        <span className="mt-2 block font-mono text-[13px] tabular-nums text-ink">{hours}</span>
         <span
           className={cn(
             "mt-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em]",
@@ -124,7 +129,7 @@ function RitualHalf({
               active ? "bg-ink" : "bg-line-2",
             )}
           />
-          {active ? "Aktive Ansicht" : "Ansicht wechseln"}
+          {state}
         </span>
       </span>
     </button>

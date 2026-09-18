@@ -21,8 +21,10 @@ export type PaymentMethodId =
 export interface PaymentMethod {
   id: PaymentMethodId;
   label: string;
+  labelEn: string;
   /** Short line shown under the badge in the checkout. */
   note: string;
+  noteEn: string;
   /** Regions where the method is offered. */
   regions: RegionCode[];
 }
@@ -30,6 +32,7 @@ export interface PaymentMethod {
 export interface Region {
   code: RegionCode;
   label: string;
+  labelEn: string;
   currency: CurrencyCode;
   /** Standard rate of value added tax applied to cosmetics in this region. */
   vatRate: number;
@@ -54,6 +57,7 @@ export const REGIONS: Record<RegionCode, Region> = {
   DE: {
     code: "DE",
     label: "Deutschland",
+    labelEn: "Germany",
     currency: "EUR",
     vatRate: 0.19,
     vatLabel: "19 % MwSt.",
@@ -66,6 +70,7 @@ export const REGIONS: Record<RegionCode, Region> = {
   AT: {
     code: "AT",
     label: "Österreich",
+    labelEn: "Austria",
     currency: "EUR",
     vatRate: 0.2,
     vatLabel: "20 % USt.",
@@ -78,6 +83,7 @@ export const REGIONS: Record<RegionCode, Region> = {
   CH: {
     code: "CH",
     label: "Schweiz",
+    labelEn: "Switzerland",
     currency: "CHF",
     vatRate: 0.081,
     vatLabel: "8,1 % MWST",
@@ -104,43 +110,57 @@ export const PAYMENT_METHODS: Record<PaymentMethodId, PaymentMethod> = {
   klarna: {
     id: "klarna",
     label: "Klarna",
+    labelEn: "Klarna",
     note: "Rechnung oder Ratenkauf",
+    noteEn: "Pay later or in instalments",
     regions: ["DE", "AT"],
   },
   eps: {
     id: "eps",
     label: "EPS",
+    labelEn: "EPS",
     note: "Österreichisches Online-Banking",
+    noteEn: "Austrian online banking",
     regions: ["AT"],
   },
   twint: {
     id: "twint",
     label: "TWINT",
+    labelEn: "TWINT",
     note: "Schweizer Mobile Payment",
+    noteEn: "Swiss mobile payment",
     regions: ["CH"],
   },
   applepay: {
     id: "applepay",
     label: "Apple Pay",
+    labelEn: "Apple Pay",
     note: "Zahlung in zwei Schritten",
+    noteEn: "Two taps to pay",
     regions: ["DE", "AT", "CH"],
   },
   paypal: {
     id: "paypal",
     label: "PayPal",
+    labelEn: "PayPal",
     note: "Käuferschutz inklusive",
+    noteEn: "Buyer protection included",
     regions: ["DE", "AT", "CH"],
   },
   sepa: {
     id: "sepa",
     label: "SEPA-Lastschrift",
+    labelEn: "SEPA direct debit",
     note: "Einzug nach Versand",
+    noteEn: "Debited after dispatch",
     regions: ["DE", "AT"],
   },
   card: {
     id: "card",
     label: "Karte",
+    labelEn: "Card",
     note: "Visa, Mastercard, Amex",
+    noteEn: "Visa, Mastercard, Amex",
     regions: ["DE", "AT", "CH"],
   },
 };

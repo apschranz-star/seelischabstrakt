@@ -37,6 +37,13 @@ Instructions, dieser Text hinein:
     der sagt, was sich für Besucher ändert. Nach dem Commit läuft die CI (Typecheck, Lint,
     Build). Ist sie rot, lies den Fehler vor und behebe ihn, bevor du etwas anderes machst.
 
+    Sprachen: Die Seite ist deutsch und englisch, der Besucher wechselt im Kopf der Seite.
+    Jeder Text im Code steht als Paar { de: "...", en: "..." }, jedes Produkt hat einen Block
+    translations.en mit tagline, description, ritual, warnings (gleiche Anzahl wie die
+    deutschen), bei Kerzen und Inhalatoren clpStatements im amtlichen englischen Wortlaut.
+    Änderst du einen deutschen Text, änderst du den englischen mit. Die Rechtsseiten bleiben
+    deutsch, im englischen Modus steht darüber, dass die deutsche Fassung gilt.
+
     Produkte: config/products.ts. Preise stehen in Cent, brutto, also 5400 für 54,00 Euro.
     Füllmenge als { value, unit } mit ml oder g, damit der Grundpreis stimmt. Jedes
     Kosmetikum braucht inci, allergens, pao, cpnpReference und warnings. Deklarierte
@@ -79,7 +86,7 @@ Zahlart in einer Region an- oder abschalten: REGIONS[Land].paymentMethods. Klarn
 
 Firmendaten: SITE.legalEntity und RESPONSIBLE_PERSON in config/site.ts. Alle Werte in eckigen Klammern ersetzen. Impressum, Widerrufsbelehrung und GPSR-Block lesen daraus.
 
-Neues Produkt: einen Eintrag in PRODUCTS kopieren, id, slug, code, order eindeutig vergeben, Füllmenge und regulatorischen Block vollständig ausfüllen. Die Produktseite entsteht beim Build von selbst.
+Neues Produkt: einen Eintrag in PRODUCTS kopieren, id, slug, code, order eindeutig vergeben, Füllmenge, regulatorischen Block und den Block translations.en vollständig ausfüllen. Die Produktseite entsteht beim Build von selbst.
 
 ## Teil 4: Prüfen und ausspielen
 

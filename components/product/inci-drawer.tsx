@@ -6,15 +6,17 @@ import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 
 import { createPortal } from "react-dom";
 
 import { buttonClasses } from "@/components/ui/button";
-import type {
-  AccessoryRegulatory,
-  CandleRegulatory,
-  CosmeticRegulatory,
-  ElectricalRegulatory,
-  Product,
-  Regulatory,
+import {
+  localizeProduct,
+  type AccessoryRegulatory,
+  type CandleRegulatory,
+  type CosmeticRegulatory,
+  type ElectricalRegulatory,
+  type Product,
+  type Regulatory,
 } from "@/config/products";
 import { SITE } from "@/config/site";
+import { useLang, useT, type Text } from "@/lib/i18n";
 import { panelTransition } from "@/lib/motion";
 import { useMounted } from "@/lib/use-mounted";
 import { cn } from "@/lib/utils";
@@ -57,10 +59,11 @@ function Note({ children }: { children: ReactNode }) {
 }
 
 function Warnings({ items }: { items: string[] }) {
+  const t = useT();
   if (items.length === 0) return null;
 
   return (
-    <Section title="Warnhinweise">
+    <Section title={t({ de: "Warnhinweise", en: "Warnings" })}>
       <ul className="flex flex-col gap-2.5">
         {items.map((warning) => (
           <li key={warning} className="flex gap-2.5 text-[13px] leading-relaxed text-ink-2">
@@ -104,11 +107,12 @@ function CrossedBinMark() {
 /* --------------------------------------------------------------- panels per kind */
 
 function CosmeticPanel({ regulatory }: { regulatory: CosmeticRegulatory }) {
+  const t = useT();
   const months = regulatory.pao.replace(/[^0-9]/g, "");
 
   return (
     <>
-      <Section title="INCI, in gedruckter Reihenfolge">
+      <Section title={t({ de: "INCI, in gedruckter Reihenfolge", en: "INCI, in printed order" })}>
         <ol className="flex select-text flex-col gap-1.5">
           {regulatory.inci.map((ingredient, index) => (
             <li
@@ -123,14 +127,14 @@ function CosmeticPanel({ regulatory }: { regulatory: CosmeticRegulatory }) {
           ))}
         </ol>
         <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-          Die Reihenfolge entspricht dem Aufdruck auf der Packung. Bestandteile über einem Prozent
-          stehen absteigend nach Gewichtsanteil, Bestandteile unter einem Prozent danach in
-          beliebiger Reihenfolge, Farbstoffe mit ihrer CI-Nummer am Ende. Der Text lässt sich
-          markieren und kopieren, etwa für die Rückfrage in einer Hautarztpraxis.
+          {t({
+            de: "Die Reihenfolge entspricht dem Aufdruck auf der Packung. Bestandteile über einem Prozent stehen absteigend nach Gewichtsanteil, Bestandteile unter einem Prozent danach in beliebiger Reihenfolge, Farbstoffe mit ihrer CI-Nummer am Ende. Der Text lässt sich markieren und kopieren, etwa für die Rückfrage in einer Hautarztpraxis.",
+            en: "The order matches the print on the pack. Ingredients above one percent are listed in descending order of weight, ingredients below one percent follow in any order, colourants with their CI number at the end. The text can be selected and copied, for example for a question to a dermatologist.",
+          })}
         </p>
       </Section>
 
-      <Section title="Duftstoffallergene">
+      <Section title={t({ de: "Duftstoffallergene", en: "Fragrance allergens" })}>
         {regulatory.allergens.length > 0 ? (
           <>
             <ul className="flex select-text flex-wrap gap-2">
@@ -144,43 +148,52 @@ function CosmeticPanel({ regulatory }: { regulatory: CosmeticRegulatory }) {
               ))}
             </ul>
             <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-              Diese Stoffe müssen nach Anhang III der Verordnung (EG) Nr. 1223/2009 gesondert
-              angegeben werden, sobald sie in einem Produkt zum Verbleib auf der Haut über 0,001
-              Prozent liegen, bei abzuspülenden Produkten über 0,01 Prozent. Genannt werden sie
-              zusätzlich in der INCI-Liste oben.
+              {t({
+                de: "Diese Stoffe müssen nach Anhang III der Verordnung (EG) Nr. 1223/2009 gesondert angegeben werden, sobald sie in einem Produkt zum Verbleib auf der Haut über 0,001 Prozent liegen, bei abzuspülenden Produkten über 0,01 Prozent. Genannt werden sie zusätzlich in der INCI-Liste oben.",
+                en: "Under Annex III of Regulation (EC) No 1223/2009 these substances must be declared separately once they exceed 0.001 percent in a leave-on product or 0.01 percent in a rinse-off product. They also appear in the INCI list above.",
+              })}
             </p>
           </>
         ) : (
           <Note>
-            Dieses Produkt enthält keinen Duftstoff, der nach Anhang III der Verordnung (EG) Nr.
-            1223/2009 gesondert angegeben werden muss.
+            {t({
+              de: "Dieses Produkt enthält keinen Duftstoff, der nach Anhang III der Verordnung (EG) Nr. 1223/2009 gesondert angegeben werden muss.",
+              en: "This product contains no fragrance substance that must be declared separately under Annex III of Regulation (EC) No 1223/2009.",
+            })}
           </Note>
         )}
       </Section>
 
-      <Section title="Haltbarkeit nach dem Öffnen">
+      <Section title={t({ de: "Haltbarkeit nach dem Öffnen", en: "Period after opening" })}>
         <DataList>
-          <DataRow label="Zeichen auf der Packung" value={regulatory.pao} />
+          <DataRow label={t({ de: "Zeichen auf der Packung", en: "Symbol on the pack" })} value={regulatory.pao} />
         </DataList>
         <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
           {months
-            ? `Der geöffnete Tiegel oder Flakon ist ${months} Monate lang zur Anwendung bestimmt. Das Zeichen ist der offene Cremetiegel auf der Packung.`
-            : "Die Angabe steht als offener Cremetiegel auf der Packung."}
+            ? t({
+                de: `Der geöffnete Tiegel oder Flakon ist ${months} Monate lang zur Anwendung bestimmt. Das Zeichen ist der offene Cremetiegel auf der Packung.`,
+                en: `Once opened, the jar or bottle is intended for use for ${months} months. The symbol is the open cream jar on the pack.`,
+              })
+            : t({
+                de: "Die Angabe steht als offener Cremetiegel auf der Packung.",
+                en: "The period is shown as an open cream jar on the pack.",
+              })}
         </p>
       </Section>
 
-      <Section title="Meldung im CPNP">
+      <Section title={t({ de: "Meldung im CPNP", en: "CPNP notification" })}>
         <div className="border border-line-2 bg-surface-2 p-4">
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-            CPNP-Referenz
+            {t({ de: "CPNP-Referenz", en: "CPNP reference" })}
           </p>
           <p className="mt-1.5 select-text font-mono text-[14px] text-ink">
             {regulatory.cpnpReference}
           </p>
           <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-            Diese Referenz ist ein Demonstrationswert aus den Beispieldaten dieses Repositorys und
-            steht für keine echte Meldung im Cosmetic Products Notification Portal. Vor dem
-            Livegang wird sie durch die Referenz der tatsächlichen Notifizierung ersetzt.
+            {t({
+              de: "Diese Referenz ist ein Demonstrationswert aus den Beispieldaten dieses Repositorys und steht für keine echte Meldung im Cosmetic Products Notification Portal. Vor dem Livegang wird sie durch die Referenz der tatsächlichen Notifizierung ersetzt.",
+              en: "This reference is a demonstration value from the sample data of this repository and does not stand for a real notification in the Cosmetic Products Notification Portal. Before launch it will be replaced by the reference of the actual notification.",
+            })}
           </p>
         </div>
       </Section>
@@ -191,45 +204,53 @@ function CosmeticPanel({ regulatory }: { regulatory: CosmeticRegulatory }) {
 }
 
 function ElectricalPanel({ regulatory }: { regulatory: ElectricalRegulatory }) {
+  const t = useT();
+
   return (
     <>
-      <Section title="Registrierung nach ElektroG">
+      <Section title={t({ de: "Registrierung nach ElektroG", en: "WEEE registration (ElektroG)" })}>
         <p className="select-text font-mono text-[13px] leading-relaxed text-ink">
           {regulatory.weeeNumber}
         </p>
         <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-          Die Registrierung bei der Stiftung Elektro-Altgeräte Register gilt für den Vertrieb in
-          Deutschland und wird vor dem ersten Verkauf eingetragen.
+          {t({
+            de: "Die Registrierung bei der Stiftung Elektro-Altgeräte Register gilt für den Vertrieb in Deutschland und wird vor dem ersten Verkauf eingetragen.",
+            en: "The registration with Stiftung Elektro-Altgeräte Register covers sales in Germany and is entered before the first sale.",
+          })}
         </p>
       </Section>
 
-      <Section title="Technische Angaben">
+      <Section title={t({ de: "Technische Angaben", en: "Technical details" })}>
         <DataList>
-          <DataRow label="Spannung" value={regulatory.voltage} />
-          <DataRow label="Leistungsaufnahme" value={regulatory.power} />
-          <DataRow label="Batterie oder Akku" value={regulatory.hasBattery ? "enthalten" : "keine"} />
+          <DataRow label={t({ de: "Spannung", en: "Voltage" })} value={regulatory.voltage} />
+          <DataRow label={t({ de: "Leistungsaufnahme", en: "Power consumption" })} value={regulatory.power} />
+          <DataRow
+            label={t({ de: "Batterie oder Akku", en: "Battery" })}
+            value={
+              regulatory.hasBattery
+                ? t({ de: "enthalten", en: "included" })
+                : t({ de: "keine", en: "none" })
+            }
+          />
         </DataList>
         {regulatory.hasBattery ? (
           <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-            Das Gerät enthält eine Batterie und fällt damit zusätzlich unter das Batteriegesetz.
-            Batterien gehören nicht in den Hausmüll, die Rückgabe ist im Handel und an
-            kommunalen Sammelstellen kostenlos.
+            {t({
+              de: "Das Gerät enthält eine Batterie und fällt damit zusätzlich unter das Batteriegesetz. Batterien gehören nicht in den Hausmüll, die Rückgabe ist im Handel und an kommunalen Sammelstellen kostenlos.",
+              en: "The device contains a battery and therefore also falls under the German Battery Act. Batteries do not belong in household waste. They can be returned free of charge to retailers and municipal collection points.",
+            })}
           </p>
         ) : null}
       </Section>
 
-      <Section title="Getrennte Sammlung von Altgeräten">
+      <Section title={t({ de: "Getrennte Sammlung von Altgeräten", en: "Separate collection of old appliances" })}>
         <div className="flex gap-4 border border-line-2 bg-surface-2 p-4">
           <CrossedBinMark />
           <p className="text-[12px] leading-relaxed text-ink-2">
-            Elektroaltgeräte gehören nicht in den Hausmüll, sondern in die getrennte Sammlung,
-            damit Rohstoffe zurückgewonnen und Schadstoffe aus dem Restmüll gehalten werden. Du kannst
-            das Gerät kostenlos an uns zurückgeben oder es bei einer kommunalen Sammelstelle
-            abgeben. Für die Rücksendung schicken wir dir auf Anfrage ein Etikett, der Weg steht
-            unter Versand und Rückgabe. Vor
-            der Rückgabe Altbatterien und, sofern vorhanden, Lampen entnehmen und getrennt
-            entsorgen. Für das Löschen persönlicher Daten auf dem Altgerät bist du selbst
-            verantwortlich.
+            {t({
+              de: "Elektroaltgeräte gehören nicht in den Hausmüll, sondern in die getrennte Sammlung, damit Rohstoffe zurückgewonnen und Schadstoffe aus dem Restmüll gehalten werden. Du kannst das Gerät kostenlos an uns zurückgeben oder es bei einer kommunalen Sammelstelle abgeben. Für die Rücksendung schicken wir dir auf Anfrage ein Etikett, der Weg steht unter Versand und Rückgabe. Vor der Rückgabe Altbatterien und, sofern vorhanden, Lampen entnehmen und getrennt entsorgen. Für das Löschen persönlicher Daten auf dem Altgerät bist du selbst verantwortlich.",
+              en: "Waste electrical equipment does not belong in household waste but in separate collection, so that raw materials are recovered and pollutants are kept out of residual waste. You can return the device to us free of charge or hand it in at a municipal collection point. On request we send you a return label, the procedure is described under Shipping and returns. Before returning it, remove old batteries and, where present, lamps and dispose of them separately. You are responsible for deleting personal data on the old device.",
+            })}
           </p>
         </div>
       </Section>
@@ -240,19 +261,27 @@ function ElectricalPanel({ regulatory }: { regulatory: ElectricalRegulatory }) {
 }
 
 function CandlePanel({ regulatory }: { regulatory: CandleRegulatory }) {
+  const t = useT();
+
   return (
     <>
-      <Section title="Einstufung nach CLP">
+      <Section title={t({ de: "Einstufung nach CLP", en: "CLP classification" })}>
         <DataList>
           <DataRow
-            label="Signalwort"
-            value={regulatory.clpSignalWord.length > 0 ? regulatory.clpSignalWord : "keines"}
+            label={t({ de: "Signalwort", en: "Signal word" })}
+            value={
+              regulatory.clpSignalWord.length > 0
+                ? regulatory.clpSignalWord
+                : t({ de: "keines", en: "none" })
+            }
           />
         </DataList>
         {regulatory.clpSignalWord.length === 0 ? (
           <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-            Kein Signalwort, weil die Kerze nach der Verordnung (EG) Nr. 1272/2008 nicht als
-            gefährlich eingestuft ist. Die folgenden Sätze bleiben trotzdem verpflichtend.
+            {t({
+              de: "Kein Signalwort, weil die Kerze nach der Verordnung (EG) Nr. 1272/2008 nicht als gefährlich eingestuft ist. Die folgenden Sätze bleiben trotzdem verpflichtend.",
+              en: "No signal word, because the candle is not classified as hazardous under Regulation (EC) No 1272/2008. The following statements remain mandatory.",
+            })}
           </p>
         ) : null}
         <ul className="mt-3 flex flex-col gap-2">
@@ -264,13 +293,18 @@ function CandlePanel({ regulatory }: { regulatory: CandleRegulatory }) {
         </ul>
       </Section>
 
-      <Section title="Brenndauer">
+      <Section title={t({ de: "Brenndauer", en: "Burn time" })}>
         <DataList>
-          <DataRow label="Brenndauer, gesamt" value={`${regulatory.burnTimeHours} Stunden`} />
+          <DataRow
+            label={t({ de: "Brenndauer, gesamt", en: "Burn time, total" })}
+            value={`${regulatory.burnTimeHours} ${t({ de: "Stunden", en: "hours" })}`}
+          />
         </DataList>
         <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-          Richtwert aus dem Brennversuch bei ruhiger Luft. Zugluft und häufige kurze Brennzeiten
-          verkürzen ihn.
+          {t({
+            de: "Richtwert aus dem Brennversuch bei ruhiger Luft. Zugluft und häufige kurze Brennzeiten verkürzen ihn.",
+            en: "Guide value from the burn test in still air. Draughts and frequent short burns shorten it.",
+          })}
         </p>
       </Section>
 
@@ -280,20 +314,21 @@ function CandlePanel({ regulatory }: { regulatory: CandleRegulatory }) {
 }
 
 function AccessoryPanel({ regulatory }: { regulatory: AccessoryRegulatory }) {
+  const t = useT();
   const { cosmetic } = regulatory;
 
   return (
     <>
-      <Section title="Material">
+      <Section title={t({ de: "Material", en: "Material" })}>
         <p className="select-text text-[13px] leading-relaxed text-ink-2">{regulatory.material}</p>
       </Section>
 
-      <Section title="Pflege">
+      <Section title={t({ de: "Pflege", en: "Care" })}>
         <p className="select-text text-[13px] leading-relaxed text-ink-2">{regulatory.care}</p>
       </Section>
 
       {regulatory.ingredients?.length ? (
-        <Section title="Zusammensetzung">
+        <Section title={t({ de: "Zusammensetzung", en: "Composition" })}>
           <ol className="flex select-text flex-col gap-1.5">
             {regulatory.ingredients.map((item, index) => (
               <li key={`${index}-${item}`} className="flex gap-3 font-mono text-[12px] leading-relaxed">
@@ -303,15 +338,16 @@ function AccessoryPanel({ regulatory }: { regulatory: AccessoryRegulatory }) {
             ))}
           </ol>
           <p className="mt-3 text-[12px] leading-relaxed text-ink-3">
-            Der eingeatmete Teil ist kein kosmetisches Mittel, er wird nicht auf den Körper
-            aufgetragen. Er trägt deshalb eine Zusammensetzung nach Gewichtsanteil und, wo die
-            Mischung eingestuft ist, die Kennzeichnung nach CLP.
+            {t({
+              de: "Der eingeatmete Teil ist kein kosmetisches Mittel, er wird nicht auf den Körper aufgetragen. Er trägt deshalb eine Zusammensetzung nach Gewichtsanteil und, wo die Mischung eingestuft ist, die Kennzeichnung nach CLP.",
+              en: "The inhaled part is not a cosmetic product, it is not applied to the body. It therefore carries a composition by weight and, where the mixture is classified, the CLP labelling.",
+            })}
           </p>
         </Section>
       ) : null}
 
       {regulatory.clpStatements?.length ? (
-        <Section title="Einstufung nach CLP">
+        <Section title={t({ de: "Einstufung nach CLP", en: "CLP classification" })}>
           {regulatory.clpSignalWord ? (
             <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-seal">
               {regulatory.clpSignalWord}
@@ -333,8 +369,10 @@ function AccessoryPanel({ regulatory }: { regulatory: AccessoryRegulatory }) {
             {cosmetic.name}, {cosmetic.netQuantity.value} {cosmetic.netQuantity.unit}
           </p>
           <p className="mt-2 max-w-[62ch] text-[12px] leading-relaxed text-ink-3">
-            Dem Set liegt ein kosmetisches Mittel bei. Es fällt unter die Verordnung (EG) Nr.
-            1223/2009 und bekommt deshalb dieselben Angaben wie jedes einzeln verkaufte Produkt.
+            {t({
+              de: "Dem Set liegt ein kosmetisches Mittel bei. Es fällt unter die Verordnung (EG) Nr. 1223/2009 und bekommt deshalb dieselben Angaben wie jedes einzeln verkaufte Produkt.",
+              en: "The set includes a cosmetic product. It falls under Regulation (EC) No 1223/2009 and therefore carries the same information as any product sold on its own.",
+            })}
           </p>
           <div className="mt-6">
             <CosmeticPanel
@@ -368,43 +406,60 @@ function RegulatoryBody({ regulatory }: { regulatory: Regulatory }) {
 }
 
 interface PanelMeta {
-  trigger: string;
-  title: string;
-  description: string;
+  trigger: Text;
+  title: Text;
+  description: Text;
 }
 
 function panelMeta(regulatory: Regulatory): PanelMeta {
   switch (regulatory.kind) {
     case "cosmetic":
       return {
-        trigger: "Inhaltsstoffe und Pflichtangaben",
-        title: "Inhaltsstoffe",
-        description: "INCI-Liste, Duftstoffallergene, Haltbarkeit und Warnhinweise.",
+        trigger: { de: "Inhaltsstoffe und Pflichtangaben", en: "Ingredients and mandatory information" },
+        title: { de: "Inhaltsstoffe", en: "Ingredients" },
+        description: {
+          de: "INCI-Liste, Duftstoffallergene, Haltbarkeit und Warnhinweise.",
+          en: "INCI list, fragrance allergens, period after opening and warnings.",
+        },
       };
     case "electrical":
       return {
-        trigger: "Technische Angaben und Entsorgung",
-        title: "Technische Angaben",
-        description: "Registrierung, Anschlusswerte, Rücknahme und Warnhinweise.",
+        trigger: { de: "Technische Angaben und Entsorgung", en: "Technical details and disposal" },
+        title: { de: "Technische Angaben", en: "Technical details" },
+        description: {
+          de: "Registrierung, Anschlusswerte, Rücknahme und Warnhinweise.",
+          en: "Registration, ratings, take-back and warnings.",
+        },
       };
     case "candle":
       return {
-        trigger: "CLP-Angaben und Brenndauer",
-        title: "CLP-Angaben",
-        description: "Einstufung, Brenndauer und Warnhinweise.",
+        trigger: { de: "CLP-Angaben und Brenndauer", en: "CLP information and burn time" },
+        title: { de: "CLP-Angaben", en: "CLP information" },
+        description: {
+          de: "Einstufung, Brenndauer und Warnhinweise.",
+          en: "Classification, burn time and warnings.",
+        },
       };
     case "accessory":
       return {
-        trigger: "Material und Pflege",
-        title: "Material und Pflege",
-        description: "Werkstoff, Pflege und Warnhinweise.",
+        trigger: { de: "Material und Pflege", en: "Material and care" },
+        title: { de: "Material und Pflege", en: "Material and care" },
+        description: {
+          de: "Werkstoff, Pflege und Warnhinweise.",
+          en: "Material, care and warnings.",
+        },
       };
   }
 }
 
 /* -------------------------------------------------------------------- the drawer */
 
-export function InciDrawer({ product }: { product: Product }) {
+export function InciDrawer({ product: source }: { product: Product }) {
+  // Warnings and CLP statements come out in the live language. INCI names, the
+  // CPNP reference and the numbers are not language and stay as they are.
+  const lang = useLang();
+  const t = useT();
+  const product = localizeProduct(source, lang);
   const [open, setOpen] = useState(false);
   // True once the body has scrolled, so the header's rule firms up. Written by
   // the body's scroll handler, an event, never by an effect.
@@ -509,7 +564,7 @@ export function InciDrawer({ product }: { product: Product }) {
         className={buttonClasses("outline", "md", true)}
       >
         <ScrollText size={14} aria-hidden="true" />
-        {meta.trigger}
+        {t(meta.trigger)}
       </button>
 
       {/*
@@ -521,7 +576,7 @@ export function InciDrawer({ product }: { product: Product }) {
       <noscript>
         <div className="mt-6 border border-line-2 bg-surface-2 p-5">
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-            {meta.title}
+            {t(meta.title)}
           </p>
           <div className="mt-4">
             <RegulatoryBody regulatory={product.regulatory} />
@@ -579,17 +634,17 @@ export function InciDrawer({ product }: { product: Product }) {
                           id={titleId}
                           className="mt-1.5 font-display text-xl leading-tight text-ink"
                         >
-                          {meta.title}
+                          {t(meta.title)}
                         </h2>
                         <p id={descriptionId} className="type-meta mt-1 text-ink-3">
-                          {product.name}. {meta.description}
+                          {product.name}. {t(meta.description)}
                         </p>
                       </div>
 
                       <button
                         type="button"
                         onClick={close}
-                        aria-label="Angaben schließen"
+                        aria-label={t({ de: "Angaben schließen", en: "Close details" })}
                         className={cn(buttonClasses("control", "icon"), "-mr-1 shrink-0")}
                       >
                         <X size={16} aria-hidden="true" />
@@ -611,9 +666,10 @@ export function InciDrawer({ product }: { product: Product }) {
                       <RegulatoryBody regulatory={product.regulatory} />
 
                       <p className="border-t border-line pt-5 text-[11px] leading-relaxed text-ink-3">
-                        Massgeblich ist immer der Aufdruck auf der gelieferten Packung. Hersteller
-                        ändern Rezepturen, ohne dass sich Name oder Aufmachung ändern. Bei Fragen
-                        zu einer Zutat antworten wir unter{" "}
+                        {t({
+                          de: "Massgeblich ist immer der Aufdruck auf der gelieferten Packung. Hersteller ändern Rezepturen, ohne dass sich Name oder Aufmachung ändern. Bei Fragen zu einer Zutat antworten wir unter",
+                          en: "The print on the delivered pack is always the binding one. Manufacturers change formulas without changing the name or the packaging. For questions about an ingredient, write to",
+                        })}{" "}
                         <a
                           href={`mailto:${SITE.email}`}
                           className="text-ink underline decoration-line-2 underline-offset-4 transition-colors duration-300 ease-ritual hover:decoration-ink"

@@ -10,7 +10,7 @@ import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Field, FIELD_INPUT, FIELD_LABEL } from "@/components/ui/field";
-import { DURATION, EASE_RITUAL } from "@/lib/motion";
+import { localizeProduct } from "@/config/products";
 import {
   PAYMENT_METHODS,
   REGIONS,
@@ -20,6 +20,8 @@ import {
   type RegionCode,
   type CurrencyCode,
 } from "@/config/site";
+import { intlLocale, useLang, useT, type Text } from "@/lib/i18n";
+import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
   cn,
@@ -32,6 +34,12 @@ import {
 } from "@/lib/utils";
 
 const SHELL = "mx-auto min-h-svh w-full max-w-[1240px] px-4 pb-[var(--space-section)] pt-8 sm:px-6 sm:pt-12";
+
+/** The Swiss customs note in English. The German original lives in config/site.ts. */
+const CUSTOMS_NOTE_EN =
+  "Switzerland lies outside the EU customs union. We ship duty and tax paid. " +
+  "Import tax is included in the price, and customs clearance is shown above as " +
+  "a separate line. There are no further costs at the door.";
 
 /**
  * Section 312j Abs. 2 BGB wants the essential characteristics, the total, the
@@ -54,15 +62,27 @@ function OrderSummary({
   estimate: ReturnType<typeof selectEstimate>;
   regionConfig: (typeof REGIONS)[RegionCode];
 }) {
+  const lang = useLang();
+  const t = useT();
+  // The carrier is a name; only its Swiss suffix is a German word.
+  const carrier = t({ de: regionConfig.carrier, en: regionConfig.carrier.replace("verzollt", "duty paid") });
+  // vatLabel is the regional German wording, English states the rate and says VAT.
+  const vatLabel = t({
+    de: regionConfig.vatLabel,
+    en: `${new Intl.NumberFormat(intlLocale("en", currency)).format(regionConfig.vatRate * 100)}% VAT`,
+  });
+
   return (
             <div className="border border-line bg-surface-2 p-5 sm:p-6">
               <h2 id={`zusammenfassung-${idSuffix}`} className="type-kicker text-ink-3">
-                Bestellübersicht
+                {t({ de: "Bestellübersicht", en: "Order summary" })}
               </h2>
 
               <ul className="mt-4">
-                {lines.map(({ product, quantity }) => {
-                  const basePrice = formatBasePrice(product, region);
+                {lines.map((line) => {
+                  const product = localizeProduct(line.product, lang);
+                  const { quantity } = line;
+                  const basePrice = formatBasePrice(product, region, lang);
                   const lineTotal = toRegionMinorUnits(product.priceCents, region) * quantity;
 
                   return (
@@ -79,16 +99,16 @@ function OrderSummary({
                           {product.unitsLabel}
                         </p>
                         <p className="mt-1 font-mono text-[11px] tabular-nums text-ink-3">
-                          {quantity} × {formatForRegion(product.priceCents, region)}
+                          {quantity} × {formatForRegion(product.priceCents, region, lang)}
                         </p>
                         {basePrice ? (
                           <p className="font-mono text-[11px] tabular-nums text-ink-3">
-                            Grundpreis {basePrice}
+                            {t({ de: `Grundpreis ${basePrice}`, en: `Base price ${basePrice}` })}
                           </p>
                         ) : null}
                       </div>
                       <p className="shrink-0 font-mono text-[13px] tabular-nums text-ink">
-                        {formatMoney(lineTotal, currency)}
+                        {formatMoney(lineTotal, currency, lang)}
                       </p>
                     </li>
                   );
@@ -97,64 +117,77 @@ function OrderSummary({
 
               <dl className="mt-4 flex flex-col gap-2 text-[13px]">
                 <div className="flex items-baseline justify-between gap-4">
-                  <dt className="text-ink-2">Zwischensumme</dt>
+                  <dt className="text-ink-2">{t({ de: "Zwischensumme", en: "Subtotal" })}</dt>
                   <dd className="font-mono tabular-nums text-ink">
-                    {formatMoney(estimate.subtotal, currency)}
+                    {formatMoney(estimate.subtotal, currency, lang)}
                   </dd>
                 </div>
 
                 <div className="flex items-baseline justify-between gap-4">
                   <dt className="text-ink-2">
-                    Versand
+                    {t({ de: "Versand", en: "Shipping" })}
                     <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
-                      {regionConfig.carrier}, {deliveryWindow(regionConfig)}
+                      {carrier}, {deliveryWindow(regionConfig, lang)}
                     </span>
                   </dt>
                   <dd className="font-mono tabular-nums text-ink">
-                    {estimate.shipping === 0 ? "kostenfrei" : formatMoney(estimate.shipping, currency)}
+                    {estimate.shipping === 0
+                      ? t({ de: "kostenfrei", en: "free" })
+                      : formatMoney(estimate.shipping, currency, lang)}
                   </dd>
                 </div>
 
                 {estimate.clearance > 0 ? (
                   <div className="flex items-baseline justify-between gap-4">
                     <dt className="text-ink-2">
-                      Zollabfertigung
+                      {t({ de: "Zollabfertigung", en: "Customs clearance" })}
                       <span className="mt-0.5 block text-[11px] leading-snug text-ink-3">
-                        {regionConfig.customs?.incoterm ?? "DDP"}, verzollt und versteuert
+                        {regionConfig.customs?.incoterm ?? "DDP"}
+                        {t({ de: ", verzollt und versteuert", en: ", duty and tax paid" })}
                       </span>
                     </dt>
                     <dd className="font-mono tabular-nums text-ink">
-                      {formatMoney(estimate.clearance, currency)}
+                      {formatMoney(estimate.clearance, currency, lang)}
                     </dd>
                   </div>
                 ) : null}
 
                 <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-line pt-3">
-                  <dt className="type-nav text-ink">Gesamt</dt>
+                  <dt className="type-nav text-ink">{t({ de: "Gesamt", en: "Total" })}</dt>
                   <dd className="font-mono text-[17px] tabular-nums text-ink">
-                    {formatMoney(estimate.total, currency)}
+                    {formatMoney(estimate.total, currency, lang)}
                   </dd>
                 </div>
               </dl>
 
               <p className="mt-2 text-[11px] leading-snug text-ink-3">
-                Darin enthalten {formatMoney(estimate.vatIncluded, currency)} bei{" "}
-                {regionConfig.vatLabel}.
+                {t({
+                  de: `Darin enthalten ${formatMoney(estimate.vatIncluded, currency, lang)} bei ${vatLabel}.`,
+                  en: `Includes ${formatMoney(estimate.vatIncluded, currency, lang)} at ${vatLabel}.`,
+                })}
               </p>
               <p className="text-[11px] leading-snug text-ink-3">
                 {regionConfig.customs
-                  ? "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung."
-                  : "Gesamtpreis inklusive Steuer und Versandkosten."}
+                  ? t({
+                      de: "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung.",
+                      en: "Total price including tax, shipping and customs clearance.",
+                    })
+                  : t({
+                      de: "Gesamtpreis inklusive Steuer und Versandkosten.",
+                      en: "Total price including tax and shipping costs.",
+                    })}
               </p>
               {regionConfig.customs ? (
-                <p className="mt-2 text-[11px] leading-snug text-ink-3">{regionConfig.customs.note}</p>
+                <p className="mt-2 text-[11px] leading-snug text-ink-3">
+                  {t({ de: regionConfig.customs.note, en: CUSTOMS_NOTE_EN })}
+                </p>
               ) : null}
 
               <Link
                 href="/cart"
                 className="type-nav jing-underline mt-4 inline-block pb-0.5 text-ink-2 transition-colors hover:text-ink"
               >
-                Warenkorb ändern
+                {t({ de: "Warenkorb ändern", en: "Edit cart" })}
               </Link>
             </div>
   );
@@ -172,39 +205,66 @@ type FieldName =
   | "city"
   | "phone";
 
-interface Field {
+interface FieldSpec {
   name: FieldName;
-  label: string;
+  label: Text;
   type: "text" | "email" | "tel";
   autoComplete: string;
   required: boolean;
   /** Field takes the full width of the two column form grid. */
   wide?: boolean;
-  hint?: string;
+  hint?: Text;
 }
 
 /** Digits a postcode has per delivery country, with the wording shown to the buyer. */
-const ZIP_RULES: Record<RegionCode, { digits: number; hint: string; example: string }> = {
-  DE: { digits: 5, hint: "Fünf Ziffern, zum Beispiel 10115", example: "10115" },
-  AT: { digits: 4, hint: "Vier Ziffern, zum Beispiel 1010", example: "1010" },
-  CH: { digits: 4, hint: "Vier Ziffern, zum Beispiel 8001", example: "8001" },
+const ZIP_RULES: Record<RegionCode, { digits: number; hint: Text; example: string }> = {
+  DE: {
+    digits: 5,
+    hint: { de: "Fünf Ziffern, zum Beispiel 10115", en: "Five digits, for example 10115" },
+    example: "10115",
+  },
+  AT: {
+    digits: 4,
+    hint: { de: "Vier Ziffern, zum Beispiel 1010", en: "Four digits, for example 1010" },
+    example: "1010",
+  },
+  CH: {
+    digits: 4,
+    hint: { de: "Vier Ziffern, zum Beispiel 8001", en: "Four digits, for example 8001" },
+    example: "8001",
+  },
 };
 
-const FIELDS: Field[] = [
-  { name: "firstName", label: "Vorname", type: "text", autoComplete: "given-name", required: true },
-  { name: "lastName", label: "Nachname", type: "text", autoComplete: "family-name", required: true },
+const FIELDS: FieldSpec[] = [
+  {
+    name: "firstName",
+    label: { de: "Vorname", en: "First name" },
+    type: "text",
+    autoComplete: "given-name",
+    required: true,
+  },
+  {
+    name: "lastName",
+    label: { de: "Nachname", en: "Last name" },
+    type: "text",
+    autoComplete: "family-name",
+    required: true,
+  },
   {
     name: "email",
-    label: "E-Mail",
+    label: { de: "E-Mail", en: "Email" },
     type: "email",
     autoComplete: "email",
     required: true,
     wide: true,
-    hint: "An diese Adresse ginge im Echtbetrieb die Bestellbestätigung.",
+    hint: {
+      de: "An diese Adresse ginge im Echtbetrieb die Bestellbestätigung.",
+      en: "In live operation the order confirmation would go to this address.",
+    },
   },
   {
     name: "company",
-    label: "Firma, optional",
+    label: { de: "Firma, optional", en: "Company, optional" },
     type: "text",
     autoComplete: "organization",
     required: false,
@@ -212,7 +272,7 @@ const FIELDS: Field[] = [
   },
   {
     name: "street",
-    label: "Straße und Hausnummer",
+    label: { de: "Straße und Hausnummer", en: "Street and number" },
     type: "text",
     autoComplete: "street-address",
     required: true,
@@ -220,22 +280,34 @@ const FIELDS: Field[] = [
   },
   {
     name: "addition",
-    label: "Adresszusatz, optional",
+    label: { de: "Adresszusatz, optional", en: "Address line 2, optional" },
     type: "text",
     autoComplete: "address-line2",
     required: false,
     wide: true,
   },
-  { name: "zip", label: "PLZ", type: "text", autoComplete: "postal-code", required: true },
-  { name: "city", label: "Ort", type: "text", autoComplete: "address-level2", required: true },
+  {
+    name: "zip",
+    label: { de: "PLZ", en: "Postcode" },
+    type: "text",
+    autoComplete: "postal-code",
+    required: true,
+  },
+  {
+    name: "city",
+    label: { de: "Ort", en: "Town" },
+    type: "text",
+    autoComplete: "address-level2",
+    required: true,
+  },
   {
     name: "phone",
-    label: "Telefon, optional",
+    label: { de: "Telefon, optional", en: "Phone, optional" },
     type: "tel",
     autoComplete: "tel",
     required: false,
     wide: true,
-    hint: "Nur für Rückfragen des Zustellers.",
+    hint: { de: "Nur für Rückfragen des Zustellers.", en: "Only for queries from the courier." },
   },
 ];
 
@@ -243,8 +315,11 @@ interface CheckoutSession {
   reference: string;
   redirectUrl: string | null;
   status: string | null;
-  methodLabel: string;
-  amount: string;
+  /** Resolved to a label at render, so the confirmation follows a language switch. */
+  method: PaymentMethodId;
+  /** Region minor units, formatted at render for the same reason. */
+  amountMinor: number;
+  currency: CurrencyCode;
   email: string;
 }
 
@@ -252,8 +327,8 @@ interface CheckoutSession {
 
 /*
  * The checkout route answers with a mock session. Its field names are read
- * defensively so a rename on the server surfaces as a German error message
- * instead of an empty confirmation panel.
+ * defensively so a rename on the server surfaces as an error message in the
+ * page instead of an empty confirmation panel.
  */
 const REFERENCE_KEYS = ["reference", "orderReference", "order_reference", "id", "sessionId"];
 const REDIRECT_KEYS = ["redirectUrl", "redirect_url", "redirect", "checkoutUrl", "url"];
@@ -281,20 +356,28 @@ function payloadParts(payload: unknown): {
   return { root, nested };
 }
 
+/** A server message has one wording only; it is shown as it came in both languages. */
+function plain(message: string): Text {
+  return { de: message, en: message };
+}
+
 export default function CheckoutPage() {
   const { region, setRegion, hydrated } = useYinYang();
+  const lang = useLang();
+  const t = useT();
   const items = useJingStore((state) => state.items);
   const clearCart = useJingStore((state) => state.clearCart);
 
   const [method, setMethod] = useState<PaymentMethodId | null>(null);
   const [accepted, setAccepted] = useState(false);
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Text | null>(null);
   const [session, setSession] = useState<CheckoutSession | null>(null);
   // Per field messages, so a rejected order says what is wrong and where, and
   // says it in the page rather than in a native bubble that no screen reader
-  // announces and that vanishes on the next click.
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
+  // announces and that vanishes on the next click. Kept as language pairs and
+  // resolved at render, so they follow a language switch.
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, Text>>>({});
   const confirmationRef = useRef<HTMLHeadingElement>(null);
   const reduce = useReducedMotion() === true;
 
@@ -352,31 +435,43 @@ export default function CheckoutPage() {
   if (!hydrated) {
     return (
       <div className={SHELL} aria-busy="true">
-        <h1 className="type-display text-ink">Kasse</h1>
+        <h1 className="type-display text-ink">{t({ de: "Kasse", en: "Checkout" })}</h1>
         <span aria-hidden="true" className="mt-4 block h-px w-24 bg-line-2 [animation:jing-breathe_1.4s_ease-in-out_infinite]" />
-        <p className="type-nav mt-4 text-ink-3">Bestellung wird geladen</p>
+        <p className="type-nav mt-4 text-ink-3">
+          {t({ de: "Bestellung wird geladen", en: "Loading the order" })}
+        </p>
       </div>
     );
   }
 
   const regionConfig = estimate.region;
   const currency = estimate.currency;
+  const regionLabel = t({ de: regionConfig.label, en: regionConfig.labelEn });
+  const methodLabel = (id: PaymentMethodId) =>
+    t({ de: PAYMENT_METHODS[id].label, en: PAYMENT_METHODS[id].labelEn });
 
   if (lines.length === 0 && !session) {
     return (
       <div className={SHELL}>
-        <h1 className="type-display text-ink">Kasse</h1>
+        <h1 className="type-display text-ink">{t({ de: "Kasse", en: "Checkout" })}</h1>
         <EmptyState
           className="mt-10"
-          title="Nichts zu bezahlen"
-          text="Der Warenkorb ist leer, deshalb gibt es hier nichts zu bezahlen. Leg zuerst etwas ab, danach führt der Weg zurück an diese Stelle."
+          title={t({ de: "Nichts zu bezahlen", en: "Nothing to pay" })}
+          text={t({
+            de:
+              "Der Warenkorb ist leer, deshalb gibt es hier nichts zu bezahlen. Leg zuerst etwas ab, " +
+              "danach führt der Weg zurück an diese Stelle.",
+            en:
+              "The cart is empty, so there is nothing to pay here. Add something first, then the " +
+              "way leads back to this point.",
+          })}
           actions={
             <>
               <Link href="/" className={buttonClasses("solid", "md")}>
-                Zu den Kollektionen
+                {t({ de: "Zu den Kollektionen", en: "To the collections" })}
               </Link>
               <Link href="/cart" className={buttonClasses("outline", "md")}>
-                Warenkorb ansehen
+                {t({ de: "Warenkorb ansehen", en: "View cart" })}
               </Link>
             </>
           }
@@ -394,31 +489,54 @@ export default function CheckoutPage() {
     const data = new FormData(form);
     const email = String(data.get("email") ?? "");
 
-    const problems: Record<string, string> = {};
+    const problems: Record<string, Text> = {};
     for (const field of FIELDS) {
       if (!field.required) continue;
       if (String(data.get(field.name) ?? "").trim()) continue;
-      problems[field.name] = `Bitte ${field.label} ausfüllen.`;
+      problems[field.name] = {
+        de: `Bitte ${field.label.de} ausfüllen.`,
+        en: `Please enter your ${field.label.en.toLowerCase()}.`,
+      };
     }
     if (!problems.email && email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-      problems.email = "Diese Adresse sieht nicht wie eine E-Mail-Adresse aus.";
+      problems.email = {
+        de: "Diese Adresse sieht nicht wie eine E-Mail-Adresse aus.",
+        en: "This does not look like an email address.",
+      };
     }
     const zip = String(data.get("zip") ?? "").trim();
     const zipRule = ZIP_RULES[region];
     if (!problems.zip && zip && !new RegExp(`^[0-9]{${zipRule.digits}}$`).test(zip)) {
-      problems.zip = `Die PLZ für ${regionConfig.label} hat ${zipRule.digits} Ziffern, zum Beispiel ${zipRule.example}.`;
+      problems.zip = {
+        de: `Die PLZ für ${regionConfig.label} hat ${zipRule.digits} Ziffern, zum Beispiel ${zipRule.example}.`,
+        en: `The postcode for ${regionConfig.labelEn} has ${zipRule.digits} digits, for example ${zipRule.example}.`,
+      };
     }
-    if (!accepted) problems.agb = "Bitte bestätige zuerst die AGB.";
-    if (!selected) problems.method = "Bitte wähle eine Zahlungsart.";
+    if (!accepted) {
+      problems.agb = {
+        de: "Bitte bestätige zuerst die AGB.",
+        en: "Please accept the terms and conditions first.",
+      };
+    }
+    if (!selected) {
+      problems.method = {
+        de: "Bitte wähle eine Zahlungsart.",
+        en: "Please choose a payment method.",
+      };
+    }
 
     setFieldErrors(problems);
 
     const first = Object.keys(problems)[0];
     if (first) {
+      const count = Object.keys(problems).length;
       setError(
-        Object.keys(problems).length === 1
+        count === 1
           ? problems[first]
-          : `Die Bestellung ist noch nicht vollständig, ${Object.keys(problems).length} Angaben fehlen oder stimmen nicht.`,
+          : {
+              de: `Die Bestellung ist noch nicht vollständig, ${count} Angaben fehlen oder stimmen nicht.`,
+              en: `The order is not complete yet, ${count} details are missing or incorrect.`,
+            },
       );
       const target = form.querySelector<HTMLElement>(
         first === "agb" ? "#feld-agb" : first === "method" ? "[name='zahlungsart']" : `[name='${first}']`,
@@ -435,9 +553,6 @@ export default function CheckoutPage() {
 
     if (!selected) return;
 
-    const methodLabel = PAYMENT_METHODS[selected].label;
-    const amount = formatMoney(estimate.total, currency);
-
     setPending(true);
     setError(null);
 
@@ -451,8 +566,9 @@ export default function CheckoutPage() {
         reference: orderReference(seed),
         redirectUrl: null,
         status: "demo",
-        methodLabel,
-        amount,
+        method: selected,
+        amountMinor: estimate.total,
+        currency,
         email,
       });
       setPending(false);
@@ -480,10 +596,14 @@ export default function CheckoutPage() {
       const { root, nested } = payloadParts(payload);
 
       if (!response.ok) {
+        const serverMessage = readString(nested, ERROR_KEYS) ?? readString(root, ERROR_KEYS);
         setError(
-          readString(nested, ERROR_KEYS) ??
-            readString(root, ERROR_KEYS) ??
-            `Die Bestellung konnte nicht angelegt werden, die Zahlungsstelle antwortete mit Status ${response.status}.`,
+          serverMessage
+            ? plain(serverMessage)
+            : {
+                de: `Die Bestellung konnte nicht angelegt werden, die Zahlungsstelle antwortete mit Status ${response.status}.`,
+                en: `The order could not be created, the payment gateway answered with status ${response.status}.`,
+              },
         );
         return;
       }
@@ -501,27 +621,37 @@ export default function CheckoutPage() {
         reference,
         redirectUrl: readString(nested, REDIRECT_KEYS) ?? readString(root, REDIRECT_KEYS),
         status: readString(nested, ["status"]) ?? readString(root, ["status"]),
-        methodLabel,
-        amount,
+        method: selected,
+        amountMinor: estimate.total,
+        currency,
         email,
       });
     } catch {
-      setError(
-        "Die Zahlungsstelle war nicht erreichbar. Bitte prüfe deine Verbindung und versuche es noch einmal.",
-      );
+      setError({
+        de: "Die Zahlungsstelle war nicht erreichbar. Bitte prüfe deine Verbindung und versuche es noch einmal.",
+        en: "The payment gateway could not be reached. Please check your connection and try again.",
+      });
     } finally {
       setPending(false);
     }
   }
 
+  const errorText = error ? t(error) : "";
+
   return (
     <div className={SHELL}>
       <header>
-        <p className="type-kicker text-ink-3">Schritt 2</p>
-        <h1 className="type-display mt-3 text-ink">Kasse</h1>
+        <p className="type-kicker text-ink-3">{t({ de: "Schritt 2", en: "Step 2" })}</p>
+        <h1 className="type-display mt-3 text-ink">{t({ de: "Kasse", en: "Checkout" })}</h1>
         <p className="type-body mt-3 max-w-[54ch] text-ink-2">
-          Diese Kasse ist eine Demonstration. Es wird keine Zahlung ausgelöst und keine Adresse
-          gespeichert, die Bestellung legt nur eine Mock-Session an.
+          {t({
+            de:
+              "Diese Kasse ist eine Demonstration. Es wird keine Zahlung ausgelöst und keine Adresse " +
+              "gespeichert, die Bestellung legt nur eine Mock-Session an.",
+            en:
+              "This checkout is a demonstration. No payment is triggered and no address is stored, " +
+              "the order only creates a mock session.",
+          })}
         </p>
       </header>
 
@@ -536,7 +666,7 @@ export default function CheckoutPage() {
             >
               <p className="type-kicker inline-flex items-center gap-2 text-ink-3">
                 <Check size={14} aria-hidden="true" />
-                Session angelegt
+                {t({ de: "Session angelegt", en: "Session created" })}
               </p>
               <h2
                 id="bestaetigung-titel"
@@ -544,34 +674,44 @@ export default function CheckoutPage() {
                 tabIndex={-1}
                 className="mt-3 font-display text-3xl leading-tight text-ink"
               >
-                Danke, die Bestellung steht bereit.
+                {t({ de: "Danke, die Bestellung steht bereit.", en: "Thank you, the order is ready." })}
               </h2>
               <p className="type-body mt-3 max-w-[50ch] text-ink-2">
-                Die Zahlungsstelle hat eine Mock-Session erzeugt. In einem echten Shop würde die
-                Weiterleitung jetzt zum Zahlungsanbieter führen, hier bleibt alles an Ort und
-                Stelle. Es wurde nichts abgebucht.
+                {t({
+                  de:
+                    "Die Zahlungsstelle hat eine Mock-Session erzeugt. In einem echten Shop würde die " +
+                    "Weiterleitung jetzt zum Zahlungsanbieter führen, hier bleibt alles an Ort und " +
+                    "Stelle. Es wurde nichts abgebucht.",
+                  en:
+                    "The payment gateway has created a mock session. In a real shop you would now be " +
+                    "redirected to the payment provider, here everything stays in place. Nothing has " +
+                    "been charged.",
+                })}
               </p>
 
               <dl className="mt-6 flex flex-col">
                 <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-line py-3">
-                  <dt className={FIELD_LABEL}>Referenz</dt>
+                  <dt className={FIELD_LABEL}>{t({ de: "Referenz", en: "Reference" })}</dt>
                   <dd className="font-mono text-[15px] tabular-nums text-ink">
                     {session.reference}
                   </dd>
                 </div>
                 <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-line py-3">
-                  <dt className={FIELD_LABEL}>Weiterleitung, simuliert</dt>
+                  <dt className={FIELD_LABEL}>{t({ de: "Weiterleitung, simuliert", en: "Redirect, simulated" })}</dt>
                   <dd className="break-all text-right font-mono text-[12px] text-ink-2">
-                    {session.redirectUrl ?? "Keine Weiterleitung übermittelt"}
+                    {session.redirectUrl ??
+                      t({ de: "Keine Weiterleitung übermittelt", en: "No redirect provided" })}
                   </dd>
                 </div>
                 <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-line py-3">
-                  <dt className={FIELD_LABEL}>Zahlungsart</dt>
-                  <dd className="text-[14px] text-ink">{session.methodLabel}</dd>
+                  <dt className={FIELD_LABEL}>{t({ de: "Zahlungsart", en: "Payment method" })}</dt>
+                  <dd className="text-[14px] text-ink">{methodLabel(session.method)}</dd>
                 </div>
                 <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-line py-3">
-                  <dt className={FIELD_LABEL}>Betrag</dt>
-                  <dd className="font-mono text-[14px] tabular-nums text-ink">{session.amount}</dd>
+                  <dt className={FIELD_LABEL}>{t({ de: "Betrag", en: "Amount" })}</dt>
+                  <dd className="font-mono text-[14px] tabular-nums text-ink">
+                    {formatMoney(session.amountMinor, session.currency, lang)}
+                  </dd>
                 </div>
                 {session.status ? (
                   <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-line py-3">
@@ -581,7 +721,7 @@ export default function CheckoutPage() {
                 ) : null}
                 {session.email ? (
                   <div className="flex flex-wrap items-baseline justify-between gap-3 border-y border-line py-3">
-                    <dt className={FIELD_LABEL}>E-Mail, angegeben</dt>
+                    <dt className={FIELD_LABEL}>{t({ de: "E-Mail, angegeben", en: "Email, as entered" })}</dt>
                     <dd className="break-all text-right text-[14px] text-ink-2">{session.email}</dd>
                   </div>
                 ) : null}
@@ -589,10 +729,10 @@ export default function CheckoutPage() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href="/" className={buttonClasses("solid", "md")}>
-                  Weiter stöbern
+                  {t({ de: "Weiter stöbern", en: "Keep browsing" })}
                 </Link>
                 <Link href="/cart" className={buttonClasses("outline", "md")}>
-                  Warenkorb ansehen
+                  {t({ de: "Warenkorb ansehen", en: "View cart" })}
                 </Link>
               </div>
             </section>
@@ -600,11 +740,15 @@ export default function CheckoutPage() {
             <form onSubmit={handleSubmit} noValidate>
               <section aria-labelledby="adresse-titel">
                 <h2 id="adresse-titel" className="type-kicker text-ink-3">
-                  Lieferadresse
+                  {t({ de: "Lieferadresse", en: "Delivery address" })}
                 </h2>
                 <p className="type-meta mt-2 text-ink-3">
-                  Pflichtfelder sind mit einem Stern
-                  <span aria-hidden="true"> *</span> markiert.
+                  {t({
+                    de: "Pflichtfelder sind mit einem Stern",
+                    en: "Required fields are marked with an asterisk",
+                  })}
+                  <span aria-hidden="true"> *</span>
+                  {t({ de: " markiert.", en: "." })}
                 </p>
 
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -623,11 +767,11 @@ export default function CheckoutPage() {
                         className={field.wide ? "sm:col-span-2" : undefined}
                         label={
                           <>
-                            {field.label}
+                            {t(field.label)}
                             {field.required ? (
                               <>
                                 <span aria-hidden="true"> *</span>
-                                <span className="sr-only">, Pflichtfeld</span>
+                                <span className="sr-only">{t({ de: ", Pflichtfeld", en: ", required" })}</span>
                               </>
                             ) : null}
                           </>
@@ -640,9 +784,9 @@ export default function CheckoutPage() {
                         aria-describedby={[hintId, errorId].filter(Boolean).join(" ") || undefined}
                         aria-invalid={fieldError ? true : undefined}
                         inputMode={isZip ? "numeric" : undefined}
-                        hint={hint}
+                        hint={hint ? t(hint) : undefined}
                         hintId={hintId}
-                        error={fieldError}
+                        error={fieldError ? t(fieldError) : undefined}
                         errorId={errorId}
                       />
                     );
@@ -650,9 +794,9 @@ export default function CheckoutPage() {
 
                   <div className="group scroll-mt-28 sm:col-span-2">
                     <label htmlFor="feld-land" className={FIELD_LABEL}>
-                      Land
+                      {t({ de: "Land", en: "Country" })}
                       <span aria-hidden="true"> *</span>
-                      <span className="sr-only">, Pflichtfeld</span>
+                      <span className="sr-only">{t({ de: ", Pflichtfeld", en: ", required" })}</span>
                     </label>
                     <select
                       id="feld-land"
@@ -665,13 +809,19 @@ export default function CheckoutPage() {
                     >
                       {REGION_ORDER.map((code) => (
                         <option key={code} value={code}>
-                          {REGIONS[code].label}
+                          {t({ de: REGIONS[code].label, en: REGIONS[code].labelEn })}
                         </option>
                       ))}
                     </select>
                     <p id="feld-land-hinweis" className="mt-1 text-[11px] leading-snug text-ink-3">
-                      Das Land bestimmt Währung, Steuersatz, Versandkosten und Zahlungsarten. Die
-                      Zusammenfassung rechnet sofort um.
+                      {t({
+                        de:
+                          "Das Land bestimmt Währung, Steuersatz, Versandkosten und Zahlungsarten. Die " +
+                          "Zusammenfassung rechnet sofort um.",
+                        en:
+                          "The country sets the currency, tax rate, shipping costs and payment methods. " +
+                          "The summary updates at once.",
+                      })}
                     </p>
                   </div>
                 </div>
@@ -679,26 +829,32 @@ export default function CheckoutPage() {
 
               <section aria-labelledby="zahlung-titel" className="mt-10 border-t border-line pt-8">
                 <h2 id="zahlung-titel" className="type-kicker text-ink-3">
-                  Zahlungsart
+                  {t({ de: "Zahlungsart", en: "Payment method" })}
                 </h2>
                 <p className="type-meta mt-2 text-ink-3">
-                  Angeboten werden nur Verfahren, die für {regionConfig.label} freigeschaltet sind.
+                  {t({
+                    de: `Angeboten werden nur Verfahren, die für ${regionLabel} freigeschaltet sind.`,
+                    en: `Only methods enabled for ${regionLabel} are offered.`,
+                  })}
                 </p>
 
                 {droppedMethod ? (
                   <p role="status" className="type-meta mt-2 max-w-[62ch] text-seal">
-                    {PAYMENT_METHODS[droppedMethod].label} wird für {regionConfig.label} nicht
-                    angeboten. Wir haben {selected ? PAYMENT_METHODS[selected].label : "keine Zahlungsart"}{" "}
-                    vorausgewählt, du kannst sie ändern.
+                    {t({
+                      de: `${methodLabel(droppedMethod)} wird für ${regionLabel} nicht angeboten. Wir haben ${selected ? methodLabel(selected) : "keine Zahlungsart"} vorausgewählt, du kannst sie ändern.`,
+                      en: `${methodLabel(droppedMethod)} is not offered for ${regionLabel}. We have preselected ${selected ? methodLabel(selected) : "no payment method"}, you can change it.`,
+                    })}
                   </p>
                 ) : null}
 
                 {fieldErrors.method ? (
-                  <p className="jing-rise type-meta mt-2 text-seal">{fieldErrors.method}</p>
+                  <p className="jing-rise type-meta mt-2 text-seal">{t(fieldErrors.method)}</p>
                 ) : null}
 
                 <fieldset className="mt-5">
-                  <legend className="sr-only">Zahlungsart wählen</legend>
+                  <legend className="sr-only">
+                    {t({ de: "Zahlungsart wählen", en: "Choose a payment method" })}
+                  </legend>
                   <div className="grid gap-2.5 sm:grid-cols-2">
                     {methods.map((entry) => {
                       const active = selected === entry.id;
@@ -746,10 +902,12 @@ export default function CheckoutPage() {
                                 active ? "text-ink" : "text-ink-2",
                               )}
                             >
-                              {entry.label}
+                              {t({ de: entry.label, en: entry.labelEn })}
                             </span>
                           </span>
-                          <span className="type-meta pl-6 text-ink-3">{entry.note}</span>
+                          <span className="type-meta pl-6 text-ink-3">
+                            {t({ de: entry.note, en: entry.noteEn })}
+                          </span>
                         </label>
                       );
                     })}
@@ -770,16 +928,23 @@ export default function CheckoutPage() {
 
               <section aria-labelledby="abschluss-titel" className="mt-10 border-t border-line pt-8">
                 <h2 id="abschluss-titel" className="type-kicker text-ink-3">
-                  Bestellung abschließen
+                  {t({ de: "Bestellung abschließen", en: "Complete the order" })}
                 </h2>
 
                 <p className="type-meta mt-4 max-w-[62ch] text-ink-3">
-                  Du kannst diese Bestellung innerhalb von {WITHDRAWAL_DAYS} Tagen ohne Angabe von
-                  Gründen widerrufen. Ausgenommen sind versiegelte kosmetische Mittel, deren Siegel
-                  du nach der Lieferung entfernt hast. Alle Einzelheiten und das
-                  Muster-Widerrufsformular stehen in der{" "}
+                  {t({
+                    de:
+                      `Du kannst diese Bestellung innerhalb von ${WITHDRAWAL_DAYS} Tagen ohne Angabe von ` +
+                      "Gründen widerrufen. Ausgenommen sind versiegelte kosmetische Mittel, deren Siegel " +
+                      "du nach der Lieferung entfernt hast. Alle Einzelheiten und das " +
+                      "Muster-Widerrufsformular stehen in der ",
+                    en:
+                      `You may withdraw from this order within ${WITHDRAWAL_DAYS} days without giving ` +
+                      "reasons. Sealed cosmetic products whose seal you have removed after delivery are " +
+                      "excluded. All details and the model withdrawal form are in the ",
+                  })}
                   <Link href="/legal/widerruf" className="jing-underline text-ink">
-                    Widerrufsbelehrung
+                    {t({ de: "Widerrufsbelehrung", en: "notice on the right of withdrawal" })}
                   </Link>
                   .
                 </p>
@@ -805,32 +970,40 @@ export default function CheckoutPage() {
                     )}
                   />
                   <span className="type-meta text-ink-2">
-                    Ich habe die{" "}
+                    {t({ de: "Ich habe die ", en: "I have read the " })}
                     <Link href="/legal/agb" className="jing-underline text-ink">
-                      AGB
-                    </Link>{" "}
-                    gelesen und stimme ihnen zu.
+                      {t({ de: "AGB", en: "terms and conditions" })}
+                    </Link>
+                    {t({ de: " gelesen und stimme ihnen zu.", en: " and agree to them." })}
                     <span aria-hidden="true"> *</span>
                   </span>
                 </label>
 
                 {fieldErrors.agb ? (
                   <p id="feld-agb-fehler" className="jing-rise type-meta mt-1.5 text-seal">
-                    {fieldErrors.agb}
+                    {t(fieldErrors.agb)}
                   </p>
                 ) : null}
 
                 <p className="type-meta mt-3 max-w-[62ch] text-ink-3">
-                  Wie wir deine Daten für die Bestellung verarbeiten, steht in der{" "}
+                  {t({
+                    de: "Wie wir deine Daten für die Bestellung verarbeiten, steht in der ",
+                    en: "How we process your data for the order is set out in the ",
+                  })}
                   <Link href="/legal/datenschutz" className="jing-underline text-ink">
-                    Datenschutzerklärung
+                    {t({ de: "Datenschutzerklärung", en: "privacy policy" })}
                   </Link>
-                  . Grundlage ist die Vertragserfüllung, eine Einwilligung brauchen wir dafür nicht.
+                  {t({
+                    de: ". Grundlage ist die Vertragserfüllung, eine Einwilligung brauchen wir dafür nicht.",
+                    en: ". The legal basis is the performance of the contract, so no consent is needed.",
+                  })}
                 </p>
 
                 <p className="type-meta mt-4 max-w-[62ch] text-ink-2">
-                  Mit dem Absenden gibst du eine verbindliche Bestellung ab und gehst eine
-                  Zahlungsverpflichtung über {formatMoney(estimate.total, currency)} ein.
+                  {t({
+                    de: `Mit dem Absenden gibst du eine verbindliche Bestellung ab und gehst eine Zahlungsverpflichtung über ${formatMoney(estimate.total, currency, lang)} ein.`,
+                    en: `By submitting you place a binding order and take on an obligation to pay ${formatMoney(estimate.total, currency, lang)}.`,
+                  })}
                 </p>
 
                 <div className="mt-5 max-w-[26rem]">
@@ -845,7 +1018,7 @@ export default function CheckoutPage() {
                         the width of the longer one while they crossfade. */}
                     <span className="grid [&>*]:col-start-1 [&>*]:row-start-1">
                       <span className="invisible whitespace-nowrap" aria-hidden="true">
-                        Zahlungspflichtig bestellen
+                        {t({ de: "Zahlungspflichtig bestellen", en: "Order with obligation to pay" })}
                       </span>
                       <AnimatePresence initial={false} mode="wait">
                         {pending ? (
@@ -858,7 +1031,7 @@ export default function CheckoutPage() {
                             transition={{ duration: reduce ? 0 : DURATION.swap, ease: EASE_RITUAL }}
                           >
                             <Loader2 size={14} aria-hidden="true" className="animate-spin" />
-                            Wird übermittelt
+                            {t({ de: "Wird übermittelt", en: "Submitting" })}
                           </motion.span>
                         ) : (
                           <motion.span
@@ -869,7 +1042,7 @@ export default function CheckoutPage() {
                             exit={{ opacity: 0, y: -6 }}
                             transition={{ duration: reduce ? 0 : DURATION.swap, ease: EASE_RITUAL }}
                           >
-                            Zahlungspflichtig bestellen
+                            {t({ de: "Zahlungspflichtig bestellen", en: "Order with obligation to pay" })}
                           </motion.span>
                         )}
                       </AnimatePresence>
@@ -878,7 +1051,12 @@ export default function CheckoutPage() {
                 </div>
 
                 <p role="status" aria-live="polite" className="type-meta mt-2 min-h-4 text-ink-3">
-                  {pending ? "Die Bestellung wird an die Zahlungsstelle übermittelt." : ""}
+                  {pending
+                    ? t({
+                        de: "Die Bestellung wird an die Zahlungsstelle übermittelt.",
+                        en: "The order is being sent to the payment gateway.",
+                      })
+                    : ""}
                 </p>
 
                 <p
@@ -887,8 +1065,8 @@ export default function CheckoutPage() {
                   className="type-meta mt-1 min-h-4 max-w-[62ch] text-seal"
                 >
                   {/* Keyed on the message, so each new message rises once. */}
-                  <span key={error ?? ""} className={cn("block", error && "jing-rise")}>
-                    {error ?? ""}
+                  <span key={errorText} className={cn("block", errorText && "jing-rise")}>
+                    {errorText}
                   </span>
                 </p>
               </section>

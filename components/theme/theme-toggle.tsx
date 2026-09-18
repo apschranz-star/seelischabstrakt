@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import { useYinYang } from "@/components/theme/yin-yang-provider";
+import { useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { originFromEvent } from "@/lib/switch-origin";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils";
  */
 export function ThemeToggle({ className }: { className?: string }) {
   const { mode, toggleMode } = useYinYang();
+  const t = useT();
   const reduceMotion = useReducedMotion();
   const isYin = mode === "yin";
   const word = isYin ? "Yin" : "Yang";
@@ -31,7 +33,11 @@ export function ThemeToggle({ className }: { className?: string }) {
       // contradict the visible word next to it.
       aria-pressed={isYin}
       aria-label="Nachtansicht Yin"
-      title={isYin ? "Yin, die Nacht. Klicken für Yang." : "Yang, der Tag. Klicken für Yin."}
+      title={
+        isYin
+          ? t({ de: "Yin, die Nacht. Klicken für Yang.", en: "Yin, the night. Click for Yang." })
+          : t({ de: "Yang, der Tag. Klicken für Yin.", en: "Yang, the day. Click for Yin." })
+      }
       className={cn(
         "group inline-flex min-h-11 items-center gap-2.5 rounded-full border border-control px-2.5 py-1.5",
         "transition-colors duration-[var(--duration-state)] ease-ritual hover:border-ink",

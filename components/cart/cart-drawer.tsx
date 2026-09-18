@@ -11,6 +11,8 @@ import { PackagingViewer } from "@/components/product/packaging-viewer";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { buttonClasses } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { localizeProduct } from "@/config/products";
+import { useLang, useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL, panelTransition } from "@/lib/motion";
 import { resolveLines, selectEstimate, useJingStore } from "@/lib/store";
 import {
@@ -38,6 +40,8 @@ const FOCUSABLE = [
 
 export function CartDrawer() {
   const { region, hydrated } = useYinYang();
+  const lang = useLang();
+  const t = useT();
   const isCartOpen = useJingStore((state) => state.isCartOpen);
   const items = useJingStore((state) => state.items);
   const lastAdded = useJingStore((state) => state.lastAdded);
@@ -153,9 +157,12 @@ export function CartDrawer() {
   const regionConfig = estimate.region;
   const currency = estimate.currency;
   const progress = freeShippingProgress(estimate.subtotal, regionConfig);
+  const regionLabel = t({ de: regionConfig.label, en: regionConfig.labelEn });
+  // The carrier is a name; only its Swiss suffix is a German word.
+  const carrier = t({ de: regionConfig.carrier, en: regionConfig.carrier.replace("verzollt", "duty paid") });
   // vatLabel carries the regional name of the tax, MwSt. in Germany, USt. in Austria,
-  // MWST in Switzerland.
-  const taxNoun = regionConfig.vatLabel.split(" ").at(-1) ?? "MwSt.";
+  // MWST in Switzerland. English says VAT everywhere.
+  const taxNoun = t({ de: regionConfig.vatLabel.split(" ").at(-1) ?? "MwSt.", en: "VAT" });
   // The stagger index of a child, as the CSS reads it: header 0, rows from 1,
   // capped so a long list never waits, the summary right after the last row.
   const enterAt = (index: number) => ({ "--i": Math.min(index, 4) } as CSSProperties);
@@ -204,12 +211,14 @@ export function CartDrawer() {
             >
               <div className="min-w-0 flex-1">
                 <h2 id={titleId} className="font-display text-xl leading-tight text-ink">
-                  Warenkorb
+                  {t({ de: "Warenkorb", en: "Cart" })}
                 </h2>
                 <p className="type-nav mt-1 text-ink-3">
-                  {estimate.itemCount === 1 ? "1 Artikel" : `${estimate.itemCount} Artikel`}
+                  {estimate.itemCount === 1
+                    ? t({ de: "1 Artikel", en: "1 item" })
+                    : t({ de: `${estimate.itemCount} Artikel`, en: `${estimate.itemCount} items` })}
                   {" · "}
-                  {regionConfig.label}
+                  {regionLabel}
                 </p>
               </div>
 
@@ -217,7 +226,7 @@ export function CartDrawer() {
                 ref={closeRef}
                 type="button"
                 onClick={closeCart}
-                aria-label="Warenkorb schließen"
+                aria-label={t({ de: "Warenkorb schließen", en: "Close cart" })}
                 className={cn(buttonClasses("control", "icon"), "-mr-1 shrink-0")}
               >
                 <X size={16} aria-hidden="true" />
@@ -228,11 +237,11 @@ export function CartDrawer() {
               <div className="jing-enter flex flex-1 flex-col justify-center px-5 py-14" style={enterAt(1)}>
                 <EmptyState
                   compact
-                  title="Noch nichts gewählt"
-                  text="Der Warenkorb wartet, ohne Eile."
+                  title={t({ de: "Noch nichts gewählt", en: "Nothing chosen yet" })}
+                  text={t({ de: "Der Warenkorb wartet, ohne Eile.", en: "The cart is waiting, in no hurry." })}
                   actions={
                     <Link href="/" onClick={closeCart} className={buttonClasses("outline", "md")}>
-                      Zu den Kollektionen
+                      {t({ de: "Zu den Kollektionen", en: "To the collections" })}
                     </Link>
                   }
                 />
@@ -242,8 +251,9 @@ export function CartDrawer() {
                 <div className="flex-1 overflow-y-auto px-5">
                   <ul>
                     {lines.map((line, index) => {
-                      const { product, quantity } = line;
-                      const basePrice = formatBasePrice(product, region);
+                      const product = localizeProduct(line.product, lang);
+                      const { quantity } = line;
+                      const basePrice = formatBasePrice(product, region, lang);
                       const lineTotal =
                         toRegionMinorUnits(product.priceCents, region) * quantity;
                       // The row the last add touched is keyed on the add's
@@ -278,12 +288,12 @@ export function CartDrawer() {
 
                             <div className="mt-1.5 flex items-baseline justify-between gap-3">
                               <p className="font-mono text-[12px] tabular-nums text-ink-3">
-                                {formatForRegion(product.priceCents, region)}
-                                {" je "}
+                                {formatForRegion(product.priceCents, region, lang)}
+                                {t({ de: " je ", en: " per " })}
                                 {product.unitsLabel}
                               </p>
                               <p className="font-mono text-[13px] tabular-nums text-ink">
-                                {formatMoney(lineTotal, currency)}
+                                {formatMoney(lineTotal, currency, lang)}
                               </p>
                             </div>
 
@@ -296,7 +306,10 @@ export function CartDrawer() {
                             <div className="mt-3 flex items-center justify-between gap-3">
                               <div
                                 role="group"
-                                aria-label={`Menge, ${product.name}`}
+                                aria-label={t({
+                                  de: `Menge, ${product.name}`,
+                                  en: `Quantity, ${product.name}`,
+                                })}
                                 className="flex items-center rounded-[2px] border border-control"
                               >
                                 <button
@@ -309,7 +322,10 @@ export function CartDrawer() {
                                     }
                                   }}
                                   disabled={quantity <= 1}
-                                  aria-label={`Menge verringern, ${product.name}`}
+                                  aria-label={t({
+                                    de: `Menge verringern, ${product.name}`,
+                                    en: `Decrease quantity, ${product.name}`,
+                                  })}
                                   className={stepButton}
                                 >
                                   <Minus size={13} aria-hidden="true" />
@@ -321,7 +337,7 @@ export function CartDrawer() {
                                   className="min-w-7 text-center font-mono text-[12px] tabular-nums text-ink"
                                 >
                                   {quantity}
-                                  <span className="sr-only"> Stück</span>
+                                  <span className="sr-only">{t({ de: " Stück", en: " units" })}</span>
                                 </span>
 
                                 <button
@@ -336,10 +352,16 @@ export function CartDrawer() {
                                   disabled={quantity >= MAX_QUANTITY}
                                   title={
                                     quantity >= MAX_QUANTITY
-                                      ? `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`
+                                      ? t({
+                                          de: `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`,
+                                          en: `No more than ${MAX_QUANTITY} of one item per order`,
+                                        })
                                       : undefined
                                   }
-                                  aria-label={`Menge erhöhen, ${product.name}`}
+                                  aria-label={t({
+                                    de: `Menge erhöhen, ${product.name}`,
+                                    en: `Increase quantity, ${product.name}`,
+                                  })}
                                   className={stepButton}
                                 >
                                   <Plus size={13} aria-hidden="true" />
@@ -359,11 +381,14 @@ export function CartDrawer() {
                                     neighbour ? stepTarget(neighbour.product.id, "remove") : null,
                                   );
                                 }}
-                                aria-label={`${product.name} entfernen`}
+                                aria-label={t({
+                                  de: `${product.name} entfernen`,
+                                  en: `Remove ${product.name}`,
+                                })}
                                 className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-transparent px-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-3 transition-colors duration-300 ease-ritual hover:border-line hover:text-ink"
                               >
                                 <Trash2 size={13} aria-hidden="true" />
-                                Entfernen
+                                {t({ de: "Entfernen", en: "Remove" })}
                               </button>
                             </div>
                           </div>
@@ -382,7 +407,10 @@ export function CartDrawer() {
                     aria-valuemin={0}
                     aria-valuemax={100}
                     aria-valuenow={Math.round(progress * 100)}
-                    aria-label="Fortschritt bis zum kostenfreien Versand"
+                    aria-label={t({
+                      de: "Fortschritt bis zum kostenfreien Versand",
+                      en: "Progress towards free shipping",
+                    })}
                     className="h-[3px] w-full overflow-hidden bg-line"
                   >
                     <motion.div
@@ -395,57 +423,78 @@ export function CartDrawer() {
 
                   <p aria-live="polite" className="mt-2 text-[12px] leading-snug text-ink-2">
                     {estimate.freeShippingReached
-                      ? `Versand frei. ${regionConfig.carrier}, ${deliveryWindow(regionConfig)}.`
-                      : `Noch ${formatMoney(estimate.freeShippingGap, currency)} bis zum kostenfreien Versand.`}
+                      ? t({
+                          de: `Versand frei. ${carrier}, ${deliveryWindow(regionConfig, lang)}.`,
+                          en: `Free shipping. ${carrier}, ${deliveryWindow(regionConfig, lang)}.`,
+                        })
+                      : t({
+                          de: `Noch ${formatMoney(estimate.freeShippingGap, currency, lang)} bis zum kostenfreien Versand.`,
+                          en: `${formatMoney(estimate.freeShippingGap, currency, lang)} more for free shipping.`,
+                        })}
                   </p>
 
                   <dl className="mt-4 flex flex-col gap-1.5 text-[13px]">
                     <div className="flex items-baseline justify-between gap-4">
-                      <dt className="text-ink-2">Zwischensumme</dt>
+                      <dt className="text-ink-2">{t({ de: "Zwischensumme", en: "Subtotal" })}</dt>
                       <dd className="font-mono tabular-nums text-ink">
-                        {formatMoney(estimate.subtotal, currency)}
+                        {formatMoney(estimate.subtotal, currency, lang)}
                       </dd>
                     </div>
 
                     <div className="flex items-baseline justify-between gap-4">
-                      <dt className="text-ink-2">Versand</dt>
+                      <dt className="text-ink-2">{t({ de: "Versand", en: "Shipping" })}</dt>
                       <dd className="font-mono tabular-nums text-ink">
                         {estimate.shipping === 0
-                          ? "kostenfrei"
-                          : formatMoney(estimate.shipping, currency)}
+                          ? t({ de: "kostenfrei", en: "free" })
+                          : formatMoney(estimate.shipping, currency, lang)}
                       </dd>
                     </div>
 
                     {estimate.clearance > 0 ? (
                       <div className="flex items-baseline justify-between gap-4">
-                        <dt className="text-ink-2">Zollabfertigung</dt>
+                        <dt className="text-ink-2">{t({ de: "Zollabfertigung", en: "Customs clearance" })}</dt>
                         <dd className="font-mono tabular-nums text-ink">
-                          {formatMoney(estimate.clearance, currency)}
+                          {formatMoney(estimate.clearance, currency, lang)}
                         </dd>
                       </div>
                     ) : null}
 
                     <div className="mt-1 flex items-baseline justify-between gap-4 border-t border-line pt-2.5">
                       <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
-                        Gesamt
+                        {t({ de: "Gesamt", en: "Total" })}
                       </dt>
                       <dd className="font-mono text-[15px] tabular-nums text-ink">
-                        {formatMoney(estimate.total, currency)}
+                        {formatMoney(estimate.total, currency, lang)}
                       </dd>
                     </div>
                   </dl>
 
                   <p className="mt-1.5 text-[11px] leading-snug text-ink-3">
-                    davon {formatMoney(estimate.vatIncluded, currency)} {taxNoun}
+                    {t({
+                      de: `davon ${formatMoney(estimate.vatIncluded, currency, lang)} ${taxNoun}`,
+                      en: `of which ${formatMoney(estimate.vatIncluded, currency, lang)} ${taxNoun}`,
+                    })}
                   </p>
                   <p className="text-[11px] leading-snug text-ink-3">
                     {regionConfig.customs
-                      ? "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung."
-                      : "Gesamtpreis inklusive Steuer und Versandkosten."}
+                      ? t({
+                          de: "Gesamtpreis inklusive Steuer, Versand und Zollabfertigung.",
+                          en: "Total price including tax, shipping and customs clearance.",
+                        })
+                      : t({
+                          de: "Gesamtpreis inklusive Steuer und Versandkosten.",
+                          en: "Total price including tax and shipping costs.",
+                        })}
                   </p>
                   {regionConfig.customs ? (
                     <p className="mt-2 max-w-[44ch] text-[11px] leading-snug text-ink-3">
-                      {regionConfig.customs.note}
+                      {t({
+                        de: regionConfig.customs.note,
+                        en:
+                          "Switzerland lies outside the EU customs union. We ship duty and tax paid. " +
+                          "Import tax is included in the price, and customs clearance is shown above as " +
+                          "a separate line. There are no further costs at the door.",
+                      })}
                     </p>
                   ) : null}
 
@@ -457,14 +506,14 @@ export function CartDrawer() {
                       onClick={closeCart}
                       className={buttonClasses("solid", "md", true)}
                     >
-                      Zur Kasse
+                      {t({ de: "Zur Kasse", en: "Checkout" })}
                     </Link>
                     <Link
                       href="/cart"
                       onClick={closeCart}
                       className={buttonClasses("outline", "md", true)}
                     >
-                      Warenkorb ansehen
+                      {t({ de: "Warenkorb ansehen", en: "View cart" })}
                     </Link>
                   </div>
                 </div>

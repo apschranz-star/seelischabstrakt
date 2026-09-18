@@ -15,6 +15,8 @@ import { PRODUCTS, type Collection, type Product } from "@/config/products";
 import { estimateOrder, type OrderEstimate, type OrderLine } from "@/lib/utils";
 
 export type Mode = Collection;
+/** Kept here rather than in lib/i18n.ts so the store has no import cycle. */
+export type StoreLang = "de" | "en";
 
 export interface CartItem {
   productId: string;
@@ -23,6 +25,8 @@ export interface CartItem {
 
 interface JingState {
   mode: Mode;
+  /** The visitor's language. German is the source and the server default. */
+  lang: StoreLang;
   region: RegionCode;
   items: CartItem[];
   isCartOpen: boolean;
@@ -40,6 +44,7 @@ interface JingState {
 
   setMode: (mode: Mode) => void;
   toggleMode: () => void;
+  setLang: (lang: StoreLang) => void;
   setRegion: (region: RegionCode) => void;
   addItem: (productId: string, quantity?: number) => void;
   removeItem: (productId: string) => void;
@@ -64,6 +69,7 @@ export const useJingStore = create<JingState>()(
   persist(
     (set) => ({
       mode: "yang",
+      lang: "de",
       region: DEFAULT_REGION,
       items: [],
       isCartOpen: false,
@@ -79,6 +85,7 @@ export const useJingStore = create<JingState>()(
         set((state) => (state.mode === mode ? {} : { mode, modeSwitched: true })),
       toggleMode: () =>
         set((state) => ({ mode: state.mode === "yin" ? "yang" : "yin", modeSwitched: true })),
+      setLang: (lang) => set({ lang }),
       setRegion: (region) => set({ region }),
 
       addItem: (productId, quantity = 1) =>
@@ -141,7 +148,12 @@ export const useJingStore = create<JingState>()(
       storage: createJSONStorage(() =>
         typeof window === "undefined" ? memoryStorage : window.localStorage,
       ),
-      partialize: (state) => ({ mode: state.mode, region: state.region, items: state.items }),
+      partialize: (state) => ({
+        mode: state.mode,
+        lang: state.lang,
+        region: state.region,
+        items: state.items,
+      }),
     },
   ),
 );

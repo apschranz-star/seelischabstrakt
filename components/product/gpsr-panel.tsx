@@ -1,5 +1,8 @@
+"use client";
+
 import { RESPONSIBLE_PERSON } from "@/config/site";
-import { hasCosmeticPart, type Product } from "@/config/products";
+import { hasCosmeticPart, localizeProduct, type Product } from "@/config/products";
+import { useLang, useT } from "@/lib/i18n";
 
 /**
  * The block the General Product Safety Regulation asks for on the offer itself:
@@ -23,8 +26,13 @@ function mandatoryLabelText(regulatory: Product["regulatory"]): string[] {
   return [...clp, ...regulatory.warnings, ...enclosed];
 }
 
-export function GpsrPanel({ product }: { product: Product }) {
+export function GpsrPanel({ product: source }: { product: Product }) {
+  // The warnings and CLP statements follow the live language, the identifiers do not.
+  const lang = useLang();
+  const t = useT();
+  const product = localizeProduct(source, lang);
   const warnings = mandatoryLabelText(product.regulatory);
+  const country = t({ de: RESPONSIBLE_PERSON.country, en: "Germany" });
 
   return (
     <section
@@ -35,20 +43,20 @@ export function GpsrPanel({ product }: { product: Product }) {
         id={`gpsr-${product.id}`}
         className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-3"
       >
-        Sicherheits- und Herstellerangaben
+        {t({ de: "Sicherheits- und Herstellerangaben", en: "Product safety and manufacturer" })}
       </h2>
 
       <div className="mt-5 grid gap-6 sm:grid-cols-2">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-3">
-            Verantwortliche Person
+            {t({ de: "Verantwortliche Person", en: "Responsible person" })}
           </p>
           <address className="mt-2 not-italic">
             {RESPONSIBLE_PERSON.company}
             <br />
             {RESPONSIBLE_PERSON.street}
             <br />
-            {RESPONSIBLE_PERSON.zipCity}, {RESPONSIBLE_PERSON.country}
+            {RESPONSIBLE_PERSON.zipCity}, {country}
             <br />
             <a
               href={`mailto:${RESPONSIBLE_PERSON.email}`}
@@ -61,16 +69,16 @@ export function GpsrPanel({ product }: { product: Product }) {
 
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-3">
-            Produktkennzeichnung
+            {t({ de: "Produktkennzeichnung", en: "Product identification" })}
           </p>
           <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
-            <dt className="text-ink-3">Artikel</dt>
+            <dt className="text-ink-3">{t({ de: "Artikel", en: "Item" })}</dt>
             <dd>{product.code}</dd>
-            <dt className="text-ink-3">Bezeichnung</dt>
+            <dt className="text-ink-3">{t({ de: "Bezeichnung", en: "Name" })}</dt>
             <dd>{product.name}</dd>
-            <dt className="text-ink-3">Inhalt</dt>
+            <dt className="text-ink-3">{t({ de: "Inhalt", en: "Contents" })}</dt>
             <dd>{product.unitsLabel}</dd>
-            <dt className="text-ink-3">Herkunft</dt>
+            <dt className="text-ink-3">{t({ de: "Herkunft", en: "Origin" })}</dt>
             <dd>{product.origin}</dd>
           </dl>
         </div>
@@ -79,7 +87,7 @@ export function GpsrPanel({ product }: { product: Product }) {
       {warnings.length > 0 ? (
         <div className="mt-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-3">
-            Warnhinweise
+            {t({ de: "Warnhinweise", en: "Warnings" })}
           </p>
           <ul role="list" className="mt-2 flex flex-col gap-1">
             {warnings.map((warning) => (
@@ -95,7 +103,15 @@ export function GpsrPanel({ product }: { product: Product }) {
       ) : null}
 
       <p className="mt-6 text-xs leading-relaxed text-ink-3">
-        {hasCosmeticPart(product) ? RESPONSIBLE_PERSON.note : RESPONSIBLE_PERSON.role}
+        {hasCosmeticPart(product)
+          ? t({
+              de: RESPONSIBLE_PERSON.note,
+              en: "For cosmetic products the same entity is the responsible person under Article 4 of Regulation (EC) No 1223/2009. The product information file is kept there for ten years and is available to the market surveillance authorities on request.",
+            })
+          : t({
+              de: RESPONSIBLE_PERSON.role,
+              en: "Responsible person and manufacturer within the meaning of the EU General Product Safety Regulation",
+            })}
       </p>
     </section>
   );

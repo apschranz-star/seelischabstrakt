@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useEffect, useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { buttonClasses } from "@/components/ui/button";
+import { useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { useMounted } from "@/lib/use-mounted";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,7 @@ const FOCUSABLE = [
 export function Modal({ open, onClose, title, description, children }: ModalProps) {
   // The portal target only exists in the browser, so nothing renders before mount.
   const mounted = useMounted();
+  const t = useT();
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const reduceMotion = useReducedMotion();
@@ -153,7 +155,7 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Dialog schließen"
+                aria-label={t({ de: "Dialog schließen", en: "Close dialog" })}
                 className={cn(buttonClasses("control", "icon"), "-mr-1 shrink-0")}
               >
                 <X size={16} aria-hidden="true" />

@@ -7,6 +7,7 @@ import { Minus, Plus } from "lucide-react";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/config/products";
+import { useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { useJingStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,7 @@ function DrawnCheck({ size, reduce }: { size: number; reduce: boolean }) {
 }
 
 export function AddToCart({ product, size = "lg" }: { product: Product; size?: "sm" | "lg" }) {
+  const t = useT();
   const addItem = useJingStore((state) => state.addItem);
   const { hydrated } = useYinYang();
   const reduce = useReducedMotion() === true;
@@ -81,10 +83,18 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
 
   const swap = { duration: reduce ? 0 : DURATION.swap, ease: EASE_RITUAL };
 
+  const addLabel = t({ de: "In den Warenkorb", en: "Add to cart" });
+
   const statusLine = confirmed
     ? confirmedLine >= MAX_QUANTITY
-      ? `${product.code}: ${confirmedLine} im Warenkorb, mehr geht pro Bestellung nicht`
-      : `${product.code}: ${confirmedLine} im Warenkorb`
+      ? t({
+          de: `${product.code}: ${confirmedLine} im Warenkorb, mehr geht pro Bestellung nicht`,
+          en: `${product.code}: ${confirmedLine} in the cart, the maximum per order`,
+        })
+      : t({
+          de: `${product.code}: ${confirmedLine} im Warenkorb`,
+          en: `${product.code}: ${confirmedLine} in the cart`,
+        })
     : "";
 
   return (
@@ -92,14 +102,14 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
       <div className="flex items-stretch gap-2">
         <div
           role="group"
-          aria-label={`Menge, ${product.name}`}
+          aria-label={t({ de: `Menge, ${product.name}`, en: `Quantity, ${product.name}` })}
           className="flex items-center rounded-[2px] border border-control"
         >
           <button
             type="button"
             onClick={() => setQuantity((value) => Math.max(1, value - 1))}
             disabled={stepDisabled || quantity <= 1}
-            aria-label="Menge verringern"
+            aria-label={t({ de: "Menge verringern", en: "Decrease quantity" })}
             className={stepButton}
           >
             <Minus size={compact ? 13 : 15} aria-hidden="true" />
@@ -114,15 +124,22 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
             )}
           >
             {quantity}
-            <span className="sr-only"> Stück</span>
+            <span className="sr-only">{t({ de: " Stück", en: " units" })}</span>
           </span>
 
           <button
             type="button"
             onClick={() => setQuantity((value) => Math.min(MAX_QUANTITY, value + 1))}
             disabled={stepDisabled || quantity >= MAX_QUANTITY}
-            title={quantity >= MAX_QUANTITY ? `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich` : undefined}
-            aria-label="Menge erhöhen"
+            title={
+              quantity >= MAX_QUANTITY
+                ? t({
+                    de: `Mehr als ${MAX_QUANTITY} pro Artikel und Bestellung sind nicht möglich`,
+                    en: `No more than ${MAX_QUANTITY} of one item per order`,
+                  })
+                : undefined
+            }
+            aria-label={t({ de: "Menge erhöhen", en: "Increase quantity" })}
             className={stepButton}
           >
             <Plus size={compact ? 13 : 15} aria-hidden="true" />
@@ -142,7 +159,7 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
                 as the longer one and never jumps while they crossfade. */}
             <span className="grid [&>*]:col-start-1 [&>*]:row-start-1">
               <span className="invisible inline-flex items-center gap-2 whitespace-nowrap" aria-hidden="true">
-                In den Warenkorb
+                {addLabel}
               </span>
               <AnimatePresence initial={false} mode="wait">
                 {confirmed ? (
@@ -155,7 +172,7 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
                     transition={swap}
                   >
                     <DrawnCheck size={compact ? 13 : 15} reduce={reduce} />
-                    Hinzugefügt
+                    {t({ de: "Hinzugefügt", en: "Added" })}
                   </motion.span>
                 ) : (
                   <motion.span
@@ -166,7 +183,7 @@ export function AddToCart({ product, size = "lg" }: { product: Product; size?: "
                     exit={{ opacity: 0, y: -6 }}
                     transition={swap}
                   >
-                    In den Warenkorb
+                    {addLabel}
                   </motion.span>
                 )}
               </AnimatePresence>

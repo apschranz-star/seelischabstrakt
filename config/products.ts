@@ -96,6 +96,31 @@ export interface Vessel {
   finish: "matte" | "soft-touch" | "ceramic" | "glass";
 }
 
+/**
+ * The English words of one product. Names are brand names and stay as they are.
+ * INCI lists, CPNP references and numbers are not language, so they are not here.
+ * CLP statements use the official English wording of the H and P phrases.
+ */
+export interface ProductTranslation {
+  /** Only for a name that carries German words. Brand names stay as they are. */
+  name?: string;
+  category?: string;
+  tagline: string;
+  description: string;
+  ritual: string;
+  unitsLabel?: string;
+  origin?: string;
+  /** Same order and length as the German warnings of the regulatory block. */
+  warnings?: string[];
+  clpStatements?: string[];
+  /** For accessories: the material and care lines. */
+  material?: string;
+  care?: string;
+  /** For a set with an enclosed cosmetic: its warnings. */
+  cosmeticWarnings?: string[];
+  cosmeticName?: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -115,6 +140,8 @@ export interface Product {
   regulatory: Regulatory;
   /** Sorting weight inside a collection, lower comes first. */
   order: number;
+  /** English texts. Missing means the German words are shown in both languages. */
+  translations?: { en: ProductTranslation };
 }
 
 export const PRODUCTS: Product[] = [
@@ -149,6 +176,24 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 1,
+    translations: {
+      en: {
+        category: "Scent Architecture",
+        tagline: "Ultrasonic diffuser in matt aluminium",
+        description:
+          "An object that opens the evening. The mist rises straight up, without sound, without " +
+          "light. The housing is matt inside and out, so it casts no reflections in the half dark. " +
+          "Two settings, eight hours of running time, automatic shut-off when the tank is empty.",
+        ritual: "Switch on in the evening, half an hour before going to bed.",
+        unitsLabel: "1 device",
+        origin: "Designed in Berlin, made in Shenzhen",
+        warnings: [
+          "Use only with water and fragrance oils intended for this purpose.",
+          "Do not place within immediate reach of children under three years.",
+          "Old appliances do not belong in household waste. Return them to us or to your municipal recycling centre.",
+        ],
+      },
+    },
   },
   {
     id: "yin-02",
@@ -193,6 +238,24 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 2,
+    translations: {
+      en: {
+        category: "Night Care",
+        tagline: "Regenerating facial oil with black sesame",
+        description:
+          "Six plant oils, cold pressed, with squalane and vitamin E, in an amber glass bottle with " +
+          "a matt coating. The texture absorbs in about ninety seconds and leaves no film. The " +
+          "scent comes from the oils themselves, no perfume oil is added. The naturally occurring " +
+          "fragrance substances linalool and limonene are declared.",
+        ritual: "Three to four drops in the evening on damp skin, working from the centre outwards.",
+        origin: "Made in France",
+        warnings: [
+          "For external use only.",
+          "Avoid contact with the eyes.",
+          "Do not use on irritated or damaged skin.",
+        ],
+      },
+    },
   },
   {
     id: "yin-03",
@@ -239,6 +302,31 @@ export const PRODUCTS: Product[] = [
       },
     },
     order: 3,
+    translations: {
+      en: {
+      name: "Obsidian Gua Sha and Ritual Oil",
+        category: "Ritual Tools",
+        tagline: "Hand-ground obsidian with 30 ml carrier oil",
+        description:
+          "The stone sits heavy in the hand and stays cool. Every edge is ground individually, so " +
+          "no two pieces are alike. The enclosed oil is deliberately kept neutral, so that it lets " +
+          "the skin glide without adding scent.",
+        ritual: "After the oil, in calm strokes from the jaw to the temple.",
+        unitsLabel: "1 stone, 1 bottle 30 ml",
+        origin: "Stone from Mexico, oil from Italy",
+        material: "Volcanic glass, polished, uncoated",
+        care: "Rinse with lukewarm water after use and rub dry.",
+        warnings: [
+          "Do not use on inflamed or damaged skin.",
+          "The stone is fragile, do not drop it on hard surfaces.",
+        ],
+        cosmeticName: "Enclosed carrier oil",
+        cosmeticWarnings: [
+          "For external use only.",
+          "Avoid contact with the eyes.",
+        ],
+      },
+    },
   },
   {
     id: "yin-05",
@@ -314,6 +402,41 @@ export const PRODUCTS: Product[] = [
       },
     },
     order: 5,
+    translations: {
+      en: {
+        category: "Breath",
+        tagline: "The night inhaler in black, lavender and cedar, with balm",
+        description:
+          "The same stick in black, tuned for the evening. At the top, the inhaler with little " +
+          "menthol and instead lavender, cedar and vetiver, a slow breath that takes back the day. " +
+          "At the bottom, under the cap, a balm for the temples and neck. Its counterpart for the " +
+          "morning is the white stick from Yang.",
+        ritual: "Before sleep, hold one half to the nostril, three calm breaths on each side. Dab the balm on the temples and neck.",
+        unitsLabel: "1 stick, inhaler 2 g, balm 4 g",
+        origin: "Made in Thailand",
+        material: "Polypropylene tube with cotton wick, polypropylene cap",
+        care: "Keep closed, do not store above 30 degrees, do not leave in the sun.",
+        warnings: [
+          "For inhalation through the nose only, do not swallow.",
+          "Not for children under twelve years.",
+          "Do not use in case of asthma or respiratory disease without medical advice.",
+          "Not a medicinal product. It does not relieve or cure any illness, including sleep disorders.",
+        ],
+        clpStatements: [
+          "H315 Causes skin irritation.",
+          "H319 Causes serious eye irritation.",
+          "H317 May cause an allergic skin reaction.",
+          "P102 Keep out of reach of children.",
+          "P305+P351+P338 IF IN EYES: Rinse cautiously with water for several minutes. Remove contact lenses, if present and easy to do. Continue rinsing.",
+        ],
+        cosmeticName: "Balm under the cap",
+        cosmeticWarnings: [
+          "External use only, apply thinly to the temples or neck.",
+          "Not on mucous membranes, not in the eyes, not on damaged skin.",
+          "Do not use on children under three years.",
+        ],
+      },
+    },
   },
   {
     id: "yin-04",
@@ -349,6 +472,27 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 4,
+    translations: {
+      en: {
+        category: "Scented Candle",
+        tagline: "Japanese cypress, cedarwood, cold smoke",
+        description:
+          "Rapeseed wax in a matt stoneware vessel that remains as a container once the candle has " +
+          "burnt down. The wick is made of wood and crackles quietly. Burns for about fifty hours.",
+        ritual: "Light it and let it burn until the pool of wax reaches the rim. Otherwise it burns unevenly.",
+        origin: "Poured in Portugal",
+        warnings: [
+          "Never leave a burning candle unattended.",
+          "Keep away from children and pets.",
+          "Keep at least ten centimetres away from other candles.",
+          "Trim the wick to five millimetres before each lighting.",
+          "Do not place on delicate surfaces, the vessel becomes hot.",
+        ],
+        clpStatements: [
+          "Contains Cedrol, Limonene, Linalool. May produce an allergic reaction.",
+        ],
+      },
+    },
   },
   {
     id: "yang-01",
@@ -391,6 +535,24 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 1,
+    translations: {
+      en: {
+        category: "Lips",
+        tagline: "Shade Chalk Nude, velvet matt",
+        description:
+          "A texture between a pencil and a cream. It goes on in a single layer without weighing " +
+          "down the lip and dries to a dry matt finish that hardly transfers. The tube is chalk " +
+          "white and unlacquered on the outside, so that it takes on fingerprints instead of " +
+          "mirroring them.",
+        ritual: "Apply from the centre outwards, then blend once with a finger.",
+        unitsLabel: "3.5 g",
+        origin: "Made in South Korea",
+        warnings: [
+          "In case of contact with the eyes, rinse thoroughly with water.",
+          "Do not use on chapped or damaged lips.",
+        ],
+      },
+    },
   },
   {
     id: "yang-02",
@@ -432,6 +594,21 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 2,
+    translations: {
+      en: {
+        category: "Eyes",
+        tagline: "Transparent gloss with a pearl core",
+        description:
+          "An eyeshadow that sits like glass. The applicator is cut flat, so the layer stays thin. " +
+          "The pearl core shifts in the light, the colour itself remains colourless.",
+        ritual: "Dab onto the mobile lid, do not drag. Blink once, then it sets.",
+        origin: "Made in Japan",
+        warnings: [
+          "Do not use along the waterline.",
+          "Apply carefully if you wear contact lenses, discontinue use in case of irritation.",
+        ],
+      },
+    },
   },
   {
     id: "yang-03",
@@ -475,6 +652,21 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 3,
+    translations: {
+      en: {
+        category: "Complexion",
+        tagline: "Compact case in chalk white",
+        description:
+          "The case is made of matt plastic and can be opened without looking. The cushion releases " +
+          "the emulsion slowly, so the application can be controlled. The insert sits loosely in " +
+          "the case and can be taken out for cleaning.",
+        ritual: "Work in short dabs, start at the nose and let it fade outwards.",
+        origin: "Made in South Korea",
+        warnings: [
+          "Do not touch the cushion with wet fingers.",
+        ],
+      },
+    },
   },
   {
     id: "yang-05",
@@ -552,6 +744,41 @@ export const PRODUCTS: Product[] = [
       },
     },
     order: 5,
+    translations: {
+      en: {
+        category: "Breath",
+        tagline: "The day inhaler in white, menthol and hinoki, with balm",
+        description:
+          "A stick in two halves, like the herbal inhalers from Thailand, in white for the day. At " +
+          "the top, the inhaler with menthol, camphor, borneol and hinoki, one breath through the " +
+          "nose, cold and clear. At the bottom, under the cap, a solid balm for the temples and " +
+          "neck. Its counterpart for the evening is the black stick from Yin.",
+        ritual: "Hold one half to the nostril, breathe in calmly, three breaths on each side. Dab the balm onto the temples with a fingertip.",
+        unitsLabel: "1 stick, inhaler 2 g, balm 4 g",
+        origin: "Made in Thailand",
+        material: "Polypropylene tube with cotton wick, polypropylene cap",
+        care: "Keep closed, do not store above 30 degrees, do not leave in the sun.",
+        warnings: [
+          "For inhalation through the nose only, do not swallow.",
+          "Not for children under twelve years.",
+          "Do not use in case of asthma or respiratory disease without medical advice.",
+          "Not a medicinal product. It does not relieve or cure any illness.",
+        ],
+        clpStatements: [
+          "H315 Causes skin irritation.",
+          "H319 Causes serious eye irritation.",
+          "H317 May cause an allergic skin reaction.",
+          "P102 Keep out of reach of children.",
+          "P305+P351+P338 IF IN EYES: Rinse cautiously with water for several minutes. Remove contact lenses, if present and easy to do. Continue rinsing.",
+        ],
+        cosmeticName: "Balm under the cap",
+        cosmeticWarnings: [
+          "External use only, apply thinly to the temples or neck.",
+          "Not on mucous membranes, not in the eyes, not on damaged skin.",
+          "Do not use on children under three years.",
+        ],
+      },
+    },
   },
   {
     id: "yang-04",
@@ -595,11 +822,75 @@ export const PRODUCTS: Product[] = [
       ],
     },
     order: 4,
+    translations: {
+      en: {
+        category: "Care",
+        tagline: "Two phases, shake before use",
+        description:
+          "At the bottom, the aqueous phase with hyaluronic acid, on top a light oil phase. When " +
+          "shaken, the two combine for about twenty seconds, exactly as long as the application " +
+          "takes. Then they separate again, which is intended.",
+        ritual: "In the morning after cleansing, press into skin that is still damp.",
+        origin: "Made in Japan",
+        warnings: [
+          "Shake well before each use.",
+          "Store in a cool place, protected from direct sunlight.",
+        ],
+      },
+    },
   },
 ];
 
 export function getProductsByCollection(collection: Collection): Product[] {
   return PRODUCTS.filter((p) => p.collection === collection).sort((a, b) => a.order - b.order);
+}
+
+/**
+ * The product in the given language. German is the product itself; English
+ * returns a copy with the translated words in place, so every component keeps
+ * reading product.tagline, product.ritual and the regulatory block as before.
+ */
+export function localizeProduct(product: Product, lang: "de" | "en"): Product {
+  const en = lang === "en" ? product.translations?.en : undefined;
+  if (!en) return product;
+  const reg = product.regulatory;
+  let regulatory: Regulatory = reg;
+  if (en.warnings && en.warnings.length === reg.warnings.length) {
+    regulatory = { ...reg, warnings: en.warnings } as Regulatory;
+  }
+  if (regulatory.kind === "candle" && en.clpStatements) {
+    regulatory = { ...regulatory, clpStatements: en.clpStatements };
+  }
+  if (regulatory.kind === "accessory") {
+    regulatory = {
+      ...regulatory,
+      material: en.material ?? regulatory.material,
+      care: en.care ?? regulatory.care,
+      clpStatements: en.clpStatements ?? regulatory.clpStatements,
+      cosmetic:
+        regulatory.cosmetic && (en.cosmeticWarnings || en.cosmeticName)
+          ? {
+              ...regulatory.cosmetic,
+              name: en.cosmeticName ?? regulatory.cosmetic.name,
+              warnings:
+                en.cosmeticWarnings && en.cosmeticWarnings.length === regulatory.cosmetic.warnings.length
+                  ? en.cosmeticWarnings
+                  : regulatory.cosmetic.warnings,
+            }
+          : regulatory.cosmetic,
+    };
+  }
+  return {
+    ...product,
+    name: en.name ?? product.name,
+    category: en.category ?? product.category,
+    tagline: en.tagline,
+    description: en.description,
+    ritual: en.ritual,
+    unitsLabel: en.unitsLabel ?? product.unitsLabel,
+    origin: en.origin ?? product.origin,
+    regulatory,
+  };
 }
 
 export function getProductById(id: string): Product | undefined {
