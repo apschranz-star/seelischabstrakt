@@ -66,6 +66,72 @@
     }
   }
 
+  /* -------------------------------------------------------------- Sprache */
+
+  /*
+   * Englisch ist die Leitsprache. Jede weitere steht in einer eigenen Datei
+   * unter INHALT.<code>, samt ihrer Oberflaechentexte unter ui. Eine Sprache
+   * dazunehmen heisst: eine Datei schreiben, eine Zeile in index.html, eine
+   * Zeile in sw.js. Sonst nichts.
+   *
+   * Faellt eine Uebersetzung aus, greift Englisch. Faellt auch die aus, steht
+   * der Schluessel da. Leer bleibt nie etwas.
+   */
+  const SPRACHEN = [
+    { code: "en", name: "English", locale: "en-GB" },
+    { code: "de", name: "Deutsch", locale: "de-AT" },
+    { code: "it", name: "Italiano", locale: "it-IT" },
+    { code: "fr", name: "Francais", locale: "fr-FR" },
+    { code: "es", name: "Espanol", locale: "es-ES" },
+  ];
+
+  /* Uebergangsform: solange der Inhalt noch flach als INHALT.wissen dasteht,
+     wird er als Deutsch eingehaengt. Faellt weg, sobald alle Sprachdateien da
+     sind, und haelt die App bis dahin am Laufen. */
+  if (typeof INHALT === "object" && INHALT.wissen && !INHALT.de) {
+    const flach = {};
+    Object.keys(INHALT).forEach((k) => { flach[k] = INHALT[k]; });
+    Object.keys(INHALT).forEach((k) => { delete INHALT[k]; });
+    INHALT.de = flach;
+  }
+
+  function sprachenDa() {
+    return SPRACHEN.filter((s) => INHALT[s.code] && INHALT[s.code].wissen);
+  }
+
+  function spracheWaehlen() {
+    const gewaehlt = D.einstellungen && D.einstellungen.sprache;
+    if (gewaehlt && INHALT[gewaehlt]) return gewaehlt;
+    const vomGeraet = String(navigator.language || "en").slice(0, 2).toLowerCase();
+    if (INHALT[vomGeraet]) return vomGeraet;
+    if (INHALT.en) return "en";
+    const erste = sprachenDa()[0];
+    return erste ? erste.code : "en";
+  }
+
+  let L = "en";
+  let I = {};
+
+  function spracheSetzen(code) {
+    L = INHALT[code] ? code : (INHALT.en ? "en" : L);
+    I = INHALT[L] || {};
+    document.documentElement.lang = L;
+  }
+
+  /** Ein Oberflaechentext. Schluessel rein, Satz raus. */
+  function T(schluessel) {
+    const eigen = I.ui && I.ui[schluessel];
+    if (eigen != null) return eigen;
+    const ersatz = INHALT.en && INHALT.en.ui && INHALT.en.ui[schluessel];
+    return ersatz != null ? ersatz : schluessel;
+  }
+
+  /** Das Gebietsschema fuer Datum und Zahlen. */
+  function LOKAL() {
+    const s = SPRACHEN.find((x) => x.code === L);
+    return s ? s.locale : "en-GB";
+  }
+
   /* ---------------------------------------------------------------- Datum */
 
   function heuteISO(d) {
@@ -78,12 +144,12 @@
     return heuteISO(d);
   }
   function langesDatum(iso) {
-    return new Date(iso + "T12:00:00").toLocaleDateString("de-DE", {
+    return new Date(iso + "T12:00:00").toLocaleDateString(LOKAL(), {
       weekday: "long", day: "numeric", month: "long", year: "numeric",
     });
   }
   function kurzesDatum(iso) {
-    return new Date(iso + "T12:00:00").toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" });
+    return new Date(iso + "T12:00:00").toLocaleDateString(LOKAL(), { day: "2-digit", month: "2-digit" });
   }
   function tageZwischen(a, b) {
     return Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 86400000);
@@ -298,7 +364,7 @@
       <p class="lead">Mehrfach moeglich. Was hier steht, sind die Dinge, die beim naechsten Termin
       zaehlen, weil man sie zwei Monate spaeter nicht mehr erinnert.</p>`);
     schalterListe(k3, {
-      optionen: INHALT.symptome,
+      optionen: I.symptome,
       gewaehlt: e.symptome || [],
       beiWahl: (w) => {
         const t = tag(iso);
@@ -501,7 +567,7 @@
       const e = D.tage[d];
       const li = document.createElement("li");
       li.innerHTML =
-        `<div class="txt"><b>${esc(kurzesDatum(d))} &middot; ${esc(new Date(d + "T12:00:00").toLocaleDateString("de-DE", { weekday: "short" }))}</b>` +
+        `<div class="txt"><b>${esc(kurzesDatum(d))} &middot; ${esc(new Date(d + "T12:00:00").toLocaleDateString(LOKAL(), { weekday: "short" }))}</b>` +
         `<small>${esc(zusammenfassung(e))}</small></div>`;
       liste.appendChild(li);
     });
@@ -699,7 +765,7 @@
       ),
     );
 
-    INHALT.essen.forEach((gruppe) => {
+    I.essen.forEach((gruppe) => {
       const k = karte(`<p class="kicker">${esc(gruppe.kicker)}</p><h2 class="h2">${esc(gruppe.titel)}</h2>` +
         (gruppe.lead ? `<p class="lead">${esc(gruppe.lead)}</p>` : ""));
       const ul = document.createElement("ul");
@@ -727,7 +793,7 @@
        <p class="lead">Sortiert nach Aufwand. Die ersten brauchen keine Kraft und keinen Topf,
        den man hinterher schrubben muss.</p>`,
     );
-    INHALT.rezepte.forEach((r) => {
+    I.rezepte.forEach((r) => {
       const det = document.createElement("details");
       det.innerHTML =
         `<summary>${esc(r.name)} <span class="marke">${esc(r.aufwand)}</span></summary>` +
@@ -759,7 +825,7 @@
     kn.appendChild(r);
     ziel.appendChild(kn);
 
-    INHALT.wissen.forEach((kapitel) => {
+    I.wissen.forEach((kapitel) => {
       const k = karte(`<p class="kicker">${esc(kapitel.kicker)}</p><h2 class="h2">${esc(kapitel.titel)}</h2>`);
       kapitel.abschnitte.forEach((a) => {
         const det = document.createElement("details");
@@ -782,7 +848,7 @@
     );
     const ul = document.createElement("ul");
     ul.className = "liste";
-    INHALT.fragen.forEach((f) => {
+    I.fragen.forEach((f) => {
       const li = document.createElement("li");
       li.innerHTML = `<div class="txt"><b>${esc(f.frage)}</b><small>${esc(f.warum)}</small></div>`;
       ul.appendChild(li);
@@ -827,7 +893,7 @@
       ziel.appendChild(kn);
     }
 
-    INHALT.warnzeichen.forEach((g) => {
+    I.warnzeichen.forEach((g) => {
       const k = karte(`<p class="kicker">${esc(g.kicker)}</p><h2 class="h2">${esc(g.titel)}</h2>`);
       const ul = document.createElement("ul");
       ul.className = "liste";
@@ -1003,7 +1069,7 @@
       ),
     );
     const ku = karte("");
-    INHALT.ueberwachung.forEach((u) => {
+    I.ueberwachung.forEach((u) => {
       const det = document.createElement("details");
       det.innerHTML =
         `<summary>${esc(u.titel)}</summary><div class="details-inhalt">` +
@@ -1024,11 +1090,11 @@
        <p class="lead">Nur abschreiben, was auf dem Befund steht. Die Bedeutung steht beim
        jeweiligen Wert, die Beurteilung macht die Aerztin.</p>`,
     );
-    const neu = { datum: heuteISO(), schluessel: INHALT.laborwerte[0].schluessel, wert: "" };
+    const neu = { datum: heuteISO(), schluessel: I.laborwerte[0].schluessel, wert: "" };
     feld(k, { label: "Datum", typ: "date", wert: neu.datum, beiAenderung: (v) => (neu.datum = v) });
     const sel = document.createElement("label");
     sel.className = "feld";
-    sel.innerHTML = `<span>Wert</span><select>${INHALT.laborwerte.map((w) => `<option value="${esc(w.schluessel)}">${esc(w.name)}${w.einheit ? " (" + esc(w.einheit) + ")" : ""}</option>`).join("")}</select>`;
+    sel.innerHTML = `<span>Wert</span><select>${I.laborwerte.map((w) => `<option value="${esc(w.schluessel)}">${esc(w.name)}${w.einheit ? " (" + esc(w.einheit) + ")" : ""}</option>`).join("")}</select>`;
     sel.querySelector("select").addEventListener("change", (ev) => (neu.schluessel = ev.target.value));
     k.appendChild(sel);
     feld(k, { label: "Zahl", typ: "number", schritt: "any", wert: "", beiAenderung: (v) => (neu.wert = v) });
@@ -1048,7 +1114,7 @@
     k.appendChild(r);
     ziel.appendChild(k);
 
-    INHALT.laborwerte.forEach((w) => {
+    I.laborwerte.forEach((w) => {
       const meine = D.werte.filter((x) => x.schluessel === w.schluessel).sort((a, b2) => a.datum.localeCompare(b2.datum));
       const kk = karte(
         `<p class="kicker">${esc(w.gruppe)}</p><h2 class="h2">${esc(w.name)}</h2>` +
@@ -1265,7 +1331,7 @@
     box.appendChild(mt);
     const ml = document.createElement("div");
     ml.className = "hakenliste";
-    INHALT.suche.merkmale.forEach((m) => {
+    I.suche.merkmale.forEach((m) => {
       const l = document.createElement("label");
       l.className = "haken";
       const c = document.createElement("input");
@@ -1364,7 +1430,7 @@
     );
     schalterListe(kf, {
       einzeln: true,
-      optionen: INHALT.suche.laender,
+      optionen: I.suche.laender,
       gewaehlt: land,
       beiWahl: (w) => { e.suchLand = w; sichern(); zeichnen(); return w; },
     });
@@ -1384,7 +1450,7 @@
     });
     ziel.appendChild(kf);
 
-    const passend = INHALT.suche.wege.filter(
+    const passend = I.suche.wege.filter(
       (w) => w.land === land && (thema === "beides" || w.thema === thema || w.thema === "beides"),
     );
 
@@ -1445,7 +1511,7 @@
       "Adresse nicht. Und es geht keine Anfrage von dieser App aus, auch keine, die verraet, " +
       "wonach du suchst.";
     const pg2 = document.createElement("p");
-    pg2.textContent = INHALT.suche.warnung;
+    pg2.textContent = I.suche.warnung;
     bg.append(pg1, pg2);
     dg.append(sg, bg);
     kg.appendChild(dg);
@@ -1483,7 +1549,7 @@
     const km = karte(`<p class="kicker">Woran du sie erkennst</p><h2 class="h2">Merkmale einer guten Stelle</h2>`);
     const ul = document.createElement("ul");
     ul.className = "liste";
-    INHALT.suche.merkmale.forEach((m) => {
+    I.suche.merkmale.forEach((m) => {
       const li = document.createElement("li");
       li.innerHTML = `<span class="punkt gut"></span><div class="txt"><b>${esc(m.punkt)}</b></div>`;
       ul.appendChild(li);
@@ -1494,7 +1560,7 @@
     const ke = karte(`<p class="kicker">Mitnehmen und fragen</p><h2 class="h2">Der erste Termin</h2>`);
     const ue = document.createElement("ul");
     ue.className = "liste";
-    INHALT.suche.erstgespraech.forEach((t) => {
+    I.suche.erstgespraech.forEach((t) => {
       const li = document.createElement("li");
       li.innerHTML = `<div class="txt"><b>${esc(t)}</b></div>`;
       ue.appendChild(li);
@@ -1827,6 +1893,7 @@
     return;
   }
 
+  spracheSetzen(spracheWaehlen());
   themaSetzen();
   zeichnen();
 
