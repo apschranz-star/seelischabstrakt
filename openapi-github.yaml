@@ -1,0 +1,128 @@
+openapi: 3.1.0
+info:
+  title: Schranz sites on GitHub
+  version: "1.0"
+  description: >-
+    Reads and writes files in the repository apschranz-star/seelischabstrakt directly on GitHub,
+    so a Custom GPT can maintain every site from one place, independent of Netlify. Each write is
+    one commit. The workflows in the repository build and publish the affected site afterwards.
+    Paths with folders are passed URL encoded, so farida/content.json is sent as farida%2Fcontent.json.
+    File contents travel base64 encoded in both directions.
+servers:
+  - url: https://api.github.com
+paths:
+  /repos/apschranz-star/seelischabstrakt/contents/{path}:
+    get:
+      operationId: getFile
+      summary: Read a file. Returns its content base64 encoded and its sha, which a write needs.
+      security:
+        - github: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          description: Path inside the repository, URL encoded. Example farida%2Fcontent.json
+          schema:
+            type: string
+        - name: ref
+          in: query
+          required: false
+          description: Branch. main for the sites in folders, jing for the JING shop.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The file with content (base64), sha, size and path
+        "404":
+          description: No such file on this branch
+    put:
+      operationId: writeFile
+      summary: Create or update a file with one commit. Updating needs the sha from getFile.
+      description: >-
+        content is the complete new file, base64 encoded UTF-8. Always read the file first, change
+        only what was asked, and send the whole file back. For JSON files make sure the result is
+        valid JSON before encoding it. The commit message is one sentence saying what changes for
+        visitors. A 409 means the sha is stale, read the file again and retry.
+      security:
+        - github: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message, content, branch]
+              properties:
+                message:
+                  type: string
+                  description: One sentence, what changes for visitors
+                content:
+                  type: string
+                  description: The whole file, base64 encoded UTF-8
+                sha:
+                  type: string
+                  description: sha of the current version from getFile. Required when updating, omitted when creating.
+                branch:
+                  type: string
+                  description: main for the folder sites, jing for the JING shop
+      responses:
+        "200":
+          description: File updated
+        "201":
+          description: File created
+        "409":
+          description: The sha is stale. Read again and retry.
+        "422":
+          description: Invalid request, usually a missing sha or content that is not base64
+  /repos/apschranz-star/seelischabstrakt/actions/runs:
+    get:
+      operationId: listRuns
+      summary: The latest workflow runs, to check whether a change was built and published.
+      security:
+        - github: []
+      parameters:
+        - name: branch
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+      responses:
+        "200":
+          description: Runs with name, status (queued, in_progress, completed) and conclusion (success, failure)
+  /repos/apschranz-star/seelischabstrakt/actions/runs/{run_id}/jobs:
+    get:
+      operationId: listRunJobs
+      summary: The jobs and steps of one run, to see which step failed.
+      security:
+        - github: []
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Jobs with their steps and conclusions
+components:
+  securitySchemes:
+    github:
+      type: http
+      scheme: bearer
+      description: >-
+        A fine grained personal access token from GitHub, Settings, Developer settings, Fine-grained
+        tokens. Repository access only apschranz-star/seelischabstrakt. Permissions Contents read and
+        write, Actions read, Metadata read. Expiry one year. Entered in the GPT under Authentication,
+        API Key, Bearer. Never written into a file, a commit or a chat.

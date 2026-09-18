@@ -1,6 +1,6 @@
 # Websites mit ChatGPT bauen und betreiben
 
-Ja, das geht. ChatGPT kann über den GitHub-Connector Dateien in deinen Repositories lesen und schreiben. Alles, was danach passiert, macht die Infrastruktur von selbst: Netlify oder ein GitHub-Workflow baut die Seite und stellt sie live. Dieses Kit sagt, welche Dateien es dafür braucht, welche Bauart für welchen Zweck passt, und woran ein GPT eine gute Seite von einer schlechten unterscheidet.
+Ja, das geht. ChatGPT liest über den GitHub-Connector jede Datei in deinen Repositories. Schreiben geht über eine Action mit der Datei `openapi-github.yaml` in einem Custom GPT, oder du fügst die fertige Datei, die ChatGPT dir gibt, auf github.com ein. Beides steht in GPT-PROMPT.md, zusammen mit dem Prompt. Alles, was danach passiert, macht die Infrastruktur von selbst: ein GitHub-Workflow baut die Seite und stellt sie auf GitHub Pages, Netlify parallel dazu, wenn es läuft. Dieses Kit sagt, welche Dateien es dafür braucht, welche Bauart für welchen Zweck passt, und woran ein GPT eine gute Seite von einer schlechten unterscheidet.
 
 Alles hier bezieht sich auf dieses Repository `apschranz-star/seelischabstrakt`. Es enthält vier fertige Seiten, die als Vorlagen dienen:
 
@@ -9,6 +9,8 @@ Alles hier bezieht sich auf dieses Repository `apschranz-star/seelischabstrakt`.
     /farida           Praxisseite, fünf Sprachen, content.json als Inhalt, kein Build
     /schranz-ai       SCHRANZ AI SOLUTIONS, Pitchdeck als Website, zwei Sprachen, content.json plus build.mjs
     Branch jing       JING, Beauty-Shop, Next.js, serverseitige Kasse, eigene Übergabe in HANDOVER.md
+
+Jede Seite hat einen Workflow unter .github/workflows/, der sie nach einem Push auf GitHub Pages stellt. Die Adressen und die Datei je Seite stehen in GPT-PROMPT.md.
 
 ## Teil 1: Was ChatGPT kann und was nicht
 
@@ -20,7 +22,7 @@ Grenze, die bleibt: ChatGPT sieht die fertige Seite nicht. Vor jeder Freigabe sc
 
 ## Teil 2: Einmal einrichten
 
-1. ChatGPT, Explore GPTs, Create. Name zum Beispiel "Web Desk". Unter Actions oder Connectors GitHub verbinden, dieses Repository freigeben. Für jedes neue Repository später dasselbe.
+1. ChatGPT, Explore GPTs, Create. Name zum Beispiel "Web Desk". Unter Actions das Schema aus `openapi-github.yaml` einfügen und ein Fine-grained Token für dieses Repository hinterlegen (Contents read and write, Actions read). Der Connector allein liest nur. Für jedes neue Repository ein eigenes Token oder das Repository im Token ergänzen.
 2. Netlify ist mit GitHub verbunden. Jede Seite ist dort ein eigenes Projekt aus demselben Repository mit eigenem Base directory (`farida`, `portfolio`, `schranz-ai`). Die Datei `netlify.toml` im jeweiligen Ordner regelt den Rest.
 3. Instructions des GPT, diesen Text hinein:
 
