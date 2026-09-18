@@ -18,6 +18,17 @@ import { SITE } from "@/config/site";
  * It is not security: a static export carries the key and every page in its
  * files, and anyone determined can read them. For real protection the site
  * needs a host that checks credentials before it serves a byte.
+ *
+ * Someone who already has the code still sees this screen for a moment on every
+ * visit. The pre-rendered HTML is the gate, storage is only read once React
+ * runs, and a static host cannot know any better before it sends the file. It is
+ * the price of a gate without a server, and it is short.
+ *
+ * The four static sites in the seelischabstrakt repository carry a second gate,
+ * gate/gate.snippet.html, written as a plain script because they have no React.
+ * Same job, same parameter name, same Art. 13 notice before the field; the
+ * stored value is called sa-access there and jing-access here. A change to one
+ * belongs in the other.
  */
 const KEY = process.env.NEXT_PUBLIC_JING_ACCESS_KEY ?? "";
 const STORAGE = "jing-access";
