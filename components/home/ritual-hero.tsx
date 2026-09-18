@@ -71,11 +71,17 @@ function RitualHalf({
       type="button"
       onClick={(event) => onSelect(collection, { origin: originFromEvent(event) })}
       aria-pressed={active}
-      aria-controls={collection}
-      aria-label={`${t(copy.title)}, ${t(copy.daypart)}, ${t({
-        de: "Ritualfenster",
-        en: "Ritual window",
-      })} ${hours}, ${state}`}
+      /*
+        Kein aria-controls und kein eigenes aria-label.
+        aria-controls zeigte auf den Abschnitt der Kollektion, und seit die Seite
+        nur noch eine Kollektion zeigt, gibt es den anderen im Baum gar nicht: ein
+        Verweis ins Leere, den die Pruefung zu Recht beanstandet.
+        Ein eigenes Label wiederum muss den sichtbaren Text enthalten, sonst
+        spricht die Vorlesehilfe etwas anderes vor, als dasteht. Der Knopf traegt
+        seinen Text ohnehin: Kollektion, Name, Tageszeit, Ritualfenster und den
+        Zustand. Das ist sein Name, vollstaendig und ohne zweite Fassung, die
+        auseinanderlaufen kann.
+      */
       className={cn(
         "flex min-h-[24rem] flex-col justify-between py-12 text-left",
         "transition-opacity duration-[var(--duration-ritual)] ease-ritual md:min-h-[38rem] md:py-20",
