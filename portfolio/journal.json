@@ -300,8 +300,8 @@
       "de": "Das ist nicht rausgegangen. Schreib mir stattdessen per E-Mail, die Adresse steht unten."
     },
     "note": {
-      "en": "Your name and your text appear on this page if I publish them. Nothing else is stored, no account, no tracking.",
-      "de": "Dein Name und dein Text erscheinen auf dieser Seite, wenn ich sie veröffentliche. Sonst wird nichts gespeichert, kein Konto, kein Tracking."
+      "en": "Your name and your text appear on this page if I publish them. Nothing is published automatically. What happens with your message is written in the privacy policy, linked at the bottom of this page.",
+      "de": "Dein Name und dein Text erscheinen auf dieser Seite, wenn ich sie veröffentliche. Nichts wird automatisch veröffentlicht. Was mit deiner Nachricht passiert, steht in der Datenschutzerklärung, verlinkt unten auf dieser Seite."
     },
     "emptyLabel": {
       "en": "No thoughts here yet. Yours can be the first.",
@@ -339,6 +339,379 @@
           "en": "Shop",
           "de": "Shop"
         }
+      }
+    ]
+  },
+  "legal": {
+    "_help": "Imprint and privacy policy. Both are reached from the footer, at ?page=imprint and ?page=privacy. Anything in square brackets is still missing and has to be filled in before the page goes public. {name}, {address}, {email} and {phone} are filled in from legalName, address, profile.email and phone, so an address only has to be changed in one place. Every section is {\"title\": {en, de}} with \"paragraphs\", optionally \"bullets\" and then \"closing\", each {\"en\": [], \"de\": []}. They are shown in that order. These texts are drafts and not legal advice, a lawyer has to check them.",
+    "legalName": "Alexander Schranz",
+    "address": "[Straße und Hausnummer, PLZ Wien]",
+    "phone": "[Telefonnummer]",
+    "updated": "2026-09-18",
+    "updatedLabel": {
+      "en": "Last updated",
+      "de": "Stand vom"
+    },
+    "backLabel": {
+      "en": "Back to the page",
+      "de": "Zurück zur Seite"
+    },
+    "pages": [
+      {
+        "id": "imprint",
+        "title": {
+          "en": "Imprint",
+          "de": "Impressum"
+        },
+        "sections": [
+          {
+            "title": {
+              "en": "Who runs this page",
+              "de": "Wer diese Seite betreibt"
+            },
+            "paragraphs": {
+              "en": [
+                "Disclosure under section 5 of the Austrian E-Commerce Act (ECG) and section 25 of the Austrian Media Act (MedienG).",
+                "Media owner, publisher and responsible for the content: {name}",
+                "Address: {address}, Austria",
+                "Email: {email}",
+                "Phone: {phone}"
+              ],
+              "de": [
+                "Offenlegung nach § 5 E-Commerce-Gesetz und § 25 Mediengesetz.",
+                "Medieninhaber, Herausgeber und für den Inhalt verantwortlich: {name}",
+                "Anschrift: {address}, Österreich",
+                "E-Mail: {email}",
+                "Telefon: {phone}"
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "What this page is for",
+              "de": "Unternehmensgegenstand und grundlegende Richtung"
+            },
+            "paragraphs": {
+              "en": [
+                "This is the personal website of Alexander Schranz. It holds his story, short pieces of his own writing, and thoughts left by readers.",
+                "Editorial line under section 25 of the Media Act: personal writing about his own life and his own work. Nothing is sold on this page. The footer links to the art shop of Alexander Schranz."
+              ],
+              "de": [
+                "Diese Seite ist die persönliche Website von Alexander Schranz. Sie zeigt seine Geschichte, kurze eigene Texte und Gedanken von Leserinnen und Lesern.",
+                "Grundlegende Richtung nach § 25 Mediengesetz: persönliche Texte über das eigene Leben und die eigene Arbeit. Auf dieser Seite wird nichts verkauft. Im Fuß steht ein Link zum Kunst-Shop von Alexander Schranz."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Business details",
+              "de": "Unternehmerische Angaben"
+            },
+            "paragraphs": {
+              "en": [
+                "These details under section 5 of the E-Commerce Act belong here as soon as they apply: [company register number and register court, VAT number, chamber membership, trade authority]. As long as the page stays private, this paragraph is dropped."
+              ],
+              "de": [
+                "Diese Angaben nach § 5 E-Commerce-Gesetz gehören hierher, sobald sie zutreffen: [Firmenbuchnummer und Firmenbuchgericht, UID-Nummer, Kammerzugehörigkeit, Gewerbebehörde]. Solange die Seite rein privat betrieben wird, entfällt dieser Absatz."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Links and content",
+              "de": "Links und Inhalte"
+            },
+            "paragraphs": {
+              "en": [
+                "The operator of a linked page is responsible for what is on it.",
+                "The texts and pictures on this page belong to Alexander Schranz unless something else is noted with them."
+              ],
+              "de": [
+                "Für den Inhalt einer verlinkten Seite ist deren Betreiber verantwortlich.",
+                "Die Texte und Bilder dieser Seite liegen bei Alexander Schranz, soweit nichts anderes dabeisteht."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Status of this text",
+              "de": "Stand dieses Textes"
+            },
+            "paragraphs": {
+              "en": [
+                "This text is a draft. It is not legal advice. A lawyer has to check it before the page goes public.",
+                "The entries in square brackets are still missing."
+              ],
+              "de": [
+                "Dieser Text ist ein Entwurf. Er ist keine Rechtsberatung. Bevor die Seite öffentlich wird, muss ihn eine Anwältin oder ein Anwalt prüfen.",
+                "Die Angaben in eckigen Klammern fehlen noch."
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "privacy",
+        "title": {
+          "en": "Privacy policy",
+          "de": "Datenschutzerklärung"
+        },
+        "sections": [
+          {
+            "title": {
+              "en": "Who is responsible",
+              "de": "Verantwortlicher"
+            },
+            "paragraphs": {
+              "en": [
+                "The controller for the personal data processed on this page, as defined in Art. 4 (7) GDPR, is:",
+                "{name}, {address}, Austria",
+                "Email: {email}",
+                "Phone: {phone}",
+                "Questions about data protection go to that email address."
+              ],
+              "de": [
+                "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Seite im Sinn von Art. 4 Nr. 7 DSGVO ist:",
+                "{name}, {address}, Österreich",
+                "E-Mail: {email}",
+                "Telefon: {phone}",
+                "Fragen zum Datenschutz gehen an diese E-Mail-Adresse."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "When you open the page",
+              "de": "Wenn du die Seite aufrufst"
+            },
+            "paragraphs": {
+              "en": [
+                "The preview of this page is hosted by GitHub Inc., USA. The live address is hosted by Netlify, Inc., USA. Both record server data on every request, among them the IP address, date and time, the file requested, the browser and the operating system.",
+                "Purpose: delivering the page and recognising faults and attacks.",
+                "Legal basis: Art. 6 (1) (f) GDPR. The legitimate interest is running a page that works and stays secure.",
+                "These records are not analysed and not combined with other data. How long they stay with the provider is decided by the provider.",
+                "Both providers are processors. A contract under Art. 28 GDPR has to be signed with them before the site goes live, and none is signed yet. The data reaches the USA in the process. On what basis that transfer happens has to be settled beforehand as well and written in here.",
+                "The content of the page comes from the file journal.json at the same address. The fonts sit in the folder fonts at the same address. No request goes to Google or to any other third party."
+              ],
+              "de": [
+                "Die Vorschau dieser Seite liegt bei GitHub Inc., USA. Die Live-Adresse liegt bei Netlify, Inc., USA. Beide protokollieren jeden Aufruf mit Serverdaten, darunter die IP-Adresse, Datum und Uhrzeit, die aufgerufene Datei, den Browser und das Betriebssystem.",
+                "Zweck: die Seite ausliefern und Störungen und Angriffe erkennen.",
+                "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse ist der Betrieb einer erreichbaren und sicheren Seite.",
+                "Diese Protokolle werden nicht ausgewertet und nicht mit anderen Daten zusammengeführt. Wie lange sie beim Anbieter liegen, bestimmt der Anbieter.",
+                "Beide Anbieter sind Auftragsverarbeiter. Ein Vertrag nach Art. 28 DSGVO ist mit ihnen vor dem Livegang zu schließen, geschlossen ist noch keiner. Die Daten gelangen dabei in die USA. Auf welcher Grundlage diese Übermittlung erfolgt, ist ebenfalls vorher zu klären und hier einzutragen.",
+                "Die Inhalte der Seite kommen aus der Datei journal.json von derselben Adresse. Die Schriften liegen im Ordner fonts derselben Adresse. Es geht keine Anfrage an Google oder an einen anderen Dritten."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "The access code and your browser storage",
+              "de": "Der Zugangscode und der lokale Speicher"
+            },
+            "paragraphs": {
+              "en": [
+                "This page sits behind an access code. When you enter it, the page keeps the value under the key sa-access in the local storage of your browser, so that you do not have to type it again on every visit.",
+                "The page also remembers your language under as-lang and the light or dark view under as-mode, once you switch either of them.",
+                "These three values stay in your browser. They are not sent to any server and not analysed. They stay until you clear your browser storage.",
+                "This storage is strictly necessary for the service you asked for, so it needs no consent, section 165 (3) of the Austrian Telecommunications Act 2021. This page sets no cookies and embeds nothing from third parties."
+              ],
+              "de": [
+                "Diese Seite steht hinter einem Zugangscode. Wenn du ihn eingibst, legt die Seite den Wert unter dem Schlüssel sa-access im lokalen Speicher deines Browsers ab, damit du ihn nicht bei jedem Aufruf neu eingeben musst.",
+                "Zusätzlich merkt sich die Seite deine Sprache unter as-lang und die helle oder dunkle Ansicht unter as-mode, sobald du eines von beiden umstellst.",
+                "Diese drei Werte bleiben in deinem Browser. Sie werden an keinen Server übertragen und nicht ausgewertet. Sie bleiben, bis du den Speicher deines Browsers löschst.",
+                "Diese Speicherung ist für den von dir gewünschten Dienst unbedingt erforderlich und braucht deshalb keine Einwilligung, § 165 Abs. 3 TKG 2021. Diese Seite setzt keine Cookies und bindet nichts von Dritten ein."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Thoughts under the writing",
+              "de": "Gedanken unter den Texten"
+            },
+            "paragraphs": {
+              "en": [
+                "Under every text there is a field. If you fill it in, you send the name you want to be called by, your text, and the id of the text you are writing under. One further field stays empty and only serves to keep spam out.",
+                "The message goes to the address you are reading the page at. On the live address Netlify, Inc., USA takes it and puts it into the account of Alexander Schranz. The usual server data arises at the provider in the process, among it the IP address.",
+                "Purpose: reading the message, answering it, and publishing it under the text if it belongs there.",
+                "Legal basis: taking in and answering the message under Art. 6 (1) (f) GDPR, the legitimate interest being the exchange with readers and protection against spam. Publishing your name and your text under Art. 6 (1) (a) GDPR. You give that consent by sending the field, and the note next to it says that your name and your text can appear.",
+                "Nothing appears by itself. Alexander Schranz writes a thought into the file journal.json by hand. Only then does it stand on the page, with your name and your text, visible to everyone who may open the page, and it can be picked up by search engines once the page is public.",
+                "The file journal.json lives in the GitHub repository of this page. A published thought therefore also sits in the version history of that repository. If it is taken off the page, the earlier state stays in that history until it is removed there as well.",
+                "Storage period: messages that are not published stay in the Netlify account for as long as they are needed for the answer and are deleted afterwards. Published thoughts stay until you ask for deletion or Alexander Schranz takes them off the page.",
+                "You do not have to fill in this field. There is no obligation and no disadvantage if you leave it. You can withdraw your consent at any time with effect for the future, an email to {email} is enough."
+              ],
+              "de": [
+                "Unter jedem Text steht ein Feld. Wenn du es ausfüllst, sendest du den Namen, unter dem du genannt werden willst, deinen Text und die Kennung des Textes, unter dem du schreibst. Ein weiteres Feld bleibt leer und dient nur der Abwehr von Spam.",
+                "Die Nachricht geht an die Adresse, unter der du die Seite gerade liest. Auf der Live-Adresse nimmt Netlify, Inc., USA sie entgegen und legt sie im Konto von Alexander Schranz ab. Dabei fallen beim Anbieter die üblichen Serverdaten an, darunter die IP-Adresse.",
+                "Zweck: die Nachricht lesen, beantworten und, wenn sie hierher passt, unter dem Text veröffentlichen.",
+                "Rechtsgrundlagen: Entgegennahme und Beantwortung nach Art. 6 Abs. 1 lit. f DSGVO, berechtigtes Interesse ist der Austausch mit Leserinnen und Lesern und der Schutz vor Spam. Veröffentlichung von Name und Text nach Art. 6 Abs. 1 lit. a DSGVO. Diese Einwilligung gibst du, indem du das Feld absendest, und neben dem Feld steht, dass Name und Text erscheinen können.",
+                "Nichts erscheint von selbst. Alexander Schranz trägt einen Gedanken von Hand in die Datei journal.json ein. Erst dann steht er auf der Seite, mit Name und Text, sichtbar für alle, die die Seite aufrufen dürfen, und er kann von Suchmaschinen erfasst werden, sobald die Seite öffentlich ist.",
+                "Die Datei journal.json liegt im GitHub-Repository dieser Seite. Ein veröffentlichter Gedanke steht damit auch in der Versionsgeschichte dieses Repositorys. Wird er von der Seite genommen, bleibt der frühere Stand dort erhalten, bis er auch dort entfernt wird.",
+                "Speicherdauer: Nachrichten, die nicht veröffentlicht werden, bleiben so lange im Netlify-Konto, wie sie für die Antwort gebraucht werden, und werden danach gelöscht. Veröffentlichte Gedanken bleiben stehen, bis du ihre Löschung verlangst oder Alexander Schranz sie von der Seite nimmt.",
+                "Du musst dieses Feld nicht ausfüllen. Es gibt keine Pflicht dazu, und dir entsteht kein Nachteil, wenn du es lässt. Du kannst deine Einwilligung jederzeit für die Zukunft widerrufen, eine E-Mail an {email} genügt."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "If you write an email",
+              "de": "Wenn du eine E-Mail schreibst"
+            },
+            "paragraphs": {
+              "en": [
+                "The page shows an email address. If you write to it, Alexander Schranz processes your address and your message in order to answer you.",
+                "Legal basis: Art. 6 (1) (f) GDPR, the legitimate interest being the answer itself. The message is deleted once it is dealt with and no retention duty stands against it."
+              ],
+              "de": [
+                "Auf der Seite steht eine E-Mail-Adresse. Wenn du dorthin schreibst, verarbeitet Alexander Schranz deine Adresse und deine Nachricht, um dir zu antworten.",
+                "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO, berechtigtes Interesse ist die Beantwortung. Die Nachricht wird gelöscht, sobald sie erledigt ist und keine Aufbewahrungspflicht entgegensteht."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "What this page does not do",
+              "de": "Was diese Seite nicht tut"
+            },
+            "bullets": {
+              "en": [
+                "No analytics and no reach measurement.",
+                "No cookies and nothing from third parties that is loaded when you open the page.",
+                "No advertising and no social media plugins.",
+                "No profiling and no automated decision within the meaning of Art. 22 GDPR.",
+                "No account and no registration."
+              ],
+              "de": [
+                "Keine Analyse und keine Reichweitenmessung.",
+                "Keine Cookies und nichts von Dritten, das beim Aufruf nachgeladen wird.",
+                "Keine Werbung und keine Social-Media-Plugins.",
+                "Kein Profiling und keine automatisierte Entscheidung im Sinn von Art. 22 DSGVO.",
+                "Kein Konto und keine Anmeldung."
+              ]
+            },
+            "closing": {
+              "en": [
+                "The footer links to the art shop. A request goes there only once you click on it."
+              ],
+              "de": [
+                "Im Fuß steht ein Link zum Kunst-Shop. Erst wenn du ihn anklickst, geht eine Anfrage dorthin."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Recipients",
+              "de": "Empfänger"
+            },
+            "bullets": {
+              "en": [
+                "GitHub Inc., USA: hosting of the preview.",
+                "Netlify, Inc., USA: hosting of the live address and receipt of the form.",
+                "The provider of Alexander Schranz's mailbox: Netlify also sends every thought that arrives there as an email.",
+                "Both companies are in the USA. The basis for that transfer is written above."
+              ],
+              "de": [
+                "GitHub Inc., USA: Hosting der Vorschau.",
+                "Netlify, Inc., USA: Hosting der Live-Adresse und Entgegennahme des Formulars.",
+                "Der Anbieter des E-Mail-Postfachs von Alexander Schranz: Netlify schickt jeden eingegangenen Gedanken zusätzlich als E-Mail dorthin.",
+                "Beide Unternehmen sitzen in den USA. Die Grundlage dieser Übermittlung steht weiter oben."
+              ]
+            },
+            "closing": {
+              "en": [
+                "Beyond that Alexander Schranz passes nothing on. No data is sold."
+              ],
+              "de": [
+                "Darüber hinaus gibt Alexander Schranz nichts weiter. Es werden keine Daten verkauft."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Your rights",
+              "de": "Deine Rechte"
+            },
+            "paragraphs": {
+              "en": [
+                "You have these rights towards Alexander Schranz:"
+              ],
+              "de": [
+                "Du hast gegenüber Alexander Schranz diese Rechte:"
+              ]
+            },
+            "bullets": {
+              "en": [
+                "Access to the data held about you, Art. 15 GDPR.",
+                "Correction of wrong data, Art. 16 GDPR.",
+                "Erasure, Art. 17 GDPR.",
+                "Restriction of processing, Art. 18 GDPR.",
+                "Data portability, Art. 20 GDPR.",
+                "Objection to processing that rests on Art. 6 (1) (f) GDPR, Art. 21 GDPR.",
+                "Withdrawal of a consent with effect for the future, Art. 7 (3) GDPR."
+              ],
+              "de": [
+                "Auskunft über die zu dir gespeicherten Daten, Art. 15 DSGVO.",
+                "Berichtigung falscher Daten, Art. 16 DSGVO.",
+                "Löschung, Art. 17 DSGVO.",
+                "Einschränkung der Verarbeitung, Art. 18 DSGVO.",
+                "Datenübertragbarkeit, Art. 20 DSGVO.",
+                "Widerspruch gegen eine Verarbeitung, die auf Art. 6 Abs. 1 lit. f DSGVO beruht, Art. 21 DSGVO.",
+                "Widerruf einer Einwilligung mit Wirkung für die Zukunft, Art. 7 Abs. 3 DSGVO."
+              ]
+            },
+            "closing": {
+              "en": [
+                "An email to {email} is enough."
+              ],
+              "de": [
+                "Eine E-Mail an {email} genügt."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Complaint to the supervisory authority",
+              "de": "Beschwerde bei der Aufsichtsbehörde"
+            },
+            "paragraphs": {
+              "en": [
+                "You can complain to a supervisory authority. The authority in charge here is the Austrian data protection authority, Österreichische Datenschutzbehörde, dsb.gv.at. You can also turn to the authority where you live."
+              ],
+              "de": [
+                "Du kannst dich bei einer Aufsichtsbehörde beschweren. Zuständig ist die Österreichische Datenschutzbehörde, dsb.gv.at. Du kannst dich auch an die Behörde deines Wohnsitzes wenden."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Do you have to give anything",
+              "de": "Musst du Daten angeben"
+            },
+            "paragraphs": {
+              "en": [
+                "To read the page you do not have to give any data. All it takes is the access code while the page is not public, and that stays in your browser. The field under the writing is voluntary."
+              ],
+              "de": [
+                "Um die Seite zu lesen, musst du keine Daten angeben. Nötig ist nur der Zugangscode, solange die Seite nicht öffentlich ist, und der bleibt in deinem Browser. Das Feld unter den Texten ist freiwillig."
+              ]
+            }
+          },
+          {
+            "title": {
+              "en": "Status of this text",
+              "de": "Stand dieses Textes"
+            },
+            "paragraphs": {
+              "en": [
+                "This text is a draft. It is not legal advice. A lawyer has to check it before the page goes public.",
+                "If something on the page changes, this text changes with it. The entries in square brackets are still missing."
+              ],
+              "de": [
+                "Dieser Text ist ein Entwurf. Er ist keine Rechtsberatung. Bevor die Seite öffentlich wird, muss ihn eine Anwältin oder ein Anwalt prüfen.",
+                "Ändert sich etwas an der Seite, ändert sich dieser Text mit. Die Angaben in eckigen Klammern fehlen noch."
+              ]
+            }
+          }
+        ]
       }
     ]
   },
