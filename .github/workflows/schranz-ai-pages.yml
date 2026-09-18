@@ -25,22 +25,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Build both languages, behind the access code
-        env:
-          SITE_ACCESS_KEY: ${{ secrets.SITE_ACCESS_KEY }}
+      - name: Check out the current published branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+      - name: Read the existing access gate
         run: |
+          SITE_ACCESS_KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/schranz-ai/index.html","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);')"
           if [ -z "$SITE_ACCESS_KEY" ]; then
-            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Nichts veroeffentlicht, damit keine offene Fassung die geschuetzte ersetzt. Anlegen unter Settings, Secrets and variables, Actions."
-            echo "skip=1" >> "$GITHUB_ENV"
-            exit 0
+            echo "::error::Existing access gate could not be read. Nothing published."
+            exit 1
           fi
+          echo "SITE_ACCESS_KEY=$SITE_ACCESS_KEY" >> "$GITHUB_ENV"
+      - name: Build both languages, behind the existing access code
+        run: |
           cd schranz-ai
           SITE_BASE=/seelischabstrakt/schranz-ai \
           SITE_URL=https://apschranz-star.github.io/seelischabstrakt/schranz-ai \
-          node build.mjs
+          SITE_ACCESS_KEY="$SITE_ACCESS_KEY" node build.mjs
           test -f dist/index.html && test -f dist/en/index.html
-      - name: Check out the branch gh-pages
-        if: env.skip != '1'
+      - name: Replace only the folder schranz-ai on the branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
