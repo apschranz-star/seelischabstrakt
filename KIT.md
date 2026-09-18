@@ -5,8 +5,9 @@ Eine Datei mit allem, was für Betrieb und Weiterentwicklung nötig ist. Für Al
 ## Adressen
 
     Code (GitHub)      https://github.com/apschranz-star/seelischabstrakt/tree/jing
-    Vorschau           https://apschranz-star.github.io/seelischabstrakt/jing/?zugang=5rdoHGJM3mlN
-                       ohne den Zugang im Link zeigt die Seite nur ein Codefeld, der Code ist 5rdoHGJM3mlN
+    Vorschau           https://apschranz-star.github.io/seelischabstrakt/jing/?zugang=<Code>
+                       ohne den Zugang im Link zeigt die Seite nur ein Codefeld. Den Code hat Alexander,
+                       er steht absichtlich in keiner Datei dieses Repositories
     Bewertungsbericht  https://claude.ai/artifact/Km7bwuMmEeSafTkd5ccnfG
     CI                 https://github.com/apschranz-star/seelischabstrakt/actions (Workflow CI, Branch jing)
 
@@ -49,7 +50,7 @@ Alle Werte stehen in config/site.ts und sind Konfiguration, kein Gesetzestext. V
 
 Nach jeder Änderung am Code, im Ordner des Codes:
 
-    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing 5rdoHGJM3mlN
+    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Code>
 
 Das schreibt out/. Dessen Inhalt in den Ordner jing/ des Branches gh-pages von seelischabstrakt legen, committen, pushen. Ohne dritten Parameter baut die Vorschau ohne Zugangscode, also öffentlich.
 
