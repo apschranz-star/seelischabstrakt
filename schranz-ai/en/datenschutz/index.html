@@ -12,10 +12,16 @@
   try{q=new URLSearchParams(location.search).get(PARAM);}catch(e){}
   var ok=false;
   try{if(q===KEY){localStorage.setItem(STORE,KEY);}ok=localStorage.getItem(STORE)===KEY;}catch(e){ok=q===KEY;}
+  /* Der Code gehoert nicht in die Adresszeile und damit nicht in die Server-Logs des Hosters.
+     Sobald er geprueft ist, wird er aus der URL entfernt. */
   if(q!==null){try{history.replaceState(null,"",location.pathname+location.hash);}catch(e){}}
   if(ok)return;
   document.documentElement.setAttribute("data-gated","");
   var m=document.createElement("meta");m.name="robots";m.content="noindex,nofollow";document.head.appendChild(m);
+  var open=function(){
+    try{localStorage.setItem(STORE,KEY);}catch(e){}
+    location.reload();
+  };
   document.addEventListener("DOMContentLoaded",function(){
     var f=document.createElement("form");f.id="sa-gate";f.method="get";f.action=location.pathname;f.setAttribute("lang","de");
     f.innerHTML='<p class="k">Zugang &middot; Access</p><h1>SCHRANZ AI SOLUTIONS</h1>'
@@ -23,7 +29,22 @@
       +'<label for="sa-gate-code">Zugangscode &middot; <span lang="en">Access code</span></label>'
       +'<input id="sa-gate-code" name="'+PARAM+'" type="password" autocomplete="off" required autofocus>'
       +'<button type="submit">&Ouml;ffnen &middot; <span lang="en">Open</span></button>'
-      +(q!==null?'<p class="e" role="alert">Der Code stimmt nicht. <span lang="en">The code is not correct.</span></p>':'');
+      +'<p class="e" role="alert" hidden>Der Code stimmt nicht. <span lang="en">The code is not correct.</span></p>'
+      /* Wer eine Seite betreibt und was sie speichert, steht vor dem Zugang, nicht dahinter.
+         Art. 13 DSGVO gilt auch fuer diese Ansicht. */
+      +'<details class="n"><summary>Wer diese Seite betreibt und was gespeichert wird &middot; <span lang="en">Who runs this page and what is stored</span></summary>'
+      +'<p>Nicht &ouml;ffentliche Vorschau von Alexander Schranz, Wien. Kontakt: a.p.schranz@icloud.com. Diese Ansicht legt nur den Zugang im lokalen Speicher deines Browsers ab, damit du den Code nicht jedes Mal eingeben musst. Das ist f&uuml;r den gew&uuml;nschten Dienst unbedingt erforderlich und braucht keine Einwilligung. Die Seite liegt bei GitHub Inc., USA, deren Server beim Aufruf die IP-Adresse protokollieren, Art. 6 Abs. 1 lit. f DSGVO. Kein Tracking, keine Cookies von Dritten, keine Schriften von fremden Servern. Impressum und Datenschutzerkl&auml;rung stehen auf der Seite selbst.</p>'
+      +'<p lang="en">Private preview by Alexander Schranz, Wien. This screen only keeps your access in your browser storage so you do not have to type the code again. That storage is strictly necessary for the service you asked for and needs no consent. The page is hosted by GitHub Inc., USA, whose servers log your IP address on each request, Art. 6 (1) (f) GDPR. No tracking, no third party cookies, no fonts from other servers. The imprint and the privacy policy are on the page itself.</p>'
+      +'</details>';
+    if(q!==null){var e=f.querySelector(".e");if(e)e.hidden=false;}
+    /* Mit JavaScript wird im Feld geprueft. Ohne JavaScript bleibt das GET-Formular der Weg. */
+    f.addEventListener("submit",function(ev){
+      var v=(f.querySelector("#sa-gate-code")||{}).value;
+      if(v===KEY){ev.preventDefault();open();return;}
+      ev.preventDefault();
+      var e=f.querySelector(".e");if(e)e.hidden=false;
+      var i=f.querySelector("#sa-gate-code");if(i){i.value="";i.focus();}
+    });
     document.body.appendChild(f);
   });
 })();
@@ -31,7 +52,7 @@
 <style>
 html[data-gated] body>*:not(#sa-gate){display:none!important}
 html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;color:#111;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
-#sa-gate{display:grid;gap:14px;width:min(420px,calc(100vw - 48px));padding:32px;border:1px solid #ddd;border-radius:16px;box-sizing:border-box}
+#sa-gate{display:grid;gap:14px;width:min(460px,calc(100vw - 48px));padding:32px;border:1px solid #ddd;border-radius:16px;box-sizing:border-box}
 #sa-gate .k{margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#777}
 #sa-gate h1{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em}
 #sa-gate p{margin:0;color:#555;font-size:14px}
@@ -39,7 +60,10 @@ html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;
 #sa-gate input{font:inherit;padding:10px 12px;border:1px solid #bbb;border-radius:8px;min-width:0}
 #sa-gate button{font:inherit;padding:10px 14px;border:0;border-radius:999px;background:#111;color:#fff;cursor:pointer}
 #sa-gate .e{color:#b3261e}
-@media (prefers-color-scheme:dark){html[data-gated] body{background:#000;color:#f5f5f7}#sa-gate{border-color:#333}#sa-gate p,#sa-gate label{color:#a1a1a6}#sa-gate input{background:#111;color:#f5f5f7;border-color:#444}#sa-gate button{background:#f5f5f7;color:#000}}
+#sa-gate .n{border-top:1px solid #eee;padding-top:12px;font-size:13px;color:#666}
+#sa-gate .n summary{cursor:pointer;color:#111}
+#sa-gate .n p{font-size:13px;margin-top:8px}
+@media (prefers-color-scheme:dark){html[data-gated] body{background:#000;color:#f5f5f7}#sa-gate{border-color:#333}#sa-gate p,#sa-gate label{color:#a1a1a6}#sa-gate input{background:#111;color:#f5f5f7;border-color:#444}#sa-gate button{background:#f5f5f7;color:#000}#sa-gate .n{border-top-color:#222;color:#8e8e93}#sa-gate .n summary{color:#f5f5f7}}
 </style>
 <!-- gate:end -->
 <title>Privacy. SCHRANZ AI SOLUTIONS</title>
@@ -573,10 +597,18 @@ html.js .reveal.in { opacity: 1; transform: none; }
 </header>
 <main id="main" class="legal"><div class="wrap">
     <h1 class="t-h1">Privacy</h1>
-    <p class="t-body">This website stores no cookies and runs no analytics. It sets one value in your browser's local storage, the language you chose, and nothing else. That value never leaves your device.</p>
-    <p class="t-body">The page is hosted on GitHub Pages (GitHub Inc., USA). When you open it, the host processes your IP address in its server logs, as any web server does. GitHub's privacy statement applies to that processing.</p>
-    <p class="t-body">Fonts are loaded from Google Fonts. Your browser sends a request to Google's servers for the font files, which transmits your IP address. Legal basis is the legitimate interest in a consistent presentation (Art. 6 para. 1 lit. f GDPR).</p>
-    <p class="t-body">If you write an email, the data you send is used only to answer you. You have the rights to access, rectification, erasure and restriction under the GDPR, and the right to complain to the Austrian Data Protection Authority.</p>
+    <p class="t-body">This page is a pitch deck. It sets no cookies, it measures nothing, it shows no advertising and it embeds no social network. The controller of the processing is the person named below. Postal address and phone number are in the imprint.</p>
+    <p class="t-body">The preview is hosted on GitHub Pages (GitHub Inc., USA). If the page is later published under its own address, it is hosted on Netlify (Netlify, Inc., USA). On every request the host logs server data, among them your IP address. The purpose is to deliver the page and to detect faults. Legal basis is the legitimate interest in a secure operation (Art. 6 para. 1 lit. f GDPR). The host acts as a processor. How long the host keeps these logs is set by the host, and its own privacy statement applies to that.</p>
+    <p class="t-body">GitHub and Netlify are companies in the United States. These server data can therefore reach a third country. The basis for that transfer is checked before publication and entered here: [basis for the third country transfer].</p>
+    <p class="t-body">The page uses only the system fonts of your device. No font file is loaded, neither from Google nor from anywhere else. No request and no IP address goes to a third party for fonts.</p>
+    <p class="t-body">The page keeps one value in your browser storage: sa-access remembers the access code you entered, so you do not have to type it again on every visit. The value stays on your device and is never sent to a server. The language you read in is not stored, it is part of the page address.</p>
+    <p class="t-body">That storage is strictly necessary for the service you asked for, so it needs no consent. For the same reason there is no consent banner. You can remove the value at any time by clearing this site's data in your browser. The page then asks for the access code again.</p>
+    <p class="t-body">The access code is checked in your browser. No request leaves your device for it, and the code is removed from the address bar so it does not end up in the host's log. To be plain about it: this is a screen, not a password. The server checks nothing, it serves the page, and without JavaScript the screen does not appear at all. There are no personal data behind it, only this presentation.</p>
+    <p class="t-body">If you write an email, your name, your email address and the content are used only to answer you. Legal basis is Art. 6 para. 1 lit. b GDPR when the request concerns a possible cooperation, otherwise the legitimate interest in an answer (Art. 6 para. 1 lit. f GDPR). The address given is an iCloud mailbox, so the provider of that mailbox processes the message on delivery. The message is deleted once the matter is settled and no legal retention period applies.</p>
+    <p class="t-body">The link to LinkedIn is a plain link. Your browser connects to LinkedIn only when you click it. The deck is a file on the same address as the page.</p>
+    <p class="t-body">You have the right to access, rectification, erasure, restriction of processing, data portability and objection. The objection covers the processing based on legitimate interest. An informal email to the address below is enough. You can also complain to the Austrian Data Protection Authority, which is the competent supervisory authority.</p>
+    <p class="t-body">You do not have to provide any data. The server data arise technically on every request. An email is voluntary. There is no automated decision making and no profiling.</p>
+    <p class="t-body">This text describes the state of 18 September 2026. It is a draft and is reviewed by a lawyer before a public launch. Values in square brackets are placeholders.</p>
     <h2 class="t-h3">Controller</h2>
     <address>Alexander Schranz, Vienna<br><a href="mailto:a.p.schranz@icloud.com">a.p.schranz@icloud.com</a></address>
   </div></main>
@@ -605,10 +637,10 @@ html.js .reveal.in { opacity: 1; transform: none; }
   var reduce = false;
   try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
 
-  /* Remember the language the visitor picked. The link already points at the
-     other language; this only stores the choice for the next visit. */
-  var lang = root.getAttribute("lang");
-  try { localStorage.setItem("schranz-ai-lang", lang); } catch (e) {}
+  /* Die Sprache steckt in der Adresse der Seite, Deutsch unter / und Englisch
+     unter /en/. Es gibt deshalb nichts zu speichern. Frueher lag hier ein Wert
+     im lokalen Speicher, der nie wieder gelesen wurde; ein Wert, den niemand
+     braucht, gehoert nicht auf das Geraet des Besuchers. */
 
   /* Reveal: elements enter once, staggered by their --d custom property. */
   var reveals = doc.querySelectorAll(".reveal");
