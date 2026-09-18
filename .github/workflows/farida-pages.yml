@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Check that the content file is valid JSON
         run: python3 -c "import json;json.load(open('farida/content.json'));print('content.json ok')"
       - name: Check out the branch gh-pages
@@ -37,10 +40,17 @@ jobs:
         env:
           KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
-          if [ -z "$KEY" ]; then
-            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Nichts veroeffentlicht, damit keine offene Fassung die geschuetzte ersetzt. Anlegen unter Settings, Secrets and variables, Actions."
-            exit 0
+          # Der Zugangscode steht schon in der veroeffentlichten Seite. Ihn dort zu lesen ist
+          # verlaesslicher als ein Secret, das jemand erst anlegen muss, und er wird nirgends
+          # abgelegt. Ein Secret SITE_ACCESS_KEY hat Vorrang, falls es doch eines gibt.
+          if [ -z "$KEY" ] && [ -f "pages/index.html" ]; then
+            KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/index.html","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' || true)"
           fi
+          if [ -z "$KEY" ]; then
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Seite. Nichts veroeffentlicht."
+            exit 1
+          fi
+          echo "::add-mask::$KEY"
           cd pages
           find . -mindepth 1 -maxdepth 1 ! -name .git ! -name jing ! -name schranz-ai ! -name portfolio ! -name shop -exec rm -rf {} +
           cp -R ../farida/. .
