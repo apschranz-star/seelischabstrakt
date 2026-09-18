@@ -69,7 +69,7 @@ Schritte für den GPT:
 1. Ordner `schranz-ai` als `<neuer-name>` kopieren. `dist/` nicht mitkopieren.
 2. `content.json` neu schreiben. Die Schlüssel bleiben, die Werte ändern sich. Sektionen, die es für diese Firma nicht braucht, werden aus `build.mjs` in der Funktion `homePage` entfernt, nie im JSON halb leer gelassen.
 3. In `content.json` unter `site.url` die künftige Adresse eintragen, unter `legal` Impressum und Datenschutz mit den echten Daten. Fehlen sie, Platzhalter in eckigen Klammern.
-4. `netlify.toml` bleibt wie sie ist. Für GitHub Pages den Workflow `.github/workflows/schranz-ai-pages.yml` kopieren, `schranz-ai` durch den neuen Ordnernamen ersetzen, und in `farida-pages.yml` den Ordner in die Zeile mit `! -name jing ! -name schranz-ai` aufnehmen.
+4. `netlify.toml` bleibt wie sie ist. Für GitHub Pages den Workflow `.github/workflows/schranz-ai-pages.yml` kopieren, `schranz-ai` durch den neuen Ordnernamen ersetzen, und in `farida-pages.yml` den Ordner in die Zeile mit `! -name jing ! -name schranz-ai ! -name portfolio` aufnehmen.
 5. `README.md` im Ordner: was die Seite ist, wo sie live liegt, was vor der Ankündigung fehlt.
 
 Was das Skript prüft: Fehlt eine Sprache in einem Text, bricht der Build ab und nennt den Pfad. Summen (zum Beispiel Mittelverwendung) werden nachgerechnet.
