@@ -1,0 +1,81 @@
+# Rebuilds the gated static demo after every push to the branch jing and publishes it
+# to the branch gh-pages under jing/. This is what makes a change by the GPT visible
+# without anyone running a build by hand.
+#
+# The access code comes from the repository secret JING_ACCESS_KEY (Settings, Secrets
+# and variables, Actions). Without it nothing is published, so the demo never goes
+# live without its gate by accident.
+#
+# Once JING moves to its own repository, gh-pages of that repository takes over and
+# the two checkout steps below lose their `repository` line.
+name: Publish the JING demo
+
+on:
+  push:
+    branches: [jing]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jing-demo-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Stop here if the access code is not configured
+        env:
+          KEY: ${{ secrets.JING_ACCESS_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::warning::Secret JING_ACCESS_KEY fehlt. Demo nicht veroeffentlicht. Anlegen unter Settings, Secrets and variables, Actions."
+            echo "skip=1" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: env.skip != '1'
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+        if: env.skip != '1'
+
+      - name: Build the static demo with the gate
+        if: env.skip != '1'
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          KEY: ${{ secrets.JING_ACCESS_KEY }}
+        run: |
+          scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing "$KEY"
+          test -f out/index.html
+
+      - name: Check out the branch gh-pages
+        if: env.skip != '1'
+        uses: actions/checkout@v4
+        with:
+          repository: apschranz-star/seelischabstrakt
+          ref: gh-pages
+          path: pages
+
+      - name: Replace only the folder jing on the branch
+        if: env.skip != '1'
+        run: |
+          rm -rf pages/jing
+          mkdir -p pages/jing
+          cp -R out/. pages/jing/
+          touch pages/.nojekyll
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "demo already current"; exit 0; fi
+          git commit -q -m "Publish the JING demo from ${GITHUB_SHA::7}"
+          git push -q origin HEAD:gh-pages
+          echo "demo updated"

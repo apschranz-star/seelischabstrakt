@@ -60,9 +60,10 @@ Instructions, dieser Text hinein:
     Die Datei .github/workflows/ci.yml, next.config.ts, lib/ und components/ nur ändern,
     wenn Alexander eine Funktions- oder Designänderung ausdrücklich verlangt.
 
-    Demo: Die öffentliche Seite unter apschranz-star.github.io/seelischabstrakt/jing/ ist ein
-    statischer Export ohne Server. Sie wird nicht automatisch neu gebaut. Nach Änderungen
-    sagst du Alexander, dass die Demo einen neuen Export braucht (Teil 4).
+    Demo: Die Seite unter apschranz-star.github.io/seelischabstrakt/jing/ ist ein statischer
+    Export ohne Server. Jeder Push auf den Branch baut sie neu, der Workflow heißt "Publish
+    the JING demo". Nach einem Commit sagst du Alexander, dass die Demo in etwa drei Minuten
+    den neuen Stand zeigt, und nennst ihm den Zugangslink aus KIT.md.
 
     Wenn die CI einen Fehler meldet, gib den Wortlaut vollständig weiter und erkläre ihn.
 
@@ -91,11 +92,11 @@ Lokal, in einem Terminal im Ordner des Codes:
 
 Alle drei müssen ohne Fehler durchlaufen. Dasselbe fährt die CI bei jedem Push.
 
-Demo neu bauen und veröffentlichen:
+Demo: Jeder Push auf den Branch jing baut die Demo neu und veröffentlicht sie auf gh-pages unter jing/, Workflow .github/workflows/demo-pages.yml. Der Zugangscode kommt aus dem Repository-Secret JING_ACCESS_KEY. Fehlt das Secret, wird nichts veröffentlicht und der Lauf sagt es als Warnung. Von Hand geht es weiterhin:
 
-    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
+    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Zugangscode>
 
-Das schreibt den Ordner out. Dessen Inhalt gehört auf den Branch gh-pages des Repositories seelischabstrakt in den Unterordner jing. Der Workflow der Praxisseite lässt diesen Ordner in Ruhe.
+Das schreibt den Ordner out, dessen Inhalt auf gh-pages in den Unterordner jing gehört. Der Workflow der Praxisseite lässt diesen Ordner in Ruhe.
 
 Echter Betrieb: Netlify. Die Datei netlify.toml im Code sagt Netlify alles, was es wissen muss, Environment-Variablen braucht es keine. Der Start steht in LAUNCH.md als ein Prompt für den GPT, mit dem Weg über die Netlify-Oberfläche als Ersatz. Danach baut jeder Push auf den Branch die Seite neu, und die Kasse rechnet serverseitig.
 

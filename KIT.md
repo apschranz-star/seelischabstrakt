@@ -169,8 +169,9 @@ Instructions, dieser Text hinein:
     wenn Alexander eine Funktions- oder Designänderung ausdrücklich verlangt.
 
     Demo: Die öffentliche Seite unter apschranz-star.github.io/seelischabstrakt/jing/ ist ein
-    statischer Export ohne Server. Sie wird nicht automatisch neu gebaut. Nach Änderungen
-    sagst du Alexander, dass die Demo einen neuen Export braucht (Teil 4).
+    statischer Export ohne Server. Jeder Push auf den Branch jing baut sie neu, Workflow
+    "Publish the JING demo". Nach einem Commit sagst du Alexander, dass die Demo in etwa
+    drei Minuten den neuen Stand zeigt.
 
     Wenn die CI einen Fehler meldet, gib den Wortlaut vollständig weiter und erkläre ihn.
 
@@ -201,7 +202,9 @@ Alle drei müssen ohne Fehler durchlaufen. Dasselbe fährt die CI bei jedem Push
 
 Demo neu bauen und veröffentlichen:
 
-    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
+    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Zugangscode>
+
+Von Hand ist das nur noch der Ersatz. Der Workflow .github/workflows/demo-pages.yml macht dasselbe bei jedem Push, mit dem Code aus dem Repository-Secret JING_ACCESS_KEY.
 
 Das schreibt den Ordner out. Dessen Inhalt gehört auf den Branch gh-pages des Repositories seelischabstrakt in den Unterordner jing. Der Workflow der Praxisseite lässt diesen Ordner in Ruhe.
 
