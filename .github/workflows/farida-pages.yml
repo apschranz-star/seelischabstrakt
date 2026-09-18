@@ -39,6 +39,7 @@ jobs:
         # Only the practice site is replaced here.
         env:
           KEY: ${{ secrets.SITE_ACCESS_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Der Zugangscode steht schon in der veroeffentlichten Seite. Ihn dort zu lesen ist
           # verlaesslicher als ein Secret, das jemand erst anlegen muss, und er wird nirgends
@@ -68,5 +69,3 @@ jobs:
           git commit -q -m "Publish the practice site from ${GITHUB_SHA::7}"
           git push -q origin HEAD:gh-pages
           echo "gh-pages updated"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
