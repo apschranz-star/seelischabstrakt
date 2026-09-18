@@ -37,6 +37,8 @@ const GATE =
     ? readFileSync(GATE_FILE, "utf8")
         .replace(/__ACCESS_KEY__/g, ACCESS_KEY)
         .replace(/__SITE_NAME__/g, content.site.name)
+        .replace(/__OPERATOR__/g, `${content.person.name}, ${content.person.city.de}`)
+        .replace(/__CONTACT_LINE__/g, ` Kontakt: ${content.person.email}.`)
     : "";
 const URL_ROOT = (process.env.SITE_URL ?? content.site.url).replace(/\/$/, "");
 const LANGS = ["de", "en"];

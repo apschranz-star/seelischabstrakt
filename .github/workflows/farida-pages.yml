@@ -46,6 +46,10 @@ jobs:
           cp -R ../farida/. .
           rm -f netlify.toml README.md
           sh ../gate/inject.sh index.html "$KEY"
+          # Die Vorschau ist nicht die oeffentliche Seite. Die robots.txt der Praxisseite gilt auf
+          # deren echter Adresse, hier wird sie durch eine ersetzt, die Suchmaschinen fernhaelt.
+          printf 'User-agent: *\nDisallow: /\n' > robots.txt
+          rm -f sitemap.xml
           touch .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

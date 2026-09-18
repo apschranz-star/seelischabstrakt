@@ -1,197 +1,350 @@
 {
   "_help": "The whole site lives in this file. Every text is {\"en\": \"...\", \"de\": \"...\"}. English is the source language, the deck it comes from is English. Numbers, prices, dates and names are facts from the deck: change them only when Alexander gives the new value. Empty strings and values in [square brackets] are placeholders nobody has filled yet. Never invent a value. Both languages must be filled for every text, the build stops otherwise. After a change the site is rebuilt by the workflow on GitHub, nothing else to do.",
-
   "site": {
     "name": "SCHRANZ AI SOLUTIONS",
     "short": "SCHRANZ AI",
     "url": "https://apschranz-star.github.io/seelischabstrakt/schranz-ai",
-    "title": { "en": "Schranz AI Solutions. AI that delivers.", "de": "Schranz AI Solutions. KI, die liefert." },
+    "title": {
+      "en": "Schranz AI Solutions. AI that delivers.",
+      "de": "Schranz AI Solutions. KI, die liefert."
+    },
     "description": {
       "en": "Diagnosis first, build fast, measure everything, full EU compliance. An AI agency in Vienna raising a pre-seed of EUR 100,000 for the first buildup.",
       "de": "Zuerst Diagnose, dann schnell bauen, alles messen, volle EU-Konformität. Eine KI-Agentur in Wien, die 100.000 Euro Pre-Seed für den Aufbau sucht."
     },
     "deckFile": "SCHRANZ_AI_Pitchdeck_EN.pptx",
-    "deckLabel": { "en": "Deck as PowerPoint, English", "de": "Deck als PowerPoint, Englisch" }
+    "deckLabel": {
+      "en": "Deck as PowerPoint, English",
+      "de": "Deck als PowerPoint, Englisch"
+    }
   },
-
   "person": {
     "name": "Alexander Schranz",
-    "city": { "en": "Vienna", "de": "Wien" },
+    "city": {
+      "en": "Vienna",
+      "de": "Wien"
+    },
     "email": "a.p.schranz@icloud.com",
     "phone": "+43 676 344 7611",
     "phoneHref": "+436763447611",
     "linkedin": "https://linkedin.com/in/alexander-peter-s-16b4a4358",
     "linkedinLabel": "linkedin.com/in/alexander-peter-s-16b4a4358"
   },
-
   "nav": {
     "items": [
-      { "id": "market", "label": { "en": "Market", "de": "Markt" } },
-      { "id": "method", "label": { "en": "Method", "de": "Methode" } },
-      { "id": "proof", "label": { "en": "Proof", "de": "Belege" } },
-      { "id": "numbers", "label": { "en": "Numbers", "de": "Zahlen" } },
-      { "id": "funds", "label": { "en": "The raise", "de": "Die Runde" } },
-      { "id": "ask", "label": { "en": "The ask", "de": "Das Angebot" } }
+      {
+        "id": "market",
+        "label": {
+          "en": "Market",
+          "de": "Markt"
+        }
+      },
+      {
+        "id": "method",
+        "label": {
+          "en": "Method",
+          "de": "Methode"
+        }
+      },
+      {
+        "id": "proof",
+        "label": {
+          "en": "Proof",
+          "de": "Belege"
+        }
+      },
+      {
+        "id": "numbers",
+        "label": {
+          "en": "Numbers",
+          "de": "Zahlen"
+        }
+      },
+      {
+        "id": "funds",
+        "label": {
+          "en": "The raise",
+          "de": "Die Runde"
+        }
+      },
+      {
+        "id": "ask",
+        "label": {
+          "en": "The ask",
+          "de": "Das Angebot"
+        }
+      }
     ],
-    "cta": { "en": "Talk to me", "de": "Gespräch anfragen" },
-    "menu": { "en": "Menu", "de": "Menü" },
-    "close": { "en": "Close", "de": "Schließen" },
-    "langSwitch": { "en": "Deutsch", "de": "English" },
-    "langSwitchAria": { "en": "Diese Seite auf Deutsch lesen", "de": "Read this page in English" },
-    "skip": { "en": "Skip to content", "de": "Zum Inhalt springen" }
+    "cta": {
+      "en": "Talk to me",
+      "de": "Gespräch anfragen"
+    },
+    "menu": {
+      "en": "Menu",
+      "de": "Menü"
+    },
+    "close": {
+      "en": "Close",
+      "de": "Schließen"
+    },
+    "langSwitch": {
+      "en": "Deutsch",
+      "de": "English"
+    },
+    "langSwitchAria": {
+      "en": "Diese Seite auf Deutsch lesen",
+      "de": "Read this page in English"
+    },
+    "skip": {
+      "en": "Skip to content",
+      "de": "Zum Inhalt springen"
+    }
   },
-
   "hero": {
-    "kicker": { "en": "Pre-seed, Vienna, 2026", "de": "Pre-Seed, Wien, 2026" },
-    "title": { "en": "AI that delivers.", "de": "KI, die liefert." },
+    "kicker": {
+      "en": "Pre-seed, Vienna, 2026",
+      "de": "Pre-Seed, Wien, 2026"
+    },
+    "title": {
+      "en": "AI that delivers.",
+      "de": "KI, die liefert."
+    },
     "lead": {
       "en": "Diagnosis first. Build fast. Measure everything. Full EU compliance.",
-      "de": "Zuerst die Diagnose. Dann schnell bauen. Alles messen. Volle EU-Konformität."
+      "de": "Erst die Diagnose, dann schnell bauen, alles messen. Und alles nach EU-Recht."
     },
     "sub": {
       "en": "Pre-seed EUR 100,000 for the first buildup. No exit fairy tale, built for the long run.",
-      "de": "100.000 Euro Pre-Seed für den ersten Aufbau. Kein Exit-Märchen, gebaut für die Dauer."
+      "de": "100.000 Euro Pre-Seed für den Anfang. Kein Exit-Märchen, sondern auf Dauer angelegt."
     },
-    "primary": { "en": "Read the case", "de": "Den Fall lesen" },
-    "secondary": { "en": "Go to the ask", "de": "Zum Angebot" }
+    "primary": {
+      "en": "Read the case",
+      "de": "Den Fall lesen"
+    },
+    "secondary": {
+      "en": "Go to the ask",
+      "de": "Zum Angebot"
+    }
   },
-
   "thesis": {
     "lines": [
-      { "en": "Everyone talks about it.", "de": "Alle reden davon." },
-      { "en": "Nobody executes.", "de": "Niemand setzt um." },
-      { "en": "Until now.", "de": "Bis jetzt." }
+      {
+        "en": "Everyone talks about it.",
+        "de": "Alle reden davon."
+      },
+      {
+        "en": "Nobody executes.",
+        "de": "Niemand setzt um."
+      },
+      {
+        "en": "Until now.",
+        "de": "Bis jetzt."
+      }
     ],
     "text": {
       "en": "95% of AI pilots deliver nothing measurable. This agency exists to be the other 5%.",
       "de": "95 Prozent aller KI-Piloten liefern nichts Messbares. Diese Agentur gibt es, um zu den anderen 5 Prozent zu gehören."
     }
   },
-
   "market": {
-    "kicker": { "en": "Market", "de": "Markt" },
-    "title": { "en": "The market in three honest numbers", "de": "Der Markt in drei ehrlichen Zahlen" },
+    "kicker": {
+      "en": "Market",
+      "de": "Markt"
+    },
+    "title": {
+      "en": "The market in three honest numbers",
+      "de": "Der Markt in drei ehrlichen Zahlen"
+    },
     "stats": [
       {
-        "value": "95", "unit": "%", "count": 95,
+        "value": "95",
+        "unit": "%",
+        "count": 95,
         "text": {
           "en": "of enterprise GenAI pilots deliver no measurable business return, across industries and company sizes.",
           "de": "der GenAI-Piloten in Unternehmen bringen keinen messbaren Ertrag, quer durch Branchen und Unternehmensgrößen."
         }
       },
       {
-        "value": "$30-40", "unit": "bn", "count": null,
+        "value": "$30-40",
+        "unit": "bn",
+        "count": null,
         "text": {
           "en": "is spent by corporations on generative AI every year: licences, pilots, consulting. The budget is real, the execution is not.",
-          "de": "geben Konzerne jedes Jahr für generative KI aus: Lizenzen, Piloten, Beratung. Das Budget ist da, die Umsetzung nicht."
+          "de": "geben Konzerne jedes Jahr für generative KI aus: Lizenzen, Piloten, Beratung. Das Geld ist da, die Umsetzung nicht."
         }
       },
       {
-        "value": "3", "unit": "", "count": 3,
+        "value": "3",
+        "unit": "",
+        "count": 3,
         "text": {
           "en": "systems engineered to perfection, live in production, not on slides.",
-          "de": "Systeme, sauber gebaut, live im Betrieb, nicht auf Folien."
+          "de": "Systeme, sauber gebaut und im Betrieb, nicht auf Folien."
         }
       }
     ],
-    "claim": { "en": "I close that gap.", "de": "Diese Lücke schließe ich." },
+    "claim": {
+      "en": "I close that gap.",
+      "de": "Diese Lücke schließe ich."
+    },
     "source": {
       "en": "Source for both market figures: MIT Media Lab, The GenAI Divide: State of AI in Business 2025. Data basis: about 300 analysed enterprise AI deployments, surveys of 150+ executives, 52 in-depth interviews. The study's core finding: the cause is not the technology but the missing integration into real workflows.",
       "de": "Quelle für beide Marktzahlen: MIT Media Lab, The GenAI Divide: State of AI in Business 2025. Datenbasis: rund 300 analysierte KI-Einführungen in Unternehmen, Befragungen von über 150 Führungskräften, 52 Tiefeninterviews. Kernbefund der Studie: Die Ursache ist nicht die Technik, sondern die fehlende Einbindung in echte Arbeitsabläufe."
     }
   },
-
   "difference": {
-    "kicker": { "en": "The difference", "de": "Der Unterschied" },
-    "title": { "en": "2026 turned everyone into an AI user.", "de": "2026 hat alle zu KI-Nutzern gemacht." },
+    "kicker": {
+      "en": "The difference",
+      "de": "Der Unterschied"
+    },
+    "title": {
+      "en": "2026 turned everyone into an AI user.",
+      "de": "2026 hat alle zu KI-Nutzern gemacht."
+    },
     "items": [
       {
-        "title": { "en": "Using AI is not building AI", "de": "KI nutzen ist nicht KI bauen" },
+        "title": {
+          "en": "Using AI is not building AI",
+          "de": "KI nutzen ist nicht KI bauen"
+        },
         "text": {
           "en": "Prompting produces answers. Production needs specifications, data models, tests and governance.",
-          "de": "Prompten liefert Antworten. Der Betrieb braucht Spezifikationen, Datenmodelle, Tests und Governance."
+          "de": "Prompten liefert Antworten. Für den Betrieb braucht es Spezifikationen, Datenmodelle, Tests und Governance."
         }
       },
       {
-        "title": { "en": "Almost nobody learned to build", "de": "Fast niemand hat bauen gelernt" },
+        "title": {
+          "en": "Almost nobody learned to build",
+          "de": "Fast niemand hat bauen gelernt"
+        },
         "text": {
           "en": "Between an impressive demo and a system that runs on Monday, 95 percent of projects die.",
-          "de": "Zwischen einer beeindruckenden Demo und einem System, das am Montag läuft, sterben 95 Prozent der Projekte."
+          "de": "Zwischen der beeindruckenden Demo und dem System, das am Montag läuft, sterben 95 Prozent der Projekte."
         }
       },
       {
-        "title": { "en": "I learned it", "de": "Ich habe es gelernt" },
+        "title": {
+          "en": "I learned it",
+          "de": "Ich habe es gelernt"
+        },
         "text": {
           "en": "Three systems live in production, built in 2026 alongside a full sales quota.",
-          "de": "Drei Systeme live im Betrieb, gebaut 2026 neben einer vollen Vertriebsquote."
+          "de": "Drei Systeme laufen im Betrieb. Gebaut 2026, nebenher, während ich eine volle Vertriebsquote erfüllt habe."
         }
       },
       {
-        "title": { "en": "Less talk, more action", "de": "Weniger reden, mehr machen" },
+        "title": {
+          "en": "Less talk, more action",
+          "de": "Weniger reden, mehr machen"
+        },
         "text": {
           "en": "Every engagement starts with a diagnosis and ends with a working system. Nothing in between is billable theatre.",
-          "de": "Jeder Auftrag beginnt mit einer Diagnose und endet mit einem laufenden System. Nichts dazwischen ist verrechenbares Theater."
+          "de": "Jeder Auftrag beginnt mit einer Diagnose und endet mit einem System, das läuft. Was dazwischen nichts bringt, verrechne ich nicht."
         }
       }
     ]
   },
-
   "method": {
-    "kicker": { "en": "Approach", "de": "Vorgehen" },
-    "title": { "en": "The method", "de": "Die Methode" },
-    "sub": { "en": "Diagnosis before tools, system before slides.", "de": "Diagnose vor Werkzeugen, System vor Folien." },
+    "kicker": {
+      "en": "Approach",
+      "de": "Vorgehen"
+    },
+    "title": {
+      "en": "The method",
+      "de": "Die Methode"
+    },
+    "sub": {
+      "en": "Diagnosis before tools, system before slides.",
+      "de": "Diagnose vor Werkzeugen, System vor Folien."
+    },
     "steps": [
       {
-        "title": { "en": "Analyse", "de": "Analysieren" },
+        "title": {
+          "en": "Analyse",
+          "de": "Analysieren"
+        },
         "text": {
           "en": "Capture processes per department: how the business actually runs.",
-          "de": "Prozesse je Abteilung erfassen: wie das Unternehmen tatsächlich läuft."
+          "de": "Die Prozesse je Abteilung aufnehmen: wie das Unternehmen wirklich arbeitet."
         }
       },
       {
-        "title": { "en": "Diagnosis", "de": "Diagnose" },
+        "title": {
+          "en": "Diagnosis",
+          "de": "Diagnose"
+        },
         "text": {
           "en": "Work through pain points one by one, back each with real data on how and why a process should improve.",
-          "de": "Schmerzpunkte einzeln durchgehen, jeden mit echten Daten belegen: wie und warum ein Prozess besser werden soll."
+          "de": "Die Schwachstellen einzeln durchgehen und jede mit echten Daten belegen: wie und warum ein Prozess besser werden soll."
         }
       },
       {
-        "title": { "en": "Build first", "de": "Zuerst bauen" },
+        "title": {
+          "en": "Build first",
+          "de": "Zuerst bauen"
+        },
         "text": {
           "en": "A working system in days instead of a concept paper in months.",
-          "de": "Ein laufendes System in Tagen statt eines Konzeptpapiers in Monaten."
+          "de": "Ein System, das läuft, in Tagen. Kein Konzeptpapier in Monaten."
         }
       },
       {
-        "title": { "en": "Test and measure", "de": "Testen und messen" },
+        "title": {
+          "en": "Test and measure",
+          "de": "Testen und messen"
+        },
         "text": {
           "en": "Acceptance criteria, automated tests, working time measured before and after.",
-          "de": "Abnahmekriterien, automatisierte Tests, Arbeitszeit vorher und nachher gemessen."
+          "de": "Abnahmekriterien, automatisierte Tests, und die Arbeitszeit vorher und nachher gemessen."
         }
       },
       {
-        "title": { "en": "Govern and deliver", "de": "Absichern und übergeben" },
+        "title": {
+          "en": "Govern and deliver",
+          "de": "Absichern und übergeben"
+        },
         "text": {
           "en": "GDPR, licensing, EU AI Act in the data model. Documentation, training, handover without lock-in.",
-          "de": "DSGVO, Lizenzen, EU AI Act im Datenmodell. Dokumentation, Schulung, Übergabe ohne Abhängigkeit."
+          "de": "DSGVO, Lizenzen und der EU AI Act stecken im Datenmodell. Dazu Dokumentation, Schulung und eine Übergabe, die nicht abhängig macht."
         }
       }
     ]
   },
-
   "proof": {
-    "kicker": { "en": "Proof", "de": "Belege" },
-    "title": { "en": "Three systems in production", "de": "Drei Systeme im Betrieb" },
+    "kicker": {
+      "en": "Proof",
+      "de": "Belege"
+    },
+    "title": {
+      "en": "Three systems in production",
+      "de": "Drei Systeme im Betrieb"
+    },
     "labels": {
-      "start": { "en": "Starting point", "de": "Ausgangslage" },
-      "built": { "en": "Built", "de": "Gebaut" },
-      "measured": { "en": "Measured", "de": "Gemessen" }
+      "start": {
+        "en": "Starting point",
+        "de": "Ausgangslage"
+      },
+      "built": {
+        "en": "Built",
+        "de": "Gebaut"
+      },
+      "measured": {
+        "en": "Measured",
+        "de": "Gemessen"
+      }
     },
     "cases": [
       {
         "number": "01",
-        "title": { "en": "Lead intelligence system", "de": "Lead-Intelligence-System" },
-        "meta": { "en": "Sales, energy sector, 2026", "de": "Vertrieb, Energiebranche, 2026" },
+        "title": {
+          "en": "Lead intelligence system",
+          "de": "Lead-Intelligence-System"
+        },
+        "meta": {
+          "en": "Sales, energy sector, 2026",
+          "de": "Vertrieb, Energiebranche, 2026"
+        },
         "start": {
           "en": "Research and list building by hand, manual CRM matching against 22,000 records, duplicate outreach as a customer risk.",
           "de": "Recherche und Listenaufbau per Hand, manueller CRM-Abgleich gegen 22.000 Datensätze, doppelte Ansprache als Kundenrisiko."
@@ -202,18 +355,42 @@
         },
         "measured": {
           "en": "2,299 companies captured, 720 validated upload-ready. Batch prep per 50 leads cut from hours of manual work to a reviewed run in minutes. 400+ automated tests, every metric with a population definition.",
-          "de": "2.299 Unternehmen erfasst, 720 geprüft und uploadfertig. Die Vorbereitung je 50 Leads von Stunden Handarbeit auf einen geprüften Lauf in Minuten gekürzt. Über 400 automatisierte Tests, jede Kennzahl mit definierter Grundgesamtheit."
+          "de": "2.299 Unternehmen erfasst, 720 geprüft und uploadfertig. Was je 50 Leads Stunden Handarbeit gekostet hat, ist jetzt ein geprüfter Lauf von Minuten. Über 400 automatisierte Tests, jede Kennzahl mit definierter Grundgesamtheit."
         },
         "figures": [
-          { "value": "27,000", "label": { "en": "lines of Python", "de": "Zeilen Python" } },
-          { "value": "2,299", "label": { "en": "companies captured", "de": "Unternehmen erfasst" } },
-          { "value": "400+", "label": { "en": "automated tests", "de": "automatisierte Tests" } }
+          {
+            "value": "27,000",
+            "label": {
+              "en": "lines of Python",
+              "de": "Zeilen Python"
+            }
+          },
+          {
+            "value": "2,299",
+            "label": {
+              "en": "companies captured",
+              "de": "Unternehmen erfasst"
+            }
+          },
+          {
+            "value": "400+",
+            "label": {
+              "en": "automated tests",
+              "de": "automatisierte Tests"
+            }
+          }
         ]
       },
       {
         "number": "02",
-        "title": { "en": "Energy community platform", "de": "Plattform für Energiegemeinschaften" },
-        "meta": { "en": "Operations, 104 real existing clients, 2026", "de": "Betrieb, 104 echte Bestandskunden, 2026" },
+        "title": {
+          "en": "Energy community platform",
+          "de": "Plattform für Energiegemeinschaften"
+        },
+        "meta": {
+          "en": "Operations, 104 real existing clients, 2026",
+          "de": "Betrieb, 104 echte Bestandskunden, 2026"
+        },
         "start": {
           "en": "104 managed energy communities in one Excel list. No map, no member process, GDPR nowhere systematic.",
           "de": "104 betreute Energiegemeinschaften in einer Excel-Liste. Keine Karte, kein Mitgliederprozess, DSGVO nirgends systematisch."
@@ -227,17 +404,38 @@
           "de": "Von der rohen Excel-Liste zur laufenden Plattform mit Karte innerhalb eines Arbeitstags. 104 Gemeinschaften eingebunden, 67 automatisch verortet, 53 Prüfungen grün."
         },
         "figures": [
-          { "value": "104", "label": { "en": "communities integrated", "de": "Gemeinschaften eingebunden" } },
-          { "value": "1", "label": { "en": "working day", "de": "Arbeitstag" } },
-          { "value": "53", "label": { "en": "checks green", "de": "Prüfungen grün" } }
+          {
+            "value": "104",
+            "label": {
+              "en": "communities integrated",
+              "de": "Gemeinschaften eingebunden"
+            }
+          },
+          {
+            "value": "1",
+            "label": {
+              "en": "working day",
+              "de": "Arbeitstag"
+            }
+          },
+          {
+            "value": "53",
+            "label": {
+              "en": "checks green",
+              "de": "Prüfungen grün"
+            }
+          }
         ]
       },
       {
         "number": "03",
-        "title": { "en": "SDR Workmod Hub", "de": "SDR Workmod Hub" },
+        "title": {
+          "en": "SDR Workmod Hub",
+          "de": "SDR Workmod Hub"
+        },
         "meta": {
           "en": "Sales operating system on Notion, built and run solo since June 2026. C-level access self-sourced with it, incl. Tesla, voestalpine BOHLER, XXXLutz, KTM, Manner, GLOCK (earned in the role).",
-          "de": "Vertriebs-Betriebssystem auf Notion, seit Juni 2026 allein gebaut und betrieben. Damit selbst erarbeiteter Zugang zur Führungsebene, unter anderem Tesla, voestalpine BOHLER, XXXLutz, KTM, Manner, GLOCK (in der Rolle erarbeitet)."
+          "de": "Vertriebs-Betriebssystem auf Notion, seit Juni 2026 allein gebaut und betrieben. Damit habe ich mir den Zugang zur Führungsebene selbst erarbeitet, unter anderem bei Tesla, voestalpine BOHLER, XXXLutz, KTM, Manner und GLOCK (in der Rolle erarbeitet)."
         },
         "start": {
           "en": "Sales knowledge living in heads only: no onboarding path, compliance as personal discipline, decisions scattered across chats, no traceability.",
@@ -245,95 +443,193 @@
         },
         "built": {
           "en": "5-step workflow with a pre-draft compliance gate: before any draft, mandatory verification of identity, role and channel (company register, imprint) against Austrian TKG, German UWG, the 2025 federal court ruling and GDPR Art. 21, plus public-procurement screening. Append-only decision log, checkpointed onboarding path, per-industry template library.",
-          "de": "5-Schritte-Workflow mit Compliance-Schranke vor jedem Entwurf: verpflichtende Prüfung von Identität, Rolle und Kanal (Firmenbuch, Impressum) gegen das österreichische TKG, das deutsche UWG, das BGH-Urteil 2025 und Art. 21 DSGVO, dazu Screening auf öffentliche Vergabe. Nur anfügbares Entscheidungsprotokoll, Einarbeitungspfad mit Kontrollpunkten, Vorlagenbibliothek je Branche."
+          "de": "Ein Ablauf in fünf Schritten mit einer Schranke vor jedem Entwurf: Erst wird geprüft, wer das ist, in welcher Rolle und über welchen Kanal er angesprochen werden darf, belegt über Firmenbuch und Impressum, geprüft gegen das österreichische TKG, das deutsche UWG, das BGH-Urteil 2025 und Art. 21 DSGVO, dazu ein Blick auf die öffentliche Vergabe. Dazu ein Entscheidungsprotokoll, in dem nur ergänzt und nie gelöscht wird, ein Einarbeitungspfad mit Kontrollpunkten und eine Vorlagenbibliothek je Branche."
         },
         "measured": {
           "en": "13 Apr to 31 Jul: 2,570 calls, 66 booked meetings, about 4.2 per week, July alone 21 qualified meetings and 1 close. New-SDR onboarding possible without shadowing, every process decision since June traceable.",
           "de": "13. April bis 31. Juli: 2.570 Anrufe, 66 vereinbarte Termine, etwa 4,2 pro Woche, allein im Juli 21 qualifizierte Termine und 1 Abschluss. Einarbeitung neuer SDRs ohne Begleitung möglich, jede Prozessentscheidung seit Juni nachvollziehbar."
         },
         "figures": [
-          { "value": "2,570", "label": { "en": "calls", "de": "Anrufe" } },
-          { "value": "66", "label": { "en": "booked meetings", "de": "vereinbarte Termine" } },
-          { "value": "21", "label": { "en": "qualified meetings in July", "de": "qualifizierte Termine im Juli" } }
+          {
+            "value": "2,570",
+            "label": {
+              "en": "calls",
+              "de": "Anrufe"
+            }
+          },
+          {
+            "value": "66",
+            "label": {
+              "en": "booked meetings",
+              "de": "vereinbarte Termine"
+            }
+          },
+          {
+            "value": "21",
+            "label": {
+              "en": "qualified meetings in July",
+              "de": "qualifizierte Termine im Juli"
+            }
+          }
         ]
       }
     ]
   },
-
   "numbers": {
-    "kicker": { "en": "Numbers", "de": "Zahlen" },
-    "title": { "en": "Unit economics", "de": "Unit Economics" },
-    "sub": { "en": "Profitable without you. Fast with you.", "de": "Profitabel ohne Sie. Schnell mit Ihnen." },
+    "kicker": {
+      "en": "Numbers",
+      "de": "Zahlen"
+    },
+    "title": {
+      "en": "Unit economics",
+      "de": "Die Rechnung"
+    },
+    "sub": {
+      "en": "Profitable without you. Fast with you.",
+      "de": "Profitabel ohne Sie. Schnell mit Ihnen."
+    },
     "prices": {
-      "title": { "en": "Prices, real", "de": "Preise, echt" },
+      "title": {
+        "en": "Prices, real",
+        "de": "Preise, die gelten"
+      },
       "items": [
-        { "name": { "en": "AI Opportunity Audit", "de": "AI Opportunity Audit" }, "price": "EUR 6,500-9,500", "priceDe": "6.500 bis 9.500 Euro" },
-        { "name": { "en": "Build Sprint", "de": "Build Sprint" }, "price": "EUR 18,000-28,000", "priceDe": "18.000 bis 28.000 Euro" },
-        { "name": { "en": "Retainer", "de": "Retainer" }, "price": "EUR 3,500-6,000 per month", "priceDe": "3.500 bis 6.000 Euro im Monat" }
+        {
+          "name": {
+            "en": "AI Opportunity Audit",
+            "de": "AI Opportunity Audit"
+          },
+          "price": "EUR 6,500-9,500",
+          "priceDe": "6.500 bis 9.500 Euro"
+        },
+        {
+          "name": {
+            "en": "Build Sprint",
+            "de": "Build Sprint"
+          },
+          "price": "EUR 18,000-28,000",
+          "priceDe": "18.000 bis 28.000 Euro"
+        },
+        {
+          "name": {
+            "en": "Retainer",
+            "de": "Retainer"
+          },
+          "price": "EUR 3,500-6,000 per month",
+          "priceDe": "3.500 bis 6.000 Euro im Monat"
+        }
       ],
-      "note": { "en": "Fixed prices, no day-rate lottery.", "de": "Fixpreise, keine Tagessatz-Lotterie." }
+      "note": {
+        "en": "Fixed prices, no day-rate lottery.",
+        "de": "Fixpreise, keine Tagessatz-Lotterie."
+      }
     },
     "year1": {
-      "title": { "en": "Year 1, conservative", "de": "Jahr 1, konservativ" },
+      "title": {
+        "en": "Year 1, conservative",
+        "de": "Jahr 1, konservativ"
+      },
       "text": {
         "en": "7 audits, 5 sprints, 2 retainers make roughly EUR 190,000 revenue at minimal fixed cost. The agency carries itself from the first clients.",
         "de": "7 Audits, 5 Sprints, 2 Retainer ergeben rund 190.000 Euro Umsatz bei minimalen Fixkosten. Die Agentur trägt sich ab den ersten Kunden."
       },
-      "figure": "190,000", "figureDe": "190.000",
-      "figureLabel": { "en": "EUR revenue, year 1", "de": "Euro Umsatz, Jahr 1" }
+      "figure": "190,000",
+      "figureDe": "190.000",
+      "figureLabel": {
+        "en": "EUR revenue, year 1",
+        "de": "Euro Umsatz, Jahr 1"
+      }
     },
     "why": {
-      "title": { "en": "Why capital then", "de": "Warum dann Kapital" },
+      "title": {
+        "en": "Why capital then",
+        "de": "Warum dann Kapital"
+      },
       "text": {
         "en": "Without a raise I grow linearly with my time. With it, in parallel: a second vertical, a first product module, a first hire. Capital buys speed, not survival.",
-        "de": "Ohne Runde wachse ich linear mit meiner Zeit. Mit ihr parallel: eine zweite Branche, ein erstes Produktmodul, eine erste Anstellung. Kapital kauft Geschwindigkeit, nicht Überleben."
+        "de": "Ohne diese Runde wachse ich nur so schnell, wie meine Zeit reicht. Mit ihr laufen drei Dinge parallel: eine zweite Branche, das erste Produktmodul, die erste Anstellung. Kapital kauft Geschwindigkeit, nicht Überleben."
       }
     }
   },
-
   "fields": {
-    "kicker": { "en": "Fields", "de": "Branchen" },
-    "title": { "en": "The method is sector-agnostic", "de": "Die Methode ist branchenunabhängig" },
+    "kicker": {
+      "en": "Fields",
+      "de": "Branchen"
+    },
+    "title": {
+      "en": "The method is sector-agnostic",
+      "de": "Die Methode ist branchenunabhängig"
+    },
     "sub": {
       "en": "Every industry has lists, processes and compliance. Three I know from the inside.",
       "de": "Jede Branche hat Listen, Prozesse und Compliance. Drei kenne ich von innen."
     },
     "items": [
       {
-        "when": { "en": "now", "de": "jetzt" },
-        "name": { "en": "Energy", "de": "Energie" },
+        "when": {
+          "en": "now",
+          "de": "jetzt"
+        },
+        "name": {
+          "en": "Energy",
+          "de": "Energie"
+        },
         "text": {
           "en": "Beachhead. Network, domain logic, two shipped systems. Energy communities grow and drown in administration.",
-          "de": "Brückenkopf. Netzwerk, Fachlogik, zwei ausgelieferte Systeme. Energiegemeinschaften wachsen und ertrinken in Verwaltung."
+          "de": "Hier fange ich an. Netzwerk, Fachwissen, zwei ausgelieferte Systeme. Energiegemeinschaften wachsen und ertrinken in der Verwaltung."
         }
       },
       {
-        "when": { "en": "2027", "de": "2027" },
-        "name": { "en": "Construction", "de": "Bau" },
+        "when": {
+          "en": "2027",
+          "de": "2027"
+        },
+        "name": {
+          "en": "Construction",
+          "de": "Bau"
+        },
         "text": {
           "en": "Lived it: rail infrastructure projects and a trade apprenticeship. Material flow, subcontractors, documentation duties. Low digitization, high pain.",
-          "de": "Selbst erlebt: Bahninfrastrukturprojekte und eine Lehre im Handwerk. Materialfluss, Subunternehmer, Dokumentationspflichten. Wenig Digitalisierung, viel Schmerz."
+          "de": "Selbst erlebt: Bahninfrastruktur und eine Lehre im Handwerk. Materialfluss, Subunternehmer, Dokumentationspflichten. Wenig digitalisiert, viele offene Baustellen."
         }
       },
       {
-        "when": { "en": "2027", "de": "2027" },
-        "name": { "en": "E-commerce", "de": "E-Commerce" },
+        "when": {
+          "en": "2027",
+          "de": "2027"
+        },
+        "name": {
+          "en": "E-commerce",
+          "de": "E-Commerce"
+        },
         "text": {
           "en": "Operated it myself: Vendor Central, Shopify, SAGE. Built and used my own AI tool for warranty claims.",
           "de": "Selbst betrieben: Vendor Central, Shopify, SAGE. Ein eigenes KI-Werkzeug für Garantiefälle gebaut und genutzt."
         }
       },
       {
-        "when": { "en": "2028", "de": "2028" },
-        "name": { "en": "Marketing and agencies", "de": "Marketing und Agenturen" },
+        "when": {
+          "en": "2028",
+          "de": "2028"
+        },
+        "name": {
+          "en": "Marketing and agencies",
+          "de": "Marketing und Agenturen"
+        },
         "text": {
           "en": "Repetitive data processes, reporting, list upkeep. High willingness to pay for measured time savings.",
-          "de": "Wiederkehrende Datenprozesse, Reporting, Listenpflege. Hohe Zahlungsbereitschaft für gemessene Zeitersparnis."
+          "de": "Immer dieselben Datenprozesse, Reporting, Listenpflege. Wer die gesparte Zeit gemessen sieht, zahlt dafür."
         }
       },
       {
-        "when": { "en": "2028", "de": "2028" },
-        "name": { "en": "Professional services", "de": "Freie Berufe und Dienstleister" },
+        "when": {
+          "en": "2028",
+          "de": "2028"
+        },
+        "name": {
+          "en": "Professional services",
+          "de": "Freie Berufe und Dienstleister"
+        },
         "text": {
           "en": "Tax advisors, property managers, law firms: document-driven, ideal for verified automation.",
           "de": "Steuerberater, Hausverwaltungen, Kanzleien: dokumentgetrieben, ideal für geprüfte Automatisierung."
@@ -341,100 +637,151 @@
       }
     ]
   },
-
   "governance": {
-    "kicker": { "en": "Governance", "de": "Governance" },
-    "title": { "en": "Built legally sound, from GDPR to the AI Act", "de": "Rechtssicher gebaut, von der DSGVO bis zum AI Act" },
+    "kicker": {
+      "en": "Governance",
+      "de": "Governance"
+    },
+    "title": {
+      "en": "Built legally sound, from GDPR to the AI Act",
+      "de": "Rechtssicher gebaut, von der DSGVO bis zum AI Act"
+    },
     "items": [
       {
-        "title": { "en": "GDPR by design", "de": "DSGVO ab Entwurf" },
+        "title": {
+          "en": "GDPR by design",
+          "de": "Datenschutz von Anfang an"
+        },
         "text": {
           "en": "Legal bases and information duties (Art. 13/14) as mandatory fields in the data model, deletion concepts, per-record disclosure capability.",
           "de": "Rechtsgrundlagen und Informationspflichten (Art. 13 und 14) als Pflichtfelder im Datenmodell, Löschkonzepte, Auskunftsfähigkeit je Datensatz."
         }
       },
       {
-        "title": { "en": "Lawful outreach", "de": "Rechtmäßige Ansprache" },
+        "title": {
+          "en": "Lawful outreach",
+          "de": "Rechtmäßige Ansprache"
+        },
         "text": {
           "en": "Channel choice before campaign: Austrian TKG, German UWG. Compliance decides the process, not the other way round.",
-          "de": "Kanalwahl vor der Kampagne: österreichisches TKG, deutsches UWG. Die Compliance bestimmt den Prozess, nicht umgekehrt."
+          "de": "Erst der Kanal, dann die Kampagne: österreichisches TKG, deutsches UWG. Die Compliance bestimmt den Prozess, nicht umgekehrt."
         }
       },
       {
-        "title": { "en": "License-checked data", "de": "Lizenzgeprüfte Daten" },
+        "title": {
+          "en": "License-checked data",
+          "de": "Lizenzgeprüfte Daten"
+        },
         "text": {
           "en": "Every source checked before use: ODbL vs CC-BY, attribution, share-alike. No silent licensing risks in the product.",
           "de": "Jede Quelle vor der Nutzung geprüft: ODbL gegen CC-BY, Namensnennung, Share-alike. Keine stillen Lizenzrisiken im Produkt."
         }
       },
       {
-        "title": { "en": "EU AI Act", "de": "EU AI Act" },
+        "title": {
+          "en": "EU AI Act",
+          "de": "EU AI Act"
+        },
         "text": {
           "en": "Transparency and documentation duties carried along from the start, not retrofitted.",
           "de": "Transparenz- und Dokumentationspflichten von Anfang an mitgeführt, nicht nachgerüstet."
         }
       },
       {
-        "title": { "en": "Audit trails", "de": "Prüfpfade" },
+        "title": {
+          "en": "Audit trails",
+          "de": "Prüfpfade"
+        },
         "text": {
           "en": "Every change logged, every number recomputable. Auditability is a feature, not an add-on.",
-          "de": "Jede Änderung protokolliert, jede Zahl nachrechenbar. Prüfbarkeit ist ein Merkmal, kein Zusatz."
+          "de": "Jede Änderung ist protokolliert, jede Zahl nachrechenbar. Prüfbarkeit ist eingebaut, nicht angeklebt."
         }
       }
     ],
     "closing": {
       "en": "Built for the conservative market: runs locally without forced cloud, open data sources, German-language documentation, handover without lock-in, pilot to full scale without changing architecture.",
-      "de": "Gebaut für den konservativen Markt: läuft lokal ohne Cloud-Zwang, offene Datenquellen, deutschsprachige Dokumentation, Übergabe ohne Abhängigkeit, vom Pilot bis zum Vollbetrieb ohne Architekturwechsel."
+      "de": "Gebaut für einen vorsichtigen Markt: läuft lokal, ohne Cloud-Zwang, offene Datenquellen, deutschsprachige Dokumentation, Übergabe ohne Abhängigkeit, und vom Pilot bis zum Vollbetrieb ohne Architekturwechsel."
     }
   },
-
   "value": {
-    "kicker": { "en": "Value", "de": "Wert" },
-    "title": { "en": "Long-term value creation", "de": "Langfristige Wertschöpfung" },
-    "sub": { "en": "No exit. Assets that compound.", "de": "Kein Exit. Werte, die sich aufbauen." },
+    "kicker": {
+      "en": "Value",
+      "de": "Wert"
+    },
+    "title": {
+      "en": "Long-term value creation",
+      "de": "Langfristige Wertschöpfung"
+    },
+    "sub": {
+      "en": "No exit. Assets that compound.",
+      "de": "Kein Exit. Werte, die sich summieren."
+    },
     "items": [
       {
-        "title": { "en": "Consulting", "de": "Beratung" },
+        "title": {
+          "en": "Consulting",
+          "de": "Beratung"
+        },
         "text": {
           "en": "Cash flow from month 1 and pattern recognition: every sprint shows what industries need repeatedly.",
-          "de": "Cashflow ab Monat 1 und Mustererkennung: Jeder Sprint zeigt, was Branchen immer wieder brauchen."
+          "de": "Cashflow ab dem ersten Monat, und ich sehe die Muster: Jeder Sprint zeigt, was eine Branche immer wieder braucht."
         }
       },
       {
-        "title": { "en": "Product modules", "de": "Produktmodule" },
+        "title": {
+          "en": "Product modules",
+          "de": "Produktmodule"
+        },
         "text": {
           "en": "Patterns become recurring revenue: outbound compliance gate, community platform, verification toolkit.",
-          "de": "Muster werden zu wiederkehrendem Umsatz: Compliance-Schranke für Outbound, Gemeinschaftsplattform, Prüfwerkzeuge."
+          "de": "Aus den Mustern wird wiederkehrender Umsatz: die Compliance-Schranke für Outbound, die Gemeinschaftsplattform, die Prüfwerkzeuge."
         }
       },
       {
-        "title": { "en": "Knowledge base", "de": "Wissensbasis" },
+        "title": {
+          "en": "Knowledge base",
+          "de": "Wissensbasis"
+        },
         "text": {
           "en": "Playbooks, per-jurisdiction compliance blocks, data source catalogs: every solved industry makes the next one cheaper.",
-          "de": "Playbooks, Compliance-Bausteine je Rechtsraum, Kataloge von Datenquellen: Jede gelöste Branche macht die nächste günstiger."
+          "de": "Playbooks, Compliance-Bausteine je Rechtsraum, Kataloge von Datenquellen. Jede gelöste Branche macht die nächste billiger."
         }
       },
       {
-        "title": { "en": "Brand in the conservative market", "de": "Marke im konservativen Markt" },
+        "title": {
+          "en": "Brand in the conservative market",
+          "de": "Marke im konservativen Markt"
+        },
         "text": {
           "en": "References with measured numbers and auditable work create pricing power that does not walk away.",
-          "de": "Referenzen mit gemessenen Zahlen und prüfbarer Arbeit schaffen Preismacht, die nicht abwandert."
+          "de": "Referenzen mit gemessenen Zahlen und prüfbarer Arbeit erlauben Preise, die halten."
         }
       },
       {
-        "title": { "en": "Distributions and optionality", "de": "Ausschüttungen und Optionen" },
+        "title": {
+          "en": "Distributions and optionality",
+          "de": "Ausschüttungen und Optionen"
+        },
         "text": {
           "en": "Profits get distributed, product spin-outs remain as upside for investors.",
-          "de": "Gewinne werden ausgeschüttet, Produktausgründungen bleiben als Chance für Investoren."
+          "de": "Gewinne werden ausgeschüttet. Wird ein Produktmodul ausgegründet, bleibt das als Chance für die Investoren."
         }
       }
     ]
   },
-
   "horizon": {
-    "kicker": { "en": "Horizon", "de": "Horizont" },
-    "title": { "en": "Long term instead of exit", "de": "Langfristig statt Exit" },
-    "sub": { "en": "Building toward a global market.", "de": "Aufbau in Richtung eines globalen Markts." },
+    "kicker": {
+      "en": "Horizon",
+      "de": "Horizont"
+    },
+    "title": {
+      "en": "Long term instead of exit",
+      "de": "Langfristig statt Exit"
+    },
+    "sub": {
+      "en": "Building toward a global market.",
+      "de": "Der Aufbau zielt auf einen globalen Markt."
+    },
     "items": [
       {
         "when": "2026 Q4",
@@ -454,68 +801,106 @@
         "when": "2028",
         "text": {
           "en": "DACH established, EU expansion remote-first. Product line next to consulting. Team of 4-6.",
-          "de": "DACH etabliert, EU-Ausbau remote-first. Produktlinie neben der Beratung. Team von 4 bis 6."
+          "de": "DACH steht, der EU-Ausbau läuft remote. Eine Produktlinie neben der Beratung. Team von 4 bis 6."
         }
       },
       {
         "when": "2029+",
         "text": {
           "en": "Global remote: the method works wherever processes, lists and EU-grade compliance are needed. Studio model. No sale, distributions from profit.",
-          "de": "Global remote: Die Methode funktioniert überall, wo Prozesse, Listen und Compliance auf EU-Niveau gebraucht werden. Studiomodell. Kein Verkauf, Ausschüttungen aus dem Gewinn."
+          "de": "Global und remote: Die Methode funktioniert überall, wo es Prozesse, Listen und Compliance auf EU-Niveau gibt. Studiomodell, kein Verkauf, Ausschüttungen aus dem Gewinn."
         }
       }
     ]
   },
-
   "funds": {
-    "kicker": { "en": "Use of funds", "de": "Mittelverwendung" },
-    "title": { "en": "The raise", "de": "Die Runde" },
-    "sub": { "en": "EUR 100,000 for the first buildup, twelve months.", "de": "100.000 Euro für den ersten Aufbau, zwölf Monate." },
+    "kicker": {
+      "en": "Use of funds",
+      "de": "Mittelverwendung"
+    },
+    "title": {
+      "en": "The raise",
+      "de": "Die Runde"
+    },
+    "sub": {
+      "en": "EUR 100,000 for the first buildup, twelve months.",
+      "de": "100.000 Euro für den ersten Aufbau, zwölf Monate."
+    },
     "total": 100000,
     "items": [
       {
-        "amount": 40000, "label": "EUR 40,000", "labelDe": "40.000 Euro",
-        "title": { "en": "Founder runway, 12 months", "de": "Gründer-Runway, 12 Monate" },
+        "amount": 40000,
+        "label": "EUR 40,000",
+        "labelDe": "40.000 Euro",
+        "title": {
+          "en": "Founder runway, 12 months",
+          "de": "Mein Auskommen, 12 Monate"
+        },
         "text": {
           "en": "I work full time on client projects instead of bridge jobs. About EUR 3,300 per month, minimum draw.",
           "de": "Ich arbeite Vollzeit an Kundenprojekten statt in Überbrückungsjobs. Etwa 3.300 Euro im Monat, Mindestentnahme."
         }
       },
       {
-        "amount": 25000, "label": "EUR 25,000", "labelDe": "25.000 Euro",
-        "title": { "en": "Productization", "de": "Produktisierung" },
+        "amount": 25000,
+        "label": "EUR 25,000",
+        "labelDe": "25.000 Euro",
+        "title": {
+          "en": "Productization",
+          "de": "Aus Beratung wird Produkt"
+        },
         "text": {
           "en": "Consulting patterns become the first sellable module: a compliance gate for outbound teams. Roughly 4 months of build time, bought-in specialist work included.",
-          "de": "Beratungsmuster werden zum ersten verkaufbaren Modul: eine Compliance-Schranke für Outbound-Teams. Rund 4 Monate Bauzeit, zugekaufte Spezialarbeit eingerechnet."
+          "de": "Aus den Beratungsmustern entsteht das erste verkaufbare Modul: eine Compliance-Schranke für Outbound-Teams. Rund 4 Monate Bauzeit, zugekaufte Spezialarbeit eingerechnet."
         }
       },
       {
-        "amount": 13000, "label": "EUR 13,000", "labelDe": "13.000 Euro",
-        "title": { "en": "Sales, brand, website", "de": "Vertrieb, Marke, Website" },
+        "amount": 13000,
+        "label": "EUR 13,000",
+        "labelDe": "13.000 Euro",
+        "title": {
+          "en": "Sales, brand, website",
+          "de": "Vertrieb, Marke, Website"
+        },
         "text": {
           "en": "Website, brand, trade events and association access in energy and construction, first campaigns. The channel that brings the 10 clients.",
           "de": "Website, Marke, Fachveranstaltungen und Verbandszugang in Energie und Bau, erste Kampagnen. Der Kanal, der die 10 Kunden bringt."
         }
       },
       {
-        "amount": 10000, "label": "EUR 10,000", "labelDe": "10.000 Euro",
-        "title": { "en": "AI compute and tooling", "de": "KI-Rechenleistung und Werkzeuge" },
+        "amount": 10000,
+        "label": "EUR 10,000",
+        "labelDe": "10.000 Euro",
+        "title": {
+          "en": "AI compute and tooling",
+          "de": "KI-Rechenleistung und Werkzeuge"
+        },
         "text": {
           "en": "Model usage for agent orchestration, development environment, hosting of client systems.",
           "de": "Modellnutzung für Agenten-Orchestrierung, Entwicklungsumgebung, Hosting der Kundensysteme."
         }
       },
       {
-        "amount": 7000, "label": "EUR 7,000", "labelDe": "7.000 Euro",
-        "title": { "en": "Legal, insurance, GDPR", "de": "Recht, Versicherung, DSGVO" },
+        "amount": 7000,
+        "label": "EUR 7,000",
+        "labelDe": "7.000 Euro",
+        "title": {
+          "en": "Legal, insurance, GDPR",
+          "de": "Recht, Versicherung, DSGVO"
+        },
         "text": {
           "en": "Incorporation, terms and contracts, professional liability, GDPR framework, tax advice. Mandatory in a regulated market.",
           "de": "Gründung, AGB und Verträge, Berufshaftpflicht, DSGVO-Rahmen, Steuerberatung. Pflicht in einem regulierten Markt."
         }
       },
       {
-        "amount": 5000, "label": "EUR 5,000", "labelDe": "5.000 Euro",
-        "title": { "en": "Reserve", "de": "Reserve" },
+        "amount": 5000,
+        "label": "EUR 5,000",
+        "labelDe": "5.000 Euro",
+        "title": {
+          "en": "Reserve",
+          "de": "Reserve"
+        },
         "text": {
           "en": "Buffer for payment terms and the unforeseen.",
           "de": "Puffer für Zahlungsziele und Unvorhergesehenes."
@@ -523,31 +908,46 @@
       }
     ],
     "payback": {
-      "title": { "en": "How the money comes back", "de": "Wie das Geld zurückkommt" },
+      "title": {
+        "en": "How the money comes back",
+        "de": "Wie das Geld zurückkommt"
+      },
       "items": [
         {
-          "label": { "en": "From what", "de": "Woraus" },
+          "label": {
+            "en": "From what",
+            "de": "Woraus"
+          },
           "text": {
             "en": "From consulting revenue starting month 1, not from a future valuation. Year 1 conservatively about EUR 190,000 at minimal fixed cost.",
-            "de": "Aus Beratungsumsatz ab Monat 1, nicht aus einer künftigen Bewertung. Jahr 1 konservativ rund 190.000 Euro bei minimalen Fixkosten."
+            "de": "Aus dem Beratungsumsatz ab dem ersten Monat, nicht aus einer künftigen Bewertung. Jahr 1 konservativ rund 190.000 Euro bei minimalen Fixkosten."
           }
         },
         {
-          "label": { "en": "When", "de": "Wann" },
+          "label": {
+            "en": "When",
+            "de": "Wann"
+          },
           "text": {
             "en": "Repayment from month 7, quarterly, out of running cash flow.",
             "de": "Rückzahlung ab Monat 7, quartalsweise, aus dem laufenden Cashflow."
           }
         },
         {
-          "label": { "en": "How much", "de": "Wie viel" },
+          "label": {
+            "en": "How much",
+            "de": "Wie viel"
+          },
           "text": {
             "en": "10 % of revenue until EUR 200,000 has flowed back, that is 2x on 100,000. On plan, repaid in roughly 30 months.",
             "de": "10 Prozent des Umsatzes, bis 200.000 Euro zurückgeflossen sind, also das Doppelte von 100.000. Planmäßig in rund 30 Monaten zurückgezahlt."
           }
         },
         {
-          "label": { "en": "Alternative", "de": "Alternative" },
+          "label": {
+            "en": "Alternative",
+            "de": "Alternative"
+          },
           "text": {
             "en": "Instead of revenue share: 10 % equity with profit distributions from year 2, plus a conversion right if a product module is spun out.",
             "de": "Statt Umsatzbeteiligung: 10 Prozent Eigenkapital mit Gewinnausschüttung ab Jahr 2, dazu ein Wandlungsrecht, falls ein Produktmodul ausgegründet wird."
@@ -556,112 +956,233 @@
       ]
     },
     "milestones": {
-      "title": { "en": "Milestones you measure me against", "de": "Meilensteine, an denen Sie mich messen" },
+      "title": {
+        "en": "Milestones you measure me against",
+        "de": "Meilensteine, an denen Sie mich messen"
+      },
       "items": [
-        { "when": "M 3", "text": { "en": "Three paying clients, first measured before-and-after case.", "de": "Drei zahlende Kunden, erster gemessener Vorher-nachher-Fall." } },
-        { "when": "M 6", "text": { "en": "Second vertical live with reference case.", "de": "Zweite Branche live mit Referenzfall." } },
-        { "when": "M 9", "text": { "en": "First product module with recurring revenue.", "de": "Erstes Produktmodul mit wiederkehrendem Umsatz." } },
-        { "when": "M 12", "text": { "en": "10+ clients, three verticals, team of 2-3, profitable.", "de": "Über 10 Kunden, drei Branchen, Team von 2 bis 3, profitabel." } }
+        {
+          "when": "M 3",
+          "text": {
+            "en": "Three paying clients, first measured before-and-after case.",
+            "de": "Drei zahlende Kunden, erster gemessener Vorher-nachher-Fall."
+          }
+        },
+        {
+          "when": "M 6",
+          "text": {
+            "en": "Second vertical live with reference case.",
+            "de": "Zweite Branche live mit Referenzfall."
+          }
+        },
+        {
+          "when": "M 9",
+          "text": {
+            "en": "First product module with recurring revenue.",
+            "de": "Erstes Produktmodul mit wiederkehrendem Umsatz."
+          }
+        },
+        {
+          "when": "M 12",
+          "text": {
+            "en": "10+ clients, three verticals, team of 2-3, profitable.",
+            "de": "Über 10 Kunden, drei Branchen, Team von 2 bis 3, profitabel."
+          }
+        }
       ]
     }
   },
-
   "returns": {
-    "kicker": { "en": "Returns", "de": "Rendite" },
-    "title": { "en": "Returns without an exit fairy tale", "de": "Rendite ohne Exit-Märchen" },
+    "kicker": {
+      "en": "Returns",
+      "de": "Rendite"
+    },
+    "title": {
+      "en": "Returns without an exit fairy tale",
+      "de": "Rendite ohne Exit-Märchen"
+    },
     "items": [
       {
-        "title": { "en": "No exit as a strategy", "de": "Kein Exit als Strategie" },
+        "title": {
+          "en": "No exit as a strategy",
+          "de": "Kein Exit als Strategie"
+        },
         "text": {
           "en": "This company is built to stay. If you need a 10x exit story, this is the wrong deal, and I would rather say that now than in three years.",
-          "de": "Dieses Unternehmen ist gebaut, um zu bleiben. Wer eine 10x-Exit-Geschichte braucht, ist hier falsch, und das sage ich lieber jetzt als in drei Jahren."
+          "de": "Dieses Unternehmen ist auf Dauer angelegt. Wer eine 10x-Exit-Geschichte braucht, ist hier falsch, und das sage ich lieber jetzt als in drei Jahren."
         }
       },
       {
-        "title": { "en": "Three paths to returns", "de": "Drei Wege zur Rendite" },
+        "title": {
+          "en": "Three paths to returns",
+          "de": "Drei Wege zur Rendite"
+        },
         "text": {
           "en": "A: revenue share up to an agreed cap, paid from real cash flow. B: equity with profit distributions from year 2. C: conversion right if a product module is spun out.",
           "de": "A: Umsatzbeteiligung bis zu einer vereinbarten Obergrenze, bezahlt aus echtem Cashflow. B: Eigenkapital mit Gewinnausschüttung ab Jahr 2. C: Wandlungsrecht, falls ein Produktmodul ausgegründet wird."
         }
       },
       {
-        "title": { "en": "Why that is fair", "de": "Warum das fair ist" },
+        "title": {
+          "en": "Why that is fair",
+          "de": "Warum das fair ist"
+        },
         "text": {
           "en": "Consulting generates cash from month 1. You are not financing burn, you are financing speed in a business that already carries itself.",
-          "de": "Beratung bringt Geld ab Monat 1. Sie finanzieren keinen Verlust, sondern Geschwindigkeit in einem Geschäft, das sich schon trägt."
+          "de": "Beratung bringt Geld ab dem ersten Monat. Sie finanzieren keinen Verlust, sondern Geschwindigkeit in einem Geschäft, das sich schon trägt."
         }
       }
     ]
   },
-
   "ask": {
-    "kicker": { "en": "The ask", "de": "Das Angebot" },
-    "title": { "en": "Three things I am asking for", "de": "Drei Dinge, um die ich bitte" },
+    "kicker": {
+      "en": "The ask",
+      "de": "Das Angebot"
+    },
+    "title": {
+      "en": "Three things I am asking for",
+      "de": "Drei Dinge, um die ich bitte"
+    },
     "items": [
-      { "en": "EUR 100,000 pre-seed on the terms of the returns section.", "de": "100.000 Euro Pre-Seed zu den Bedingungen im Abschnitt Rendite." },
-      { "en": "Intros: SME decision-makers in energy, construction and e-commerce across DACH.", "de": "Kontakte: Entscheider in KMU aus Energie, Bau und E-Commerce im DACH-Raum." },
-      { "en": "One board sparring per quarter. A profitable one-person company does not need more governance.", "de": "Ein Sparring im Quartal. Ein profitables Ein-Personen-Unternehmen braucht nicht mehr Governance." }
+      {
+        "en": "EUR 100,000 pre-seed on the terms of the returns section.",
+        "de": "100.000 Euro Pre-Seed zu den Bedingungen im Abschnitt Rendite."
+      },
+      {
+        "en": "Intros: SME decision-makers in energy, construction and e-commerce across DACH.",
+        "de": "Kontakte: Entscheider in KMU aus Energie, Bau und E-Commerce im DACH-Raum."
+      },
+      {
+        "en": "One board sparring per quarter. A profitable one-person company does not need more governance.",
+        "de": "Ein Sparring im Quartal. Mehr Governance braucht ein profitables Ein-Personen-Unternehmen nicht."
+      }
     ],
-    "contactTitle": { "en": "Let us talk.", "de": "Reden wir." },
+    "contactTitle": {
+      "en": "Let us talk.",
+      "de": "Reden wir."
+    },
     "contactText": {
       "en": "One call, thirty minutes, and you know whether this is your deal.",
       "de": "Ein Gespräch, dreißig Minuten, und Sie wissen, ob das Ihr Deal ist."
     },
-    "email": { "en": "Write an email", "de": "E-Mail schreiben" },
-    "call": { "en": "Call", "de": "Anrufen" },
-    "copy": { "en": "Copy address", "de": "Adresse kopieren" },
-    "copied": { "en": "Copied", "de": "Kopiert" }
+    "email": {
+      "en": "Write an email",
+      "de": "E-Mail schreiben"
+    },
+    "call": {
+      "en": "Call",
+      "de": "Anrufen"
+    },
+    "copy": {
+      "en": "Copy address",
+      "de": "Adresse kopieren"
+    },
+    "copied": {
+      "en": "Copied",
+      "de": "Kopiert"
+    }
   },
-
   "footer": {
-    "imprint": { "en": "Imprint", "de": "Impressum" },
-    "privacy": { "en": "Privacy", "de": "Datenschutz" },
-    "top": { "en": "Back to top", "de": "Nach oben" },
+    "imprint": {
+      "en": "Imprint",
+      "de": "Impressum"
+    },
+    "privacy": {
+      "en": "Privacy",
+      "de": "Datenschutz"
+    },
+    "top": {
+      "en": "Back to top",
+      "de": "Nach oben"
+    },
     "note": {
       "en": "This page is the pitch deck of September 2026 as a website. Figures are as of that date.",
       "de": "Diese Seite ist das Pitchdeck vom September 2026 als Website. Zahlen mit Stand von damals."
     }
   },
-
   "legal": {
     "imprint": {
-      "title": { "en": "Imprint", "de": "Impressum" },
-      "intro": {
-        "en": "Information according to section 5 of the Austrian E-Commerce Act (ECG) and section 25 of the Austrian Media Act (MedienG).",
-        "de": "Angaben gemäß § 5 ECG und § 25 MedienG."
+      "title": {
+        "en": "Imprint",
+        "de": "Impressum"
       },
-      "owner": { "en": "Media owner and publisher", "de": "Medieninhaber und Herausgeber" },
+      "intro": {
+        "en": "Information according to section 5 of the Austrian E-Commerce Act (ECG) and disclosure according to section 25 of the Austrian Media Act (MedienG).",
+        "de": "Angaben gemäß § 5 ECG und Offenlegung nach § 25 MedienG."
+      },
+      "owner": {
+        "en": "Media owner and publisher",
+        "de": "Medieninhaber und Herausgeber"
+      },
       "address": "[Straße Hausnummer], [PLZ] Wien, Österreich",
       "business": {
-        "en": "Business purpose: consulting and development of AI systems. Trade register and VAT number follow after incorporation.",
-        "de": "Unternehmensgegenstand: Beratung und Entwicklung von KI-Systemen. Firmenbuch- und UID-Nummer folgen nach der Gründung."
+        "en": "Business purpose: consulting and development of AI systems. The seat is Vienna, Austrian law applies. The company is not incorporated yet. Company register number, register court and VAT number follow after incorporation: [company register number], [register court], [VAT number]. Trade authority and chamber are added with the trade registration: [trade authority], [chamber]. Basic orientation according to section 25 MedienG: presentation of this venture and of its own services.",
+        "de": "Unternehmensgegenstand: Beratung und Entwicklung von KI-Systemen. Sitz ist Wien, es gilt österreichisches Recht. Die Firma ist noch nicht gegründet. Firmenbuchnummer, Firmenbuchgericht und UID-Nummer folgen nach der Gründung: [Firmenbuchnummer], [Firmenbuchgericht], [UID-Nummer]. Gewerbebehörde und Kammer werden mit der Gewerbeanmeldung ergänzt: [Gewerbebehörde], [Kammer]. Grundlegende Richtung nach § 25 MedienG: Darstellung des eigenen Vorhabens und der eigenen Leistungen."
       },
       "note": {
-        "en": "Values in square brackets are placeholders. They are filled in before the page is announced publicly.",
-        "de": "Werte in eckigen Klammern sind Platzhalter. Sie werden ausgefüllt, bevor die Seite öffentlich beworben wird."
+        "en": "Values in square brackets are placeholders. They are filled in before the page is announced publicly. Imprint and privacy policy are drafts until a lawyer has reviewed them.",
+        "de": "Werte in eckigen Klammern sind Platzhalter. Sie werden ausgefüllt, bevor die Seite öffentlich beworben wird. Impressum und Datenschutzerklärung sind Entwürfe bis zur anwaltlichen Prüfung."
       }
     },
     "privacy": {
-      "title": { "en": "Privacy", "de": "Datenschutz" },
+      "title": {
+        "en": "Privacy",
+        "de": "Datenschutz"
+      },
       "paragraphs": [
         {
-          "en": "This website stores no cookies and runs no analytics. It sets one value in your browser's local storage, the language you chose, and nothing else. That value never leaves your device.",
-          "de": "Diese Website speichert keine Cookies und führt keine Analyse durch. Sie legt einen Wert im lokalen Speicher deines Browsers ab, die gewählte Sprache, sonst nichts. Dieser Wert verlässt dein Gerät nicht."
+          "en": "This page is a pitch deck. It sets no cookies, it measures nothing, it shows no advertising and it embeds no social network. The controller of the processing is the person named below. Postal address and phone number are in the imprint.",
+          "de": "Diese Seite ist ein Pitchdeck. Sie setzt keine Cookies, sie misst nichts, sie zeigt keine Werbung und bindet kein soziales Netzwerk ein. Verantwortlich für die Verarbeitung ist die unten genannte Person. Anschrift und Telefonnummer stehen im Impressum."
         },
         {
-          "en": "The page is hosted on GitHub Pages (GitHub Inc., USA). When you open it, the host processes your IP address in its server logs, as any web server does. GitHub's privacy statement applies to that processing.",
-          "de": "Die Seite wird auf GitHub Pages (GitHub Inc., USA) gehostet. Beim Aufruf verarbeitet der Anbieter deine IP-Adresse in seinen Serverprotokollen, wie jeder Webserver. Dafür gilt die Datenschutzerklärung von GitHub."
+          "en": "The preview is hosted on GitHub Pages (GitHub Inc., USA). If the page is later published under its own address, it is hosted on Netlify (Netlify, Inc., USA). On every request the host logs server data, among them your IP address. The purpose is to deliver the page and to detect faults. Legal basis is the legitimate interest in a secure operation (Art. 6 para. 1 lit. f GDPR). The host acts as a processor. How long the host keeps these logs is set by the host, and its own privacy statement applies to that.",
+          "de": "Die Vorschau liegt auf GitHub Pages (GitHub Inc., USA). Wird die Seite später unter einer eigenen Adresse veröffentlicht, liegt sie auf Netlify (Netlify, Inc., USA). Beim Aufruf protokolliert der Hoster Serverdaten, darunter deine IP-Adresse. Zweck ist die Auslieferung der Seite und das Erkennen von Störungen. Rechtsgrundlage ist das berechtigte Interesse an einem sicheren Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Der Hoster ist Auftragsverarbeiter. Wie lange er diese Protokolle aufbewahrt, bestimmt er selbst, dafür gilt seine eigene Datenschutzerklärung."
         },
         {
-          "en": "Fonts are loaded from Google Fonts. Your browser sends a request to Google's servers for the font files, which transmits your IP address. Legal basis is the legitimate interest in a consistent presentation (Art. 6 para. 1 lit. f GDPR).",
-          "de": "Schriften werden von Google Fonts geladen. Dein Browser fordert die Schriftdateien bei Googles Servern an, dabei wird deine IP-Adresse übertragen. Rechtsgrundlage ist das berechtigte Interesse an einer einheitlichen Darstellung (Art. 6 Abs. 1 lit. f DSGVO)."
+          "en": "GitHub and Netlify are companies in the United States. These server data can therefore reach a third country. The basis for that transfer is checked before publication and entered here: [basis for the third country transfer].",
+          "de": "GitHub und Netlify sind Unternehmen in den USA. Diese Serverdaten können deshalb in ein Drittland gelangen. Die Grundlage dieses Transfers wird vor der Veröffentlichung geprüft und hier eingetragen: [Grundlage des Drittlandtransfers]."
         },
         {
-          "en": "If you write an email, the data you send is used only to answer you. You have the rights to access, rectification, erasure and restriction under the GDPR, and the right to complain to the Austrian Data Protection Authority.",
-          "de": "Wenn du eine E-Mail schreibst, werden die gesendeten Daten nur zur Antwort verwendet. Du hast nach der DSGVO die Rechte auf Auskunft, Berichtigung, Löschung und Einschränkung sowie das Recht auf Beschwerde bei der österreichischen Datenschutzbehörde."
+          "en": "The page uses only the system fonts of your device. No font file is loaded, neither from Google nor from anywhere else. No request and no IP address goes to a third party for fonts.",
+          "de": "Die Seite benutzt ausschließlich die Systemschriften deines Geräts. Es wird keine Schriftdatei nachgeladen, weder von Google noch von sonst jemandem. Dabei geht keine Anfrage und keine IP-Adresse an einen Dritten."
+        },
+        {
+          "en": "The page keeps one value in your browser storage: sa-access remembers the access code you entered, so you do not have to type it again on every visit. The value stays on your device and is never sent to a server. The language you read in is not stored, it is part of the page address.",
+          "de": "Die Seite legt einen Wert im lokalen Speicher deines Browsers ab: sa-access merkt sich den eingegebenen Zugangscode, damit du ihn nicht bei jedem Aufruf neu eingeben musst. Der Wert bleibt auf deinem Gerät und wird nie an einen Server gesendet. Die gewählte Sprache wird nicht gespeichert, sie steckt in der Adresse der Seite."
+        },
+        {
+          "en": "That storage is strictly necessary for the service you asked for, so it needs no consent. For the same reason there is no consent banner. You can remove the value at any time by clearing this site's data in your browser. The page then asks for the access code again.",
+          "de": "Diese Speicherung ist für den von dir gewünschten Dienst unbedingt erforderlich. Sie braucht deshalb keine Einwilligung (§ 165 Abs. 3 TKG 2021). Aus demselben Grund gibt es kein Einwilligungsbanner. Du kannst den Wert jederzeit entfernen, indem du die Websitedaten in deinem Browser löschst. Danach fragt die Seite den Zugangscode wieder ab."
+        },
+        {
+          "en": "The access code is checked in your browser. No request leaves your device for it, and the code is removed from the address bar so it does not end up in the host's log. To be plain about it: this is a screen, not a password. The server checks nothing, it serves the page, and without JavaScript the screen does not appear at all. There are no personal data behind it, only this presentation.",
+          "de": "Der Zugangscode wird im Browser geprüft. Dabei verlässt keine Anfrage dein Gerät, und der Code wird aus der Adresszeile entfernt, damit er nicht im Protokoll des Hosters landet. Ehrlich dazu: Diese Abfrage ist ein Sichtschutz, kein Passwortschutz. Der Server prüft nichts, er liefert die Seite aus, und ohne JavaScript erscheint die Abfrage gar nicht. Hinter der Abfrage liegen keine personenbezogenen Daten, nur diese Präsentation."
+        },
+        {
+          "en": "If you write an email, your name, your email address and the content are used only to answer you. Legal basis is Art. 6 para. 1 lit. b GDPR when the request concerns a possible cooperation, otherwise the legitimate interest in an answer (Art. 6 para. 1 lit. f GDPR). The address given is an iCloud mailbox, so the provider of that mailbox processes the message on delivery. The message is deleted once the matter is settled and no legal retention period applies.",
+          "de": "Wenn du eine E-Mail schreibst, werden dein Name, deine E-Mail-Adresse und der Inhalt nur zur Antwort verwendet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn es um eine mögliche Zusammenarbeit geht, sonst das berechtigte Interesse an einer Antwort (Art. 6 Abs. 1 lit. f DSGVO). Die angegebene Adresse ist ein iCloud-Postfach, der Anbieter dieses Postfachs verarbeitet die Nachricht beim Empfang. Die Nachricht wird gelöscht, sobald die Sache erledigt ist und keine gesetzliche Aufbewahrungsfrist entgegensteht."
+        },
+        {
+          "en": "The link to LinkedIn is a plain link. Your browser connects to LinkedIn only when you click it. The deck is a file on the same address as the page.",
+          "de": "Der Link zu LinkedIn ist ein reiner Link. Dein Browser verbindet sich erst mit LinkedIn, wenn du ihn anklickst. Das Deck liegt als Datei auf derselben Adresse wie die Seite."
+        },
+        {
+          "en": "You have the right to access, rectification, erasure, restriction of processing, data portability and objection. The objection covers the processing based on legitimate interest. An informal email to the address below is enough. You can also complain to the Austrian Data Protection Authority, which is the competent supervisory authority.",
+          "de": "Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Der Widerspruch betrifft die Verarbeitungen, die auf berechtigtem Interesse beruhen. Eine formlose E-Mail an die unten genannte Adresse genügt. Du kannst dich außerdem bei der österreichischen Datenschutzbehörde beschweren, sie ist die zuständige Aufsichtsbehörde."
+        },
+        {
+          "en": "You do not have to provide any data. The server data arise technically on every request. An email is voluntary. There is no automated decision making and no profiling.",
+          "de": "Du musst keine Daten angeben. Die Serverdaten fallen bei jedem Aufruf technisch an. Eine E-Mail ist freiwillig. Es gibt keine automatisierte Entscheidungsfindung und kein Profiling."
+        },
+        {
+          "en": "This text describes the state of 18 September 2026. It is a draft and is reviewed by a lawyer before a public launch. Values in square brackets are placeholders.",
+          "de": "Dieser Text beschreibt den Stand vom 18. September 2026. Er ist ein Entwurf und wird vor einem öffentlichen Start anwaltlich geprüft. Werte in eckigen Klammern sind Platzhalter."
         }
       ],
-      "controller": { "en": "Controller", "de": "Verantwortlicher" }
+      "controller": {
+        "en": "Controller",
+        "de": "Verantwortlicher"
+      }
     }
   }
 }

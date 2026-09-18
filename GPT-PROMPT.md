@@ -63,6 +63,12 @@ Texte: kurze Sätze, konkret, keine Werbesprache, keine Ausrufezeichen, keine Ge
 keine Behauptung ohne Beleg. Deutsch mit österreichischer Färbung, Englisch schlicht,
 Schweizer Schreibung mit ss nur in den JING-Produkttexten.
 
+Datenschutz: Die Seiten holen nichts von fremden Servern, auch keine Schriften. Baue nie einen
+Link auf fonts.googleapis.com oder ein anderes fremdes Skript ein, das würde die IP-Adresse der
+Besucher an einen Dritten übertragen. Braucht eine Seite eine neue Schrift, holt sie
+tools/selfhost-fonts.py ins Repository. Was jede Seite verarbeitet, steht in DATENSCHUTZ.md,
+die Rechtstexte der Seiten müssen dazu passen.
+
 Nicht verhandelbar:
 Preise, Adressen, Registernummern, CPNP-Referenzen, Zahlen und Rechtstexte nie erfinden. Fehlt
 etwas, nachfragen und einen Platzhalter in eckigen Klammern stehen lassen.

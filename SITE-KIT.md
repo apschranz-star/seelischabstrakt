@@ -107,10 +107,17 @@ Design
 
 Technik
 - Alles im HTML, ohne JavaScript lesbar. Skripte sind Zugabe.
-- Keine externen Skripte außer Schriften. Keine Cookies ohne Grund, dann Einwilligung.
+- Keine Anfrage an einen Dritten, solange der Besucher nicht klickt. Das schließt Schriften ein:
+  ein `<link>` auf fonts.googleapis.com überträgt die IP-Adresse des Besuchers an Google und ist
+  ohne Einwilligung nicht zulässig (LG München I, 3 O 17493/20). Schriften werden mit
+  `tools/selfhost-fonts.py` einmal geholt und liegen danach im Repository. Keine Cookies ohne
+  Grund, dann Einwilligung.
 - Lighthouse 95 oder besser in allen vier Kategorien. Layout-Shift null: Nichts springt, nachdem es sichtbar wurde.
 - Bilder mit Breite, Höhe und `alt`. Formate WebP oder AVIF, unter 200 kB.
 - `<title>`, `description`, `canonical`, `hreflang` je Sprache, `og:`-Tags, Sitemap, robots.
+
+Was jede Seite wirklich verarbeitet und was dafür im Rechtstext stehen muss, steht in
+DATENSCHUTZ.md. Diese Datei ist die Wahrheit, die Rechtstexte folgen ihr, nicht umgekehrt.
 
 Recht im DACH-Raum, Mindeststand
 - Impressum: Name, Anschrift, E-Mail, bei Firmen Rechtsform, Firmenbuch, UID, Aufsichtsbehörde, Kammer. Österreich § 5 ECG und § 25 MedienG, Deutschland § 5 DDG.

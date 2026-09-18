@@ -8,10 +8,10 @@
   var reduce = false;
   try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
 
-  /* Remember the language the visitor picked. The link already points at the
-     other language; this only stores the choice for the next visit. */
-  var lang = root.getAttribute("lang");
-  try { localStorage.setItem("schranz-ai-lang", lang); } catch (e) {}
+  /* Die Sprache steckt in der Adresse der Seite, Deutsch unter / und Englisch
+     unter /en/. Es gibt deshalb nichts zu speichern. Frueher lag hier ein Wert
+     im lokalen Speicher, der nie wieder gelesen wurde; ein Wert, den niemand
+     braucht, gehoert nicht auf das Geraet des Besuchers. */
 
   /* Reveal: elements enter once, staggered by their --d custom property. */
   var reveals = doc.querySelectorAll(".reveal");

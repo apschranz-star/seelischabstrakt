@@ -12,6 +12,7 @@ on:
       - "site.json"
       - "works.json"
       - "img/**"
+      - "fonts/**"
       - ".github/workflows/shop-pages.yml"
   workflow_dispatch:
 
@@ -40,6 +41,7 @@ jobs:
           mkdir -p pages/shop
           cp index.html 404.html site.json works.json pages/shop/
           cp -R img pages/shop/img
+          cp -R fonts pages/shop/fonts
           touch pages/.nojekyll
           cd pages
           git config user.name "github-actions[bot]"
