@@ -8,6 +8,14 @@
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'">
 <!-- gate:start -->
+<!--
+  Das Tor fuer die statischen Seiten. JING hat ein zweites, in React, unter
+  components/ui/access-gate.tsx im JING-Code: dieselbe Aufgabe, aber ein anderer
+  Stapel, deshalb zwei Fassungen statt einer. Was an einer geaendert wird, gehoert
+  an beide: der Parameter heisst dort zugang wie hier, der gespeicherte Wert
+  jing-access statt sa-access, und der Hinweis nach Art. 13 DSGVO steht in beiden
+  vor dem Zugang. Siehe gate/README.md.
+-->
 <script>
 (function(){
   var KEY="__ACCESS_KEY__";

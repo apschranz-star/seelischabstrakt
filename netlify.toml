@@ -25,6 +25,13 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(self), microphone=(), geolocation=(), payment=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    # formspree.io steht hier, weil das Studio-Pult Formspree als Ziel der
+    # Bestellungen einstellen kann. Eingestellt ist es nicht. Wer es einstellt,
+    # schickt Name, Anschrift und E-Mail jedes Kaeufers an einen Verarbeiter in
+    # den USA und braucht vorher einen Vertrag nach Art. 28 DSGVO, eine Grundlage
+    # nach Art. 44 ff. DSGVO und einen Satz dazu in der Datenschutzerklaerung.
+    # Wer Formspree nie benutzen will, streicht beide Vorkommen: dann kann es
+    # auch niemand aus Versehen einschalten. Siehe DATENSCHUTZ.md.
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://api.github.com https://formspree.io; frame-src 'self'; form-action 'self' https://formspree.io; base-uri 'self'"
 
 [[headers]]

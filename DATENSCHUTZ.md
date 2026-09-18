@@ -6,6 +6,12 @@ Der Grundsatz dahinter ist einfach: Es geht keine Anfrage an einen Dritten, sola
 
 ## Was am 18. September 2026 umgestellt wurde
 
+**Zwei Seiten standen offen.** Das Formular der Praxisseite, `farida/modulo.html`, trug keinen Zugang und lag auf dem veröffentlichten Zweig frei im Netz. Daneben lag `content.json` mit einem Abschnitt, der als Entwurf markiert ist und deshalb auf der Seite nicht erscheint: wer die Datei direkt aufrief, las ihn trotzdem. Beides ist behoben, der Entwurf fliegt jetzt beim Veröffentlichen aus der Kopie.
+
+**Der Vorschaukanal des Shops nahm Nachrichten von überall an.** Jede fremde Seite, die den Shop in einem Rahmen oder einem Fenster hielt, konnte Inhalt, Aussehen und Zahlungslink austauschen. Er nimmt jetzt nur noch Nachrichten von der eigenen Adresse.
+
+**Das Tor hält Suchmaschinen jetzt auch ohne JavaScript fern.** Das `noindex` stand bisher nur in einer Zeile, die der Browser ausführen musste. Es steht jetzt fest in jeder veröffentlichten Datei.
+
 **Schriften kommen nicht mehr von Google.** Der Kunst-Shop, die Praxisseite und die persönliche Seite haben ihre Schriften bis dahin bei jedem Aufruf von `fonts.googleapis.com` geladen. Dabei geht die IP-Adresse des Besuchers an Google in den USA, ohne dass er gefragt wurde. Genau das hat das Landgericht München I am 20. Januar 2022 für unzulässig erklärt (3 O 17493/20), und es ist der häufigste Abmahngrund auf deutschsprachigen Seiten. Die Schriftdateien liegen jetzt im Repository und kommen von derselben Adresse wie die Seite. Geholt werden sie mit `tools/selfhost-fonts.py`, das Skript bleibt im Repo, falls eine Schrift dazukommt. Betroffen waren nicht nur die drei Startseiten: auch die Fehlerseite `404.html`, die Aufnahmeseite `add.html` und das Formular `farida/modulo.html` haben von Google geladen. Eine Suche über das ganze Repository findet jetzt keine einzige Stelle mehr.
 
 **Die Sicherheitsregeln sind enger.** In den `netlify.toml` und im Kopf der Praxisseite stand `font-src https://fonts.gstatic.com`. Jetzt steht dort `font-src 'self'`. Damit lädt der Browser Schriften nur noch von der eigenen Adresse, auch wenn später jemand versehentlich einen Google-Link einbaut. Das gilt dort, wo eine Regel ankommt: auf Netlify als Kopfzeile aus `netlify.toml`, auf der Praxisseite und auf dem Formular zusätzlich als meta-Element im Dokument. Auf GitHub Pages gibt es keine Kopfzeilen, dort hält nur das meta-Element. Die Vorschau des Shops auf GitHub Pages hat also keine Regel, die sie schützt; sie hat auch keinen Google-Link mehr, und darauf kommt es an.
@@ -87,7 +93,8 @@ Sobald irgendwo Analyse, Kartendienste im Rahmen, eingebettete Videos oder Werbu
 Diese Werte hat noch niemand geliefert, deshalb stehen überall Platzhalter in eckigen Klammern. Ohne sie darf keine der Seiten öffentlich beworben werden.
 
     Kunst-Shop        Firmenanschrift, UID oder Kleinunternehmerhinweis, Gewerbebehörde, Kammer
-    Praxisseite       Anschrift der Praxis, Albo-Nummer mit Provinz, Partita IVA, E-Mail
+    Praxisseite       Anschrift der Praxis, Albo-Nummer mit Provinz, Partita IVA, E-Mail.
+                      Ein Impressum gibt es bis jetzt gar nicht, nur die Datenschutzerklärung
     Persönliche Seite Anschrift, E-Mail für die Offenlegung nach § 25 MedienG
     Schranz AI        Straße und Hausnummer, nach der Gründung Firmenbuchnummer und UID
     JING              Firmendaten, verantwortliche Person nach Kosmetikverordnung, echte
