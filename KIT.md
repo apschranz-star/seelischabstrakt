@@ -204,7 +204,7 @@ Demo neu bauen und veröffentlichen:
 
     scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Zugangscode>
 
-Von Hand ist das nur noch der Ersatz. Der Workflow .github/workflows/demo-pages.yml macht dasselbe bei jedem Push, mit dem Code aus dem Repository-Secret SITE_ACCESS_KEY.
+Von Hand ist das nur noch der Ersatz. Der Workflow .github/workflows/demo-pages.yml macht dasselbe bei jedem Push, mit dem Code aus gate/access-code.txt auf main, oder aus dem Secret SITE_ACCESS_KEY, wenn es eines gibt.
 
 Das schreibt den Ordner out. Dessen Inhalt gehört auf den Branch gh-pages des Repositories seelischabstrakt in den Unterordner jing. Der Workflow der Praxisseite lässt diesen Ordner in Ruhe.
 

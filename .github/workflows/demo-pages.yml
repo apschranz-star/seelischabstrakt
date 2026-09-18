@@ -2,9 +2,9 @@
 # to the branch gh-pages under jing/. This is what makes a change by the GPT visible
 # without anyone running a build by hand.
 #
-# The access code comes from the repository secret SITE_ACCESS_KEY, the one code for
-# every gated site in the repository (JING_ACCESS_KEY is still read as a fallback).
-# Without it nothing is published, so the demo never goes live without its gate.
+# The access code is the one code for every gated site: the repository secret
+# SITE_ACCESS_KEY when it exists, otherwise gate/access-code.txt on main. Without
+# either nothing is published, so the demo never goes live without its gate.
 #
 # Once JING moves to its own repository, gh-pages of that repository takes over and
 # the two checkout steps below lose their `repository` line.
@@ -29,13 +29,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Stop here if the access code is not configured
+      # The one access code for every gated site lives on main in gate/access-code.txt.
+      - name: Fetch the access code from main
+        uses: actions/checkout@v4
+        with:
+          repository: apschranz-star/seelischabstrakt
+          ref: main
+          path: mainrepo
+          sparse-checkout: gate
+
+      - name: Read the access code, secret first, file second
         env:
-          KEY: ${{ secrets.SITE_ACCESS_KEY || secrets.JING_ACCESS_KEY }}
+          SECRET: ${{ secrets.SITE_ACCESS_KEY || secrets.JING_ACCESS_KEY }}
         run: |
+          KEY="$SECRET"
+          if [ -z "$KEY" ] && [ -f mainrepo/gate/access-code.txt ]; then KEY=$(tr -d '[:space:]' < mainrepo/gate/access-code.txt); fi
           if [ -z "$KEY" ]; then
-            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Demo nicht veroeffentlicht. Anlegen unter Settings, Secrets and variables, Actions."
+            echo "::warning::Kein Zugangscode: weder Secret SITE_ACCESS_KEY noch gate/access-code.txt auf main. Demo nicht veroeffentlicht."
             echo "skip=1" >> "$GITHUB_ENV"
+          else
+            echo "::add-mask::$KEY"
+            echo "KEY=$KEY" >> "$GITHUB_ENV"
           fi
 
       - uses: actions/setup-node@v4
@@ -51,7 +65,6 @@ jobs:
         if: env.skip != '1'
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-          KEY: ${{ secrets.SITE_ACCESS_KEY || secrets.JING_ACCESS_KEY }}
         run: |
           scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing "$KEY"
           test -f out/index.html
