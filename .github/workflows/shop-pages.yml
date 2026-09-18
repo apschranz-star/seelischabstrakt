@@ -1,0 +1,51 @@
+# Publishes the art shop (index.html, site.json, works.json, img/) to the branch gh-pages
+# under shop/, so the catalogue can be viewed on GitHub Pages without Netlify. Ordering and
+# the admin desk need Netlify functions and stay on the Netlify site.
+name: Publish the art shop preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "404.html"
+      - "site.json"
+      - "works.json"
+      - "img/**"
+      - ".github/workflows/shop-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shop-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check that both content files are valid JSON
+        run: python3 -c "import json;json.load(open('site.json'));json.load(open('works.json'));print('json ok')"
+      - name: Check out the branch gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+      - name: Replace only the folder shop on the branch
+        run: |
+          rm -rf pages/shop
+          mkdir -p pages/shop
+          cp index.html 404.html site.json works.json pages/shop/
+          cp -R img pages/shop/img
+          touch pages/.nojekyll
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "shop preview already current"; exit 0; fi
+          git commit -q -m "Publish the art shop preview from ${GITHUB_SHA::7}"
+          git push -q origin HEAD:gh-pages
+          echo "shop preview updated"
