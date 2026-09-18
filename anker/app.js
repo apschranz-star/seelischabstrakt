@@ -85,13 +85,24 @@
     { code: "es", name: "Espanol", locale: "es-ES" },
   ];
 
-  /* Uebergangsform: solange der Inhalt noch flach als INHALT.wissen dasteht,
-     wird er als Deutsch eingehaengt. Faellt weg, sobald alle Sprachdateien da
-     sind, und haelt die App bis dahin am Laufen. */
+  const ABSCHNITTE = ["symptome", "essen", "rezepte", "laborwerte", "warnzeichen",
+                      "fragen", "wissen", "ueberwachung", "suche"];
+
+  /* content.js legt INHALT als const an, das landet nicht auf window. Die
+     Sprachdateien haengen sich dagegen an window. Hier kommen beide zusammen. */
+  if (typeof window !== "undefined" && window.INHALT && window.INHALT !== INHALT) {
+    Object.keys(window.INHALT).forEach((k) => { INHALT[k] = window.INHALT[k]; });
+  }
+
+  /* Uebergangsform: solange der deutsche Inhalt noch flach dasteht, wird er als
+     Deutsch eingehaengt. Verschoben werden nur die bekannten Abschnitte, nicht
+     etwa eine schon geladene Sprache. Faellt weg, sobald content.js selbst zu
+     inhalt-de.js geworden ist. */
   if (typeof INHALT === "object" && INHALT.wissen && !INHALT.de) {
     const flach = {};
-    Object.keys(INHALT).forEach((k) => { flach[k] = INHALT[k]; });
-    Object.keys(INHALT).forEach((k) => { delete INHALT[k]; });
+    ABSCHNITTE.forEach((k) => {
+      if (k in INHALT) { flach[k] = INHALT[k]; delete INHALT[k]; }
+    });
     INHALT.de = flach;
   }
 

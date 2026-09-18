@@ -590,3 +590,692 @@ window.INHALT.en.wissen = [
       },
     ],
   },
+
+  {
+    kicker: "Coeliac disease",
+    titel: "What has to be strict and what does not",
+    abschnitte: [
+      {
+        frage: "How strict is strict?",
+        antwort: [
+          "In coeliac disease the gluten free diet is the treatment, for life, and the aim is not only freedom " +
+            "from symptoms but healing of the gut lining. Symptoms are a poor measure: some people have none " +
+            "despite the damage.",
+          "The limit of 20 milligrams of gluten per kilogram for the gluten free label rests on the finding that " +
+            "up to about 10 milligrams of gluten a day is likely to be harmless for the large majority. By the " +
+            "expert bodies' own account the data behind this is limited, and the right threshold is still debated.",
+          "Striking and not widely known: measurements in people who believe they are strictly gluten free " +
+            "regularly find considerably more accidental gluten than that threshold allows. This is not a " +
+            "reproach to anyone, it is a pointer to where to look when things do not improve.",
+        ],
+        staerke: "High for the treatment itself. Weak to moderate for the exact threshold.",
+        quellen: [
+          "ACG-Leitlinie, Am J Gastroenterol 2023. PMID 36602836",
+          "Ludvigsson JF et al., BSG, Gut 2014;63:1210-1228. PMID 24917550",
+          "ESsCD 2025, United European Gastroenterol J. PMID 40999951 und PMID 41831197",
+        ],
+      },
+      {
+        frage: "What really counts in the kitchen, and what is overrated?",
+        antwort: [
+          "Here the research turned up something surprising, and it makes everyday life easier. What was measured " +
+            "is how much gluten actually transfers during ordinary kitchen handling.",
+          "<b>More important than assumed:</b> shared frying oil and shared cooking water. With chips from a " +
+            "fryer that also cooks breaded food, some of the samples were well over the limit. So was pasta " +
+            "water in which wheat pasta had been cooked beforehand; rinsing the cooked pasta briefly brought the " +
+            "readings back below it.",
+          "<b>Less bad than feared:</b> the shared toaster and shared cutlery. In the measurements, gluten free " +
+            "bread from a used toaster stayed under the limit, even with visible crumbs in the tray, and a knife " +
+            "that had been in wheat based baking transferred nothing measurable.",
+          "These studies are small and not blinded, so they are no licence. But the direction is usable: the " +
+            "energy belongs with the fryer, the cooking water, flour dust when baking and ingredient lists, and " +
+            "less with a fear of every shared spoon. With an autoimmune disease that is an argument in itself: " +
+            "energy that does not go into needless worry is available elsewhere.",
+        ],
+        staerke: "Weak to moderate. Small, unblinded measurement studies, but the only numbers there are on this.",
+        quellen: [
+          "Weisbrod VM et al., Gastroenterology 2020",
+          "Gluten-Free Foods Cooked in Shared Fryers With Wheat, Front Nutr 2021. DOI 10.3389/fnut.2021.652039",
+          "Syage JA et al., Am J Clin Nutr 2018",
+        ],
+      },
+      {
+        frage: "Is the tTG result enough to know that all is well?",
+        antwort: [
+          "No, and that is one of the most important details in this whole text. The tTG was developed as a " +
+            "<b>screening test</b>, not as a follow up test for the healing of the gut lining.",
+          "In a summary of several studies, the tTG on a gluten free diet picked up only about half of the cases " +
+            "in which the lining was still damaged. A normal result is good news, then, but not proof.",
+          "In practice that means: if symptoms persist, or if results such as iron and vitamin D do not come up, " +
+            "\"the tTG is normal\" is no reason to stop looking. What belongs there then is a careful dietary " +
+            "history taken by an experienced dietitian, and further investigation depending on the situation.",
+          "The most common reason things do not improve on a gluten free diet, incidentally, is not a rare " +
+            "complication but gluten getting in unnoticed.",
+        ],
+        staerke: "Moderate to high for the limited meaning of the antibody tests. From a summary of several studies.",
+        quellen: [
+          "Meta-Analyse zu tTG und Endomysium-Antikoerpern bei persistierender Zottenatrophie, Gastroenterology 2017",
+          "Leitlinien zur Verlaufskontrolle, Nat Rev Gastroenterol Hepatol 2023. PMID 38110546",
+        ],
+      },
+      {
+        frage: "Oats, yes or no?",
+        antwort: [
+          "A summary of the studies found no sign that oats explicitly labelled gluten free make symptoms, " +
+            "tissue, the immune response or the antibody levels worse. The certainty of that evidence was low.",
+          "The main problem is not the oats but the processing: ordinary oats are often heavily contaminated with " +
+            "wheat, pure oats hardly at all. So the rule is: only oats labelled gluten free.",
+          "On top of that there is a small minority who react to the oat protein itself. How large that group is " +
+            "has not been cleanly established; the figure most often quoted comes from a study that people who " +
+            "suspected they could not tolerate oats signed up for on purpose, which makes it too high for " +
+            "everyone else.",
+          "A sensible approach: bring in gluten free oats at a quiet time, not at the same time as other changes, " +
+            "and use the diary to see what happens.",
+        ],
+        staerke: "Moderate for the safety of pure oats, and the certainty of the evidence in that summary was low.",
+        quellen: ["Pinto-Sanchez MI et al., Gastroenterology 2017;153:395-409. PMID 28431885"],
+      },
+      {
+        frage: "Does going gluten free do anything for the lupus in someone without coeliac disease?",
+        antwort: [
+          "There is no solid evidence for that. It is mentioned here only for completeness, because the question " +
+            "comes up constantly in forums.",
+          "In this case it is beside the point anyway: with confirmed coeliac disease you eat gluten free, " +
+            "regardless of what it does for the lupus.",
+        ],
+        staerke: "No solid evidence.",
+      },
+    ],
+  },
+
+  {
+    kicker: "Both together",
+    titel: "Where lupus and coeliac disease get in each other's way",
+    abschnitte: [
+      {
+        frage: "Are the two connected at all?",
+        antwort: [
+          "Autoimmune diseases cluster together, and coeliac disease is found more often in lupus than in the " +
+            "general population. On how much more often, the published estimates differ widely, which is why no " +
+            "figure is given here.",
+          "For everyday life the figure does not matter either. What matters is that both conditions attack the " +
+            "same things: the absorption of nutrients, the bones and your strength.",
+        ],
+        staerke: "The estimates contradict each other clearly. The link itself is established.",
+      },
+      {
+        frage: "Bone, at 26",
+        antwort: [
+          "This is the point that is most easily missed at this age and the last one to hurt. Two things come " +
+            "together: coeliac disease disturbs the absorption of calcium and vitamin D over years, and steroids " +
+            "act directly against bone.",
+          "The American guideline on steroid induced osteoporosis says something that counts particularly for " +
+            "young women: under the age of 40 the fracture risk <b>cannot</b> be estimated with the usual " +
+            "calculator, because it was not built for that. So instead of a calculation you need a measurement.",
+          "What belongs there in any case: enough calcium and vitamin D, exercise with weight on your legs, no " +
+            "smoking. And the question of whether and when a bone density scan makes sense should be asked, not " +
+            "waited out.",
+        ],
+        staerke: "Guideline based.",
+        quellen: ["Humphrey MB et al., ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022. DOI 10.1002/art.42646"],
+      },
+      {
+        frage: "What if the fatigue stays despite a strict gluten free diet?",
+        antwort: [
+          "That happens and it is well described. The order in which people look is usually this:",
+        ],
+        liste: [
+          "Gluten getting in unnoticed. By far the most common explanation, and it is best found with an experienced dietitian, not alone.",
+          "Nutrients: iron, B12, folate, vitamin D, zinc.",
+          "Thyroid.",
+          "The second condition, meaning the lupus itself, including kidneys and blood count.",
+          "Sleep, mood, pain, fibromyalgia.",
+          "Only after that, the rare things.",
+        ],
+        staerke: "Clinical practice and guideline logic.",
+      },
+    ],
+  },
+
+  {
+    kicker: "Treatment",
+    titel: "What is standard today",
+    abschnitte: [
+      {
+        frage: "What does treatment follow today?",
+        antwort: [
+          "Two principles, both set out in the current European recommendations. First: <b>hydroxychloroquine " +
+            "for everyone</b>, unless something speaks against it. Second: <b>steroids as low as possible</b>, " +
+            "meant as a bridge and not as a permanent solution, with the aim of holding them very low in " +
+            "maintenance or stopping them altogether.",
+          "That is why further drugs are added earlier now: not because the disease is worse, but so that the " +
+            "steroids can come down. There are more options for that than there were a few years ago, including " +
+            "newly approved ones.",
+          "The stated treatment target is remission or a state of low disease activity. Both are defined and " +
+            "measurable. Asking about it is worth it: it turns \"how are you\" into something that stays " +
+            "comparable over years.",
+          "<b>No doses from this app.</b> What is here is the frame within which the clinic decides.",
+        ],
+        staerke: "Guidelines, the highest level available.",
+        quellen: [
+          "Fanouriakis A et al., EULAR 2023, Ann Rheum Dis 2024;83:15-29. PMID 37827694",
+          "ACR-Leitlinie zur Behandlung des SLE 2025. PMID 41182321",
+          "EULAR 2025, Lupus mit Nierenbeteiligung. PMID 41107121",
+        ],
+      },
+      {
+        frage: "Why the eye checks on hydroxychloroquine?",
+        antwort: [
+          "Because in rare cases the drug can damage the retina, and because that damage causes no symptoms for " +
+            "a long time. So it is looked for rather than waited for.",
+          "The risk depends above all on the dose in relation to body weight and on how long the drug has been " +
+            "taken; reduced kidney function and certain other drugs raise it. That is why there is an upper " +
+            "limit based on <b>actual</b> body weight.",
+          "How it runs: one examination at the start, then regular retinal screening with methods that image the " +
+            "retina. The exact intervals differ between countries and were revised recently. So the practical " +
+            "question for the clinic is not \"how often is usual\" but \"when is my next one due\".",
+          "Worth knowing: if early damage is found in time and the drug is stopped, it usually does not progress " +
+            "further. That is exactly why the screening is not a ritual but the whole point.",
+        ],
+        staerke: "Ophthalmology guidelines. The exact intervals differ by country and by version.",
+        quellen: [
+          "AAO, Empfehlungen zum Screening auf Hydroxychloroquin-Retinopathie, Ophthalmology. PMID 41232611",
+          "Royal College of Ophthalmologists, Monitoring-Empfehlungen 2020. PMID 33423043",
+        ],
+      },
+      {
+        frage: "Why the urine test again and again?",
+        antwort: [
+          "Because kidney involvement is the organ damage in lupus that costs the most and stays silent the " +
+            "longest. It does not hurt. It shows up as protein in the urine, long before you notice anything.",
+          "The American guideline on lupus nephritis therefore makes a strong recommendation to test the urine " +
+            "for protein regularly, even in people <b>without</b> known kidney involvement.",
+          "If you take one single thing from this whole chapter, take this: the urine test is the cheapest and " +
+            "most effective test in the whole of your care. It should not be forgotten when you are feeling well.",
+        ],
+        staerke: "Strong guideline recommendation.",
+        quellen: ["ACR-Leitlinie zur Lupusnephritis 2024. DOI 10.1002/art.43212"],
+      },
+    ],
+  },
+
+  {
+    kicker: "At 26",
+    titel: "What belongs at this age",
+    abschnitte: [
+      {
+        frage: "Wanting children, even when it is not on the cards",
+        antwort: [
+          "This subject should be raised early, precisely while it is not yet due. The reason is simple: some " +
+            "drugs commonly used in lupus must not be taken in pregnancy and have to be changed <b>months " +
+            "beforehand</b>. An unplanned pregnancy on such a drug is the scenario everybody wants to avoid.",
+          "The second reason: a pregnancy runs considerably better in lupus if it starts in a quiet phase. That " +
+            "is one of the few things that can genuinely be planned.",
+          "Two blood tests are decisive for this and should be known, independently of any planning: " +
+            "<b>anti-Ro/SSA</b> and the <b>antiphospholipid antibodies</b> including lupus anticoagulant. They " +
+            "change your care and the choice of contraception. If you do not know your status, ask.",
+          "Hydroxychloroquine is as a rule continued in pregnancy, not stopped. That surprises many people.",
+        ],
+        staerke: "Guidelines.",
+        quellen: [
+          "Sammaritano LR et al., ACR-Leitlinie zur reproduktiven Gesundheit 2020, Arthritis Rheumatol 2020;72:529-556. PMID 32090466",
+          "Andreoli L et al., EULAR, Frauengesundheit bei SLE und APS, Ann Rheum Dis 2017;76:476-485",
+        ],
+      },
+      {
+        frage: "Contraception",
+        antwort: [
+          "The decisive point: with confirmed <b>antiphospholipid antibodies</b>, oestrogen containing " +
+            "contraception is advised against, because oestrogen raises the risk of clots and that risk is " +
+            "already raised here anyway. A coil or progestogen only methods are recommended instead.",
+          "Because reliable contraception matters at the same time, as long as drugs are in play that would harm " +
+            "a pregnancy, this is not a side question.",
+        ],
+        staerke: "Strong guideline recommendation.",
+        quellen: ["Sammaritano LR et al., ACR 2020. PMID 32090466"],
+      },
+      {
+        frage: "Vaccinations and infections",
+        antwort: [
+          "On immunosuppression the rule is: <b>inactivated vaccines</b> are possible and are explicitly " +
+            "recommended, <b>live vaccines</b> should be avoided as far as possible. Best of all, vaccination " +
+            "status is checked and topped up before immunosuppressive treatment begins, and in a quiet phase.",
+          "The second part is more practical: <b>a fever on immunosuppression is not something to wait out.</b> " +
+            "The usual immune response can be missing, and the blood count alone does not always tell an " +
+            "infection from a flare. This is exactly the situation you want a plan and a phone number for in " +
+            "advance.",
+        ],
+        staerke: "Guidelines.",
+        quellen: [
+          "Furer V et al., EULAR-Impfempfehlungen 2019, Ann Rheum Dis 2020;79:39-52. PMID 31413005",
+          "Bass AR et al., ACR-Impfleitlinie 2022. PMID 36597813",
+        ],
+      },
+      {
+        frage: "Sun and smoking",
+        antwort: [
+          "On the <b>sun</b> there is something solid: in a controlled study in which skin was deliberately " +
+            "exposed to UV, typical lupus skin changes appeared in the untreated areas, and in the areas treated " +
+            "with a high broad spectrum sunscreen they appeared in not one single participant. For this question " +
+            "that is an unusually clear study.",
+          "One thing matters here: what was shown was the prevention of <b>skin changes</b> caused by UV, not " +
+            "the prevention of flares in general. And the protection has to cover UVA as well as UVB.",
+          "On <b>smoking</b>: smoking is linked to a higher risk of developing the disease, and it measurably " +
+            "reduces how well hydroxychloroquine works on the skin. One detail that gives heart: in the analysis, " +
+            "<b>former</b> smokers no longer had a raised risk. So stopping works.",
+        ],
+        staerke: "For sun protection: good, a controlled study in humans. For smoking: a summary of several studies.",
+        quellen: [
+          "Kuhn A et al., J Am Acad Dermatol 2011;64:37-48. PMID 21167404",
+          "Systematische Uebersicht und Metaanalyse zum Rauchen bei SLE, Autoimmun Rev 2019. PMID 31520802",
+        ],
+      },
+    ],
+  },
+];
+
+/* -------------------------------------------------------------- Monitoring */
+
+window.INHALT.en.ueberwachung = [
+  {
+    titel: "Eyes, on hydroxychloroquine",
+    text: [
+      "One examination at the start of treatment and then regular retinal screening with methods that image the " +
+        "retina. The intervals differ by country and risk profile; the dose in relation to actual body weight, " +
+        "the length of treatment and kidney function play the main part in that.",
+      "Found early, damage usually does not progress further once the drug is stopped. That is the reason for the checks.",
+    ],
+    quellen: ["AAO, Ophthalmology. PMID 41232611", "Royal College of Ophthalmologists 2020. PMID 33423043"],
+  },
+  {
+    titel: "Blood and urine",
+    text: [
+      "Full blood count, kidney function, liver function and, depending on the drug, further tests, at intervals " +
+        "set by the disease activity and by the drug: closer together at the start and after every change of " +
+        "dose, further apart in quiet phases.",
+      "Alongside those, the lupus specific tests, anti-dsDNA and complement C3 and C4, and in every case the urine for protein.",
+      "The intervals belong in the clinic, not in an app. What helps here is the question of who arranges them, " +
+        "so that nothing falls between the GP practice and the outpatient clinic.",
+    ],
+  },
+  {
+    titel: "Before starting some drugs",
+    text: [
+      "Before azathioprine, an enzyme that controls how the drug is broken down is measured. If it is missing or " +
+        "reduced, severe changes in the blood count can follow. Asking about it is fair.",
+      "Before immunosuppressive treatment, vaccination status should be checked, because some things are no longer possible afterwards.",
+    ],
+  },
+  {
+    titel: "Coeliac disease over time",
+    text: [
+      "tTG-IgA over time, the nutrients alongside it, and dietary advice from someone with experience in coeliac " +
+        "disease. The last is not an extra: in the guidelines, contact with a dietitian is a fixed part of the treatment.",
+      "A normal tTG does not rule out a gut lining that has not yet healed. If symptoms or deficiencies persist, " +
+        "the search goes on.",
+    ],
+  },
+  {
+    titel: "Bone",
+    text: [
+      "On longer term steroid treatment and with coeliac disease, bone needs watching. Under the age of 40 the " +
+        "risk cannot be estimated with the usual calculator, so it is measured rather than calculated.",
+      "Enough calcium and vitamin D, exercise with weight on your legs, no smoking.",
+    ],
+    quellen: ["ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022. DOI 10.1002/art.42646"],
+  },
+];
+
+
+/* ------------------------------------------------------------- Finding help
+ *
+ * Finding a place to go, with no network and no directory.
+ *
+ * What is NOT here is the core of it: no clinic, no address, no telephone
+ * number, no doctor's name. While this app was built, not one medical
+ * directory and not one patient organisation could be reached, checked and
+ * confirmed. None of it could be looked up, and a wrong number dialled by
+ * someone in a flare does real harm.
+ *
+ * What is here are routes: the kind of place, what it is called, what to
+ * search for and what to ask once you are there. A route through a search
+ * term survives a website being rebuilt, a saved address does not.
+ */
+window.INHALT.en.suche = {
+  warnung:
+    "This list was put together from memory. From the environment it was built in, not one professional website and not one patient organisation could be reached; that was checked and it holds. So nothing could be looked up. That is why there is deliberately no address, no telephone number and no name of a clinic or a doctor here: at that level a mistake would be dangerous, and a wrong number dialled by someone in a flare does real harm. What is here are kinds of places, their names and search terms. Names may have changed, organisations may have merged or been renamed, a directory may no longer exist. Every entry therefore carries a confidence rating. The app checks none of it, it cannot, it has no connection to the outside. Before you rely on a place, have it confirmed once: by your GP practice, by your outpatient clinic or by a support group.",
+
+  laender: [
+    { wert: "at", text: "Austria" },
+    { wert: "de", text: "Germany" },
+    { wert: "ch", text: "Switzerland" },
+    { wert: "it", text: "Italy" },
+    { wert: "eu", text: "Europe" },
+  ],
+
+  wege: [
+    {
+      land: "at",
+      thema: "beides",
+      name: "A referral from your GP practice",
+      was: "Access to a hospital outpatient clinic, and a view on which hospital in your district you can realistically get to.",
+      weg: "In Austria most hospital outpatient clinics require a referral from a doctor with a public health insurance contract, and usually an appointment as well. At the practice, say that you are looking for an outpatient clinic with experience in systemic lupus, not just a rheumatology clinic. Mention the second diagnosis straight away, it changes the choice.",
+      suchbegriff: "Zuweisung rheumatologische Ambulanz",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "beides",
+      name: "The outpatient clinic you already attend",
+      was: "The shortest route, and the name of someone who will ask around in the building themselves.",
+      weg: "At your next appointment, ask who knows about lupus and coeliac disease together, and whether being seen at a specialist centre would make sense. Asking for a second opinion is allowed and usual, it is not a vote of no confidence. If that feels awkward, put it as a question about shared care.",
+      suchbegriff: "Zweitmeinung Mitbetreuung erbitten",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "beides",
+      name: "The Austrian Medical Chamber's doctor search",
+      was: "The official register of all doctors with their specialty, filterable by place.",
+      weg: "Use a search engine to find the Ärztekammer and its Arztsuche; there is a national one and one for each provincial chamber. Important in lupus: in Austria rheumatology was for a long time an add-on qualification to internal medicine and only later became a specialty in its own right. Older colleagues carry the add-on, younger ones the title. Search for both.",
+      suchbegriff: "Ärztekammer Arztsuche Innere Medizin Rheumatologie",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "beides",
+      name: "The health insurance fund's list of contracted providers",
+      was: "Who holds a contract with the public insurer, and who does not.",
+      weg: "Look on the site of the Österreichische Gesundheitskasse for the doctor or contracted provider search. The difference is money: with a private doctor you pay first and get part of it back later. When waiting times are long that is sometimes the quicker route, but ask about the refund beforehand.",
+      suchbegriff: "Österreichische Gesundheitskasse Arztsuche",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "lupus",
+      name: "The Austrian Society for Rheumatology and Rehabilitation",
+      was: "The specialist society, with a member list and an overview of rheumatology services.",
+      weg: "Search for the society, then look for members, centres or outpatient clinics. Anyone active in a specialist society usually works somewhere with enough cases.",
+      suchbegriff: "Österreichische Gesellschaft für Rheumatologie",
+      sicherheit: "mittel",
+    },
+    {
+      land: "at",
+      thema: "lupus",
+      name: "The Austrian Rheumaliga",
+      was: "Self-help with provincial groups, and the knowledge of where you will be treated well as a person.",
+      weg: "Search for the Rheumaliga and your own province. Ask there which outpatient clinic looks after people with lupus, where the waiting time is bearable and where people listen. You will not get that from any directory.",
+      suchbegriff: "Rheumaliga Österreich Wien",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "zoeliakie",
+      name: "The Austrian coeliac society",
+      was: "Advice, product lists, groups, and often pointers to outpatient clinics and to dietitians with experience.",
+      weg: "Search for Zöliakie and Österreich. If the name has changed, go through the European umbrella body of coeliac societies, which lists its members country by country. The second route works even when the organisation is called something other than you remember.",
+      suchbegriff: "Zöliakie Österreich Arbeitsgemeinschaft",
+      sicherheit: "mittel",
+    },
+    {
+      land: "at",
+      thema: "zoeliakie",
+      name: "The Austrian Society for Gastroenterology and Hepatology",
+      was: "The specialist society for the gut, with members and events.",
+      weg: "Search for the society. Coeliac disease belongs to gastroenterology, not to rheumatology. If you are looking for an outpatient clinic, look there for members in your own town.",
+      suchbegriff: "Österreichische Gesellschaft für Gastroenterologie",
+      sicherheit: "mittel",
+    },
+    {
+      land: "at",
+      thema: "beides",
+      name: "The self-help support office in your province",
+      was: "Referral on to groups, including for two diagnoses at once.",
+      weg: "Every Austrian province has a funded office that collects and refers on to self-help groups. Search for Selbsthilfe and the province, write to them and name both diagnoses. If there is no group that fits, these offices usually still know somebody.",
+      suchbegriff: "Selbsthilfe Unterstützungsstelle Wien",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "beides",
+      name: "The federal public health portal",
+      was: "Official explanations of procedures, rights and routes through the system.",
+      weg: "Search for Austria's public health portal. Useful above all for the administrative questions: referral, reimbursement, private doctors, patient rights, how to complain.",
+      suchbegriff: "öffentliches Gesundheitsportal Österreich",
+      sicherheit: "hoch",
+    },
+    {
+      land: "at",
+      thema: "zoeliakie",
+      name: "A dietitian with experience in coeliac disease",
+      was: "The dietary support that in coeliac disease is part of the treatment, not an optional extra.",
+      weg: "In Austria Diätologin is the protected title, not Ernährungsberaterin. Search through the professional association or ask at the outpatient clinic for a referral. The question that counts is: how many people with coeliac disease do you see in a year.",
+      suchbegriff: "Diätologin finden Österreich Berufsverband",
+      sicherheit: "mittel",
+    },
+    {
+      land: "de",
+      thema: "lupus",
+      name: "The German Society for Rheumatology and Clinical Immunology",
+      was: "The specialist society and the network of regional rheumatology centres.",
+      weg: "Search for the specialist society and for regional cooperative rheumatology centres. These centres are groupings of hospitals and practices in one region, and their lists are a good starting point.",
+      suchbegriff: "Deutsche Gesellschaft für Rheumatologie Rheumazentren",
+      sicherheit: "hoch",
+    },
+    {
+      land: "de",
+      thema: "lupus",
+      name: "The German Rheuma-Liga",
+      was: "The large patient organisation, with regional branches and address lists.",
+      weg: "Search for the Rheuma-Liga and the federal state. It keeps addresses of rheumatologists and hospitals, refers people to groups and publishes very readable information sheets. The sheets are useful from Austria too, the addresses are not.",
+      suchbegriff: "Deutsche Rheuma-Liga Landesverband",
+      sicherheit: "hoch",
+    },
+    {
+      land: "de",
+      thema: "lupus",
+      name: "Lupus self-help in the German speaking countries",
+      was: "A community just for lupus, with regional groups and shared experience of outpatient clinics.",
+      weg: "Ask the Rheuma-Liga about the lupus self-help association, or search directly for Lupus and Selbsthilfe. Usable from Vienna as well: experience of treatment, fatigue and dealing with officialdom carries over, the addresses do not.",
+      suchbegriff: "Lupus Erythematodes Selbsthilfegemeinschaft",
+      sicherheit: "mittel",
+    },
+    {
+      land: "de",
+      thema: "zoeliakie",
+      name: "The German coeliac society",
+      was: "Advice, checked product knowledge, groups, pointers to experienced outpatient clinics.",
+      weg: "Search for the Deutsche Zöliakie-Gesellschaft. The product knowledge is useful from Austria too, because many of the manufacturers are the same. For finding an outpatient clinic, note that the lists are German.",
+      suchbegriff: "Deutsche Zöliakie-Gesellschaft",
+      sicherheit: "hoch",
+    },
+    {
+      land: "de",
+      thema: "beides",
+      name: "The doctor search of the regional physicians' associations",
+      was: "Who practises where, and under which specialist title.",
+      weg: "Search for Arztsuche and Kassenärztliche Vereinigung, nationally or for one federal state. The associations' patient service also arranges appointments when something is urgent.",
+      suchbegriff: "Arztsuche Kassenärztliche Vereinigung",
+      sicherheit: "hoch",
+    },
+    {
+      land: "de",
+      thema: "beides",
+      name: "The national self-help clearing house",
+      was: "Groups and regional contact points, including for rare combinations.",
+      weg: "Search for the national contact and information point for self-help. If you have two diagnoses, ask there about both and get referred on for both.",
+      suchbegriff: "NAKOS Selbsthilfe Datenbank",
+      sicherheit: "hoch",
+    },
+    {
+      land: "de",
+      thema: "lupus",
+      name: "Centres for rare diseases at university hospitals",
+      was: "A guide point for unclear or combined pictures.",
+      weg: "Search for Zentrum für Seltene Erkrankungen and a university city, or for a care atlas for rare diseases. Such centres mostly only take people with a referral and complete records, and there are waiting times.",
+      suchbegriff: "Zentrum für Seltene Erkrankungen Versorgungsatlas",
+      sicherheit: "mittel",
+    },
+    {
+      land: "de",
+      thema: "beides",
+      name: "The guideline register of the medical specialist societies",
+      was: "The guidelines on lupus and on coeliac disease, meaning the yardstick you can hold an outpatient clinic to.",
+      weg: "Search for the guideline register of the Arbeitsgemeinschaft der Wissenschaftlichen Medizinischen Fachgesellschaften, then for the condition. It is a register, not a guide for patients, and the texts are written for professionals. The summary and the recommendations at the front are readable all the same, and some guidelines come with a version written for patients.",
+      suchbegriff: "AWMF Leitlinienregister Zöliakie",
+      sicherheit: "hoch",
+    },
+    {
+      land: "ch",
+      thema: "lupus",
+      name: "Rheumaliga Schweiz and the cantonal leagues",
+      was: "Advice, courses and addresses in Switzerland.",
+      weg: "Search for the Rheumaliga and the canton. The cantonal leagues are the places you actually approach.",
+      suchbegriff: "Rheumaliga Schweiz",
+      sicherheit: "hoch",
+    },
+    {
+      land: "ch",
+      thema: "lupus",
+      name: "The Swiss Society for Rheumatology",
+      was: "The specialist society, with a member register.",
+      weg: "Search for the society and filter the member section by place. Alongside it, the doctor register of the professional body FMH, which holds the specialist titles officially.",
+      suchbegriff: "Schweizerische Gesellschaft für Rheumatologie Mitglieder",
+      sicherheit: "mittel",
+    },
+    {
+      land: "ch",
+      thema: "zoeliakie",
+      name: "The Swiss coeliac association",
+      was: "Advice and product knowledge for Switzerland.",
+      weg: "Search for Zöliakie and Schweiz, or go through the European umbrella body, which lists the member society for each country.",
+      suchbegriff: "Zöliakie Schweiz Interessengemeinschaft",
+      sicherheit: "mittel",
+    },
+    {
+      land: "it",
+      thema: "zoeliakie",
+      name: "Associazione Italiana Celiachia",
+      was: "The Italian coeliac organisation, with regional branches and a mark for restaurants checked as gluten free.",
+      weg: "Search for the organisation. For travelling in Italy, the list of checked restaurants is the most useful thing it has. In South Tyrol there is a German speaking regional group.",
+      suchbegriff: "Associazione Italiana Celiachia",
+      sicherheit: "hoch",
+    },
+    {
+      land: "it",
+      thema: "beides",
+      name: "The Italian network for rare diseases",
+      was: "Officially designated centres in each region where diagnosis and care take place.",
+      weg: "Italy runs a national network for rare diseases. The regions designate the centres, and recognition carries exemption from co-payments with it. Systemic lupus is on the national list. Search in Italian for the national network and the region.",
+      suchbegriff: "rete nazionale malattie rare presidi",
+      sicherheit: "mittel",
+    },
+    {
+      land: "it",
+      thema: "beides",
+      name: "The South Tyrol health service",
+      was: "The one Italian route that runs in German, so without a language barrier.",
+      weg: "The public health service in South Tyrol works in German. For a second opinion, or for questions about coeliac disease in Italy, that is the easiest way in. Before any appointment abroad, always settle the cost question first, see the national contact point.",
+      suchbegriff: "Südtiroler Sanitätsbetrieb Ambulanz",
+      sicherheit: "hoch",
+    },
+    {
+      land: "eu",
+      thema: "lupus",
+      name: "The European reference network for rare connective tissue diseases",
+      was: "An official list of expert centres, country by country, designated by the member states.",
+      weg: "The European Union runs reference networks for rare diseases. For systemic lupus the network for rare connective tissue and musculoskeletal diseases is the one. Search for European Reference Network and connective tissue, then filter the member list for Austria. Anyone on it was checked by an authority, not by an editorial team.",
+      suchbegriff: "European Reference Network connective tissue ReCONNET",
+      sicherheit: "hoch",
+    },
+    {
+      land: "eu",
+      thema: "lupus",
+      name: "The European reference network for immune diseases",
+      was: "A second network, covering autoimmune and autoinflammatory diseases.",
+      weg: "The same route as the previous entry, searching for European Reference Network and immunodeficiency or autoimmune. Some hospitals appear in both networks, which is a good sign.",
+      suchbegriff: "European Reference Network autoimmune RITA",
+      sicherheit: "mittel",
+    },
+    {
+      land: "eu",
+      thema: "lupus",
+      name: "Orphanet, the European directory of rare diseases",
+      was: "Expert centres, patient organisations, registries and studies, filterable by country and available in several languages.",
+      weg: "Search for Orphanet, then for the condition, then watch the country selector. For coeliac disease the directory only covers the rare treatment resistant form, ordinary coeliac disease being too common for it.",
+      suchbegriff: "Orphanet expert centres lupus erythematosus",
+      sicherheit: "hoch",
+    },
+    {
+      land: "eu",
+      thema: "lupus",
+      name: "The European umbrella body of lupus organisations",
+      was: "The way to the organisation in your own country, even when you do not know its name.",
+      weg: "Search for the European umbrella body and look at the member organisations by country. That is the most reliable route to an Austrian lupus group, because an umbrella body keeps its member list up to date.",
+      suchbegriff: "Lupus Europe member organisations",
+      sicherheit: "hoch",
+    },
+    {
+      land: "eu",
+      thema: "zoeliakie",
+      name: "The European umbrella body of coeliac societies",
+      was: "The member society in each country, and the crossed grain symbol for products checked as gluten free.",
+      weg: "Search for the European umbrella body of coeliac societies. Through it you will find the Austrian organisation and those of the neighbouring countries, which counts when travelling.",
+      suchbegriff: "Association of European Coeliac Societies",
+      sicherheit: "hoch",
+    },
+    {
+      land: "eu",
+      thema: "beides",
+      name: "The national contact point for cross-border healthcare",
+      was: "Information on what treatment in another EU country costs, what your insurer pays and what has to be approved in advance.",
+      weg: "Every member state has to run such a contact point. Search for national contact point and cross-border healthcare, plus your own country. Ask there before any planned appointment abroad, otherwise you are left with the bill.",
+      suchbegriff: "national contact point cross-border healthcare",
+      sicherheit: "hoch",
+    },
+    {
+      land: "eu",
+      thema: "lupus",
+      name: "The European register of clinical trials",
+      was: "Which hospitals within reach are working on lupus trials.",
+      weg: "Search for the European clinical trials information system, then filter by condition and country. The participating sites are listed with it. That says nothing about how friendly a hospital is, but a lot about where enough cases come together. Taking part is voluntary and never a condition of being treated.",
+      suchbegriff: "Clinical Trials Information System lupus Austria",
+      sicherheit: "mittel",
+    },
+  ],
+
+  merkmale: [
+    { id: "ambulanz-sagen-viele", punkt: "The clinic can say how many people with systemic lupus it looks after in a year, without having to think about it for long." },
+    { id: "feste-ansprechperson-wenigstens", punkt: "There is a named contact, or at least a small team, instead of a new face at every appointment." },
+    { id: "krankheitsaktivitaet-messinstrument-erfasst", punkt: "Disease activity is recorded with a scoring tool, and the score is in the letter, not just in someone's head." },
+    { id: "benannten-schub-zwischen", punkt: "There is a named route for a flare between appointments: an urgent clinic, an email address or a number where somebody picks up." },
+    { id: "nephrologie-dermatologie-augenheilkunde", punkt: "Nephrology, dermatology, ophthalmology and obstetrics are in the same hospital or are fixed partners, and the clinic can explain how the handover works." },
+    { id: "kinderwunsch-schwangerschaft-selbst", punkt: "Wanting children and pregnancy are raised there of their own accord, not only when you ask." },
+    { id: "zoeliakie-mitgedacht-entweder", punkt: "The coeliac disease is kept in mind: either there is gastroenterology in the same hospital, or the clinic knows exactly who looks after it and writes to them." },
+    { id: "ernaehrungsfachkraft-zoeliakieerfahrung-erreichbar", punkt: "A dietitian with experience in coeliac disease is within reach, and the referral there is one simple step, not a negotiation." },
+    { id: "jedem-termin-geht", punkt: "After every appointment a letter goes to the GP practice, and you get a copy yourself without having to fight for it." },
+    { id: "klar-geregelt-welche", punkt: "It is clearly settled who arranges which check, so that nothing falls between the outpatient clinic and the GP practice." },
+    { id: "muedigkeit-lichtempfindlichkeit-teil", punkt: "Fatigue and light sensitivity are treated as part of the disease and not as a footnote." },
+    { id: "haus-nimmt-register", punkt: "The hospital takes part in a registry, a reference network or in trials, a sign that cases there are recorded systematically." },
+    { id: "termin-dauert-lang", punkt: "The appointment lasts long enough to discuss two conditions, and the next one is fixed by the end of it." },
+    { id: "kommt-schlechten-ausgezeichnete", punkt: "You can get there, even on a bad day: an excellent outpatient clinic three hours away becomes a bad one in a flare." },
+  ],
+
+  erstgespraech: [
+    "The backup from this app, plus the doctor's report covering twelve weeks, printed out. Numbers over weeks say more than the memory of one bad day.",
+    "Copies of all your results, in date order: blood tests, discharge letters, the report of the gut biopsy, older antibody results. Keep the originals yourself.",
+    "A list of all your medicines with doses, plus supplements and contraception. Including what was stopped, and why it was stopped.",
+    "The first question: will you take over my ongoing care, or is this a one-off assessment. Everything that follows depends on it.",
+    "The question of who writes to whom: does the GP practice get a letter, and do I get one myself.",
+    "The question of what to watch and write down before the next time. That makes the diary purposeful instead of merely diligent.",
+    "The question of how to reach the clinic if things get worse in between, and what applies at the weekend.",
+    "Write down beforehand the three things that matter most to you, and say them first. The time is short and otherwise goes on other things.",
+    "Take somebody with you if your head is in a fog. Two ears hear more, and you do not have to listen and take notes at the same time.",
+    "Take notes or record it. Ask before recording, most people say yes.",
+    "Raise the coeliac disease yourself, including in a rheumatology clinic. Otherwise it falls between the specialties.",
+    "Your e-card and the referral. With a private doctor, keep the invoice and settle beforehand how much comes back.",
+    "Put the appointment in the better half of the day and plan nothing else afterwards. An appointment costs more energy than the calendar shows.",
+    "If something stays unclear, say the sentence: I did not understand that, could you put it another way. That is not weakness, that is what the appointment is for.",
+    "A short note straight after the appointment, while it is fresh. In brain fog your memory of the conversation is worse than you think.",
+  ],
+};

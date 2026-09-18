@@ -18,6 +18,7 @@ const DATEIEN = [
   "./app.css",
   "./app.js",
   "./content.js",
+  "./inhalt-en.js",
   "./icon.svg",
   "./icon-180.png",
   "./icon-192.png",
