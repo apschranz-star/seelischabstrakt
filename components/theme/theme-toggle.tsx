@@ -3,87 +3,69 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import { useYinYang } from "@/components/theme/yin-yang-provider";
+import { Moon, Sun } from "@/components/ui/celestial";
 import { useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { originFromEvent } from "@/lib/switch-origin";
 import { cn } from "@/lib/utils";
 
 /**
- * The switch between the two rituals.
+ * Der Schalter zwischen den beiden Ritualen, gebaut als kleiner Himmel.
  *
- * It is a switch, not a single mark: a track with the sun on one side and the
- * moon on the other, and a disc that rests over the half that is live. Both
- * halves stay visible, so a visitor sees at a glance that there are two of them
- * and which one is on, instead of having to decode one symbol that means the
- * day in one mode and the night in the other.
+ * Die Bahn ist der Himmel: am Tag hell, in der Nacht tief, mit drei Sternen, die
+ * mit der Nacht aufgehen. Darin wandert ein Gestirn von der einen Seite zur
+ * anderen, und während es wandert, zieht die Sonne ihre Strahlen ein und die
+ * Sichel des Mondes tritt hervor. Man liest den Schalter nicht, man sieht ihn.
  *
- * The surface behind it does the rest: the provider grows the new palette as an
- * eclipse from the pressed point, and this button is the one element in the tree
- * carrying data-switch-mark, which lifts it above the eclipse so the disc is
- * seen sliding while the page turns.
+ * Beim Druck blüht ein Ring aus dem Gestirn auf. Das ist kein Schmuck: die Seite
+ * dahinter öffnet im selben Moment die neue Palette als Scheibe vom gedrückten
+ * Punkt aus, und der Ring ist der Anfang dieser Bewegung, an der Stelle, an der
+ * der Finger liegt. Der Knopf trägt data-switch-mark und liegt dadurch während
+ * des Wechsels auf einer eigenen Ebene über der Scheibe, also ist er dabei live
+ * zu sehen.
  *
- * Hydration: the element tree never depends on the mode. Only the disc's target
- * position and two text colours do, and before rehydration the mode is yang,
- * which is what the server rendered.
+ * Hydration: Der Elementbaum hängt nie vom gespeicherten Modus ab, nur Zielwerte
+ * von Bewegungen und zwei Farben. Vor der Rehydrierung ist der Modus yang, genau
+ * das hat der Server gerendert.
+ *
+ * Wer wenig Bewegung wünscht, bekommt dieselben Bilder ohne Weg dazwischen.
  */
 
-/** Track geometry in px. The disc is the track height minus the padding. */
-const TRACK_W = 58;
-const TRACK_H = 28;
+/** Maße der Bahn in px. Die Scheibe ist die Höhe abzüglich des Randes. */
+const TRACK_W = 62;
+const TRACK_H = 30;
 const PAD = 3;
 const DISC = TRACK_H - PAD * 2;
+const TRAVEL = TRACK_W - DISC - PAD * 2;
 
-function Sun() {
-  return (
-    <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
-      <circle cx="12" cy="12" r="4.4" fill="currentColor" />
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
-        <line
-          key={deg}
-          x1="12"
-          y1="2.2"
-          x2="12"
-          y2="4.6"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          strokeLinecap="round"
-          transform={`rotate(${deg} 12 12)`}
-        />
-      ))}
-    </svg>
-  );
-}
-
-function Moon() {
-  return (
-    <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
-      {/* One path, a disc with a bite taken out of it, so the crescent keeps a
-          clean edge at any size and needs no mask. */}
-      <path d="M20.2 14.6A9 9 0 0 1 9.4 3.8a9 9 0 1 0 10.8 10.8z" fill="currentColor" />
-    </svg>
-  );
-}
+/** Drei Sterne, die mit der Nacht aufgehen. Feste Plätze, kein Zufall im Rendern. */
+const STARS = [
+  { x: 11, y: 9, r: 1.05, delay: 0 },
+  { x: 19, y: 19, r: 0.8, delay: 0.08 },
+  { x: 26, y: 11, r: 0.65, delay: 0.16 },
+];
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { mode, toggleMode } = useYinYang();
   const t = useT();
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotion() === true;
   const isYin = mode === "yin";
   const word = isYin ? "Yin" : "Yang";
 
-  const slide = reduceMotion
+  const travel = reduceMotion
     ? { duration: 0 }
-    : ({ type: "spring", stiffness: 420, damping: 34, mass: 0.7 } as const);
+    : ({ type: "spring", stiffness: 260, damping: 26, mass: 0.9 } as const);
+  const fade = { duration: reduceMotion ? 0 : DURATION.swap, ease: EASE_RITUAL };
 
   return (
     <button
       type="button"
       data-switch-mark=""
       onClick={(event) => toggleMode({ origin: originFromEvent(event) })}
-      // A toggle button keeps one name for the thing it controls and lets
-      // aria-pressed carry the state. Naming the action instead would say
-      // "switch to Yang" while the button reports itself as pressed, and would
-      // contradict the visible word next to it.
+      // Ein Umschalter behält einen Namen für die Sache, die er steuert, und
+      // überlässt aria-pressed den Zustand. Ein Name, der die Handlung nennt,
+      // würde "auf Yang schalten" sagen, während der Knopf sich als gedrückt
+      // meldet, und dem sichtbaren Wort daneben widersprechen.
       aria-pressed={isYin}
       aria-label={t({ de: "Nachtansicht Yin", en: "Night view Yin" })}
       title={
@@ -95,46 +77,98 @@ export function ThemeToggle({ className }: { className?: string }) {
     >
       <span
         aria-hidden="true"
-        style={{ width: TRACK_W, height: TRACK_H, padding: PAD }}
+        style={{ width: TRACK_W, height: TRACK_H }}
         className={cn(
-          "relative inline-flex shrink-0 items-center justify-between rounded-full",
+          "jing-sky relative inline-block shrink-0 overflow-hidden rounded-full",
           "border border-control transition-colors duration-[var(--duration-state)] ease-ritual",
           "group-hover:border-ink",
         )}
+        data-night={isYin ? "" : undefined}
       >
-        {/* The disc rests over the live half and slides to the other one. */}
+        {/* Die Sterne gehen mit der Nacht auf, einer nach dem anderen. */}
+        <svg
+          viewBox={`0 0 ${TRACK_W} ${TRACK_H}`}
+          width={TRACK_W}
+          height={TRACK_H}
+          focusable="false"
+          className="absolute inset-0 text-ink"
+        >
+          {STARS.map((s) => (
+            <motion.circle
+              key={`${s.x}-${s.y}`}
+              cx={s.x}
+              cy={s.y}
+              r={s.r}
+              fill="currentColor"
+              initial={false}
+              animate={{ opacity: isYin ? 0.9 : 0, scale: isYin ? 1 : 0.4 }}
+              style={{ originX: `${s.x}px`, originY: `${s.y}px` }}
+              transition={{
+                duration: reduceMotion ? 0 : DURATION.swift,
+                delay: reduceMotion || !isYin ? 0 : 0.18 + s.delay,
+                ease: EASE_RITUAL,
+              }}
+            />
+          ))}
+        </svg>
+
+        {/* Das Gestirn wandert. Der Ring darunter blüht beim Wechsel einmal auf. */}
         <motion.span
-          className="absolute rounded-full bg-inverse-surface"
+          className="absolute rounded-full"
           style={{ width: DISC, height: DISC, left: PAD, top: PAD }}
-          animate={{ x: isYin ? TRACK_W - DISC - PAD * 2 : 0 }}
-          transition={slide}
-        />
-        {/* Both marks stay where they are. The one under the disc is drawn in the
-            inverse ink so it reads on it, the other one recedes. */}
-        <span
-          className={cn(
-            "relative z-10 flex w-[22px] items-center justify-center",
-            "transition-colors duration-[var(--duration-swap)] ease-ritual",
-            isYin ? "text-ink-3" : "text-inverse-ink",
-          )}
+          animate={{ x: isYin ? TRAVEL : 0 }}
+          transition={travel}
         >
-          <Sun />
-        </span>
-        <span
-          className={cn(
-            "relative z-10 flex w-[22px] items-center justify-center",
-            "transition-colors duration-[var(--duration-swap)] ease-ritual",
-            isYin ? "text-inverse-ink" : "text-ink-3",
-          )}
-        >
-          <Moon />
-        </span>
+          <motion.span
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full bg-inverse-surface"
+            initial={false}
+            animate={{ scale: 1 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.88 }}
+            transition={{ duration: reduceMotion ? 0 : 0.18, ease: EASE_RITUAL }}
+          />
+          <motion.span
+            key={word}
+            aria-hidden="true"
+            className="jing-bloom absolute inset-0 rounded-full"
+            initial={reduceMotion ? false : { opacity: 0.55, scale: 1 }}
+            animate={{ opacity: 0, scale: reduceMotion ? 1 : 2.6 }}
+            transition={{ duration: reduceMotion ? 0 : DURATION.ritual, ease: EASE_RITUAL }}
+          />
+          <span className="absolute inset-0 flex items-center justify-center text-inverse-ink">
+            <AnimatePresence initial={false} mode="wait">
+              {isYin ? (
+                <motion.span
+                  key="moon"
+                  initial={{ opacity: 0, rotate: -35, scale: 0.7 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 35, scale: 0.7 }}
+                  transition={fade}
+                  className="flex"
+                >
+                  <Moon size={13} />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="sun"
+                  initial={{ opacity: 0, rotate: 35, scale: 0.7 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: -35, scale: 0.7 }}
+                  transition={fade}
+                  className="flex"
+                >
+                  <Sun size={13} />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </span>
+        </motion.span>
       </span>
 
-      {/* The word names the ritual the shop is in. The button's own name already
-          carries the state for assistive technology, so it is not announced
-          twice. The wrapper clips to one line and reserves the width of the
-          longer word, so the header never shifts while the words change. */}
+      {/* Das Wort nennt das Ritual, in dem der Shop steht. Den Zustand trägt der
+          Knopf schon in seinem Namen, deshalb wird er nicht zweimal angesagt.
+          Die Hülle reserviert die Breite des längeren Wortes und schneidet auf
+          eine Zeile, damit der Kopf beim Wechsel nicht springt. */}
       <span
         aria-hidden="true"
         className="relative hidden h-[1em] overflow-hidden font-mono text-[11px] uppercase leading-none tracking-[0.18em] text-ink-2 sm:inline-grid"
@@ -147,7 +181,7 @@ export function ThemeToggle({ className }: { className?: string }) {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: reduceMotion ? 0 : DURATION.swap, ease: EASE_RITUAL }}
+            transition={fade}
           >
             {word}
           </motion.span>

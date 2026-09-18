@@ -9,6 +9,7 @@ import { RITUAL } from "@/components/home/ritual-copy";
 import { RitualHero } from "@/components/home/ritual-hero";
 import { RitualStory } from "@/components/home/ritual-story";
 import { ProductCard } from "@/components/product/product-card";
+import { RitualMark } from "@/components/ui/celestial";
 import { Reveal, STAGGER } from "@/components/ui/reveal";
 import { SectionHandoff } from "@/components/ui/section-handoff";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
@@ -68,7 +69,8 @@ function CollectionSection({
             other. The rule under them belongs to a plain div and never moves. */}
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line pb-6">
           <Reveal from={side}>
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
+            <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
+              <RitualMark mode={collection} size={13} />
               {t(copy.kicker)}
             </p>
             <h2

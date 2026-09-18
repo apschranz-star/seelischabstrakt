@@ -31,6 +31,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "framer-motion
 import { useRef } from "react";
 
 import { RITUAL } from "@/components/home/ritual-copy";
+import { RitualMark } from "@/components/ui/celestial";
 import { useT } from "@/lib/i18n";
 import { DISTANCE, useReduceRef, useScrollDrive } from "@/lib/motion";
 import type { Mode } from "@/lib/store";
@@ -97,12 +98,16 @@ function RitualHalf({
     >
       {/* Plane 0. The only will-change in the hero, one per half. */}
       <motion.span className="block" style={{ y: depth, willChange: "transform" }}>
+        {/* Dasselbe Zeichen wie im Schalter: Sonne für den Tag, Mond für die
+            Nacht. Wer den Schalter einmal gesehen hat, weiß hier sofort, welche
+            Hälfte welche ist, ohne ein Wort zu lesen. */}
         <span
           className={cn(
-            "font-mono text-[11px] uppercase tracking-[0.22em]",
+            "flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em]",
             active ? "text-ink-3" : "text-ink-2",
           )}
         >
+          <RitualMark mode={collection} size={13} />
           {t(copy.kicker)}
         </span>
         <span className="mt-6 block font-display text-[clamp(3.25rem,11vw,6rem)] leading-[0.85] tracking-[0.06em] text-ink">

@@ -561,3 +561,39 @@ header[data-scrolled] {
     scroll-behavior: auto !important;
   }
 }
+
+/*
+  Der kleine Himmel im Schalter.
+
+  Die Bahn ist am Tag ein warmer Lichtstreifen und in der Nacht ein tiefes Blau,
+  beides aus denselben Tokens wie der Rest der Seite, damit der Schalter zur
+  Palette gehört und nicht daneben steht. Der Ring, der beim Wechsel aus dem
+  Gestirn aufblüht, nimmt die Farbe des Gestirns.
+*/
+.jing-sky {
+  background:
+    radial-gradient(120% 140% at 22% 20%, color-mix(in srgb, var(--jing-ink) 7%, transparent), transparent 60%),
+    linear-gradient(to bottom, var(--jing-surface-2), var(--jing-surface));
+  transition:
+    background-color var(--duration-ritual) var(--ease-ritual),
+    border-color var(--duration-state) var(--ease-ritual);
+}
+
+.jing-sky[data-night] {
+  background:
+    radial-gradient(120% 140% at 78% 24%, color-mix(in srgb, var(--jing-ink) 10%, transparent), transparent 62%),
+    linear-gradient(to bottom, var(--jing-surface), var(--jing-surface-2));
+}
+
+.jing-bloom {
+  background: radial-gradient(circle, var(--jing-inverse-surface) 0%, transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jing-sky {
+    transition: none;
+  }
+  .jing-bloom {
+    display: none;
+  }
+}
