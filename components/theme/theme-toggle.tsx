@@ -46,11 +46,25 @@ const STARS = [
 ];
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const { mode, toggleMode } = useYinYang();
+  const { mode, toggleMode, hydrated } = useYinYang();
   const t = useT();
   const reduceMotion = useReducedMotion() === true;
   const isYin = mode === "yin";
-  const word = isYin ? "Yin" : "Yang";
+  /*
+   * Das Wort erscheint erst, wenn der gespeicherte Modus gelesen ist.
+   *
+   * Vorher stand im ausgelieferten HTML immer "Yang", weil der Server nichts
+   * anderes wissen kann. Auf der Seite eines Stueckes der Nacht trug dieselbe
+   * Datei damit beide Rituale: im Kopf das Wort des Tages, im Inhalt das der
+   * Nacht. Wer den Quelltext liest, eine Vorschau erzeugt oder ohne Skripte
+   * unterwegs ist, bekam beide zu sehen. Also nennt der Schalter vor der
+   * Rehydrierung gar keines und heisst nur nach dem, was er tut.
+   *
+   * Der Elementbaum bleibt dabei derselbe: Server und erster Client-Render
+   * zeigen beide den leeren Zustand, das Wort kommt als gewoehnliche
+   * Aktualisierung nach.
+   */
+  const word = hydrated ? (isYin ? "Yin" : "Yang") : "";
 
   const travel = reduceMotion
     ? { duration: 0 }
@@ -78,7 +92,9 @@ export function ThemeToggle({ className }: { className?: string }) {
       className={cn("group inline-flex min-h-11 items-center gap-2.5 px-1", className)}
     >
       <span className="sr-only">
-        {t({ de: `Tageszeit, gerade ${word}`, en: `Time of day, currently ${word}` })}
+        {word
+          ? t({ de: `Tageszeit, gerade ${word}`, en: `Time of day, currently ${word}` })
+          : t({ de: "Tageszeit umschalten", en: "Switch the time of day" })}
       </span>
       <span
         aria-hidden="true"
@@ -181,16 +197,18 @@ export function ThemeToggle({ className }: { className?: string }) {
       >
         <span className="invisible col-start-1 row-start-1">0000</span>
         <AnimatePresence initial={false} mode="popLayout">
-          <motion.span
-            key={word}
-            className="col-start-1 row-start-1"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={fade}
-          >
-            {word}
-          </motion.span>
+          {word ? (
+            <motion.span
+              key={word}
+              className="col-start-1 row-start-1"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={fade}
+            >
+              {word}
+            </motion.span>
+          ) : null}
         </AnimatePresence>
       </span>
     </button>
