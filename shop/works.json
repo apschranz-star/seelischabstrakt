@@ -1,0 +1,107 @@
+{
+  "works": [
+    {
+      "id": "w11",
+      "title": "Enter the Void",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic on canvas",
+        "de": "Acryl auf Leinwand"
+      },
+      "w": 70,
+      "h": 50,
+      "seed": 77,
+      "style": "eye",
+      "size": "wide",
+      "tilt": 0.4,
+      "nomat": true,
+      "img": "img/enter-the-void-cut.jpg",
+      "original": {
+        "price": 4800,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "A red eye, wide open, black running down from the lid. The pupil is not a point but an opening. You look in and the room behind it has no floor. The step inside is the whole picture.",
+        "de": "Ein rotes Auge, weit offen, vom Lid rinnt Schwarz herunter. Die Pupille ist kein Punkt, sondern ein Eingang. Man schaut hinein, und der Raum dahinter hat keinen Boden. Der Schritt hinein ist das ganze Bild."
+      },
+      "images": [
+        "img/enter-the-void.jpg"
+      ],
+      "alt": {
+        "en": "A large red eye painted on canvas, black paint running down from the upper lid, blue and grey brushwork around it.",
+        "de": "Ein großes rotes Auge auf Leinwand, vom oberen Lid rinnt schwarze Farbe herunter, rundherum blaue und graue Pinselzüge."
+      }
+    },
+    {
+      "id": "w12",
+      "title": "Fear",
+      "year": 2025,
+      "medium": {
+        "en": "Acrylic on canvas",
+        "de": "Acryl auf Leinwand"
+      },
+      "w": 40,
+      "h": 40,
+      "seed": 63,
+      "style": "grid",
+      "size": "",
+      "tilt": -0.5,
+      "nomat": true,
+      "img": "img/fear-cut.jpg",
+      "original": {
+        "price": 2600,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "The left side is crusted, the paint standing thick enough to catch the light. The right side stays open: red, a violet sweep over the top, black strokes laid on it. In the lower corner the black knots together and does not come undone.",
+        "de": "Die linke Seite ist verkrustet, die Farbe steht so dick, dass sie Licht fängt. Rechts bleibt es offen: Rot, darüber ein violetter Zug, schwarze Striche daraufgelegt. In der unteren Ecke verknotet sich das Schwarz und geht nicht mehr auf."
+      },
+      "images": [
+        "img/fear.jpg"
+      ],
+      "alt": {
+        "en": "A square canvas, the left half crusted with thick paint, the right half open red with black strokes laid across it.",
+        "de": "Eine quadratische Leinwand, die linke Hälfte verkrustet mit dicker Farbe, die rechte Hälfte offenes Rot mit schwarzen Strichen darüber."
+      }
+    },
+    {
+      "id": "w10",
+      "title": "Suffering is Eternal",
+      "year": 2026,
+      "medium": {
+        "en": "Marker on coated paper, framed",
+        "de": "Marker auf beschichtetem Papier, gerahmt"
+      },
+      "w": 42,
+      "h": 29.7,
+      "seed": 110,
+      "style": "gesture",
+      "size": "wide",
+      "tilt": -0.3,
+      "nomat": true,
+      "img": "img/suffering-is-eternal-cut.jpg",
+      "original": {
+        "price": 777,
+        "available": true,
+        "link": ""
+      },
+      "prints": [],
+      "caption": {
+        "en": "A head drawn in one line, black running from the mouth. The title stands above it and has been crossed out again.",
+        "de": "Ein Kopf in einer Linie, aus dem Mund rinnt Schwarz. Der Titel steht darüber und ist wieder durchgestrichen."
+      },
+      "images": [
+        "img/suffering-is-eternal.jpg",
+        "img/suffering-is-eternal-framed.jpg"
+      ],
+      "alt": {
+        "en": "A head drawn with a marker in one continuous line on pale blue paper, black running from the mouth, the crossed out title above it.",
+        "de": "Ein Kopf, mit Marker in einer durchgehenden Linie auf hellblaues Papier gezeichnet, aus dem Mund rinnt Schwarz, darüber der durchgestrichene Titel."
+      }
+    }
+  ]
+}

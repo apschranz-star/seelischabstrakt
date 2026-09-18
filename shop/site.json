@@ -1,0 +1,416 @@
+{
+  "_help": "Everything about the site except the products. Edit here or use admin.html. Colors are hex. Fonts are Google Fonts family names.",
+  "brand": {
+    "name": "seelischabstrakt",
+    "wordmarkTop": "seelisch",
+    "wordmarkBottom": "abstrakt",
+    "motto": "Multum in parvo.",
+    "artist": "Alexander Schranz",
+    "city": "Wien, 1180",
+    "instagram": "https://www.instagram.com/seelischabstrakt/",
+    "email": "a.p.schranz@icloud.com",
+    "personSite": "https://apschranz-star.github.io/seelischabstrakt/portfolio/",
+    "defaultLang": "en"
+  },
+  "theme": {
+    "preset": "custom",
+    "_presets": "carpet | shawl | paper | gallery | custom. A preset fills colors and pattern; custom uses the values below as they are.",
+    "colors": {
+      "ground": "#8C1D1D",
+      "groundLine": "#3A0708",
+      "groundDot": "#5C0F10",
+      "section2": "#1A1210",
+      "section2Line": "#3B2118",
+      "frame": "#0D0A0A",
+      "mat": "#EFE7D8",
+      "ink": "#F3EBDE",
+      "ink2": "#E2CDBF",
+      "mute": "#E3C2B8",
+      "paper": "#F1EBE0",
+      "paperInk": "#171212",
+      "accent": "#F2B429"
+    },
+    "pattern": "paisley",
+    "_patterns": "gul (Bokhara carpet) | paisley | none",
+    "fonts": {
+      "display": "Bricolage Grotesque",
+      "body": "Source Serif 4",
+      "mono": "Courier Prime"
+    },
+    "layout": {
+      "framesByDefault": true,
+      "showTilt": true,
+      "gridDensity": "normal",
+      "_gridDensity": "airy | normal | dense",
+      "heroStyle": "split",
+      "_heroStyle": "split | stacked | minimal",
+      "comingSoon": false,
+      "reveal": true,
+      "worksLayout": "single",
+      "_worksLayout": "grid | single"
+    },
+    "patternSvg": "img/carpet-tile.jpg",
+    "patternSize": "1100px 1100px",
+    "customCss": "body{background-image:linear-gradient(rgba(25,6,6,.42),rgba(25,6,6,.42)),url(img/carpet-tile.jpg);background-size:auto,1100px 1100px}"
+  },
+  "commerce": {
+    "currency": "EUR",
+    "pricesIncludeVat": true,
+    "vatOriginals": 13,
+    "vatPrints": 20,
+    "kleinunternehmer": true,
+    "shipRegions": [
+      "AT",
+      "EU",
+      "UK",
+      "CH",
+      "US"
+    ],
+    "shippingNote": {
+      "en": "Shipping is shown at checkout as a flat rate by region. Austria: 9 EUR for editions, 19 EUR for originals. EU: 19 and 39 EUR. UK and Switzerland: 29 and 59 EUR. USA: 39 and 89 EUR. Rest of world: 49 and 119 EUR. Pickup in Vienna is free. Outside the EU, duties and import taxes are not included and are paid by the buyer on delivery.",
+      "de": "Versand wird im Checkout als Pauschale je Region angezeigt. Österreich: 9 EUR für Editionen, 19 EUR für Originale. EU: 19 und 39 EUR. UK und Schweiz: 29 und 59 EUR. USA: 39 und 89 EUR. Übrige Welt: 49 und 119 EUR. Abholung in Wien ist kostenlos. Außerhalb der EU sind Zoll und Einfuhrabgaben nicht enthalten und werden vom Käufer bei Lieferung bezahlt."
+    },
+    "usNote": {
+      "en": "US buyers: prices are shown in EUR and converted by your card provider. No US sales tax is collected by the seller; import duties may apply on delivery (artworks under HTS 9701 are usually duty-free, but carriers may charge a brokerage fee).",
+      "de": "Käufer in den USA: Preise sind in EUR angegeben und werden von deinem Kartenanbieter umgerechnet. Der Verkäufer hebt keine US Sales Tax ein; bei Lieferung können Einfuhrabgaben anfallen (Kunstwerke unter HTS 9701 sind meist zollfrei, Zusteller können aber eine Abfertigungsgebühr verlangen)."
+    },
+    "commissionLink": "",
+    "analytics": {
+      "enabled": false,
+      "provider": "none",
+      "_note": "Set enabled true only if you add a tracking script. Then the cookie banner appears automatically."
+    },
+    "payment": {
+      "_help": "method: revolut (order form + your revolut.me link), or stripe (per-work payment links). Both can coexist: a work with its own link uses that link.",
+      "method": "revolut",
+      "revolutLink": "https://revolut.me/a_schranz",
+      "revolutName": "Alexander Schranz",
+      "bankTransferNote": {
+        "en": "",
+        "de": ""
+      },
+      "confirmationHours": 48
+    },
+    "orders": {
+      "_help": "Where order forms are sent. provider: netlify (free, works when hosted on Netlify), formspree (paste your https://formspree.io/f/xxxx endpoint), or mailto (opens the buyer's email app). netlify and formspree also email you automatically.",
+      "provider": "netlify",
+      "endpoint": "",
+      "notifyEmail": "a.p.schranz@icloud.com"
+    },
+    "shipping": {
+      "_help": "Flat rates in EUR by region, shown and added at checkout. region codes: AT, EU, UK, CH, US, ROW (rest of world). pickup 0 for collection in Vienna.",
+      "rates": {
+        "AT": {
+          "print": 9,
+          "original": 19
+        },
+        "EU": {
+          "print": 19,
+          "original": 39
+        },
+        "UK": {
+          "print": 29,
+          "original": 59
+        },
+        "CH": {
+          "print": 29,
+          "original": 59
+        },
+        "US": {
+          "print": 39,
+          "original": 89
+        },
+        "ROW": {
+          "print": 49,
+          "original": 119
+        }
+      },
+      "pickupCity": "Wien",
+      "countries": {
+        "AT": [
+          "Austria",
+          "Österreich"
+        ],
+        "EU": [
+          "Germany",
+          "Italy",
+          "France",
+          "Spain",
+          "Netherlands",
+          "Belgium",
+          "Czechia",
+          "Slovakia",
+          "Slovenia",
+          "Hungary",
+          "Poland",
+          "Portugal",
+          "Ireland",
+          "Denmark",
+          "Sweden",
+          "Finland",
+          "Croatia",
+          "Greece",
+          "Luxembourg",
+          "Romania",
+          "Bulgaria",
+          "Estonia",
+          "Latvia",
+          "Lithuania",
+          "Malta",
+          "Cyprus"
+        ],
+        "UK": [
+          "United Kingdom",
+          "UK",
+          "England",
+          "Scotland",
+          "Wales"
+        ],
+        "CH": [
+          "Switzerland",
+          "Schweiz",
+          "Liechtenstein"
+        ],
+        "US": [
+          "United States",
+          "USA",
+          "US"
+        ]
+      }
+    },
+    "notify": {
+      "enabled": true
+    }
+  },
+  "texts": {
+    "heroLead": {
+      "en": "Paintings and drawings from a Vienna studio. Originals on canvas and on paper, each one a single piece, photographed on the carpet in the studio. Editions are in preparation.",
+      "de": "Bilder und Zeichnungen aus einem Wiener Atelier. Originale auf Leinwand und auf Papier, jedes Stück ein Unikat, fotografiert am Teppich im Atelier. Editionen sind in Vorbereitung."
+    },
+    "heroMeta": {
+      "en": "First works online, more to come",
+      "de": "Erste Werke online, weitere folgen"
+    },
+    "worksKicker": {
+      "en": "Originals · photographed on the carpet",
+      "de": "Originale · fotografiert am Teppich"
+    },
+    "printsLead": {
+      "en": "Each edition is signed and numbered and ships flat from Vienna. Editions are limited per size; a sold-out size will not be reprinted.",
+      "de": "Jede Edition ist signiert und nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe limitiert; eine ausverkaufte Größe wird nicht nachgedruckt."
+    },
+    "aboutLead": {
+      "en": "<b>Much in little.</b> Fragments, surfaces, marks. The hand stays visible.",
+      "de": "<b>Viel im Kleinen.</b> Fragmente, Oberflächen, Spuren. Die Hand bleibt sichtbar."
+    },
+    "aboutParagraphs": {
+      "en": [
+        "I collect fragments: faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed.",
+        "I like things that show how they were made. A rough edge, a heavy layer of paint, a correction, something slightly out of place. I do not want to make work that feels too resolved. The trace of the hand is part of the work.",
+        "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero. That experience continues to shape how I work. I approach a painting more like a physical problem than an illustration: layer by layer, decision by decision, until something begins to hold.",
+        "Small formats matter to me. They force concentration. A small surface can carry an enormous amount of information when every mark has a reason to exist.",
+        "I am interested in the tension between control and accident, between something carefully constructed and something that arrives unexpectedly.",
+        "The goal is not perfection. The goal is presence."
+      ],
+      "de": [
+        "Ich sammle Fragmente: Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut.",
+        "Ich mag Dinge, die zeigen, wie sie gemacht wurden. Eine raue Kante, eine dicke Farbschicht, eine Korrektur, etwas, das ein wenig verrutscht ist. Ich will keine Arbeiten machen, die zu fertig wirken. Die Spur der Hand gehört zum Werk.",
+        "Mein Hintergrund ist nicht klassisch akademisch. Ich habe durch Machen gelernt, durch Bauen, Verkaufen, Reparieren, Organisieren und dadurch, Dinge von null weg anzufangen. Diese Erfahrung prägt bis heute, wie ich arbeite. Ein Bild gehe ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration: Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
+        "Kleine Formate sind mir wichtig. Sie zwingen zur Konzentration. Eine kleine Fläche kann enorm viel tragen, wenn jede Spur einen Grund hat, da zu sein.",
+        "Mich interessiert die Spannung zwischen Kontrolle und Zufall, zwischen etwas sorgfältig Gebautem und etwas, das unerwartet ankommt.",
+        "Es geht nicht um Perfektion. Es geht um Präsenz."
+      ]
+    },
+    "facts": [
+      {
+        "label": {
+          "en": "Studio",
+          "de": "Atelier"
+        },
+        "value": {
+          "en": "Wien, 1180",
+          "de": "Wien, 1180"
+        }
+      },
+      {
+        "label": {
+          "en": "Media",
+          "de": "Technik"
+        },
+        "value": {
+          "en": "Acrylic on canvas, marker on paper, mixed media",
+          "de": "Acryl auf Leinwand, Marker auf Papier, Mischtechnik"
+        }
+      },
+      {
+        "label": {
+          "en": "Ships to",
+          "de": "Versand nach"
+        },
+        "value": {
+          "en": "EU, UK, CH, US; worldwide on request",
+          "de": "EU, UK, CH, USA; weltweit auf Anfrage"
+        }
+      },
+      {
+        "label": {
+          "en": "Certificate",
+          "de": "Zertifikat"
+        },
+        "value": {
+          "en": "Signed certificate of authenticity with every original",
+          "de": "Signiertes Echtheitszertifikat bei jedem Original"
+        }
+      }
+    ],
+    "commission": {
+      "intro": {
+        "en": "A work made for a specific wall, room and person. Sizes from 20 × 20 cm to 100 × 80 cm. Typical lead time four to eight weeks.",
+        "de": "Ein Werk für eine bestimmte Wand, einen Raum, einen Menschen. Größen von 20 × 20 cm bis 100 × 80 cm. Dauer meist vier bis acht Wochen."
+      },
+      "steps": {
+        "en": [
+          "You send a photo of the space and two or three works from this page you respond to.",
+          "We agree on size, direction and price. A 30 percent deposit starts the commission.",
+          "You see the work at the halfway stage and can steer once.",
+          "Final payment on approval, then it ships framed, or you collect in Vienna."
+        ],
+        "de": [
+          "Du schickst ein Foto des Raums und zwei, drei Werke von dieser Seite, die dich ansprechen.",
+          "Wir fixieren Größe, Richtung und Preis. Mit 30 Prozent Anzahlung beginnt die Ausführung.",
+          "Du siehst das Werk auf halbem Weg und kannst einmal nachsteuern.",
+          "Restzahlung bei Freigabe, dann Versand gerahmt oder Abholung in Wien."
+        ]
+      }
+    },
+    "contactIntro": {
+      "en": "Questions about a work, studio visits in Vienna, or prices for several works. Replies usually within a day.",
+      "de": "Fragen zu einem Werk, Atelierbesuche in Wien oder Preise für mehrere Werke. Antwort meist innerhalb eines Tages."
+    },
+    "empty": {
+      "works": {
+        "en": "New works will be released soon.",
+        "de": "Neue Werke folgen in Kürze."
+      },
+      "filter": {
+        "en": "Nothing in this selection at the moment.",
+        "de": "In dieser Auswahl gibt es derzeit nichts."
+      },
+      "prints": {
+        "en": "Editions are in preparation.",
+        "de": "Editionen sind in Vorbereitung."
+      }
+    },
+    "aboutImage": {
+      "src": "img/alexander-schranz-sw.jpg",
+      "alt": {
+        "en": "Alexander Schranz",
+        "de": "Alexander Schranz"
+      },
+      "caption": {
+        "en": "",
+        "de": ""
+      }
+    },
+    "ui": {
+      "en": {
+        "nav.prints": "Editions",
+        "filter.print": "Editions",
+        "prints.title": "Editions",
+        "prints.kicker": "Giclée prints on archival paper",
+        "prints.empty": "Editions are in preparation.",
+        "hero.cta1": "View available works",
+        "footer.person": "About the artist",
+        "lbl.buyOriginal": "Acquire original",
+        "lbl.buyPrint": "Acquire edition",
+        "lbl.print": "Edition",
+        "lbl.chooseSize": "Edition size",
+        "comm.cta": "Enquire about a commission",
+        "contact.mail": "Send an email",
+        "notify.text": "A short note when a new work is released. No newsletter, no tracking.",
+        "works.empty": "New works will be released soon.",
+        "filter.empty": "Nothing in this selection at the moment.",
+        "trust": "Signed certificate of authenticity · Ships insured from Vienna · {d} days to return a work that was in stock · Payment by Revolut",
+        "legal.us": "Buyers in the US",
+        "price.returns": "{d} days right of withdrawal on editions. Commissions made to order are exempt. For originals that were in stock we grant a voluntary return within the same period.",
+        "works.note": "Every work here is a single piece. The price is final, the signed certificate of authenticity is included, shipping is added at checkout."
+      },
+      "de": {
+        "nav.works": "Werke",
+        "works.title": "Werke",
+        "hero.cta1": "Verfügbare Werke",
+        "nav.prints": "Editionen",
+        "filter.print": "Editionen",
+        "prints.title": "Editionen",
+        "prints.kicker": "Giclée-Drucke auf Archivpapier",
+        "prints.empty": "Editionen sind in Vorbereitung.",
+        "nav.commission": "Auftragswerke",
+        "comm.title": "Auftragswerke",
+        "comm.cta": "Auftragswerk anfragen",
+        "footer.person": "Über den Künstler",
+        "lbl.buyOriginal": "Original erwerben",
+        "lbl.buyPrint": "Edition erwerben",
+        "lbl.print": "Edition",
+        "lbl.chooseSize": "Editionsgröße",
+        "notify.title": "Neue Werke per E-Mail",
+        "notify.text": "Eine kurze Nachricht, wenn ein neues Werk erscheint. Kein Newsletter, kein Tracking.",
+        "works.empty": "Neue Werke folgen in Kürze.",
+        "filter.empty": "In dieser Auswahl gibt es derzeit nichts.",
+        "trust": "Signiertes Echtheitszertifikat · Versichert aus Wien · {d} Tage Rückgabe bei vorrätigen Werken · Zahlung per Revolut",
+        "legal.us": "Käufer in den USA",
+        "price.returns": "{d} Tage Widerrufsrecht bei Editionen. Auftragswerke nach Kundenwunsch sind ausgenommen. Bei vorrätigen Originalen gewähren wir freiwillig dieselbe Frist zur Rückgabe.",
+        "works.note": "Jedes Werk hier ist ein Unikat. Der Preis ist ein Endpreis, das signierte Echtheitszertifikat ist dabei, der Versand kommt im Checkout dazu."
+      }
+    }
+  },
+  "printTiers": [
+    {
+      "size": "30 × 40 cm",
+      "price": 95,
+      "edition": 50,
+      "paper": "Hahnemühle Photo Rag 308 g"
+    },
+    {
+      "size": "50 × 70 cm",
+      "price": 190,
+      "edition": 25,
+      "paper": "Hahnemühle Photo Rag 308 g"
+    },
+    {
+      "size": "70 × 100 cm",
+      "price": 340,
+      "edition": 10,
+      "paper": "Hahnemühle Photo Rag 308 g"
+    }
+  ],
+  "legal": {
+    "_help": "Fill these in. They feed the Imprint, Privacy, Terms, Returns and Shipping pages in both languages. Nothing here is legal advice; have a lawyer or the WKO check the final texts.",
+    "legalName": "Alexander Schranz",
+    "tradeName": "seelischabstrakt",
+    "street": "Musterstraße 1/2",
+    "zipCity": "1180 Wien",
+    "country": "Österreich",
+    "email": "a.p.schranz@icloud.com",
+    "phone": "",
+    "uid": "",
+    "kleinunternehmerNote": true,
+    "regulator": "Magistrat der Stadt Wien",
+    "chamber": "Wirtschaftskammer Wien, Fachgruppe Kunsthandel",
+    "odrLink": "https://ec.europa.eu/consumers/odr",
+    "hosting": "Netlify, Inc., San Francisco, USA (EU data processing agreement, Standard Contractual Clauses)",
+    "payment": "Revolut Bank UAB, Vilnius, Litauen (Lithuania)",
+    "returnsDaysPrints": 14,
+    "originalsMadeToOrderExempt": true,
+    "usPrivacyContactSameAsEmail": true,
+    "lastUpdated": "2026-09-12",
+    "_kleinunternehmer": "commerce.kleinunternehmer is the single switch. true: prices are final, no VAT shown (Austrian small business, currently up to 55,000 EUR turnover). false: 13 % originals / 20 % prints are shown."
+  },
+  "publish": {
+    "_help": "Used by admin.html to publish directly from phone or laptop. Create a free GitHub repo, upload this folder, connect it to Netlify (Add new site, Import from Git). The token is stored only in your own browser.",
+    "github": {
+      "owner": "apschranz-star",
+      "repo": "seelischabstrakt",
+      "branch": "main"
+    }
+  }
+}
