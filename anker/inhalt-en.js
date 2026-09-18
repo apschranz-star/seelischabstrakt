@@ -159,7 +159,7 @@ window.INHALT.en.rezepte = [
     ],
     schritte: [
       "Open the tin, tip it onto the plate.",
-      "Vegetables alongside, unchopped if chopping is too much.",
+      "Vegetables alongside, unchopped if they do not have to be.",
       "Lemon over it, oil over it, done.",
     ],
     achtung: "Rice cakes as a side only, not as the daily base. Sardines bring omega-3, calcium and vitamin D with them.",
@@ -300,7 +300,7 @@ window.INHALT.en.laborwerte = [
   { schluessel: "kreatinin", gruppe: "Kidney", name: "Creatinine", einheit: "mg/dl", bedeutung: "A measure of kidney function." },
   { schluessel: "upcr", gruppe: "Kidney", name: "Urine protein-creatinine ratio", einheit: "mg/g", bedeutung: "The most important early sign of kidney involvement. Protein in the urine does not hurt and is only noticed if you look for it." },
   { schluessel: "hb", gruppe: "Blood count", name: "Haemoglobin", einheit: "g/dl", bedeutung: "Anaemia is one of the most common physical causes of fatigue and is common in both lupus and coeliac disease." },
-  { schluessel: "leuko", gruppe: "Blood count", name: "White cells", einheit: "/nl", bedeutung: "Often low in lupus, and on some drugs the trend is a safety measure." },
+  { schluessel: "leuko", gruppe: "Blood count", name: "White cells", einheit: "/nl", bedeutung: "Often low in lupus, and on some drugs the trend is watched as a safety check." },
   { schluessel: "thrombo", gruppe: "Blood count", name: "Platelets", einheit: "/nl", bedeutung: "Can be low in lupus." },
   { schluessel: "ttg", gruppe: "Coeliac disease", name: "tTG-IgA", einheit: "U/ml", bedeutung: "The follow up test for coeliac disease. On a consistently gluten free diet it falls over months. A value that rises again points to gluten getting in." },
   { schluessel: "iga", gruppe: "Coeliac disease", name: "Total IgA", einheit: "g/l", bedeutung: "Measured once: with IgA deficiency the tTG-IgA would be falsely low and the test worthless." },
@@ -316,9 +316,9 @@ window.INHALT.en.laborwerte = [
 window.INHALT.en.warnzeichen = [
   {
     kicker: "Now",
-    titel: "Emergency number or A and E",
+    titel: "Emergency number or the emergency department",
     punkte: [
-      { dringend: "nein", zeichen: "Breathlessness or severe chest pain", warum: "Can mean a pulmonary embolism, inflammation of the lining of the heart or of the lung. In lupus the risk of clots is raised, especially with antiphospholipid antibodies." },
+      { dringend: "nein", zeichen: "Breathlessness or severe chest pain", warum: "Can mean a pulmonary embolism, pericarditis or pleurisy. In lupus the risk of clots is raised, especially with antiphospholipid antibodies." },
       { dringend: "nein", zeichen: "Sudden weakness, trouble speaking or seeing", warum: "Signs of a stroke. To be taken seriously in lupus at any age." },
       { dringend: "nein", zeichen: "A seizure or severe confusion", warum: "Can be involvement of the nervous system." },
       { dringend: "nein", zeichen: "High fever on immunosuppression", warum: "On immunosuppression an infection can turn severe quickly, and the usual immune response is missing. Do not wait." },
@@ -343,7 +343,7 @@ window.INHALT.en.warnzeichen = [
     punkte: [
       { dringend: "ja", zeichen: "Fatigue that gets worse over weeks", warum: "Needs looking into: blood count, thyroid, iron, vitamin D, sleep, mood. Not all of it is lupus, and that is good news, because a lot of it is treatable." },
       { dringend: "ja", zeichen: "New hair loss, mouth ulcers, light sensitivity", warum: "These belong in the description of disease activity and should be written down." },
-      { dringend: "ja", zeichen: "Mood, anxiety, drive", warum: "Common in lupus and closely bound up with the fatigue. Raised far too rarely." },
+      { dringend: "ja", zeichen: "Mood, anxiety, motivation", warum: "Common in lupus and closely bound up with the fatigue. Raised too rarely." },
       { dringend: "ja", zeichen: "Wanting children, even if that is still far off", warum: "Some drugs have to be changed long in advance, and a pregnancy in lupus is best planned for a quiet phase." },
     ],
   },
@@ -376,7 +376,7 @@ window.INHALT.en.wissen = [
       {
         frage: "Where does this come from, and what is it worth?",
         antwort: [
-          "This text is a way of getting your bearings, not a review article and not a second opinion. It is written " +
+          "This text is a way of getting your bearings, not a specialist article and not a second opinion. It is written " +
             "so that you can take it into an appointment and ask better questions.",
           "While it was put together, the original papers <b>could not be opened</b>: the network this text was " +
             "written on does not let medical journal sites through. Searching was possible, reading was not. " +
@@ -416,7 +416,7 @@ window.INHALT.en.wissen = [
           "This is one of the most reliably repeated findings in the field: the usual activity scores explain " +
             "only a small part of how exhausted someone is. Quiet results therefore do not rule out severe " +
             "fatigue. Knowing that, you do not have to justify yourself, and you go on looking in the right place.",
-          "What lines up most strongly with fatigue in studies is <b>disturbed sleep, pain, fibromyalgia " +
+          "What lines up most strongly with fatigue in studies are <b>disturbed sleep, pain, fibromyalgia " +
             "alongside the lupus, mood and anxiety</b>. That is not a way of saying \"so it is all in your head\". " +
             "It is the opposite: it names things that can be acted on.",
         ],
@@ -447,15 +447,15 @@ window.INHALT.en.wissen = [
         staerke: "This list is clinical practice and guideline logic, not a single study.",
       },
       {
-        frage: "What actually helps against the fatigue?",
+        frage: "What actually helps with the fatigue?",
         antwort: [
           "The honest answer has two parts. First: the best evidenced single measure is <b>physical " +
             "activity</b>, adapted to you and built up over weeks. Second: the evidence for it is smaller and " +
             "more contradictory than you will read in the self help books.",
           "In detail: a Cochrane review from 2023 rates the certainty of the evidence as low and finds no " +
-            "statistically reliable benefit for fatigue. A later summary of the same small body of trials finds " +
-            "a moderate benefit for fatigue, stamina, mood and function. Both read almost the same studies and " +
-            "reach different conclusions, because they pool the numbers differently.",
+            "statistically significant benefit for fatigue. An earlier summary, from 2017, finds a moderate benefit for fatigue, stamina, mood and function instead. " +
+            "Both read almost the same studies and reach different conclusions, because they pool the numbers " +
+            "differently. Of the two, the more recent one is the more cautious, and that belongs in the picture.",
           "What you can take from that without overstating it: exercise is <b>safe when the disease is stable</b>, " +
             "it improves stamina reliably, and it probably helps the fatigue somewhat. That is more than has been " +
             "shown for any other non drug measure in lupus.",
@@ -485,15 +485,15 @@ window.INHALT.en.wissen = [
             "disease activity and specifically excluded active disease. The reassuring line \"exercise does not " +
             "make lupus worse\" is a statement about stable phases. It cannot be carried over to an acute flare.",
           "What does exist is an international consensus statement from 2024. In essence it says: during a flare, " +
-            "<b>caution</b> applies, and it should be checked again whether anything currently speaks against " +
+            "<b>caution</b> applies, and it should be checked again whether there is currently any reason not to " +
             "exercise. In a flare with inflamed joints, those joints in particular should not be loaded. Anyone " +
             "whose disease is quiet or mild should follow the general physical activity recommendations.",
           "Put into everyday terms, that does not mean \"bed\", and it does not mean \"push through\". It means " +
-            "getting smaller in a flare rather than stopping. Walking instead of intervals, stretching and gentle " +
+            "scaling down in a flare rather than stopping. Walking instead of intervals, stretching and gentle " +
             "movement instead of weights, leaving inflamed joints out. And: a new flare should be reported before " +
             "you adjust your training, not afterwards.",
           "One limit from the same statement that is easily forgotten: with heart, lung or kidney involvement, on " +
-            "blood thinning treatment, or with bone necrosis, exercise should be checked with a doctor before it " +
+            "blood thinning treatment, or with osteonecrosis, exercise should be checked with a doctor before it " +
             "is increased.",
         ],
         staerke: "For the flare: expert consensus only, no trials. For stable phases: moderate.",
@@ -561,7 +561,7 @@ window.INHALT.en.wissen = [
         antwort: [
           "<b>Omega-3</b> from fish or oil has been tested in lupus in several small controlled trials, with " +
             "signs of slightly lower disease activity and better blood vessel function. The trials are small and " +
-            "not consistent. Oily fish twice a week is a sensible way to act on that, and it cannot break anything.",
+            "not consistent. Oily fish twice a week is a sensible way to act on that, and it can do no harm.",
           "<b>Vitamin D</b> is often low in lupus, because the sun is avoided and steroids increase the losses; " +
             "with coeliac disease, poorer absorption comes on top. That a deficiency should be corrected is not " +
             "disputed. That correcting it improves fatigue is: the treatment trials pooled on this question come " +
@@ -570,7 +570,7 @@ window.INHALT.en.wissen = [
           "<b>Turmeric, resveratrol, NAC, DHEA</b> have been studied in lupus, in small trials with inconsistent " +
             "results. None of them is established.",
           "More important than any single supplement: everything you swallow belongs on the medication list and " +
-            "in the clinic. Supplements are not a free zone, they interact.",
+            "in the clinic. Supplements are not outside the rules, they interact.",
         ],
         staerke: "Omega-3: weak to moderate, small trials. Vitamin D for fatigue: very weak. Other supplements: weak.",
       },
@@ -579,7 +579,7 @@ window.INHALT.en.wissen = [
         antwort: [
           "Alfalfa, also called lucerne, contains L-canavanine. There are older case reports of lupus like " +
             "pictures and experiments in monkeys. It is the one item that has been on every lupus list for decades.",
-          "Placed honestly: that is a thin, old chain of evidence, not proof. Going without alfalfa sprouts costs " +
+          "Put honestly: that is a thin, old chain of evidence, not proof. Going without alfalfa sprouts costs " +
             "nothing, which is why it is here too. With everything else, scepticism pays: many of the lists of " +
             "banned foods online did not come from asking this question, they came from copying.",
           "One point with better reasoning: <b>supplements meant specifically to stimulate the immune system</b>, " +
@@ -601,7 +601,7 @@ window.INHALT.en.wissen = [
           "In coeliac disease the gluten free diet is the treatment, for life, and the aim is not only freedom " +
             "from symptoms but healing of the gut lining. Symptoms are a poor measure: some people have none " +
             "despite the damage.",
-          "The limit of 20 milligrams of gluten per kilogram for the gluten free label rests on the finding that " +
+          "The limit of 20 milligrams of gluten per kilogram for the gluten free label rests on the assumption that " +
             "up to about 10 milligrams of gluten a day is likely to be harmless for the large majority. By the " +
             "expert bodies' own account the data behind this is limited, and the right threshold is still debated.",
           "Striking and not widely known: measurements in people who believe they are strictly gluten free " +
@@ -626,8 +626,8 @@ window.INHALT.en.wissen = [
             "readings back below it.",
           "<b>Less bad than feared:</b> the shared toaster and shared cutlery. In the measurements, gluten free " +
             "bread from a used toaster stayed under the limit, even with visible crumbs in the tray, and a knife " +
-            "that had been in wheat based baking transferred nothing measurable.",
-          "These studies are small and not blinded, so they are no licence. But the direction is usable: the " +
+            "that had been used on gluten containing baked goods transferred nothing measurable.",
+          "These studies are small and not blinded, so they are not a free pass. But the direction is usable: the " +
             "energy belongs with the fryer, the cooking water, flour dust when baking and ingredient lists, and " +
             "less with a fear of every shared spoon. With an autoimmune disease that is an argument in itself: " +
             "energy that does not go into needless worry is available elsewhere.",
@@ -652,7 +652,7 @@ window.INHALT.en.wissen = [
           "The most common reason things do not improve on a gluten free diet, incidentally, is not a rare " +
             "complication but gluten getting in unnoticed.",
         ],
-        staerke: "Moderate to high for the limited meaning of the antibody tests. From a summary of several studies.",
+        staerke: "Moderate to high for how little the antibody tests can tell you. From a summary of several studies.",
         quellen: [
           "Meta-Analyse zu tTG und Endomysium-Antikoerpern bei persistierender Zottenatrophie, Gastroenterology 2017",
           "Leitlinien zur Verlaufskontrolle, Nat Rev Gastroenterol Hepatol 2023. PMID 38110546",
@@ -696,8 +696,8 @@ window.INHALT.en.wissen = [
         frage: "Are the two connected at all?",
         antwort: [
           "Autoimmune diseases cluster together, and coeliac disease is found more often in lupus than in the " +
-            "general population. On how much more often, the published estimates differ widely, which is why no " +
-            "figure is given here.",
+            "general population. On how much more often, the published estimates differ widely, which is why " +
+            "there is deliberately no figure here.",
           "For everyday life the figure does not matter either. What matters is that both conditions attack the " +
             "same things: the absorption of nutrients, the bones and your strength.",
         ],
@@ -712,7 +712,7 @@ window.INHALT.en.wissen = [
           "The American guideline on steroid induced osteoporosis says something that counts particularly for " +
             "young women: under the age of 40 the fracture risk <b>cannot</b> be estimated with the usual " +
             "calculator, because it was not built for that. So instead of a calculation you need a measurement.",
-          "What belongs there in any case: enough calcium and vitamin D, exercise with weight on your legs, no " +
+          "What belongs there in any case: enough calcium and vitamin D, weight bearing exercise, no " +
             "smoking. And the question of whether and when a bone density scan makes sense should be asked, not " +
             "waited out.",
         ],
@@ -742,10 +742,10 @@ window.INHALT.en.wissen = [
     titel: "What is standard today",
     abschnitte: [
       {
-        frage: "What does treatment follow today?",
+        frage: "What guides treatment today?",
         antwort: [
           "Two principles, both set out in the current European recommendations. First: <b>hydroxychloroquine " +
-            "for everyone</b>, unless something speaks against it. Second: <b>steroids as low as possible</b>, " +
+            "for everyone</b>, unless there is a reason not to. Second: <b>steroids as low as possible</b>, " +
             "meant as a bridge and not as a permanent solution, with the aim of holding them very low in " +
             "maintenance or stopping them altogether.",
           "That is why further drugs are added earlier now: not because the disease is worse, but so that the " +
@@ -754,7 +754,7 @@ window.INHALT.en.wissen = [
           "The stated treatment target is remission or a state of low disease activity. Both are defined and " +
             "measurable. Asking about it is worth it: it turns \"how are you\" into something that stays " +
             "comparable over years.",
-          "<b>No doses from this app.</b> What is here is the frame within which the clinic decides.",
+          "<b>No doses from this app.</b> What is here is the framework within which the clinic decides.",
         ],
         staerke: "Guidelines, the highest level available.",
         quellen: [
@@ -861,7 +861,7 @@ window.INHALT.en.wissen = [
           "One thing matters here: what was shown was the prevention of <b>skin changes</b> caused by UV, not " +
             "the prevention of flares in general. And the protection has to cover UVA as well as UVB.",
           "On <b>smoking</b>: smoking is linked to a higher risk of developing the disease, and it measurably " +
-            "reduces how well hydroxychloroquine works on the skin. One detail that gives heart: in the analysis, " +
+            "reduces how well hydroxychloroquine works on the skin. One encouraging detail: in the analysis, " +
             "<b>former</b> smokers no longer had a raised risk. So stopping works.",
         ],
         staerke: "For sun protection: good, a controlled study in humans. For smoking: a summary of several studies.",
@@ -902,7 +902,7 @@ window.INHALT.en.ueberwachung = [
     titel: "Before starting some drugs",
     text: [
       "Before azathioprine, an enzyme that controls how the drug is broken down is measured. If it is missing or " +
-        "reduced, severe changes in the blood count can follow. Asking about it is fair.",
+        "reduced, severe changes in the blood count can follow. Asking about it is reasonable.",
       "Before immunosuppressive treatment, vaccination status should be checked, because some things are no longer possible afterwards.",
     ],
   },
@@ -920,7 +920,7 @@ window.INHALT.en.ueberwachung = [
     text: [
       "On longer term steroid treatment and with coeliac disease, bone needs watching. Under the age of 40 the " +
         "risk cannot be estimated with the usual calculator, so it is measured rather than calculated.",
-      "Enough calcium and vitamin D, exercise with weight on your legs, no smoking.",
+      "Enough calcium and vitamin D, weight bearing exercise, no smoking.",
     ],
     quellen: ["ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022. DOI 10.1002/art.42646"],
   },
@@ -1201,7 +1201,7 @@ window.INHALT.en.suche = {
       land: "eu",
       thema: "lupus",
       name: "Orphanet, the European directory of rare diseases",
-      was: "Expert centres, patient organisations, registries and studies, filterable by country and available in several languages.",
+      was: "Expert centres, patient organisations, registries and studies, filterable by country and in English.",
       weg: "Search for Orphanet, then for the condition, then watch the country selector. For coeliac disease the directory only covers the rare treatment resistant form, ordinary coeliac disease being too common for it.",
       suchbegriff: "Orphanet expert centres lupus erythematosus",
       sicherheit: "hoch",

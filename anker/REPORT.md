@@ -95,8 +95,10 @@ Honestly, up front: the evidence here is thin and it disagrees with itself.
 
 A Cochrane review in 2023 on physical exercise in lupus reached very cautious
 conclusions. The included trials were small, mostly unblinded, and the certainty
-of the evidence was rated low. Later syntheses and older controlled trials did
-find improvements in aerobic capacity and in fatigue.
+of the evidence was rated low. An earlier synthesis from 2017, reading largely
+the same small set of trials, did find improvements in aerobic capacity and in
+fatigue, as did older controlled trials. Note the direction: the most recent
+review is the most cautious one, not the other way round.
 
 That disagreement is not smoothed over here. It looks like this:
 

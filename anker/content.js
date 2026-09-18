@@ -451,10 +451,10 @@ INHALT.wissen = [
             "Aktivitaet</b>, und zwar angepasst und ueber Wochen aufgebaut. Zweitens: die Belege dafuer sind " +
             "kleiner und widerspruechlicher, als man es in Ratgebern liest.",
           "Konkret: eine Cochrane-Uebersicht von 2023 kommt zu geringer Ergebnissicherheit und findet fuer " +
-            "Muedigkeit keinen statistisch gesicherten Nutzen. Eine spaetere Zusammenfassung derselben kleinen " +
-            "Studienlandschaft findet einen mittleren Nutzen fuer Muedigkeit, Ausdauer, Stimmung und Funktion. " +
+            "Muedigkeit keinen statistisch gesicherten Nutzen. Eine fruehere Zusammenfassung von 2017 findet " +
+            "dagegen einen mittleren Nutzen fuer Muedigkeit, Ausdauer, Stimmung und Funktion. " +
             "Beide lesen fast dieselben Studien und kommen zu verschiedenen Schluessen, weil sie unterschiedlich " +
-            "zusammenrechnen.",
+            "zusammenrechnen. Die neuere von beiden ist die vorsichtigere, und das gehoert dazugesagt.",
           "Was man daraus mitnehmen kann, ohne zu uebertreiben: Bewegung ist <b>bei stabiler Erkrankung sicher</b>, " +
             "sie verbessert die Ausdauer verlaesslich, und sie hilft der Muedigkeit wahrscheinlich etwas. Das ist " +
             "mehr, als fuer jede andere nicht medikamentoese Massnahme bei Lupus gezeigt ist.",

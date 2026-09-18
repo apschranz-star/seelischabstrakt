@@ -102,8 +102,10 @@ Ehrlich vorweg: hier ist die Studienlage duenn und sie widerspricht sich.
 Eine Cochrane-Uebersicht von 2023 zu koerperlichem Training bei Lupus kam zu
 sehr zurueckhaltenden Schluessen. Die eingeschlossenen Studien waren klein,
 meist nicht verblindet, und die Ergebnissicherheit wurde als gering
-eingeschaetzt. Spaetere Zusammenfassungen und aeltere kontrollierte Studien
-fanden dagegen Verbesserungen bei Ausdauer und bei Fatigue.
+eingeschaetzt. Eine fruehere Zusammenfassung von 2017, die weitgehend dieselben
+kleinen Studien liest, fand dagegen Verbesserungen bei Ausdauer und bei Fatigue,
+ebenso aeltere kontrollierte Studien. Die Richtung gehoert dazugesagt: die
+juengste Uebersicht ist die vorsichtigste, nicht umgekehrt.
 
 Dieser Widerspruch wird hier nicht glattgebuegelt. So sieht er aus:
 
