@@ -632,3 +632,17 @@ button:active .jing-disc {
     transform: none;
   }
 }
+
+/*
+  Die beiden Farben des Taiji auf dem Schalter.
+
+  Sie stehen nur hier und werden in der Nachtpalette nicht neu gesetzt. Das ist
+  der Punkt: drehte sich das Zeichen um eine halbe Umdrehung und tauschte dabei
+  die Farben, stünde danach genau dasselbe Bild da und die Drehung wäre für
+  niemanden zu sehen. So bleibt die helle Hälfte hell und die dunkle dunkel, und
+  die Drehung trägt den Wechsel.
+*/
+:root {
+  --jing-mark-light: #faf9f6;
+  --jing-mark-dark: #12110f;
+}

@@ -1,9 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
 
 import { useYinYang } from "@/components/theme/yin-yang-provider";
-import { Moon, Sun } from "@/components/ui/celestial";
+import { Taiji } from "@/components/ui/celestial";
 import { useT } from "@/lib/i18n";
 import { DURATION, EASE_RITUAL } from "@/lib/motion";
 import { originFromEvent } from "@/lib/switch-origin";
@@ -38,6 +39,9 @@ const PAD = 3;
 const DISC = TRACK_H - PAD * 2;
 const TRAVEL = TRACK_W - DISC - PAD * 2;
 
+/** Eineinhalb Umdrehungen je Wechsel, in Grad. */
+const SPIN = 540;
+
 /** Drei Sterne, die mit der Nacht aufgehen. Feste Plätze, kein Zufall im Rendern. */
 const STARS = [
   { x: 11, y: 9, r: 1.05, delay: 0 },
@@ -50,6 +54,21 @@ export function ThemeToggle({ className }: { className?: string }) {
   const t = useT();
   const reduceMotion = useReducedMotion() === true;
   const isYin = mode === "yin";
+  /*
+   * Die Drehung zählt Drücke, nicht Zustände.
+   *
+   * Hinge sie am Modus, begänne sie erst, wenn der Modus im Speicher steht, und
+   * das ist eine knappe halbe Sekunde nach dem Druck: die Eklipse hält die Seite
+   * so lange an, während sie ihr Bild aufnimmt. Gemessen waren es rund 270 ms
+   * tote Zeit zwischen Finger und Drehung. So wird der Zähler im Druck selbst
+   * erhöht, die Drehung läuft sofort los und die neue Palette öffnet sich
+   * daneben.
+   *
+   * Welche Hälfte am Ende oben steht, ist Schmuck und kein Zustand. Den Zustand
+   * trägt die Seite der Scheibe, der Himmel dahinter, die Sterne und das Wort.
+   * Deshalb darf der Zähler nach einem Neuladen bei null anfangen.
+   */
+  const [drehung, setDrehung] = useState(0);
   /*
    * Das Wort erscheint erst, wenn der gespeicherte Modus gelesen ist.
    *
@@ -75,7 +94,10 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       data-switch-mark=""
-      onClick={(event) => toggleMode({ origin: originFromEvent(event) })}
+      onClick={(event) => {
+        setDrehung((d) => d + SPIN);
+        toggleMode({ origin: originFromEvent(event) });
+      }}
       // Der Knopf nennt die Tageszeit, in der der Shop steht, und sonst nichts.
       //
       // Vorher stand hier ein aria-label mit dem einen Ritual und ein title, der
@@ -133,19 +155,24 @@ export function ThemeToggle({ className }: { className?: string }) {
           ))}
         </svg>
 
-        {/* Das Gestirn wandert. Der Ring darunter blüht beim Wechsel einmal auf. */}
+        {/* Das Taiji wandert und dreht sich dabei.
+            Eineinhalb Umdrehungen: genug, dass man die Drehung als Drehung sieht,
+            und am Ende steht die dunkle Hälfte dort, wo vorher die helle war. Die
+            Bahn läuft auf einer Feder, die Drehung auf einer eigenen Kurve; eine
+            Feder auf 540 Grad überschwingt und sieht aus wie ein Wackler.
+            Der Ring darunter blüht beim Wechsel einmal auf, am gedrückten Punkt,
+            von dem aus die Seite dahinter ihre neue Palette öffnet. */}
         <motion.span
           className="absolute rounded-full"
           style={{ width: DISC, height: DISC, left: PAD, top: PAD }}
-          animate={{ x: isYin ? TRAVEL : 0 }}
-          transition={travel}
+          animate={{ x: isYin ? TRAVEL : 0, rotate: reduceMotion ? 0 : drehung }}
+          transition={{
+            x: travel,
+            rotate: reduceMotion
+              ? { duration: 0 }
+              : { duration: DURATION.ritual, ease: EASE_RITUAL },
+          }}
         >
-          {/* Das Gestirn gibt unter dem Finger nach. Das macht CSS, nicht die
-              Bewegungsbibliothek: deren whileTap haengt dem Element ein
-              tabindex an, damit es auch mit der Tastatur zu druecken waere, und
-              damit stuende ein Tabstopp in einem Bereich, der aria-hidden ist.
-              Gedrueckt wird der Knopf, nicht die Scheibe darin. */}
-          <span className="jing-disc absolute inset-0 rounded-full bg-inverse-surface" />
           <motion.span
             key={word}
             aria-hidden="true"
@@ -154,32 +181,13 @@ export function ThemeToggle({ className }: { className?: string }) {
             animate={{ opacity: 0, scale: reduceMotion ? 1 : 2.6 }}
             transition={{ duration: reduceMotion ? 0 : DURATION.ritual, ease: EASE_RITUAL }}
           />
-          <span className="absolute inset-0 flex items-center justify-center text-inverse-ink">
-            <AnimatePresence initial={false} mode="wait">
-              {isYin ? (
-                <motion.span
-                  key="moon"
-                  initial={{ opacity: 0, rotate: -35, scale: 0.7 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, rotate: 35, scale: 0.7 }}
-                  transition={fade}
-                  className="flex"
-                >
-                  <Moon size={13} />
-                </motion.span>
-              ) : (
-                <motion.span
-                  key="sun"
-                  initial={{ opacity: 0, rotate: 35, scale: 0.7 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, rotate: -35, scale: 0.7 }}
-                  transition={fade}
-                  className="flex"
-                >
-                  <Sun size={13} />
-                </motion.span>
-              )}
-            </AnimatePresence>
+          {/* Die Scheibe gibt unter dem Finger nach. Das macht CSS, nicht die
+              Bewegungsbibliothek: deren whileTap hängt dem Element ein tabindex
+              an, damit es auch mit der Tastatur zu drücken wäre, und damit stünde
+              ein Tabstopp in einem Bereich, der aria-hidden ist. Gedrückt wird
+              der Knopf, nicht die Scheibe darin. */}
+          <span className="jing-disc absolute inset-0 flex items-center justify-center">
+            <Taiji size={DISC} />
           </span>
         </motion.span>
       </span>

@@ -90,11 +90,11 @@ export const RITUAL: Record<Mode, RitualCopy> = {
       ],
       close: {
         de:
-          "Mehr braucht der Tag nicht. Was aufgetragen ist, bleibt bis zum Abend, und der Atemzug " +
-          "am Ende ist der Punkt, an dem der Tag anfängt.",
+          "Mehr braucht der Tag nicht. Was aufgetragen ist, hält bis zum letzten Termin, und der " +
+          "Atemzug am Ende ist der Punkt, an dem der Tag anfängt.",
         en:
-          "The day needs no more. What is applied stays until the evening, and the breath at " +
-          "the end is the point where the day begins.",
+          "The day needs no more. What is applied holds until the last appointment, and the breath " +
+          "at the end is the point where the day begins.",
       },
       toProducts: { de: "Die fünf Stücke", en: "The five pieces" },
     },
@@ -117,13 +117,13 @@ export const RITUAL: Record<Mode, RitualCopy> = {
         de:
           "Yin gehört zu den Stunden von " +
           HOURS.yin.de +
-          " Uhr. Es bereitet den Raum vor, löst, was der Tag hinterlassen hat, und überlässt der Haut " +
+          " Uhr. Es bereitet den Raum vor, löst, was sich auf der Haut angesammelt hat, und überlässt ihr " +
           "die Arbeit. Fünf Schritte, in der Reihenfolge des Abends, jeder mit einem Stück aus der Kollektion.",
         en:
           "Yin belongs to the hours from " +
           HOURS.yin.en +
-          ". It prepares the room, loosens what the day has left behind and leaves the work to " +
-          "the skin. Five steps, in the order of the evening, each with one piece from the collection.",
+          ". It prepares the room, loosens what has settled on the skin and leaves the work to " +
+          "it. Five steps, in the order of the evening, each with one piece from the collection.",
       },
       steps: [
         {
@@ -138,10 +138,10 @@ export const RITUAL: Record<Mode, RitualCopy> = {
       close: {
         de:
           "Dann ist Ruhe. Die Kerze geht aus, der Diffuser schaltet sich ab, und was das Öl " +
-          "angefangen hat, macht die Haut bis zum Morgen allein fertig.",
+          "angefangen hat, macht die Haut im Schlaf allein fertig.",
         en:
           "Then there is quiet. The candle goes out, the diffuser switches itself off, and what " +
-          "the oil has started, the skin finishes on its own by morning.",
+          "the oil has started, the skin finishes on its own during sleep.",
       },
       toProducts: { de: "Die fünf Stücke", en: "The five pieces" },
     },

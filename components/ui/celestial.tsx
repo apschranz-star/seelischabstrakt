@@ -73,3 +73,50 @@ export function RitualMark({
     <Moon size={size} className={className} />
   );
 }
+
+/**
+ * Das Taiji, das Zeichen auf dem Schalter.
+ *
+ * Es ist die eine Stelle, an der beide Hälften zugleich zu sehen sind, und das
+ * mit Absicht: der Schalter ist der Weg zwischen den beiden Tageszeiten, und ein
+ * Weg muss zeigen, dass es zwei Seiten gibt. Überall sonst im Shop steht immer
+ * nur eine.
+ *
+ * Die Farben stehen fest und drehen sich nicht mit der Palette. Ein Taiji, das
+ * beim Umschalten die Farben tauscht und sich dabei um eine halbe Drehung dreht,
+ * sähe danach genauso aus wie vorher: die Drehung wäre unsichtbar. So bleibt
+ * hell hell und dunkel dunkel, und die Drehung ist das, was man sieht.
+ *
+ * Der Reif hält die Scheibe auf dem hellen Himmel des Tages genauso beisammen
+ * wie auf dem tiefen der Nacht.
+ */
+export function Taiji({ size = 24, className }: { size?: number; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      <circle cx="12" cy="12" r="11.4" fill="var(--jing-mark-light)" />
+      {/* Die dunkle Hälfte: der große Bogen rechts herunter, dann die beiden
+          kleinen, die die Welle in der Mitte ziehen. */}
+      <path
+        d="M12 0.6a11.4 11.4 0 0 1 0 22.8a5.7 5.7 0 0 1 0-11.4a5.7 5.7 0 0 0 0-11.4"
+        fill="var(--jing-mark-dark)"
+      />
+      <circle cx="12" cy="6.3" r="2.05" fill="var(--jing-mark-dark)" />
+      <circle cx="12" cy="17.7" r="2.05" fill="var(--jing-mark-light)" />
+      <circle
+        cx="12"
+        cy="12"
+        r="11.4"
+        fill="none"
+        stroke="var(--jing-control)"
+        strokeWidth="0.7"
+      />
+    </svg>
+  );
+}
