@@ -30,11 +30,11 @@ jobs:
           ref: gh-pages
           path: pages
       - name: Replace the practice site, keep everything else on the branch
-        # The branch also carries the JING demo under jing/, published by hand.
-        # Only the files of the practice site are replaced here.
+        # The branch also carries the JING demo under jing/ (published by hand) and the
+        # Schranz AI site under schranz-ai/ (its own workflow). Only the practice site is replaced here.
         run: |
           cd pages
-          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name jing -exec rm -rf {} +
+          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name jing ! -name schranz-ai -exec rm -rf {} +
           cp -R ../farida/. .
           rm -f netlify.toml README.md
           touch .nojekyll

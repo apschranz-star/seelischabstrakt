@@ -1,0 +1,53 @@
+# Builds the SCHRANZ AI site from schranz-ai/content.json and publishes it to the
+# branch gh-pages under schranz-ai/, next to the practice site and the JING demo.
+name: Publish the Schranz AI site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "schranz-ai/**"
+      - ".github/workflows/schranz-ai-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: schranz-ai-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build both languages
+        run: |
+          cd schranz-ai
+          SITE_BASE=/seelischabstrakt/schranz-ai \
+          SITE_URL=https://apschranz-star.github.io/seelischabstrakt/schranz-ai \
+          node build.mjs
+          test -f dist/index.html && test -f dist/en/index.html
+      - name: Check out the branch gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+      - name: Replace only the folder schranz-ai on the branch
+        run: |
+          rm -rf pages/schranz-ai
+          mkdir -p pages/schranz-ai
+          cp -R schranz-ai/dist/. pages/schranz-ai/
+          cd pages
+          touch .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "gh-pages already current"; exit 0; fi
+          git commit -q -m "Publish the Schranz AI site from ${GITHUB_SHA::7}"
+          git push -q origin HEAD:gh-pages
+          echo "gh-pages updated"

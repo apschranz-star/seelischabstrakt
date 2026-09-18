@@ -4,6 +4,7 @@ Drei Websites, ein GitHub-Repository, ein Netlify-Konto. Alles Tägliche geht ü
 
     seelischabstrakt.netlify.app     der Shop, Ordner / im Repo
     alexanderschranz.netlify.app     die persönliche Seite, Ordner /portfolio im Repo
+    apschranz-star.github.io/seelischabstrakt/schranz-ai/   SCHRANZ AI SOLUTIONS, Pitchdeck als Website, Ordner /schranz-ai, DE und EN
     faridabenslimane.netlify.app     die Praxisseite von Farida Benslimane, Ordner /farida im Repo
     JING                             der Beauty-Shop, eigener Branch jing in diesem Repo,
                                      eigene Anleitung dort: HANDOVER.md, Start: LAUNCH.md
