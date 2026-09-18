@@ -338,3 +338,248 @@ window.INHALT.it.warnzeichen = [
     ],
   },
 ];
+
+/* -------------------------------------------------------------- Domande */
+
+window.INHALT.it.fragen = [
+  { frage: "Quanto è attivo adesso il mio lupus, in numeri?", warum: "Per questo esistono strumenti di misura. Conoscere il proprio numero rende leggibile l'andamento negli anni." },
+  { frage: "Quando sono state controllate l'ultima volta le proteine nelle urine?", warum: "Il rene non si fa sentire da solo." },
+  { frage: "Quali valori vanno controllati e ogni quanto, e chi li fa richiedere?", warum: "Così non resta niente in mezzo fra il medico di famiglia e l'ambulatorio ospedaliero." },
+  { frage: "Quando scade il prossimo controllo della retina?", warum: "Con l'idrossiclorochina per questo c'è una cadenza fissa." },
+  { frage: "Quanto è alta la mia dose di cortisone, e qual è il piano per abbassarla?", warum: "Le linee guida puntano alla dose di mantenimento più bassa possibile." },
+  { frage: "Ferro, vitamina D, B12, acido folico e calcio sono stati misurati di recente?", warum: "Nella celiachia e sotto cortisone sono il rifornimento più importante, e una causa frequente di stanchezza." },
+  { frage: "Quando è stata l'ultima densitometria ossea, e ne serve una?", warum: "Celiachia e cortisone agiscono entrambi sull'osso." },
+  { frage: "Come va il mio valore di tTG nel tempo?", warum: "Mostra se l'alimentazione senza glutine è davvero senza falle." },
+  { frage: "Quali vaccinazioni mi mancano, e quali non posso fare con questa terapia?", warum: "I vaccini vivi sotto immunosoppressione sono un tema." },
+  { frage: "Che cosa faccio se ho febbre o un'infezione, chi chiamo?", warum: "Questo piano lo si vuole avere prima di averne bisogno." },
+  { frage: "Quale contraccezione va bene per la mia situazione?", warum: "Con gli anticorpi antifosfolipidi per la contraccezione con estrogeni valgono considerazioni particolari." },
+  { frage: "Posso fare sport, e quanto, anche quando sto male?", warum: "La risposta è quasi sempre sì, ma la dose va discussa, soprattutto se c'è un interessamento del cuore, dei polmoni o dei reni." },
+];
+
+/* ------------------------------------------------------------------ Sapere */
+
+window.INHALT.it.wissen = [
+  {
+    kicker: "Prima di tutto",
+    titel: "Come è nato questo testo",
+    abschnitte: [
+      {
+        frage: "Da dove viene tutto questo, e quanto vale?",
+        antwort: [
+          "Questo testo è un orientamento, non un articolo scientifico e non un secondo parere. È scritto " +
+            "in modo da poterci andare a una visita e fare domande migliori.",
+          "Mentre veniva messo insieme, i lavori originali <b>non si sono potuti aprire</b>: la rete in cui " +
+            "questo testo è nato non lascia passare i siti medici specialistici. Cercare si poteva, leggere no. " +
+            "Questo ha una conseguenza chiara, e sta qui e non in fondo in caratteri piccoli: <b>i singoli numeri " +
+            "degli studi, cioè percentuali, dimensioni dell'effetto e numerosità, in questo testo non compaiono " +
+            "quasi mai, di proposito.</b> Quello che c'è è la direzione di ciò che si è capito e la forza delle prove.",
+          "In compenso, a ogni capitolo ci sono i documenti originali con il loro numero. Con un PMID un lavoro " +
+            "si trova in pochi secondi, e ogni medico ha accesso. Questo testo è quindi costruito come indicazione " +
+            "verso le fonti, non come loro sostituto.",
+        ],
+        staerke: "Inquadramento, non evidenza.",
+      },
+      {
+        frage: "Che cosa questo testo di sicuro non può fare",
+        antwort: [
+          "Non conosce i tuoi valori, non conosce il tuo interessamento d'organo e non conosce la tua storia. " +
+            "Nel lupus è proprio da questo che dipende quasi ogni decisione.",
+          "Non dice nulla su nessuna dose. Non perché sia un segreto, ma perché indicare una dose senza avere " +
+            "davanti la persona non ha senso e può fare danno.",
+          "Ed è una fotografia, non un abbonamento. Nel lupus negli ultimi anni si è mosso molto. Quando questo " +
+            "testo invecchia, non diventa sbagliato, ma incompleto.",
+        ],
+      },
+    ],
+  },
+
+  {
+    kicker: "Il tema principale",
+    titel: "La fatigue",
+    abschnitte: [
+      {
+        frage: "Perché sono così stanca anche se i valori sono buoni?",
+        antwort: [
+          "Perché nel lupus questo è il caso normale, non l'eccezione. La fatigue è il sintomo più frequente e " +
+            "per molte il più pesante, e <b>non</b> segue l'attività di malattia misurata.",
+          "È uno dei risultati più volte confermati in questo campo: le solite misure di attività spiegano solo " +
+            "una piccola parte di quanto una persona sia sfinita. Un quadro tranquillo non esclude quindi una " +
+            "fatigue grave. Chi lo sa non deve giustificarsi e continua a cercare nel punto giusto.",
+          "Negli studi, ciò che si lega più fortemente alla fatigue sono <b>il disturbo del sonno, il dolore, " +
+            "una fibromialgia associata, l'umore e l'ansia</b>. Non è una svalutazione del tipo " +
+            "\"allora è psicologico\". È il contrario: nomina cose contro cui si può fare qualcosa.",
+        ],
+        staerke: "Forte per lo sganciamento dall'attività misurata. Forte per sonno, dolore, umore e fibromialgia come accompagnatori.",
+        quellen: [
+          "Arnaud L et al., LEAF-Studie, RMD Open 2023. PMID 38056917",
+          "Monahan RC et al., Lupus 2021. PMID 33779389",
+          "Ahn GE, Ramsey-Goldman R, Int J Clin Rheumatol 2012. PMC3380630",
+          "Cornet A et al., Lupus Sci Med 2021;8:e000469",
+        ],
+      },
+      {
+        frage: "Che cosa va chiarito prima di attribuire la fatigue al lupus?",
+        antwort: [
+          "Alcune di queste cose si trattano bene, e proprio per questo vale la pena guardare. Con in più una " +
+            "celiachia vale il doppio, perché l'assorbimento nell'intestino può essere disturbato.",
+        ],
+        liste: [
+          "<b>Emocromo</b>, per l'anemia. Frequente sia nel lupus sia nella celiachia, e una delle cause fisiche più frequenti di spossatezza.",
+          "<b>Ferro e ferritina</b>. Nella celiachia la carenza più frequente in assoluto. Attenzione: la ferritina sale con l'infiammazione, si legge insieme alla PCR.",
+          "<b>Tiroide</b>. Un ipotiroidismo dà esattamente questo quadro, e le malattie autoimmuni della tiroide sono più frequenti in entrambe le malattie di base.",
+          "<b>Vitamina D, B12, acido folico</b>.",
+          "<b>Valori renali e urine</b>, perché un interessamento renale resta muto a lungo.",
+          "<b>Sonno</b>. Dormire male nel lupus è molto frequente e negli studi è il singolo accompagnatore più forte della fatigue.",
+          "<b>Umore e ansia</b>. Depressione e ansia nel lupus sono nettamente più frequenti che nella popolazione generale.",
+          "<b>Farmaci</b>, come tema da portare alla visita.",
+        ],
+        staerke: "Questa lista è pratica clinica e logica delle linee guida, non un singolo studio.",
+      },
+      {
+        frage: "Che cosa aiuta davvero contro la fatigue?",
+        antwort: [
+          "La risposta onesta ha due parti. Primo: la singola misura meglio documentata è <b>l'attività " +
+            "fisica</b>, adattata e costruita nell'arco di settimane. Secondo: le prove a sostegno sono più " +
+            "piccole e più contraddittorie di come si leggono nei manuali di consigli.",
+          "In concreto: una revisione Cochrane del 2023 arriva a una bassa certezza dei risultati e per la " +
+            "fatigue non trova un beneficio statisticamente sicuro. Una sintesi successiva dello stesso piccolo " +
+            "panorama di studi trova un beneficio medio per fatigue, resistenza, umore e funzione. Le due leggono " +
+            "quasi gli stessi studi e arrivano a conclusioni diverse, perché fanno i conti in modo differente.",
+          "Quello che se ne può portare via senza esagerare: il movimento <b>con malattia stabile è sicuro</b>, " +
+            "migliora la resistenza in modo affidabile e alla fatigue fa probabilmente un po' di bene. È più di " +
+            "quanto sia stato mostrato per qualsiasi altra misura non farmacologica nel lupus.",
+          "La società scientifica europea raccomanda espressamente, nelle malattie reumatiche infiammatorie, di " +
+            "rilevare la fatigue e di proporre attività di movimento adattate.",
+        ],
+        staerke: "Da bassa a media. Sintesi contraddittorie, studi piccoli e per lo più non in cieco. Più chiara per la resistenza che per la fatigue.",
+        quellen: [
+          "Frade S et al., Cochrane Database Syst Rev 2023. DOI 10.1002/14651858.CD014816.pub2",
+          "O'Dwyer T, Durcan L, Wilson F, Semin Arthritis Rheum 2017;47:204-215. PMID 28477898",
+          "Tench CM et al., Rheumatology (Oxford) 2003;42:1050-1054. PMID 12730519",
+          "Dures E et al., EULAR-Empfehlungen zu Fatigue, Ann Rheum Dis 2024;83:1260-1267. DOI 10.1136/ard-2023-224514",
+        ],
+      },
+    ],
+  },
+
+  {
+    kicker: "La domanda più frequente",
+    titel: "Sport, anche in riacutizzazione?",
+    abschnitte: [
+      {
+        frage: "Posso fare sport durante una riacutizzazione attiva?",
+        antwort: [
+          "Qui la precisione conta più di una risposta a effetto, perciò prima i fatti: <b>su questo non " +
+            "esiste alcuno studio.</b> Praticamente tutti gli studi sul movimento nel lupus hanno incluso " +
+            "persone con attività di malattia tranquilla o bassa e hanno escluso espressamente la malattia " +
+            "attiva. L'affermazione rassicurante \"il movimento non peggiora il lupus\" è un'affermazione " +
+            "sulle fasi stabili. A una riacutizzazione acuta non si può trasferire.",
+          "Quello che c'è è una raccomandazione di consenso internazionale del 2024. In sostanza dice: durante " +
+            "una riacutizzazione serve <b>prudenza</b> e va verificato di nuovo se al momento qualcosa la " +
+            "sconsiglia. In una riacutizzazione con articolazioni infiammate, proprio quelle articolazioni non " +
+            "vanno caricate. Chi ha malattia tranquilla o lieve si attiene alle raccomandazioni generali sul movimento.",
+          "Tradotto nella vita di tutti i giorni non vuol dire \"letto\", e non vuol dire \"tirare dritto\". " +
+            "Vuol dire: nella riacutizzazione farsi più piccoli invece di smettere. Camminare invece di fare " +
+            "intervalli, allungamento e movimento leggero invece di pesi, lasciare fuori le articolazioni " +
+            "infiammate. E: una nuova riacutizzazione va segnalata prima di adattare il programma di " +
+            "allenamento, non dopo.",
+          "Una limitazione che sta nella stessa raccomandazione e che si dimentica facilmente: con " +
+            "interessamento di cuore, polmoni o reni, in corso di terapia anticoagulante o in caso di necrosi " +
+            "ossea, il carico va chiarito con il medico prima di aumentarlo.",
+        ],
+        staerke: "Per la riacutizzazione: solo consenso di esperti, nessuno studio. Per le fasi stabili: media.",
+        quellen: [
+          "Blaess J et al., RMD Open 2024;10:e004171. DOI 10.1136/rmdopen-2024-004171",
+          "Parodis I et al., EULAR, nicht medikamentoese Behandlung, Ann Rheum Dis 2024;83:720-729. PMID 37433575",
+        ],
+      },
+      {
+        frage: "Come si comincia, se già salire le scale è faticoso?",
+        antwort: [
+          "Con una quantità che sembra troppo piccola, e con cui si arriva in fondo anche nel giorno brutto. " +
+            "Non è modestia, è il metodo: il motivo più frequente per cui il movimento fallisce quando c'è " +
+            "spossatezza è un giorno buono in cui si fa troppo, seguito da tre giorni a letto.",
+          "Negli studi che hanno mostrato qualcosa, i programmi duravano per lo più <b>da otto a dodici " +
+            "settimane</b>, erano di intensità media e seguiti. Seguiti qui vuol dire: qualcuno ci guarda sopra. " +
+            "Nelle analisi questa era una delle differenze fra i programmi che funzionavano e quelli che no.",
+          "Un inizio utilizzabile: una quantità piccola e fissa ogni giorno, la stessa nei giorni buoni e in " +
+            "quelli brutti, e solo dopo una o due settimane senza strascichi un pochino di più. Nell'andamento " +
+            "di questa app, dopo qualche settimana, si vede se la fatigue sale il giorno dopo una seduta.",
+        ],
+        staerke: "Media per la durata e l'intensità dei programmi. Il modo di procedere in sé è pratica, non risultato di studi.",
+      },
+      {
+        frage: "E il pacing, cioè distribuire le forze?",
+        antwort: [
+          "Pacing vuol dire distribuire le forze nell'arco della giornata e fare pause programmate " +
+            "<b>prima</b> che non si riesca più, invece di andare avanti fino al crollo.",
+          "Onestamente: per il lupus su questo ci sono pochissimi studi, solo piccoli programmi educativi e uno " +
+            "studio pilota in corso. I dati buoni sul pacing vengono da altre malattie, soprattutto ME/CFS e " +
+            "long covid, e anche lì sono contrastanti. Se la fatigue del lupus si comporti come quella non è chiarito.",
+          "Sta qui lo stesso, perché costa poco, non è pericoloso ed è reversibile. Provarlo due settimane e " +
+            "guardare nell'andamento se i giorni brutti diventano meno non costa nulla.",
+        ],
+        staerke: "Nel lupus debole. Trasferimento da altre malattie, dove i risultati sono contrastanti.",
+      },
+    ],
+  },
+
+  {
+    kicker: "Alimentazione",
+    titel: "Che cosa nel lupus è davvero documentato",
+    abschnitte: [
+      {
+        frage: "Esiste una dieta per il lupus?",
+        antwort: [
+          "No. Non esiste una forma di alimentazione per cui sia stato mostrato che tratta il lupus o " +
+            "sostituisce i farmaci. Chi lo sostiene sta vendendo qualcosa.",
+          "Quello che esiste sono modelli. Il più studiato è quello <b>mediterraneo</b>: molta verdura, frutta, " +
+            "legumi, olio d'oliva, pesce, frutta secca a guscio, poca carne rossa e poca carne lavorata. Negli " +
+            "studi trasversali sul lupus si accompagna a una minore attività di malattia e a valori cardiaci migliori.",
+          "La parola trasversale è importante: si guarda in un unico momento chi mangia come e come sta. Se sia " +
+            "il cibo a fare la differenza, oppure se alle persone con malattia più tranquilla riesca più facile " +
+            "mangiare così, uno studio di questo tipo non lo può distinguere. Uno studio di intervento concluso, " +
+            "con l'attività di malattia come obiettivo, nel lupus non esiste.",
+          "C'è comunque un buon motivo per andare proprio in quella direzione: il <b>rischio cardiovascolare</b> " +
+            "nelle donne giovani con lupus è nettamente aumentato, e per questo obiettivo il modello mediterraneo " +
+            "è documentato come poche altre cose in nutrizione clinica.",
+        ],
+        staerke: "Per l'attività del lupus: debole, solo osservazionale. Per cuore e vasi: buona, ma proveniente dalla popolazione generale.",
+      },
+      {
+        frage: "Omega-3, vitamina D, curcuma e il resto",
+        antwort: [
+          "Gli <b>omega-3</b> da pesce o da olio nel lupus sono stati studiati in diversi piccoli studi " +
+            "controllati, con indizi di un'attività di malattia un po' minore e di una migliore funzione dei " +
+            "vasi. Gli studi sono piccoli e non uniformi. Pesce grasso due volte a settimana è una realizzazione " +
+            "ragionevole, che non può rovinare nulla.",
+          "La <b>vitamina D</b> nel lupus è spesso bassa, perché il sole si evita e gli steroidi aumentano la " +
+            "perdita; nella celiachia si aggiunge il peggiore assorbimento. Che una carenza vada corretta non è " +
+            "in discussione. Che la correzione migliori la fatigue lo è: gli studi di trattamento su questo, " +
+            "messi insieme, comprendono in tutto solo poche decine di partecipanti. Quindi: misurare, correggere " +
+            "se c'è carenza, non appenderci grandi speranze.",
+          "<b>Curcuma, resveratrolo, NAC, DHEA</b> nel lupus sono stati studiati, in studi piccoli con risultati " +
+            "non uniformi. Nulla di tutto questo è consolidato.",
+          "Più importante di ogni singolo prodotto: tutto ciò che si ingoia va sulla lista dei farmaci e va " +
+            "portato alla visita. Gli integratori non sono una zona franca, hanno interazioni.",
+        ],
+        staerke: "Omega-3: da debole a media, studi piccoli. Vitamina D contro la fatigue: molto debole. Restanti prodotti: debole.",
+      },
+      {
+        frage: "E la storia dei germogli di alfalfa?",
+        antwort: [
+          "L'alfalfa, cioè l'erba medica, contiene L-canavanina. Su questo esistono vecchie descrizioni di casi " +
+            "con quadri simili al lupus ed esperimenti su scimmie. È quell'unico punto che da decenni sta su " +
+            "ogni lista per il lupus.",
+          "Inquadrato onestamente: è una catena di prove sottile e vecchia, non una dimostrazione. Rinunciare ai " +
+            "germogli di alfalfa però non costa nulla, perciò sta anche qui. Su tutto il resto conviene lo " +
+            "scetticismo: molte liste di divieti in rete non sono nate da questa domanda, ma per copiatura.",
+          "Un punto con una motivazione migliore: <b>i prodotti che dichiarano espressamente di stimolare il " +
+            "sistema immunitario</b>, per esempio l'echinacea. In una malattia in cui il sistema immunitario si " +
+            "rivolge contro il proprio corpo, è la direzione sbagliata. Anche qui la catena di prove è sottile, " +
+            "ma il ragionamento tiene.",
+        ],
+        staerke: "Debole. Descrizioni di casi ed esperimenti sugli animali. Sostenibile come misura di prudenza, non come fatto.",
+      },
+    ],
+  },

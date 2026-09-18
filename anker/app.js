@@ -106,25 +106,42 @@
     INHALT.de = flach;
   }
 
+  /*
+   * Welche Sprachen die App wirklich anbietet.
+   *
+   * Eine Sprache zaehlt erst, wenn BEIDES uebersetzt ist: der Inhalt und die
+   * Oberflaeche. Der Inhalt liegt in inhalt-<code>.js, die Oberflaeche steckt
+   * heute noch fest in app.js und ist damit nur auf Deutsch vorhanden.
+   *
+   * Englisch hat schon den ganzen Inhalt, aber noch keine Oberflaeche. Es hier
+   * trotzdem anzubieten hiesse: deutsche Knoepfe ueber englischem Text. Das ist
+   * schlechter als eine Sprache weniger, also steht Englisch erst in dieser
+   * Liste, wenn die Oberflaechentexte da sind. Dann faellt dieser Kommentar weg.
+   */
+  const OBERFLAECHE_FERTIG = ["de"];
+
   function sprachenDa() {
-    return SPRACHEN.filter((s) => INHALT[s.code] && INHALT[s.code].wissen);
+    return SPRACHEN.filter(
+      (s) => INHALT[s.code] && INHALT[s.code].wissen && OBERFLAECHE_FERTIG.includes(s.code),
+    );
   }
 
   function spracheWaehlen() {
+    const moeglich = sprachenDa().map((s) => s.code);
     const gewaehlt = D.einstellungen && D.einstellungen.sprache;
-    if (gewaehlt && INHALT[gewaehlt]) return gewaehlt;
+    if (gewaehlt && moeglich.includes(gewaehlt)) return gewaehlt;
     const vomGeraet = String(navigator.language || "en").slice(0, 2).toLowerCase();
-    if (INHALT[vomGeraet]) return vomGeraet;
-    if (INHALT.en) return "en";
-    const erste = sprachenDa()[0];
-    return erste ? erste.code : "en";
+    if (moeglich.includes(vomGeraet)) return vomGeraet;
+    if (moeglich.includes("en")) return "en";
+    return moeglich[0] || "de";
   }
 
   let L = "en";
   let I = {};
 
   function spracheSetzen(code) {
-    L = INHALT[code] ? code : (INHALT.en ? "en" : L);
+    const moeglich = sprachenDa().map((s) => s.code);
+    L = moeglich.includes(code) ? code : (moeglich[0] || "de");
     I = INHALT[L] || {};
     document.documentElement.lang = L;
   }

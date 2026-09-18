@@ -145,3 +145,228 @@ window.INHALT.fr.essen = [
     ],
   },
 ];
+
+/* --------------------------------------------------------------- Recettes */
+
+window.INHALT.fr.rezepte = [
+  {
+    name: "Assiette sans cuisson",
+    aufwand: "0 minute",
+    warum:
+      "Pour les jours où la cuisinière est trop loin. Malgré tout des protéines, des graisses " +
+      "et un peu de vert, donc mieux que rien et mieux qu'un biscuit.",
+    zutaten: [
+      "1 boîte de sardines ou de maquereau à l'huile d'olive",
+      "1 poignée de tomates cerises ou du concombre",
+      "Galettes de riz ou pain sans gluten",
+      "Huile d'olive, citron, sel",
+    ],
+    schritte: [
+      "Ouvrir la boîte, mettre dans l'assiette.",
+      "Ajouter les légumes, sans les couper si ce n'est pas nécessaire.",
+      "Du citron dessus, de l'huile dessus, c'est prêt.",
+    ],
+    achtung: "Les galettes de riz en accompagnement seulement, pas comme base tous les jours. Les sardines apportent des oméga-3, du calcium et de la vitamine D.",
+  },
+  {
+    name: "Flocons d'avoine de la veille, sans gluten",
+    aufwand: "3 minutes le soir",
+    warum: "Le matin, le petit déjeuner est déjà prêt. Des fibres et du fer venus des graines.",
+    zutaten: [
+      "50 g de flocons d'avoine sans gluten",
+      "150 ml de lait ou de boisson végétale",
+      "1 cuillère à soupe de graines de lin moulues ou de graines de chia",
+      "1 cuillère à café de purée d'oléagineux",
+      "Des fruits",
+    ],
+    schritte: [
+      "Tout mettre dans un bocal, mélanger, fermer.",
+      "Une nuit au réfrigérateur.",
+      "Le matin, les fruits par-dessus.",
+    ],
+    achtung: "Uniquement de l'avoine expressément sans gluten. Une petite minorité de personnes cœliaques ne tolère pas non plus l'avoine pure ; après l'avoir introduite, surveiller les symptômes et en parler avec ta médecin.",
+  },
+  {
+    name: "Soupe de lentilles",
+    aufwand: "25 minutes, une casserole",
+    warum:
+      "Du fer, des fibres et des protéines à partir d'un ingrédient bon marché. Elle tient trois " +
+      "jours au réfrigérateur et se congèle en portions, ce qui vaut plus, les mauvais jours, que " +
+      "n'importe quelle recette.",
+    zutaten: [
+      "200 g de lentilles corail",
+      "1 oignon, 2 gousses d'ail, 2 carottes",
+      "1 cuillère à soupe de concentré de tomate",
+      "1 cuillère à café de cumin, 1 cuillère à café de paprika",
+      "1 l de bouillon de légumes sans gluten",
+      "Citron, huile d'olive",
+    ],
+    schritte: [
+      "Couper finement l'oignon, l'ail et la carotte et les faire suer dans l'huile.",
+      "Faire revenir brièvement le concentré de tomate et les épices avec.",
+      "Ajouter les lentilles et le bouillon, laisser mijoter 20 minutes.",
+      "Relever avec du citron. Le citron n'est pas un accessoire ici : la vitamine C améliore nettement l'absorption du fer d'origine végétale.",
+    ],
+    achtung: "Vérifier le bouillon, beaucoup de cubes contiennent du blé.",
+  },
+  {
+    name: "Saumon au four, légumes à côté",
+    aufwand: "25 minutes, une plaque",
+    warum: "Des oméga-3 et de la vitamine D en un seul plat, et la plaque est toute la vaisselle.",
+    zutaten: [
+      "2 filets de saumon",
+      "Brocoli, poivron, courgette, ce qu'il y a",
+      "Huile d'olive, sel, citron",
+      "Pommes de terre en quartiers",
+    ],
+    schritte: [
+      "Four à 200 degrés.",
+      "Pommes de terre et légumes avec de l'huile et du sel sur la plaque, 15 minutes.",
+      "Ajouter le saumon, encore 10 à 12 minutes.",
+      "Du citron dessus.",
+    ],
+  },
+  {
+    name: "Bol de sarrasin",
+    aufwand: "20 minutes",
+    warum: "Du sarrasin à la place du riz, pour ne pas avoir du riz dans l'assiette tous les jours.",
+    zutaten: [
+      "150 g de sarrasin",
+      "1 boîte de pois chiches",
+      "Concombre, tomate, oignon rouge",
+      "Yaourt ou tahini, citron, huile d'olive",
+      "Persil",
+    ],
+    schritte: [
+      "Cuire le sarrasin 12 à 15 minutes dans de l'eau salée, égoutter, laisser refroidir.",
+      "Couper les légumes, rincer les pois chiches.",
+      "Tout mélanger, verser par-dessus une sauce au yaourt ou au tahini avec du citron.",
+    ],
+    achtung: "Le sarrasin n'est pas du blé, mais en rayon il est souvent posé à côté des farines. Faire attention à l'étiquetage.",
+  },
+  {
+    name: "Curry de pois chiches",
+    aufwand: "20 minutes, une casserole",
+    warum: "Du fer et des fibres, et c'est meilleur le deuxième jour.",
+    zutaten: [
+      "2 boîtes de pois chiches",
+      "1 boîte de tomates, 1 boîte de lait de coco",
+      "Oignon, ail, gingembre",
+      "Poudre de curry ou garam masala",
+      "Épinards, frais ou surgelés",
+    ],
+    schritte: [
+      "Faire revenir l'oignon, l'ail et le gingembre, faire griller brièvement les épices avec.",
+      "Ajouter les tomates et le lait de coco, laisser mijoter 10 minutes.",
+      "Incorporer les pois chiches et les épinards, laisser finir hors du feu.",
+    ],
+    achtung: "Les pâtes de curry toutes prêtes et les mélanges d'épices peuvent contenir du blé comme support.",
+  },
+  {
+    name: "Légumes au four, en réserve",
+    aufwand: "40 minutes, dont 5 de travail",
+    warum:
+      "La vraie réponse à la fatigue n'est pas une recette rapide, mais un réfrigérateur dans " +
+      "lequel quelque chose de prêt attend déjà. Une plaque une fois, un accompagnement pour trois jours.",
+    zutaten: [
+      "Les légumes qu'il y a, en gros morceaux",
+      "Huile d'olive, sel, herbes",
+      "Avec cela une plaque de pommes de terre ou de patates douces",
+    ],
+    schritte: [
+      "Tout sur deux plaques, de l'huile dessus, 200 degrés, 35 à 40 minutes.",
+      "Une fois froid, en boîtes au réfrigérateur.",
+      "Plus tard, en faire un repas avec un œuf, des pois chiches, du poisson ou du yaourt.",
+    ],
+  },
+  {
+    name: "Réveil vert",
+    aufwand: "4 minutes",
+    warum: "Quand mâcher est déjà trop. Pas un remplacement des repas, mais mieux qu'un repas sauté.",
+    zutaten: [
+      "1 poignée d'épinards",
+      "1 banane, 1 poignée de baies",
+      "1 cuillère à soupe de purée d'oléagineux ou de graines de lin",
+      "Yaourt ou boisson végétale",
+      "Le jus d'une demi-orange",
+    ],
+    schritte: ["Tout au mixeur.", "Ne pas laisser l'orange de côté, la vitamine C va chercher le fer dans les épinards."],
+  },
+];
+
+/* ------------------------------------------------------- Analyses de sang */
+
+window.INHALT.fr.laborwerte = [
+  { schluessel: "dsdna", gruppe: "Lupus", name: "Anti-ADN natif", einheit: "IU/ml", bedeutung: "Un anticorps qui, dans le lupus, monte et descend souvent avec l'activité de la maladie. Des valeurs qui montent sont un signal, pas un diagnostic." },
+  { schluessel: "c3", gruppe: "Lupus", name: "Complément C3", einheit: "g/l", bedeutung: "Baisse typiquement quand le lupus est actif, parce que le complément est consommé dans le processus inflammatoire." },
+  { schluessel: "c4", gruppe: "Lupus", name: "Complément C4", einheit: "g/l", bedeutung: "Comme le C3. Les deux se lisent ensemble comme une évolution, pas comme une valeur isolée." },
+  { schluessel: "bsg", gruppe: "Inflammation", name: "Vitesse de sédimentation", einheit: "mm/h", bedeutung: "Élevée de façon non spécifique en cas d'inflammation. Dans le lupus, souvent haute alors que la CRP reste normale." },
+  { schluessel: "crp", gruppe: "Inflammation", name: "CRP", einheit: "mg/l", bedeutung: "Souvent normale dans le lupus. Une CRP nettement élevée oriente plutôt le soupçon vers une infection, ce qui compte sous immunosuppression." },
+  { schluessel: "kreatinin", gruppe: "Rein", name: "Créatinine", einheit: "mg/dl", bedeutung: "Mesure de la fonction rénale." },
+  { schluessel: "upcr", gruppe: "Rein", name: "Rapport protéinurie sur créatininurie", einheit: "mg/g", bedeutung: "Le signe précoce le plus important d'une atteinte rénale. Les protéines dans les urines ne font pas mal et ne se remarquent que si on les cherche." },
+  { schluessel: "hb", gruppe: "Hémogramme", name: "Hémoglobine", einheit: "g/dl", bedeutung: "L'anémie est l'une des causes physiques les plus fréquentes de fatigue, et elle est fréquente aussi bien dans le lupus que dans la maladie cœliaque." },
+  { schluessel: "leuko", gruppe: "Hémogramme", name: "Leucocytes", einheit: "/nl", bedeutung: "Souvent bas dans le lupus, et sous certains médicaments leur évolution est une valeur de sécurité." },
+  { schluessel: "thrombo", gruppe: "Hémogramme", name: "Plaquettes", einheit: "/nl", bedeutung: "Peuvent être basses dans le lupus." },
+  { schluessel: "ttg", gruppe: "Maladie cœliaque", name: "IgA anti-transglutaminase", einheit: "U/ml", bedeutung: "La valeur de suivi de la maladie cœliaque. Sous un régime sans gluten suivi sans faille, elle baisse au fil des mois. Une valeur qui remonte évoque une arrivée de gluten." },
+  { schluessel: "iga", gruppe: "Maladie cœliaque", name: "IgA totales", einheit: "g/l", bedeutung: "Dosées une fois : en cas de déficit en IgA, les IgA anti-transglutaminase seraient faussement basses et le test sans valeur." },
+  { schluessel: "ferritin", gruppe: "Nutriments", name: "Ferritine", einheit: "ng/ml", bedeutung: "Les réserves de fer. Attention : la ferritine monte aussi avec l'inflammation, c'est pourquoi dans le lupus elle se lit avec la CRP." },
+  { schluessel: "vitd", gruppe: "Nutriments", name: "Vitamine D, 25-OH", einheit: "ng/ml", bedeutung: "Souvent basse dans le lupus, parce que le soleil est évité et que les corticoïdes augmentent les pertes." },
+  { schluessel: "b12", gruppe: "Nutriments", name: "Vitamine B12", einheit: "pg/ml", bedeutung: "Absorbée dans l'intestin grêle, donc exactement là où agit la maladie cœliaque." },
+  { schluessel: "folat", gruppe: "Nutriments", name: "Folates", einheit: "ng/ml", bedeutung: "Comme la B12. Particulièrement importants en cas de désir d'enfant et sous certains médicaments." },
+  { schluessel: "tsh", gruppe: "Thyroïde", name: "TSH", einheit: "mU/l", bedeutung: "Une thyroïde qui fonctionne au ralenti donne exactement la fatigue que l'on attribue au lupus. Les maladies thyroïdiennes auto-immunes sont plus fréquentes dans les deux maladies de fond." },
+];
+
+/* ------------------------------------------------------ Signaux d'alarme */
+
+window.INHALT.fr.warnzeichen = [
+  {
+    kicker: "Tout de suite",
+    titel: "Appel d'urgence ou service d'urgences",
+    punkte: [
+      { dringend: "nein", zeichen: "Difficulté à respirer ou forte douleur thoracique", warum: "Cela peut être une embolie pulmonaire, une péricardite ou une pleurésie. Dans le lupus, le risque de caillots est augmenté, surtout avec des anticorps antiphospholipides." },
+      { dringend: "nein", zeichen: "Faiblesse soudaine, trouble de la parole ou de la vue", warum: "Signes d'accident vasculaire cérébral. Dans le lupus, à prendre au sérieux à tout âge." },
+      { dringend: "nein", zeichen: "Crise convulsive ou confusion importante", warum: "Cela peut être une atteinte du système nerveux." },
+      { dringend: "nein", zeichen: "Fièvre élevée sous immunosuppression", warum: "Sous immunosuppression, une infection peut devenir grave vite, et la réaction de défense habituelle manque. Ne pas attendre." },
+      { dringend: "nein", zeichen: "Maux de tête intenses avec raideur de la nuque", warum: "Suspicion de méningite." },
+    ],
+  },
+  {
+    kicker: "Cette semaine",
+    titel: "En consultation sans tarder",
+    punkte: [
+      { dringend: "vielleicht", zeichen: "Urines mousseuses, jambes ou paupières gonflées", warum: "Signe de protéines dans les urines, et donc d'une atteinte rénale. La néphrite lupique ne donne longtemps aucun symptôme et ne se trouve que par le contrôle des urines." },
+      { dringend: "vielleicht", zeichen: "Nouvelle éruption avec fièvre et douleurs articulaires", warum: "Tableau typique d'une poussée." },
+      { dringend: "vielleicht", zeichen: "Nettement moins d'urine que d'habitude", warum: "Cela doit être exploré du côté du rein." },
+      { dringend: "vielleicht", zeichen: "Saignements ou bleus sans raison", warum: "Cela peut indiquer des plaquettes basses." },
+      { dringend: "vielleicht", zeichen: "Diarrhée persistante, perte de poids malgré le régime sans gluten", warum: "Dans la maladie cœliaque, la cause la plus fréquente est du gluten caché, mais cela doit être examiné." },
+      { dringend: "vielleicht", zeichen: "Nouveau trouble de la vue sous hydroxychloroquine", warum: "Le dépistage rétinien suit un rythme fixe, un trouble nouveau n'attend pas ce rythme." },
+    ],
+  },
+  {
+    kicker: "À aborder au prochain rendez-vous",
+    titel: "Important, mais pas urgent",
+    punkte: [
+      { dringend: "ja", zeichen: "Une fatigue qui s'aggrave sur des semaines", warum: "Cela doit être exploré : hémogramme, thyroïde, fer, vitamine D, sommeil, humeur. Tout cela n'est pas le lupus, et c'est une bonne nouvelle, car beaucoup de ces choses se traitent." },
+      { dringend: "ja", zeichen: "Nouvelles chutes de cheveux, aphtes buccaux, photosensibilité", warum: "Ils font partie de la description de l'activité et devraient être notés." },
+      { dringend: "ja", zeichen: "Humeur, anxiété, élan", warum: "Fréquents dans le lupus et étroitement mêlés à la fatigue. Ils sont trop rarement abordés." },
+      { dringend: "ja", zeichen: "Le désir d'enfant, même s'il est encore loin", warum: "Certains médicaments doivent être changés longtemps à l'avance, et dans le lupus une grossesse se planifie au mieux dans une phase calme." },
+    ],
+  },
+];
+
+/* ---------------------------------------------------------------- Questions */
+
+window.INHALT.fr.fragen = [
+  { frage: "À quel point mon lupus est-il actif en ce moment, en chiffres ?", warum: "Il existe des instruments de mesure pour cela. Connaître son propre chiffre rend l'évolution lisible sur des années." },
+  { frage: "Quand les urines ont-elles été contrôlées pour la dernière fois à la recherche de protéines ?", warum: "Le rein ne se manifeste pas de lui-même." },
+  { frage: "Quelles analyses faut-il contrôler et à quelle fréquence, et qui les prescrit ?", warum: "Pour que rien ne reste en suspens entre le médecin traitant et la consultation hospitalière." },
+  { frage: "Quand mon prochain dépistage rétinien est-il prévu ?", warum: "Avec l'hydroxychloroquine, il y a pour cela un rythme fixe." },
+  { frage: "À combien est ma dose de corticoïdes, et quel est le plan pour la baisser ?", warum: "Les recommandations visent la dose d'entretien la plus basse possible." },
+  { frage: "Le fer, la vitamine D, la B12, les folates et le calcium ont-ils été dosés récemment ?", warum: "Dans la maladie cœliaque et sous corticoïdes, c'est le ravitaillement le plus important, et une cause fréquente de fatigue." },
+  { frage: "À quand remonte la dernière ostéodensitométrie, et en faut-il une ?", warum: "La maladie cœliaque et les corticoïdes agissent tous les deux sur l'os." },
+  { frage: "Comment évoluent mes IgA anti-transglutaminase ?", warum: "Elles montrent si le régime sans gluten est vraiment sans faille." },
+  { frage: "Quels vaccins me manquent, et lesquels ne puis-je pas recevoir sous ce traitement ?", warum: "Les vaccins vivants sont un sujet à part sous immunosuppression." },
+  { frage: "Que fais-je en cas de fièvre ou d'infection, qui est-ce que j'appelle ?", warum: "Ce plan, on veut l'avoir avant d'en avoir besoin." },
+  { frage: "Quelle contraception convient à ma situation ?", warum: "En présence d'anticorps antiphospholipides, la contraception contenant des œstrogènes demande des considérations particulières." },
+  { frage: "Ai-je le droit de faire du sport, et combien, même quand je vais mal ?", warum: "La réponse est presque toujours oui, mais la dose se discute, surtout en cas d'atteinte cardiaque, pulmonaire ou rénale." },
+];
