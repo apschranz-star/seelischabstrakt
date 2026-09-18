@@ -2,9 +2,9 @@
 # to the branch gh-pages under jing/. This is what makes a change by the GPT visible
 # without anyone running a build by hand.
 #
-# The access code comes from the repository secret JING_ACCESS_KEY (Settings, Secrets
-# and variables, Actions). Without it nothing is published, so the demo never goes
-# live without its gate by accident.
+# The access code comes from the repository secret SITE_ACCESS_KEY, the one code for
+# every gated site in the repository (JING_ACCESS_KEY is still read as a fallback).
+# Without it nothing is published, so the demo never goes live without its gate.
 #
 # Once JING moves to its own repository, gh-pages of that repository takes over and
 # the two checkout steps below lose their `repository` line.
@@ -31,10 +31,10 @@ jobs:
 
       - name: Stop here if the access code is not configured
         env:
-          KEY: ${{ secrets.JING_ACCESS_KEY }}
+          KEY: ${{ secrets.SITE_ACCESS_KEY || secrets.JING_ACCESS_KEY }}
         run: |
           if [ -z "$KEY" ]; then
-            echo "::warning::Secret JING_ACCESS_KEY fehlt. Demo nicht veroeffentlicht. Anlegen unter Settings, Secrets and variables, Actions."
+            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Demo nicht veroeffentlicht. Anlegen unter Settings, Secrets and variables, Actions."
             echo "skip=1" >> "$GITHUB_ENV"
           fi
 
@@ -51,7 +51,7 @@ jobs:
         if: env.skip != '1'
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-          KEY: ${{ secrets.JING_ACCESS_KEY }}
+          KEY: ${{ secrets.SITE_ACCESS_KEY || secrets.JING_ACCESS_KEY }}
         run: |
           scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing "$KEY"
           test -f out/index.html

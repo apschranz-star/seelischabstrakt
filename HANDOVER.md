@@ -99,7 +99,7 @@ Lokal, in einem Terminal im Ordner des Codes:
 
 Alle drei müssen ohne Fehler durchlaufen. Dasselbe fährt die CI bei jedem Push.
 
-Demo: Jeder Push auf den Branch jing baut die Demo neu und veröffentlicht sie auf gh-pages unter jing/, Workflow .github/workflows/demo-pages.yml. Der Zugangscode kommt aus dem Repository-Secret JING_ACCESS_KEY. Fehlt das Secret, wird nichts veröffentlicht und der Lauf sagt es als Warnung. Von Hand geht es weiterhin:
+Demo: Jeder Push auf den Branch jing baut die Demo neu und veröffentlicht sie auf gh-pages unter jing/, Workflow .github/workflows/demo-pages.yml. Der Zugangscode kommt aus dem Repository-Secret SITE_ACCESS_KEY. Fehlt das Secret, wird nichts veröffentlicht und der Lauf sagt es als Warnung. Von Hand geht es weiterhin:
 
     scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Zugangscode>
 
