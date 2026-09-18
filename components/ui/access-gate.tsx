@@ -144,6 +144,45 @@ export function AccessGate({ children }: { children: ReactNode }) {
           </p>
         ) : null}
       </form>
+
+      {/*
+        Art. 13 DSGVO gilt auch fuer diese Ansicht: Wer die Seite betreibt und was
+        gespeichert wird, gehoert vor den Zugang, nicht dahinter. Die Rechtsseiten
+        liegen hinter dem Code, deshalb steht das Noetige hier.
+      */}
+      <details className="mt-10 border-t border-line pt-5 text-[12px] leading-relaxed text-ink-3">
+        <summary className="cursor-pointer text-ink-2">
+          {t({
+            de: "Wer diese Seite betreibt und was gespeichert wird",
+            en: "Who runs this page and what is stored",
+          })}
+        </summary>
+        <p className="mt-3">
+          {t({
+            de:
+              "Nicht öffentliche Vorschau eines Shop-Entwurfs. Die Firmendaten auf den folgenden " +
+              "Seiten sind Beispieldaten. Diese Ansicht legt nur den " +
+              "Zugang im lokalen Speicher deines Browsers ab, damit du den Code nicht jedes Mal " +
+              "eingeben musst. Das ist für den gewünschten Dienst unbedingt erforderlich und braucht " +
+              "keine Einwilligung, § 25 Abs. 2 Nr. 2 TDDDG. Der Hoster protokolliert beim Aufruf die " +
+              "IP-Adresse, Art. 6 Abs. 1 lit. f DSGVO. Kein Tracking, keine Cookies, keine Schriften " +
+              "von fremden Servern. In der Demo wird nichts bestellt und nichts bezahlt.",
+            en:
+              "Private preview of a shop draft. The company details on the following pages are " +
+              "sample data. This screen only keeps your access in " +
+              "your browser storage so you do not have to type the code again. That storage is " +
+              "strictly necessary for the service you asked for and needs no consent. The host logs " +
+              "your IP address on each request, Art. 6 (1) (f) GDPR. No tracking, no cookies, no " +
+              "fonts from other servers. Nothing is ordered and nothing is paid for in this demo.",
+          })}
+        </p>
+        <p className="mt-3">
+          {t({
+            de: "Die vollständige Datenschutzerklärung und das Impressum stehen hinter dem Zugang.",
+            en: "The full privacy policy and the imprint are behind the access code.",
+          })}
+        </p>
+      </details>
     </main>
   );
 }

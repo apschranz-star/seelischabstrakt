@@ -51,43 +51,48 @@
 
 :root,
 :root[data-mode="yang"] {
-  --jing-surface: #f9f9fb;
-  --jing-surface-2: #f1f1f4;
-  --jing-ink: #111111;
-  --jing-ink-2: #3d3d40;
-  --jing-ink-3: #6b6b70;
-  --jing-line: #e5e5e5;
-  --jing-line-2: #d2d2d6;
+  /* Tag: warmes Papier. Die Palette ist nicht das Negativ der Nacht, sie ist
+     waermer, damit sich die beiden Haelften nicht nur hell und dunkel, sondern
+     nach Tageszeit unterscheiden. Alle Paare wurden nachgerechnet und liegen
+     ueber den Grenzen, die 1.4.3 und 1.4.11 verlangen. */
+  --jing-surface: #faf9f6;
+  --jing-surface-2: #f2f1ec;
+  --jing-ink: #12110f;
+  --jing-ink-2: #3f3c36;
+  --jing-ink-3: #6b675f;
+  --jing-line: #e7e5de;
+  --jing-line-2: #d5d2c9;
   /* Boundary of an interactive control. WCAG 1.4.11 wants 3:1 against the
      surface behind it, which the decorative hairlines above do not reach and
-     are not meant to. 3.54:1 on surface, 3.30:1 on surface-2. */
-  --jing-control: #84848a;
-  --jing-inverse-surface: #0d0d0d;
-  --jing-inverse-ink: #fafafa;
-  --jing-seal: #8f2a1f;
-  --jing-stage: #f1f1f4;
-  --jing-stage-2: #e9e9ed;
-  --jing-shadow: rgb(17 17 17 / 0.34);
+     are not meant to. 3.75:1 on surface, 3.49:1 on surface-2. */
+  --jing-control: #838077;
+  --jing-inverse-surface: #100f0d;
+  --jing-inverse-ink: #faf9f6;
+  --jing-seal: #8d2a1c;
+  --jing-stage: #f2f1ec;
+  --jing-stage-2: #eae8e1;
+  --jing-shadow: rgb(18 17 15 / 0.34);
   color-scheme: light;
 }
 
 :root[data-mode="yin"] {
-  --jing-surface: #0d0d0d;
-  --jing-surface-2: #141414;
-  --jing-ink: #fafafa;
-  --jing-ink-2: #c9c9c9;
-  --jing-ink-3: #8f8f8f;
-  --jing-line: #262626;
-  --jing-line-2: #3a3a3a;
-  /* 3.38:1 on surface, 3.21:1 on surface-2. */
-  --jing-control: #666666;
-  --jing-inverse-surface: #f9f9fb;
-  --jing-inverse-ink: #111111;
+  /* Nacht: kuehles Blauschwarz, das Gegenstueck zum warmen Papier des Tages. */
+  --jing-surface: #0b0c10;
+  --jing-surface-2: #121319;
+  --jing-ink: #f7f8fa;
+  --jing-ink-2: #c6c8ce;
+  --jing-ink-3: #8d9098;
+  --jing-line: #23252d;
+  --jing-line-2: #383b45;
+  /* 3.61:1 on surface, 3.42:1 on surface-2. */
+  --jing-control: #666a73;
+  --jing-inverse-surface: #f7f8fa;
+  --jing-inverse-ink: #0b0c10;
   /* Error text on the night surface. 4.45:1 was just under the 4.5:1 the
      Erfolgskriterium 1.4.3 asks for, so it is lifted to 5.18:1. */
   --jing-seal: #cd6558;
-  --jing-stage: #161616;
-  --jing-stage-2: #1c1c1c;
+  --jing-stage: #14161c;
+  --jing-stage-2: #1a1d24;
   --jing-shadow: rgb(0 0 0 / 0.62);
   color-scheme: dark;
 }
