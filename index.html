@@ -3,6 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- gate:start -->
+<script>
+(function(){
+  var KEY="5rdoHGJM3mlN";
+  if(!KEY||KEY.indexOf("__")===0)return;
+  var STORE="sa-access",PARAM="zugang",q=null;
+  try{q=new URLSearchParams(location.search).get(PARAM);}catch(e){}
+  var ok=false;
+  try{if(q===KEY){localStorage.setItem(STORE,KEY);}ok=localStorage.getItem(STORE)===KEY;}catch(e){ok=q===KEY;}
+  if(q!==null){try{history.replaceState(null,"",location.pathname+location.hash);}catch(e){}}
+  if(ok)return;
+  document.documentElement.setAttribute("data-gated","");
+  var m=document.createElement("meta");m.name="robots";m.content="noindex,nofollow";document.head.appendChild(m);
+  document.addEventListener("DOMContentLoaded",function(){
+    var f=document.createElement("form");f.id="sa-gate";f.method="get";f.action=location.pathname;f.setAttribute("lang","de");
+    f.innerHTML='<p class="k">Zugang &middot; Access</p><h1>Farida Benslimane</h1>'
+      +'<p>Diese Seite ist nicht &ouml;ffentlich. Bitte den Zugangscode eingeben.<br><span lang="en">This page is not public. Please enter the access code.</span></p>'
+      +'<label for="sa-gate-code">Zugangscode &middot; <span lang="en">Access code</span></label>'
+      +'<input id="sa-gate-code" name="'+PARAM+'" type="password" autocomplete="off" required autofocus>'
+      +'<button type="submit">&Ouml;ffnen &middot; <span lang="en">Open</span></button>'
+      +(q!==null?'<p class="e" role="alert">Der Code stimmt nicht. <span lang="en">The code is not correct.</span></p>':'');
+    document.body.appendChild(f);
+  });
+})();
+</script>
+<style>
+html[data-gated] body>*:not(#sa-gate){display:none!important}
+html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;color:#111;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+#sa-gate{display:grid;gap:14px;width:min(420px,calc(100vw - 48px));padding:32px;border:1px solid #ddd;border-radius:16px;box-sizing:border-box}
+#sa-gate .k{margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#777}
+#sa-gate h1{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em}
+#sa-gate p{margin:0;color:#555;font-size:14px}
+#sa-gate label{font-size:13px;color:#555}
+#sa-gate input{font:inherit;padding:10px 12px;border:1px solid #bbb;border-radius:8px;min-width:0}
+#sa-gate button{font:inherit;padding:10px 14px;border:0;border-radius:999px;background:#111;color:#fff;cursor:pointer}
+#sa-gate .e{color:#b3261e}
+@media (prefers-color-scheme:dark){html[data-gated] body{background:#000;color:#f5f5f7}#sa-gate{border-color:#333}#sa-gate p,#sa-gate label{color:#a1a1a6}#sa-gate input{background:#111;color:#f5f5f7;border-color:#444}#sa-gate button{background:#f5f5f7;color:#000}}
+</style>
+<!-- gate:end -->
 <title>Farida Benslimane</title>
 <meta name="description" content="Dr. Farida Benslimane, medico di medicina generale ad Acquapendente e Bagnoregio.">
 <link rel="canonical" href="https://apschranz-star.github.io/seelischabstrakt/">
