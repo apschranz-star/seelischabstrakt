@@ -34,11 +34,18 @@ jobs:
         # site under schranz-ai/, the portfolio under portfolio/ and the art shop preview under
         # shop/ (each its own workflow).
         # Only the practice site is replaced here.
+        env:
+          KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
+          if [ -z "$KEY" ]; then
+            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Nichts veroeffentlicht, damit keine offene Fassung die geschuetzte ersetzt. Anlegen unter Settings, Secrets and variables, Actions."
+            exit 0
+          fi
           cd pages
           find . -mindepth 1 -maxdepth 1 ! -name .git ! -name jing ! -name schranz-ai ! -name portfolio ! -name shop -exec rm -rf {} +
           cp -R ../farida/. .
           rm -f netlify.toml README.md
+          sh ../gate/inject.sh index.html "$KEY"
           touch .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

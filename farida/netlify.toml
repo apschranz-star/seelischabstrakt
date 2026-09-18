@@ -1,7 +1,8 @@
 # Second site from the same repository: base directory farida, no build step.
 [build]
   publish = "."
-  command = ""
+  # Arms the access gate when SITE_ACCESS_KEY is set in the Netlify environment, see ../gate/README.md.
+  command = "sh ../gate/inject.sh index.html \"$SITE_ACCESS_KEY\""
   # Build only when something in this folder changed. Compares against the last commit that was
   # actually deployed, not against the previous commit, so a skipped build never leaves the site
   # behind. If the comparison cannot run, the command fails and Netlify builds as usual.

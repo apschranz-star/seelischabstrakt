@@ -10,7 +10,7 @@ Alles hier bezieht sich auf dieses Repository `apschranz-star/seelischabstrakt`.
     /schranz-ai       SCHRANZ AI SOLUTIONS, Pitchdeck als Website, zwei Sprachen, content.json plus build.mjs
     Branch jing       JING, Beauty-Shop, Next.js, serverseitige Kasse, eigene Übergabe in HANDOVER.md
 
-Jede Seite hat einen Workflow unter .github/workflows/, der sie nach einem Push auf GitHub Pages stellt. Die Adressen und die Datei je Seite stehen in GPT-PROMPT.md.
+Jede Seite hat einen Workflow unter .github/workflows/, der sie nach einem Push auf GitHub Pages stellt. Die Adressen und die Datei je Seite stehen in GPT-PROMPT.md. Alle Vorschauen außer dem Kunst-Shop stehen hinter einem Zugangscode, siehe gate/README.md; eine neue Seite bekommt den Code nach derselben Anleitung.
 
 ## Teil 1: Was ChatGPT kann und was nicht
 

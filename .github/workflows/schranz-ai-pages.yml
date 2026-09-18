@@ -25,19 +25,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Build both languages
+      - name: Build both languages, behind the access code
+        env:
+          SITE_ACCESS_KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
+          if [ -z "$SITE_ACCESS_KEY" ]; then
+            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Nichts veroeffentlicht, damit keine offene Fassung die geschuetzte ersetzt. Anlegen unter Settings, Secrets and variables, Actions."
+            echo "skip=1" >> "$GITHUB_ENV"
+            exit 0
+          fi
           cd schranz-ai
           SITE_BASE=/seelischabstrakt/schranz-ai \
           SITE_URL=https://apschranz-star.github.io/seelischabstrakt/schranz-ai \
           node build.mjs
           test -f dist/index.html && test -f dist/en/index.html
       - name: Check out the branch gh-pages
+        if: env.skip != '1'
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: pages
       - name: Replace only the folder schranz-ai on the branch
+        if: env.skip != '1'
         run: |
           rm -rf pages/schranz-ai
           mkdir -p pages/schranz-ai

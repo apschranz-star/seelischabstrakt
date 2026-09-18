@@ -4,17 +4,17 @@ Alle fünf Seiten lassen sich aus ChatGPT heraus betreiben. Der Weg ist bei alle
 
 ## Was heute geht und was nicht
 
-    Seite               Datei, die ChatGPT ändert          Veröffentlicht durch                   Live ohne Netlify
-    Farida, Praxis      farida/content.json                Workflow "Publish the practice site"   ja
-    Persönliche Seite   portfolio/journal.json             Workflow "Publish the Behind the        ja, Kommentare unter den Texten
+    Seite               Datei, die ChatGPT ändert          Veröffentlicht durch                   Zugang
+    Farida, Praxis      farida/content.json                Workflow "Publish the practice site"   Code
+    Persönliche Seite   portfolio/journal.json             Workflow "Publish the Behind the        Code, Kommentare unter den Texten
                                                            Artist page"                           brauchen Netlify
-    Schranz AI          schranz-ai/content.json            Workflow "Publish the Schranz AI site"  ja
-    Kunst-Shop          works.json, site.json              Workflow "Publish the art shop          ja, Bestellen und Desk brauchen
+    Schranz AI          schranz-ai/content.json            Workflow "Publish the Schranz AI site"  Code
+    Kunst-Shop          works.json, site.json              Workflow "Publish the art shop          offen, Bestellen und Desk brauchen
                                                            preview"                               Netlify
-    JING                config/products.ts und             Workflow "Publish the JING demo"        ja, sobald das Secret
-                        config/site.ts, Branch jing                                               JING_ACCESS_KEY im Repo liegt
+    JING                config/products.ts und             Workflow "Publish the JING demo"        Code
+                        config/site.ts, Branch jing
 
-Eine Sache muss von dir kommen: Der Workflow für die JING-Demo liest den Zugangscode aus einem Repository-Secret. Ohne das Secret veröffentlicht er nichts, damit die Demo nie ohne Zugang online geht. Anlegen: github.com, Repository seelischabstrakt, Settings, Secrets and variables, Actions, New repository secret, Name `JING_ACCESS_KEY`, Wert der Code aus dem Zugangslink. Danach einmal den Workflow "Publish the JING demo" unter Actions mit "Run workflow" starten.
+Zugang: Farida, die persönliche Seite, Schranz AI und JING stehen hinter einem Code, nur der Kunst-Shop ist offen. Der Link mit `?zugang=<Code>` öffnet, der Browser merkt sich das. Die Workflows lesen den Code aus einem Repository-Secret. Ohne das Secret veröffentlichen sie nichts, damit nie eine offene Fassung die geschützte ersetzt. Anlegen, einmal: github.com, Repository seelischabstrakt, Settings, Secrets and variables, Actions, New repository secret, Name `SITE_ACCESS_KEY`, Wert der Code aus deinem Zugangslink. Danach unter Actions die vier Workflows einmal mit "Run workflow" starten. Alles dazu in gate/README.md.
 
 ## Wie ChatGPT auf GitHub schreibt
 

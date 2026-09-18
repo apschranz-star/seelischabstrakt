@@ -28,11 +28,18 @@ jobs:
           ref: gh-pages
           path: pages
       - name: Replace only the portfolio preview
+        env:
+          KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
+          if [ -z "$KEY" ]; then
+            echo "::warning::Secret SITE_ACCESS_KEY fehlt. Nichts veroeffentlicht, damit keine offene Fassung die geschuetzte ersetzt. Anlegen unter Settings, Secrets and variables, Actions."
+            exit 0
+          fi
           rm -rf pages/portfolio
           mkdir -p pages/portfolio
           cp -R portfolio/. pages/portfolio/
           rm -f pages/portfolio/netlify.toml pages/portfolio/README.md
+          sh gate/inject.sh pages/portfolio/index.html "$KEY"
           touch pages/.nojekyll
           cd pages
           git config user.name "github-actions[bot]"

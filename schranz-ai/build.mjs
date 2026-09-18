@@ -20,6 +20,24 @@ const css = readFileSync(join(here, "styles.css"), "utf8");
 const js = readFileSync(join(here, "site.js"), "utf8");
 
 const BASE = (process.env.SITE_BASE ?? "").replace(/\/$/, "");
+
+/*
+ * The access gate. With SITE_ACCESS_KEY set, every page carries the snippet
+ * from ../gate/gate.snippet.html with the code written in, and a visitor
+ * without the code or the link sees a field instead of the page. Without the
+ * variable the pages are public. See ../gate/README.md.
+ */
+const ACCESS_KEY = process.env.SITE_ACCESS_KEY ?? "";
+const GATE_FILE = join(here, "..", "gate", "gate.snippet.html");
+if (ACCESS_KEY && !/^[A-Za-z0-9_-]+$/.test(ACCESS_KEY)) {
+  throw new Error("SITE_ACCESS_KEY may only contain A-Z a-z 0-9 _ -");
+}
+const GATE =
+  ACCESS_KEY && existsSync(GATE_FILE)
+    ? readFileSync(GATE_FILE, "utf8")
+        .replace(/__ACCESS_KEY__/g, ACCESS_KEY)
+        .replace(/__SITE_NAME__/g, content.site.name)
+    : "";
 const URL_ROOT = (process.env.SITE_URL ?? content.site.url).replace(/\/$/, "");
 const LANGS = ["de", "en"];
 const DEFAULT_LANG = "de";
@@ -56,7 +74,7 @@ function head(lang, { title, description, path, altPath, noindex = false }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>${esc(title)}</title>
+${GATE}<title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex,follow">' : ""}
 <link rel="canonical" href="${abs(path)}">
@@ -529,4 +547,6 @@ writeFileSync(join(dist, ".nojekyll"), "");
 if (existsSync(join(here, content.site.deckFile))) {
   copyFileSync(join(here, content.site.deckFile), join(dist, content.site.deckFile));
 }
-console.log(`Built ${pages.length} languages into dist/ (base "${BASE || "/"}", url ${URL_ROOT})`);
+console.log(
+  `Built ${pages.length} languages into dist/ (base "${BASE || "/"}", url ${URL_ROOT}, ${GATE ? "gated" : "public"})`,
+);
