@@ -32,6 +32,11 @@ const GATE_FILE = join(here, "..", "gate", "gate.snippet.html");
 if (ACCESS_KEY && !/^[A-Za-z0-9_-]+$/.test(ACCESS_KEY)) {
   throw new Error("SITE_ACCESS_KEY may only contain A-Z a-z 0-9 _ -");
 }
+// Ein fehlender Schnipsel darf nicht heissen, dass die Seite still ohne Zugang
+// gebaut wird: der Lauf meldete Erfolg und die Seite laege offen im Netz.
+if (ACCESS_KEY && !existsSync(GATE_FILE)) {
+  throw new Error(`SITE_ACCESS_KEY ist gesetzt, aber ${GATE_FILE} fehlt. Nichts gebaut.`);
+}
 const GATE =
   ACCESS_KEY && existsSync(GATE_FILE)
     ? readFileSync(GATE_FILE, "utf8")
@@ -63,7 +68,6 @@ function t(node, lang, path = "") {
 const langPath = (lang, sub = "") => `${BASE}/${lang === DEFAULT_LANG ? "" : "en/"}${sub}`;
 const abs = (p) => `${URL_ROOT}${p.startsWith(BASE) ? p.slice(BASE.length) : p}`;
 
-let revealIndex = 0;
 /** A reveal wrapper with a stagger delay in the group. */
 const rv = (i = 0) => ` class="reveal" style="--d:${Math.min(i, 6) * 70}ms"`;
 
@@ -78,7 +82,7 @@ function head(lang, { title, description, path, altPath, noindex = false }) {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 ${GATE}<title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-${noindex ? '<meta name="robots" content="noindex,follow">' : ""}
+${GATE ? '<meta name="robots" content="noindex,nofollow">' : noindex ? '<meta name="robots" content="noindex,follow">' : ""}
 <link rel="canonical" href="${abs(path)}">
 <link rel="alternate" hreflang="${lang}" href="${abs(path)}">
 <link rel="alternate" hreflang="${other}" href="${abs(altPath)}">
@@ -255,7 +259,7 @@ function proof(lang) {
   const L = p.labels;
   const one = (c, i) => `<article class="case"${rv(i)}>
         <div class="case-head">
-          <p class="t-kicker"><b>${esc(c.number)}</b> ${t(c.title, lang, `proof[${i}].title`)}</p>
+          <p class="t-kicker"><b>${esc(c.number)}</b></p>
           <h3 class="t-h2">${t(c.title, lang, `proof[${i}].title`)}</h3>
           <p class="t-small meta">${t(c.meta, lang, `proof[${i}].meta`)}</p>
         </div>
@@ -441,7 +445,6 @@ function ask(lang) {
 }
 
 function homePage(lang) {
-  revealIndex = 0;
   const path = langPath(lang);
   const altPath = langPath(lang === "de" ? "en" : "de");
   return [
@@ -531,16 +534,27 @@ for (const lang of LANGS) {
   pages.push(langPath(lang));
 }
 write("404.html", notFound());
-write("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${abs(`${BASE}/sitemap.xml`)}\n`);
+// Eine Seite hinter dem Zugang laedt keine Suchmaschine ein. Sie bekommt ein
+// Disallow und keine Sitemap, und jede Seite traegt zusaetzlich noindex, denn
+// robots.txt liegt auf GitHub Pages unter einem Unterpfad und wird dort gar
+// nicht gelesen.
 write(
-  "sitemap.xml",
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${pages
-    .map(
-      (p) =>
-        `  <url><loc>${abs(p)}</loc>${LANGS.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${abs(langPath(l))}"/>`).join("")}</url>`,
-    )
-    .join("\n")}\n</urlset>\n`,
+  "robots.txt",
+  GATE
+    ? "User-agent: *\nDisallow: /\n"
+    : `User-agent: *\nAllow: /\nSitemap: ${abs(`${BASE}/sitemap.xml`)}\n`,
 );
+if (!GATE) {
+  write(
+    "sitemap.xml",
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${pages
+      .map(
+        (p) =>
+          `  <url><loc>${abs(p)}</loc>${LANGS.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${abs(langPath(l))}"/>`).join("")}</url>`,
+      )
+      .join("\n")}\n</urlset>\n`,
+  );
+}
 write(
   "icon.svg",
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1d1d1f"/><text x="32" y="41" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif" font-weight="700" font-size="26" fill="#fff">S</text></svg>\n`,

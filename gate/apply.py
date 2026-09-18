@@ -39,11 +39,23 @@ def main() -> int:
         _, tail = rest.split(END, 1)
         html = head + snippet + tail
     else:
-        anchor = '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
+        # Hinter die eigene Sicherheitsregel der Seite, wenn es eine gibt: eine
+        # CSP im Dokument gilt erst ab der Stelle, an der sie steht, und das Tor
+        # stuende sonst ausserhalb der Regeln, die die Seite fuer sich erklaert.
+        # Sonst hinter das viewport-Tag.
+        anchors = [
+            line
+            for line in html.splitlines(keepends=True)
+            if "http-equiv" in line and "Content-Security-Policy" in line
+        ]
+        anchor = anchors[0] if anchors else (
+            '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
+        )
         if anchor not in html:
-            print(f"{page}: kein viewport-Tag gefunden, nichts eingefuegt", file=sys.stderr)
+            print(f"{page}: weder CSP noch viewport-Tag gefunden, nichts eingefuegt", file=sys.stderr)
             return 1
-        html = html.replace(anchor, anchor + snippet + "\n", 1)
+        joiner = "" if anchor.endswith("\n") else "\n"
+        html = html.replace(anchor, anchor + joiner + snippet + "\n", 1)
     page.write_text(html, encoding="utf8")
     print(f"{page}: Zugang gesetzt, Betreiber {operator}")
     return 0

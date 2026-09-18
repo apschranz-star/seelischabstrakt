@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://apschranz-star.github.io/seelischabstrakt/sitemap.xml
+Disallow: /modulo.html
+Sitemap: https://faridabenslimane.netlify.app/sitemap.xml

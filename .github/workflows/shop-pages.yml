@@ -1,6 +1,12 @@
 # Publishes the art shop (index.html, site.json, works.json, img/) to the branch gh-pages
-# under shop/, so the catalogue can be viewed on GitHub Pages without Netlify. Ordering and
-# the admin desk need Netlify functions and stay on the Netlify site.
+# under shop/, so the catalogue can be viewed on GitHub Pages without Netlify.
+#
+# The shop is the one public site, so no access gate here.
+#
+# What is published is the catalogue. The order form travels with index.html because it is
+# one file, but it posts to a Netlify form that does not exist on this branch, so ordering
+# fails there. The shop that sells is the Netlify one; this is a preview of the catalogue.
+# The admin desk (admin.html, add.html) is not published here at all.
 name: Publish the art shop preview
 
 on:
@@ -49,5 +55,13 @@ jobs:
           git add -A
           if git diff --cached --quiet; then echo "shop preview already current"; exit 0; fi
           git commit -q -m "Publish the art shop preview from ${GITHUB_SHA::7}"
-          git push -q origin HEAD:gh-pages
-          echo "shop preview updated"
+          # Fuenf Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
+          for try_ in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "shop preview updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1

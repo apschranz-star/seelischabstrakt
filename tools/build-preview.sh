@@ -33,12 +33,18 @@ find "$target" -mindepth 1 -maxdepth 1 ! -name .git ! -name jing -exec rm -rf {}
 # Praxisseite an die Wurzel
 cp -R "$here/farida/." "$target/"
 rm -f "$target/netlify.toml" "$target/README.md" "$target/sitemap.xml"
-sh "$here/gate/inject.sh" "$target/index.html" "$key"
+# Abschnitte mit draft stehen nicht auf der Seite, wohl aber in der Datei daneben.
+python3 "$here/tools/strip-drafts.py" "$target/content.json"
+# Beide Seiten des Ordners hinter den Code, nicht nur die Startseite.
+for f in index.html modulo.html; do
+  if [ -f "$target/$f" ]; then sh "$here/gate/inject.sh" "$target/$f" "$key"; fi
+done
 
 # Persoenliche Seite
 mkdir -p "$target/portfolio"
 cp -R "$here/portfolio/." "$target/portfolio/"
 rm -f "$target/portfolio/netlify.toml" "$target/portfolio/README.md"
+rm -f "$target/portfolio/robots.txt" "$target/portfolio/sitemap.xml"
 sh "$here/gate/inject.sh" "$target/portfolio/index.html" "$key"
 
 # Schranz AI, beim Bauen kommt der Code hinein
@@ -63,6 +69,16 @@ printf 'User-agent: *\nDisallow: /\n' > "$target/robots.txt"
 touch "$target/.nojekyll"
 
 echo "Vorschau gebaut in $target"
-grep -l "__ACCESS_KEY__" "$target/index.html" "$target/portfolio/index.html" 2>/dev/null \
-  && { echo "FEHLER: Zugangscode nicht eingesetzt" >&2; exit 1; }
-echo "Zugang gesetzt in Praxisseite, persoenlicher Seite und Schranz AI. Shop offen."
+
+# Nachsehen statt behaupten. Jede Seite, die hinter den Code gehoert, muss ihn
+# tragen; steht irgendwo noch der Platzhalter, ist etwas schiefgegangen und die
+# Seite laege offen im Netz.
+fehler=0
+for f in "$target/index.html" "$target/modulo.html" "$target/portfolio/index.html" \
+         "$target/schranz-ai/index.html" "$target/schranz-ai/en/index.html"; do
+  [ -f "$f" ] || continue
+  if grep -q "__ACCESS_KEY__" "$f"; then echo "FEHLER: kein Zugangscode in $f" >&2; fehler=1; fi
+  if ! grep -q "$key" "$f"; then echo "FEHLER: der Code steht nicht in $f" >&2; fehler=1; fi
+done
+[ "$fehler" = 0 ] || exit 1
+echo "Zugang gesetzt in Praxisseite, Formular, persoenlicher Seite und Schranz AI. Shop offen."

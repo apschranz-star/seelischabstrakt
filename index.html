@@ -688,8 +688,18 @@ function consent(){
 }
 function loadAnalytics(){ /* add your provider's script here, e.g. Plausible or Umami. Nothing loads without consent. */ }
 
-/* ---------- live preview from admin.html ---------- */
-window.addEventListener("message",e=>{ if(e.data&&e.data.type==="sa-preview"){ SITE=e.data.site; WORKS=e.data.works||[]; if(e.data.lang) lang=e.data.lang; applyTheme(); applyAll(); } });
+/* ---------- live preview from admin.html ----------
+   Nur von derselben Adresse. Diese Nachricht tauscht Inhalt, Zahlungslink und
+   Aussehen der Seite aus; ohne Absenderpruefung koennte das jede fremde Seite
+   tun, die den Shop in einem Rahmen oder einem Fenster geoeffnet hat, und einem
+   Kaeufer ihren eigenen Zahlungslink hinstellen. Das Studio-Pult liegt auf
+   derselben Adresse wie der Shop, also ist genau das die Bedingung. Zwei Dateien
+   nebeneinander auf der Platte (file://) haben gar keine Adresse; dort gibt es
+   auch keine fremde Seite, die etwas schicken koennte. */
+window.addEventListener("message",e=>{
+  if(location.protocol!=="file:"&&e.origin!==window.location.origin) return;
+  if(e.data&&e.data.type==="sa-preview"){ SITE=e.data.site; WORKS=e.data.works||[]; if(e.data.lang) lang=e.data.lang; applyTheme(); applyAll(); }
+});
 
 /* ---------- boot ---------- */
 document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>{ lang=b.dataset.lang; try{localStorage.setItem("sa-lang",lang);}catch(e){} applyAll(); }));

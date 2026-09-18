@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - "schranz-ai/**"
+      - "gate/**"
       - ".github/workflows/schranz-ai-pages.yml"
   workflow_dispatch:
 
@@ -30,14 +31,25 @@ jobs:
         with:
           ref: gh-pages
           path: pages
-      - name: Read the existing access gate
+      - name: Read the access code, secret first, published site second
+        env:
+          KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
-          SITE_ACCESS_KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/schranz-ai/index.html","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);')"
-          if [ -z "$SITE_ACCESS_KEY" ]; then
-            echo "::error::Existing access gate could not be read. Nothing published."
+          # Der Zugangscode kommt aus dem Repository-Secret SITE_ACCESS_KEY, wie bei den
+          # anderen drei Seiten. Fehlt das Secret, wird er aus der zuletzt veroeffentlichten
+          # Seite zurueckgelesen. Das || true ist noetig: ohne es stirbt der Schritt am rohen
+          # Fehler von node, und die verstaendliche Meldung darunter wird nie erreicht.
+          # Der Platzhalter zaehlt nicht als Code, er wuerde das Tor abschalten.
+          if [ -z "$KEY" ] && [ -f "pages/schranz-ai/index.html" ]; then
+            KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/schranz-ai/index.html","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' || true)"
+          fi
+          case "$KEY" in __*) KEY="" ;; esac
+          if [ -z "$KEY" ]; then
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Seite. Nichts veroeffentlicht. Abhilfe: Repository-Secret SITE_ACCESS_KEY anlegen."
             exit 1
           fi
-          echo "SITE_ACCESS_KEY=$SITE_ACCESS_KEY" >> "$GITHUB_ENV"
+          echo "::add-mask::$KEY"
+          echo "SITE_ACCESS_KEY=$KEY" >> "$GITHUB_ENV"
       - name: Build both languages, behind the existing access code
         run: |
           cd schranz-ai
@@ -57,5 +69,13 @@ jobs:
           git add -A
           if git diff --cached --quiet; then echo "gh-pages already current"; exit 0; fi
           git commit -q -m "Publish the Schranz AI site from ${GITHUB_SHA::7}"
-          git push -q origin HEAD:gh-pages
-          echo "gh-pages updated"
+          # Fuenf Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
+          for try_ in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "gh-pages updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1

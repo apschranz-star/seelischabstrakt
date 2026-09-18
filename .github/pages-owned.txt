@@ -1,0 +1,13 @@
+# Ordner auf dem Zweig gh-pages, die einem eigenen Workflow gehoeren.
+#
+# Der Workflow der Praxisseite raeumt die Wurzel des Zweigs leer, bevor er seine
+# Dateien hinlegt. Was hier steht, laesst er stehen. Kommt eine Seite dazu, kommt
+# hier eine Zeile dazu, und zwar genau hier und nirgends sonst: vorher stand die
+# Liste im Workflow selbst, musste zweimal nachgetragen werden, und der naechste
+# vergessene Eintrag haette eine ganze Seite geloescht.
+#
+# Zeilen mit # sind Kommentar, Leerzeilen werden uebergangen.
+jing
+schranz-ai
+portfolio
+shop

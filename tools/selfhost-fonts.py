@@ -15,7 +15,8 @@ Was das Skript macht:
   2. holt deren CSS mit einer Browser-Kennung, damit Google woff2 liefert,
   3. behaelt die Zeichensaetze, die die Seite braucht (Standard latin, latin-ext),
   4. laedt die woff2-Dateien in den Schriftordner,
-  5. schreibt dort fonts.css mit relativen Pfaden,
+  5. ergaenzt dort fonts.css mit relativen Pfaden, ohne fremde Schnitte zu
+     loeschen, die noch als Datei im Ordner liegen,
   6. ersetzt im HTML die preconnect-Zeilen und den Google-Link durch diese Datei.
 
 Das Skript aendert nichts, wenn es keinen Google-Link findet, und laesst das HTML
@@ -39,6 +40,8 @@ PRECONNECT = re.compile(
 )
 FACE = re.compile(r"(/\*\s*([a-z0-9-]+)\s*\*/\s*)?@font-face\s*\{(.*?)\}", re.S)
 SRC = re.compile(r"url\((https://fonts\.gstatic\.com/[^)]+)\)")
+# Der Verweis, wie er danach in fonts.css steht: ein Dateiname neben der Datei.
+LOCAL = re.compile(r"url\(([^)\s'\"]+\.woff2)\)")
 FAMILY = re.compile(r"font-family:\s*'([^']+)'")
 STYLE = re.compile(r"font-style:\s*([a-z]+)")
 WEIGHT = re.compile(r"font-weight:\s*([0-9 ]+)")
@@ -97,11 +100,28 @@ def main() -> int:
         print(f"{html_path}: keine Schriftdatei geladen, HTML bleibt unveraendert", file=sys.stderr)
         return 1
 
+    # Was schon in fonts.css steht und nicht gerade neu geholt wurde, bleibt
+    # stehen. Vorher schrieb der Lauf die Datei jedes Mal komplett neu: wer das
+    # Skript fuer eine zweite Seite in denselben Ordner laufen liess, loeschte
+    # damit die Schnitte der ersten, und die Seite fiel still auf eine
+    # Systemschrift zurueck.
+    css_path = outdir / "fonts.css"
+    fresh = {m.group(1) for b in blocks if (m := LOCAL.search(b))}
+    kept = []
+    if css_path.exists():
+        for _, _, body in FACE.findall(css_path.read_text(encoding="utf8")):
+            match = LOCAL.search(body)
+            if not match or match.group(1) in fresh:
+                continue
+            if not (outdir / match.group(1)).exists():
+                continue
+            kept.append("@font-face {\n  " + body.strip() + "\n}")
     header = (
-        "/* Selbst ausgelieferte Schriften. Erzeugt von tools/selfhost-fonts.py,\n"
-        "   nicht von Hand aendern. Es geht keine Anfrage mehr an Google. */\n"
+        "/* Selbst ausgelieferte Schriften. Erzeugt von tools/selfhost-fonts.py.\n"
+        "   Es geht keine Anfrage mehr an Google. Ein neuer Lauf ergaenzt diese\n"
+        "   Datei und wirft nichts weg, was noch als Datei danebenliegt. */\n"
     )
-    (outdir / "fonts.css").write_text(header + "\n".join(blocks) + "\n", encoding="utf8")
+    css_path.write_text(header + "\n".join(kept + blocks) + "\n", encoding="utf8")
 
     rel = Path(outdir.name if outdir.parent == html_path.parent else outdir) / "fonts.css"
     html = PRECONNECT.sub("", html)
