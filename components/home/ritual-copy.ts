@@ -17,8 +17,6 @@ export interface RitualCopy {
    */
   hours: Text;
   lead: Text;
-  invite: Text;
-  cta: Text;
   /** The ritual as a story: read first, the five pieces follow beneath it. */
   story: RitualStory;
 }
@@ -65,11 +63,6 @@ export const RITUAL: Record<Mode, RitualCopy> = {
         "Five pieces for the light. Textures that last a working day, an essence that keeps " +
         "working underneath, and a breath for the head.",
     },
-    invite: {
-      de: "Yang liegt gerade im Hintergrund. Ein Klick, und der Shop dreht sich auf den Tag.",
-      en: "Yang is in the background right now. One click, and the shop turns to the day.",
-    },
-    cta: { de: "Zu Yang wechseln", en: "Switch to Yang" },
     story: {
       kicker: { de: "Das Ritual am Morgen", en: "The ritual in the morning" },
       title: { de: "Der Tag beginnt mit Struktur", en: "The day begins with structure" },
@@ -117,11 +110,6 @@ export const RITUAL: Record<Mode, RitualCopy> = {
       en:
         "Five pieces for the half dark. Oil, stone and scent, a device that prepares the room, and a breath at the end.",
     },
-    invite: {
-      de: "Yin liegt gerade im Hintergrund. Ein Klick, und der Shop dreht sich auf die Nacht.",
-      en: "Yin is in the background right now. One click, and the shop turns to the night.",
-    },
-    cta: { de: "Zu Yin wechseln", en: "Switch to Yin" },
     story: {
       kicker: { de: "Das Ritual am Abend", en: "The ritual in the evening" },
       title: { de: "Die Nacht nimmt zurück", en: "The night takes back" },

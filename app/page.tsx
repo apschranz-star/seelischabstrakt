@@ -12,13 +12,12 @@ import { ProductCard } from "@/components/product/product-card";
 import { Reveal, STAGGER } from "@/components/ui/reveal";
 import { SectionHandoff } from "@/components/ui/section-handoff";
 import { useYinYang } from "@/components/theme/yin-yang-provider";
-import { Button } from "@/components/ui/button";
 import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
 import { useLang, useT } from "@/lib/i18n";
 import { DURATION } from "@/lib/motion";
 import { useJingStore, type Mode } from "@/lib/store";
-import { originFromEvent, type SwitchOptions } from "@/lib/switch-origin";
+import type { SwitchOptions } from "@/lib/switch-origin";
 import { deliveryWindow } from "@/lib/utils";
 
 /** The store opens on yang, so server markup and first client render agree on it. */
@@ -28,13 +27,9 @@ const FALLBACK_MODE: Mode = "yang";
 
 function CollectionSection({
   collection,
-  active,
-  onActivate,
   instant,
 }: {
   collection: Mode;
-  active: boolean;
-  onActivate: (mode: Mode, options?: SwitchOptions) => void;
   /** Cards appear at once instead of gliding in, after a switch the visitor made. */
   instant: boolean;
 }) {
@@ -51,7 +46,6 @@ function CollectionSection({
     },
     [instant],
   );
-  const reduceMotion = useReducedMotion() ?? false;
   const t = useT();
   const copy = RITUAL[collection];
   const title = t(copy.title);
@@ -59,10 +53,6 @@ function CollectionSection({
   const headingId = `${collection}-titel`;
   const side = collection === "yang" ? "left" : "right";
   const otherSide = collection === "yang" ? "right" : "left";
-
-  // Durations are the only thing that reacts to the motion preference. Rendered styles
-  // stay identical, otherwise the server markup and the first client render diverge.
-  const swap = { duration: reduceMotion ? 0 : DURATION.swift, ease: "easeOut" } as const;
 
   return (
     <section
@@ -96,79 +86,30 @@ function CollectionSection({
           </Reveal>
         </div>
 
-        <AnimatePresence initial={false} mode="wait">
-          {active ? (
-            <motion.div
-              key="story-and-grid"
-              ref={storyMounted}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={swap}
-            >
-              <RitualStory collection={collection} instant={instant} />
-              <ul
-                id={`${collection}-produkte`}
-                role="list"
-                aria-label={t({
-                  de: `Die fünf Stücke von ${title}`,
-                  en: `The five pieces of ${title}`,
-                })}
-                className="mt-10 scroll-mt-24 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
+        <div ref={storyMounted}>
+          <RitualStory collection={collection} instant={instant} />
+          <ul
+            id={`${collection}-produkte`}
+            role="list"
+            aria-label={t({
+              de: `Die fünf Stücke von ${title}`,
+              en: `The five pieces of ${title}`,
+            })}
+            className="mt-10 scroll-mt-24 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
+          >
+            {products.map((product, index) => (
+              <Reveal
+                key={product.id}
+                as="li"
+                from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
+                delay={instant ? 0 : (index % 4) * STAGGER}
+                className="h-full"
               >
-                {products.map((product, index) => (
-                  <Reveal
-                    key={product.id}
-                    as="li"
-                    from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
-                    delay={instant ? 0 : (index % 4) * STAGGER}
-                    className="h-full"
-                  >
-                    <ProductCard product={product} />
-                  </Reveal>
-                ))}
-              </ul>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="invite"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={swap}
-              className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-5"
-            >
-              <p className="max-w-[48ch] text-sm leading-relaxed text-ink-3">{t(copy.invite)}</p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={(event) => onActivate(collection, { origin: originFromEvent(event) })}
-              >
-                {t(copy.cta)}
-              </Button>
-
-              {/*
-                Opening the other side is a JavaScript switch, so without it half
-                the catalogue would have no link anywhere on the page. These go
-                straight to the product pages, which are static.
-              */}
-              <noscript>
-                <ul role="list" className="flex w-full flex-wrap gap-x-5 gap-y-2">
-                  {products.map((product) => (
-                    <li key={product.id}>
-                      <Link
-                        href={`/products/${product.slug}`}
-                        className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-2 underline underline-offset-4 hover:text-ink"
-                      >
-                        {product.code}, {product.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </noscript>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <ProductCard product={product} />
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -229,6 +170,9 @@ export default function HomePage() {
   }, [hydrated, setMode]);
 
   const regionLabel = lang === "en" ? activeRegion.labelEn : activeRegion.label;
+  const reduceSwap = useReducedMotion() === true;
+  const otherMode: Mode = activeMode === "yang" ? "yin" : "yang";
+  const otherCopy = { titleText: t(RITUAL[otherMode].title) };
   const facts = [
     {
       label: t({ de: "Versand", en: "Shipping" }),
@@ -285,18 +229,57 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <CollectionSection
-        collection="yang"
-        active={activeMode === "yang"}
-        onActivate={setMode}
-        instant={modeSwitched}
-      />
-      <CollectionSection
-        collection="yin"
-        active={activeMode === "yin"}
-        onActivate={setMode}
-        instant={modeSwitched}
-      />
+      {/*
+        One ritual at a time. Yang shows the five pieces of the day, Yin the five
+        of the night, and the switch is the only way between them. Showing both
+        at once made the shop a catalogue with two halves; showing one makes it a
+        shop that is in a time of day.
+
+        The element tree follows activeMode, which is the fallback yang until the
+        store has rehydrated, so the server markup and the first client render
+        agree and a stored Yin arrives as an ordinary update afterwards.
+      */}
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={activeMode}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduceSwap ? 0 : DURATION.swift, ease: "easeOut" }}
+        >
+          <CollectionSection collection={activeMode} instant={modeSwitched} />
+        </motion.div>
+      </AnimatePresence>
+
+      {/*
+        Without JavaScript there is no switch, so the other half would have no
+        link anywhere on the page. These go straight to the product pages, which
+        are static. With JavaScript the browser ignores the block.
+      */}
+      <noscript>
+        <section
+          aria-label={otherCopy.titleText}
+          className="border-b border-line py-10"
+        >
+          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
+              {otherCopy.titleText}
+            </p>
+            <ul role="list" className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+              {getProductsByCollection(otherMode).map((product) => (
+                <li key={product.id}>
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-2 underline underline-offset-4 hover:text-ink"
+                  >
+                    {product.code}, {product.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </noscript>
 
       {/* Stays inside the active palette. An inverted band read as a white block
           slammed into the night view; the section now sits on surface-2 in both. */}
