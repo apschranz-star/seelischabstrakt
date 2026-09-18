@@ -24,6 +24,9 @@ const DATEIEN = [
   "./icon-512.png",
   "./icon-512-maskable.png",
   "./manifest.webmanifest",
+  "./fonts/fonts.css",
+  "./fonts/ibm-plex-sans-latin-normal-400-700.woff2",
+  "./fonts/ibm-plex-sans-latin-ext-normal-400-700.woff2",
 ];
 
 /*

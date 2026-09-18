@@ -72,6 +72,7 @@ cp "$here/anker/index.html" "$here/anker/app.css" "$here/anker/app.js" \
    "$here/anker/content.js" "$here/anker/sw.js" "$here/anker/manifest.webmanifest" \
    "$here/anker/icon.svg" "$here/anker/icon-180.png" "$here/anker/icon-192.png" \
    "$here/anker/icon-512.png" "$here/anker/icon-512-maskable.png" "$target/anker/"
+cp -R "$here/anker/fonts" "$target/anker/fonts"
 # Die App verbietet in ihrem Kopf Inline-Code, deshalb kommt das Tor dort als
 # zwei eigene Dateien statt als eingesetzter Block. Siehe gate/split.py.
 python3 "$here/gate/split.py" "$target/anker" "Anker" "Alexander Schranz"

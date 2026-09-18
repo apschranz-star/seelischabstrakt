@@ -30,6 +30,16 @@
 <meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
 
+<!--
+  Die Schrift liegt hier im Ordner, sie wird nicht von Google geladen. Der Grund
+  ist derselbe wie ueberall in dieser App: es soll keine Anfrage nach draussen
+  gehen, auch keine, die nur eine Schriftdatei holt und dabei die IP-Adresse
+  mitnimmt. Geholt und abgelegt hat sie tools/selfhost-fonts.py.
+
+  Die Zeile steht bewusst unter der Sicherheitsregel und nicht ueber ihr: eine
+  CSP im Dokument gilt erst ab der Stelle, an der sie steht.
+-->
+<link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="app.css">
 
 <!--
@@ -84,7 +94,11 @@
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <noscript>
-  <p style="padding:24px;max-width:38rem;margin:0 auto;line-height:1.6">
+  <!-- Klasse statt style-Attribut: die Regel oben verbietet Inline-Stil, und
+       genau hier faellt das sonst niemandem auf. Der Block wird nur sichtbar,
+       wenn JavaScript aus ist, und dann waere der Text ohne Rand am Rand
+       gestanden. -->
+  <p class="ohne-js">
     Anker ist ein Tagebuch, das vollstaendig im Browser laeuft und nichts an einen
     Server schickt. Ohne JavaScript gibt es davon nichts zu sehen. Bitte JavaScript
     fuer diese Seite erlauben.

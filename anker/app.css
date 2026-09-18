@@ -6,8 +6,24 @@
   und die eine Sache, die jeden Tag getan wird, steht ganz oben und ist mit dem
   Daumen erreichbar.
 
-  Systemschriften, keine geladene Datei. Das ist auf dem iPhone die schnellste
-  und die ehrlichste Wahl: es geht keine Anfrage hinaus.
+  ACHTUNG bei einem Schriftwechsel: font-variant-numeric: tabular-nums steht an
+  drei Stellen, greift aber ins Leere. Der Zuschnitt von Google traegt kein
+  tnum-Merkmal, geprueft mit fontTools. Dass die Zahlen in den Tabellen trotzdem
+  untereinander stehen, liegt allein daran, dass in IBM Plex Sans jede Ziffer
+  0.6em breit ist. Eine Schrift mit proportionalen Ziffern wuerde die Spalten
+  still zerreissen, und die CSS-Zeile rettet dann nichts.
+
+  Die Schrift ist IBM Plex Sans, selbst ausgeliefert aus fonts/. Sie ist fuer
+  technische Dokumentation gezeichnet, und das ist hier keine Koketterie: die
+  App besteht zur Haelfte aus Zahlen, die untereinander stehen und verglichen
+  werden. Plex hat dafuer eine eindeutige Eins, eine offene Sechs und Neun und
+  eine Null, die keine Acht sein kann. Als variable Datei kostet sie 88 kB fuer
+  den ganzen Bereich von 400 bis 700 und wird einmal abgelegt.
+
+  Es geht dafuer trotzdem keine Anfrage hinaus: die Dateien liegen neben der
+  Seite, geholt von tools/selfhost-fonts.py. Faellt die Schrift aus, faellt die
+  App auf die Systemschrift zurueck und sieht anders aus, aber nichts verrutscht:
+  die Groessen stehen in px, nicht in em.
 
   Die Farben der Diagramme stehen unter --serie-*. Sie sind gegen beide
   Flaechen geprueft (Helligkeitsband, Chroma, Farbsinn-Abstand, Kontrast). Das
@@ -24,6 +40,7 @@
   --tinte: #0b0b0b;
   --tinte-2: #52514e;
   --tinte-3: #6e6c67;
+  --tinte-leiste: #63615c;
   --linie: #e1e0d9;
   --linie-2: #c3c2b7;
   --akzent: #1d3a5f;
@@ -60,6 +77,7 @@
     --tinte: #ffffff;
     --tinte-2: #c3c2b7;
     --tinte-3: #98968f;
+    --tinte-leiste: #98968f;
     --linie: #2c2c2a;
     --linie-2: #383835;
     --akzent: #cdd9e8;
@@ -83,6 +101,7 @@
   --tinte: #ffffff;
   --tinte-2: #c3c2b7;
   --tinte-3: #98968f;
+  --tinte-leiste: #98968f;
   --linie: #2c2c2a;
   --linie-2: #383835;
   --akzent: #cdd9e8;
@@ -105,7 +124,7 @@ body {
   margin: 0;
   background: var(--flaeche-2);
   color: var(--tinte);
-  font: 17px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font: 17px/1.5 "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-synthesis-weight: none;
   -webkit-text-size-adjust: 100%;
   overscroll-behavior-y: none;
@@ -114,6 +133,10 @@ body {
 h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -0.015em; font-weight: 650; }
 p { margin: 0; }
 button, input, select, textarea { font: inherit; color: inherit; }
+
+/* Der Hinweis ohne JavaScript. Er steht in einer Klasse, weil die
+   Sicherheitsregel der Seite Inline-Stil verbietet. */
+.ohne-js { padding: 24px; max-width: 38rem; margin: 0 auto; line-height: 1.6; }
 
 .skip {
   position: absolute; left: -9999px;
@@ -127,7 +150,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .kopf {
   position: sticky; top: 0; z-index: 20;
   padding-top: var(--sicher-oben);
-  background: color-mix(in srgb, var(--flaeche-2) 88%, transparent);
+  background: color-mix(in srgb, var(--flaeche-2) 96%, transparent);
   backdrop-filter: saturate(180%) blur(18px);
   -webkit-backdrop-filter: saturate(180%) blur(18px);
   border-bottom: 1px solid transparent;
@@ -174,7 +197,15 @@ section + section { margin-top: 26px; }
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
   display: grid; grid-template-columns: repeat(5, 1fr);
   padding-bottom: var(--sicher-unten);
-  background: color-mix(in srgb, var(--flaeche-2) 90%, transparent);
+  /*
+   * 96 Prozent und nicht 90. Der Balken ist durchscheinend, und was darunter
+   * durchscrollt, faerbt ihn ein. Scrollt ein dunkelblauer Knopf darunter,
+   * lag der Kontrast der Beschriftung bei 4,18 zu 1 und damit unter der Grenze.
+   * Bei 96 Prozent und der etwas dunkleren Tinte darunter sind es 5,47 zu 1,
+   * im schlechtesten Fall, den die App ueberhaupt erzeugen kann. Das Glas
+   * bleibt sichtbar, weil es die Unschaerfe ist, die man sieht, nicht der Ton.
+   */
+  background: color-mix(in srgb, var(--flaeche-2) 96%, transparent);
   backdrop-filter: saturate(180%) blur(18px);
   -webkit-backdrop-filter: saturate(180%) blur(18px);
   border-top: 1px solid var(--linie);
@@ -182,7 +213,7 @@ section + section { margin-top: 26px; }
 .leiste a {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 3px; height: var(--leiste-h);
-  text-decoration: none; color: var(--tinte-3); font-size: 10.5px; letter-spacing: .01em;
+  text-decoration: none; color: var(--tinte-leiste); font-size: 10.5px; letter-spacing: .01em;
 }
 .leiste a svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .leiste a[aria-current="page"] { color: var(--akzent); font-weight: 600; }
@@ -220,7 +251,9 @@ section + section { margin-top: 26px; }
 
 .schalter-liste { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .schalter {
-  min-height: 40px; padding: 0 14px; border-radius: 999px;
+  /* 44 und nicht 40: das ist die Tippflaeche, die Apple empfiehlt, und die
+     Haken der Merkliste sind Schalter. */
+  min-height: 44px; padding: 0 14px; border-radius: 999px;
   border: 1px solid var(--linie); background: var(--flaeche-2);
   color: var(--tinte-2); font-size: 14px; cursor: pointer;
 }
@@ -358,9 +391,63 @@ details[open] > summary::after { transform: rotate(-135deg); }
   * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 
+/* ----------------------------------------------------------- Anlaufstellen
+ *
+ * Nichts Neues an Formen: eine Anlaufstelle ist ein details-Element wie ein
+ * Rezept, ein Weg ist eines wie ein Wissenskapitel. Was dazukommt, sind zwei
+ * Dinge, die es sonst nirgends braucht: eine Marke fuer die Sicherheit eines
+ * Weges, und eine Zeile fuer den Suchbegriff, der zum Kopieren dasteht.
+ */
+
+.stelle-kopf { flex: 1; min-width: 0; }
+.stelle-kopf b { display: block; font-weight: 600; font-size: 15.5px; }
+.stelle-kopf small {
+  display: block; color: var(--tinte-3); font-size: 13px;
+  margin-top: 2px; font-weight: 400; line-height: 1.5;
+}
+.stelle-zeile { margin-top: 12px; }
+.stelle-zeile b { color: var(--tinte); font-size: 13px; font-weight: 600; }
+.stelle-zeile a { color: var(--akzent); }
+
+/* Die Marke sagt, wie sicher ein Weg ist, und sie sagt es auch in Worten.
+   Farbe allein traegt hier nichts: sicher, wohl, unsicher steht als Text da. */
+.marke {
+  flex: 0 0 auto; font-size: 11.5px; font-weight: 600; letter-spacing: .02em;
+  padding: 3px 9px; border-radius: 999px; border: 1px solid var(--linie-2);
+  color: var(--tinte-2); background: var(--flaeche-2);
+}
+.marke-hoch { border-color: var(--akzent); color: var(--akzent); }
+
+.suchzeile {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 14px; padding: 10px 12px;
+  background: var(--flaeche-3); border-radius: var(--r);
+}
+.suchwort {
+  flex: 1; min-width: 0; font-size: 14px; color: var(--tinte);
+  font-variant-numeric: tabular-nums; word-break: break-word;
+}
+
+.hakenliste { margin-top: 10px; }
+.haken {
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 9px 0; border-top: 1px solid var(--linie);
+  font-size: 14.5px; color: var(--tinte-2); line-height: 1.5; cursor: pointer;
+}
+.haken:first-child { border-top: 0; }
+.haken input {
+  flex: 0 0 auto; width: 21px; height: 21px; margin: 1px 0 0;
+  accent-color: var(--akzent);
+}
+
 @media print {
   .leiste, .kopf, .skip, .toast, .knopf-reihe { display: none !important; }
   body { background: #fff; color: #000; }
   .karte { border-color: #ccc; break-inside: avoid; }
   .inhalt { max-width: none; padding: 0; }
+  /* Zusammengeklappte Abschnitte sind auf Papier einfach weg. Beim Ausdruck
+     einer Merkliste ist das genau das Gegenteil von dem, was gewollt ist. */
+  details > div { display: block !important; }
+  summary::after { display: none; }
+  .suchzeile { background: none; border: 1px solid #ccc; }
 }

@@ -85,9 +85,12 @@ Was hier steht, ist aus dem Code gelesen, nicht aus einem Mustertext. Jede Seite
     Dritte        GitHub Inc., USA (Auslieferung der Dateien). Sonst keine. Keine
                   Schrift, kein Skript, kein Bild von einer fremden Adresse
     Speicher      localStorage: anker-v1 (Tagebuch, Medikamente, Laborwerte, Termine,
-                  Einstellungen), sa-access (Zugang). Dazu die Offline-Ablage des
-                  Service Workers mit den Dateien der App, nicht mit Einträgen.
-                  Keine Cookies
+                  Anlaufstellen, Einstellungen), sa-access (Zugang). Dazu die
+                  Offline-Ablage des Service Workers mit den Dateien der App, nicht
+                  mit Einträgen. Keine Cookies
+    Schriften     IBM Plex Sans, selbst ausgeliefert aus anker/fonts. Es geht keine
+                  Anfrage an Google, also wird auch keine IP-Adresse dorthin übertragen
+    Ortung        keine. Die App ruft navigator.geolocation an keiner Stelle auf
     Banner        keines nötig
     Aufsicht      Österreichische Datenschutzbehörde
     Achtung       Die Einträge sind Gesundheitsdaten nach Art. 9 DSGVO. Sie entstehen
@@ -98,6 +101,12 @@ Was hier steht, ist aus dem Code gelesen, nicht aus einem Mustertext. Jede Seite
                   Art. 2 Abs. 2 lit. c DSGVO. Das ändert sich in dem Moment, in dem
                   irgendetwas an der App etwas sendet, und dann ist es eine andere
                   Rechtslage und keine kleine Änderung
+    Achtung 2     Unter Anlaufstellen trägt die Nutzerin Namen, Telefonnummern und
+                  Adressen ihrer Ärztinnen ein. Das sind personenbezogene Daten
+                  Dritter, und in Verbindung mit der Diagnose sind sie aussagekräftig.
+                  Sie bleiben auf dem Gerät und stehen in der Sicherungsdatei. Wer die
+                  Sicherung weitergibt, gibt auch diese Angaben weiter. Das steht so in
+                  anker/README.md
 
 ### Verträge, die noch fehlen
 

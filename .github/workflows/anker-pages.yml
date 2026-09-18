@@ -69,6 +69,10 @@ jobs:
              anker/manifest.webmanifest anker/icon.svg anker/icon-180.png \
              anker/icon-192.png anker/icon-512.png anker/icon-512-maskable.png \
              pages/anker/
+          # Die Schrift liegt im Repository und wird mitgeliefert. Fehlt sie,
+          # faellt die App still auf die Systemschrift zurueck und alle Breiten,
+          # die im Diagramm gerechnet sind, stimmen nicht mehr.
+          cp -R anker/fonts pages/anker/fonts
           # Der Bericht und die Anleitung sind Markdown. GitHub Pages liefert sie
           # als Text aus, was zum Lesen am Telefon nichts taugt, und sie gehoeren
           # nicht in die App. Sie bleiben im Repository.
@@ -88,6 +92,16 @@ jobs:
             echo "::error::anker/index.html traegt kein connect-src 'none'. Nichts veroeffentlicht."
             exit 1
           fi
+          # Die Schrift muss von hier kommen und nicht von Google. Ein
+          # zurueckgelassener Verweis auf fonts.googleapis.com waere genau die
+          # Anfrage nach draussen, die diese App nicht stellen soll.
+          if grep -q "fonts.googleapis.com\|fonts.gstatic.com" pages/anker/index.html pages/anker/app.css pages/anker/fonts/fonts.css; then
+            echo "::error::In anker steht noch ein Verweis auf Google Fonts. Nichts veroeffentlicht."
+            exit 1
+          fi
+          for f in pages/anker/fonts/fonts.css pages/anker/fonts/ibm-plex-sans-latin-normal-400-700.woff2; do
+            if [ ! -s "$f" ]; then echo "::error::$f fehlt oder ist leer. Nichts veroeffentlicht."; exit 1; fi
+          done
           touch pages/.nojekyll
           cd pages
           git config user.name "github-actions[bot]"

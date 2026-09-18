@@ -33,6 +33,7 @@
     medikamente: [],
     werte: [],
     termine: [],
+    stellen: [],
     schuebe: [],
     einstellungen: { thema: "auto", letzteSicherung: null, start: heuteISO() },
   };
@@ -131,6 +132,9 @@
     medikamente: { titel: "Medikamente", bauen: seiteMedikamente, eltern: "mehr" },
     werte: { titel: "Laborwerte", bauen: seiteWerte, eltern: "mehr" },
     termine: { titel: "Termine", bauen: seiteTermine, eltern: "mehr" },
+    stellen: { titel: "Anlaufstellen", bauen: seiteStellen, eltern: "mehr" },
+    suchen: { titel: "Eine Stelle finden", bauen: seiteSuchen, eltern: "stellen" },
+    erstgespraech: { titel: "Beim ersten Mal", bauen: seiteErstgespraech, eltern: "stellen" },
     bericht: { titel: "Arztbericht", bauen: seiteBericht, eltern: "mehr" },
     sicherung: { titel: "Sicherung", bauen: seiteSicherung, eltern: "mehr" },
     notfall: { titel: "Warnzeichen", bauen: seiteNotfall, eltern: "wissen" },
@@ -795,6 +799,34 @@
          Krampfanfall oder hohem Fieber unter immunsuppressiver Behandlung: Notruf.</div>`,
       ),
     );
+
+    /* Die eigenen Nummern stehen ganz oben. Diese Seite wird im schlechtesten
+       Moment geoeffnet, und dann ist Suchen das Letzte, was noch geht. */
+    const notfall = (D.stellen || []).filter((st) => st.notfall && st.telefon);
+    if (notfall.length) {
+      const kn = karte(`<p class="kicker">Deine Nummern</p><h2 class="h2">Wen du anrufst</h2>`);
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      notfall.forEach((st) => {
+        const li = document.createElement("li");
+        const txt = document.createElement("div");
+        txt.className = "txt";
+        const b = document.createElement("b");
+        b.textContent = st.name;
+        const small = document.createElement("small");
+        small.textContent = st.rolle + (st.haus ? " · " + st.haus : "");
+        txt.append(b, small);
+        li.appendChild(txt);
+        const a = document.createElement("a");
+        a.className = "knopf";
+        a.textContent = st.telefon;
+        if (zielSetzen(a, "tel:" + st.telefon.replace(/[^\d+]/g, ""), ["tel:"])) li.appendChild(a);
+        ul.appendChild(li);
+      });
+      kn.appendChild(ul);
+      ziel.appendChild(kn);
+    }
+
     INHALT.warnzeichen.forEach((g) => {
       const k = karte(`<p class="kicker">${esc(g.kicker)}</p><h2 class="h2">${esc(g.titel)}</h2>`);
       const ul = document.createElement("ul");
@@ -830,6 +862,7 @@
       { href: "#/medikamente", name: "Medikamente", was: `${D.medikamente.length} eingetragen` },
       { href: "#/werte", name: "Laborwerte", was: `${D.werte.length} Messungen` },
       { href: "#/termine", name: "Termine", was: naechsterTermin() },
+      { href: "#/stellen", name: "Anlaufstellen", was: stellenText() },
       { href: "#/bericht", name: "Arztbericht", was: "Zusammenfassung zum Ausdrucken" },
       { href: "#/sicherung", name: "Sicherung", was: sicherungsText() },
     ];
@@ -882,6 +915,13 @@
          du selbst sicherst.</p>`,
       ),
     );
+  }
+
+  function stellenText() {
+    const n = (D.stellen || []).length;
+    if (!n) return "Aerztinnen und Ambulanzen finden und behalten";
+    const notfall = D.stellen.filter((s) => s.notfall).length;
+    return n + (n === 1 ? " Stelle" : " Stellen") + (notfall ? ", " + notfall + " im Notfall" : "");
   }
 
   function naechsterTermin() {
@@ -1038,6 +1078,440 @@
       ziel.appendChild(kk);
     });
     zurueck(ziel, "#/mehr", "Zurueck");
+  }
+
+
+  /* ---------------------------------------------------------- Anlaufstellen
+   *
+   * Die Funktion heisst Anlaufstellen und nicht Expertensuche. Der Unterschied
+   * ist keine Wortklauberei: suchen kann diese App nicht. Sie hat kein Netz und
+   * kein Verzeichnis, und beim Bauen war keine einzige medizinische Seite
+   * erreichbar, also waere jede Adresse hier ungeprueft. Eine falsche Nummer,
+   * die jemand im Schub waehlt, ist ein echter Schaden.
+   *
+   * Was die App stattdessen kann, und was in der Praxis die groessere Huerde
+   * ist: sagen, mit welchen Woertern und ueber welche Stellen gesucht wird, und
+   * danach behalten, was gefunden wurde. Das eigene Verzeichnis ist das einzige,
+   * das diese App haben darf, weil darin nichts steht, was sie erfunden hat.
+   *
+   * Keine Ortung. Das war der naheliegende Zusatz und er ist bewusst nicht da:
+   * eine Luftlinie sagt in einer Stadt wenig, sie braeuchte als einzige Stelle
+   * der App eine Standortfreigabe, und der Satz, den sie selbst ins Feld Weg
+   * schreibt, also welche Linie, wie viele Minuten, wo die Tuer ist, hilft an
+   * einem schlechten Tag mehr als jede Zahl.
+   */
+
+  const ROLLEN = [
+    "Rheumatologie",
+    "Gastroenterologie",
+    "Hausarztpraxis",
+    "Diaetologie",
+    "Augenheilkunde",
+    "Andere",
+  ];
+
+  /* Ein Ziel wird nie aus gespeichertem Text zusammengebaut, sondern geprueft
+     gesetzt. Sonst waere eine fremde Sicherungsdatei mit javascript: darin ein
+     Einfallstor, und die Datei kommt ausdruecklich von aussen. */
+  function zielSetzen(a, roh, erlaubt) {
+    const wert = String(roh || "").trim();
+    let u;
+    try { u = new URL(wert); } catch (e) { return false; }
+    if (!erlaubt.includes(u.protocol)) return false;
+    a.href = u.href;
+    if (u.protocol === "https:") {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.referrerPolicy = "no-referrer";
+    }
+    return true;
+  }
+
+  function kopieren(text, was) {
+    const fertig = () => melden(was + " kopiert.");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(fertig, () => melden("Kopieren ging nicht. Bitte von Hand markieren."));
+      return;
+    }
+    melden("Kopieren ging nicht. Bitte von Hand markieren.");
+  }
+
+  function seiteStellen(ziel) {
+    const stellen = D.stellen || (D.stellen = []);
+
+    ziel.appendChild(
+      karte(
+        `<p class="kicker">Wie das gemeint ist</p>
+         <h2 class="h2">Keine Adresse, die niemand geprueft hat</h2>
+         <p class="lead">Anker nennt keine Ambulanz und keine Aerztin. Beim Bauen dieser App war
+         kein einziges medizinisches Verzeichnis erreichbar, also waere jede Adresse hier
+         ungeprueft, und eine ungepruefte Nummer ist schlechter als keine.</p>
+         <p class="lead">Was die App kann: sagen, wonach genau zu suchen ist und ueber welche
+         Stellen, und dann behalten, was du gefunden hast. Der zweite Teil ist der, der in fuenf
+         Jahren noch etwas wert ist.</p>`,
+      ),
+    );
+
+    /* Eigenes Verzeichnis */
+    const kl = karte(
+      `<p class="kicker">${stellen.length === 0 ? "Noch leer" : stellen.length + (stellen.length === 1 ? " Eintrag" : " Eintraege")}</p>
+       <h2 class="h2">Meine Stellen</h2>`,
+    );
+    if (!stellen.length) {
+      kl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="leer">Noch nichts eingetragen. Das ist am Anfang der Normalfall.</div>`,
+      );
+    } else {
+      stellen.forEach((st) => kl.appendChild(stelleZeile(st)));
+    }
+    ziel.appendChild(kl);
+
+    /* Eintragen */
+    const kn = karte(`<p class="kicker">Hinzufuegen</p><h2 class="h2">Neue Stelle</h2>`);
+    const neu = { name: "", rolle: "Rheumatologie", haus: "", telefon: "", adresse: "", weg: "", notiz: "" };
+    feld(kn, { label: "Name", wert: "", platzhalter: "Wie du sie nennst", beiAenderung: (v) => (neu.name = v) });
+    const rollenTitel = document.createElement("p");
+    rollenTitel.className = "kicker klein-abstand";
+    rollenTitel.textContent = "Wofuer";
+    kn.appendChild(rollenTitel);
+    schalterListe(kn, {
+      einzeln: true,
+      optionen: ROLLEN.map((r) => ({ wert: r, text: r })),
+      gewaehlt: neu.rolle,
+      beiWahl: (w) => (neu.rolle = w),
+    });
+    feld(kn, { label: "Haus oder Ordination", wert: "", beiAenderung: (v) => (neu.haus = v) });
+    feld(kn, { label: "Telefon", typ: "tel", wert: "", beiAenderung: (v) => (neu.telefon = v) });
+    feld(kn, { label: "Adresse", wert: "", beiAenderung: (v) => (neu.adresse = v) });
+    feld(kn, {
+      label: "Weg dorthin, in deinen Worten",
+      mehrzeilig: true,
+      wert: "",
+      platzhalter: "Welche Linie, wie viele Minuten, wo die Tuer ist",
+      beiAenderung: (v) => (neu.weg = v),
+    });
+    feld(kn, { label: "Notiz", mehrzeilig: true, wert: "", beiAenderung: (v) => (neu.notiz = v) });
+    const r = document.createElement("div");
+    r.className = "knopf-reihe";
+    const b = document.createElement("button");
+    b.className = "knopf voll";
+    b.textContent = "Eintragen";
+    b.addEventListener("click", () => {
+      if (!neu.name) { melden("Der Name fehlt."); return; }
+      D.stellen.push(Object.assign({ id: id(), notfall: false, haken: [], kontakte: [], angelegt: heuteISO() }, neu));
+      sichern();
+      melden("Eingetragen.");
+      zeichnen();
+    });
+    r.appendChild(b);
+    kn.appendChild(r);
+    ziel.appendChild(kn);
+
+    /* Weiter */
+    const kw = karte(`<p class="kicker">Weiter</p><h2 class="h2">Wenn du noch keine hast</h2>`);
+    const rw = document.createElement("div");
+    rw.className = "knopf-reihe";
+    [["#/suchen", "Eine Stelle finden"], ["#/erstgespraech", "Beim ersten Mal"]].forEach(([h, t]) => {
+      const a = document.createElement("a");
+      a.className = "knopf leer";
+      a.href = h;
+      a.textContent = t;
+      rw.appendChild(a);
+    });
+    kw.appendChild(rw);
+    ziel.appendChild(kw);
+
+    zurueck(ziel, "#/mehr", "Zurueck");
+  }
+
+  function stelleZeile(st) {
+    const det = document.createElement("details");
+    det.className = "stelle";
+    const sum = document.createElement("summary");
+    sum.innerHTML =
+      `<span class="stelle-kopf"><b>${esc(st.name)}</b>` +
+      `<small>${esc(st.rolle)}${st.haus ? " · " + esc(st.haus) : ""}${st.notfall ? " · Notfallkontakt" : ""}</small></span>`;
+    det.appendChild(sum);
+
+    const box = document.createElement("div");
+    box.className = "details-inhalt";
+
+    if (st.telefon) {
+      const p = document.createElement("p");
+      p.className = "stelle-zeile";
+      const a = document.createElement("a");
+      a.textContent = st.telefon;
+      if (!zielSetzen(a, "tel:" + st.telefon.replace(/[^\d+]/g, ""), ["tel:"])) {
+        p.textContent = "Telefon " + st.telefon;
+      } else {
+        p.append("Telefon ", a);
+      }
+      box.appendChild(p);
+    }
+    [["Adresse", st.adresse], ["Weg", st.weg], ["Notiz", st.notiz]].forEach(([l, v]) => {
+      if (!v) return;
+      const p = document.createElement("p");
+      p.className = "stelle-zeile";
+      p.innerHTML = `<b>${esc(l)}</b><br>${esc(v)}`;
+      box.appendChild(p);
+    });
+
+    /* Merkliste je Stelle: nach dem Termin steht da, was diese Stelle kann.
+       Bei zwei Ambulanzen ist das der Vergleich, den sonst niemand fuehrt. */
+    const mt = document.createElement("p");
+    mt.className = "kicker klein-abstand";
+    mt.textContent = "Was diese Stelle kann";
+    box.appendChild(mt);
+    const ml = document.createElement("div");
+    ml.className = "hakenliste";
+    INHALT.suche.merkmale.forEach((m) => {
+      const l = document.createElement("label");
+      l.className = "haken";
+      const c = document.createElement("input");
+      c.type = "checkbox";
+      c.checked = (st.haken || []).includes(m.id);
+      c.addEventListener("change", () => {
+        st.haken = st.haken || [];
+        st.haken = c.checked ? st.haken.concat([m.id]) : st.haken.filter((x) => x !== m.id);
+        sichern();
+      });
+      const t = document.createElement("span");
+      t.textContent = m.punkt;
+      l.append(c, t);
+      ml.appendChild(l);
+    });
+    box.appendChild(ml);
+
+    /* Kontaktlog: Warteliste ist der Normalfall, Vergessen der Feind. */
+    const kt = document.createElement("p");
+    kt.className = "kicker klein-abstand";
+    kt.textContent = "Kontakt";
+    box.appendChild(kt);
+    if ((st.kontakte || []).length) {
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      st.kontakte.slice(-5).reverse().forEach((k) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<div class="txt"><b>${esc(kurzesDatum(k.datum))}</b><small>${esc(k.was)}</small></div>`;
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    }
+    let notizWert = "";
+    const nf = feld(box, {
+      label: "Was war",
+      wert: "",
+      platzhalter: "Angerufen, Rueckruf zugesagt",
+      beiAenderung: (v) => (notizWert = v),
+    });
+    const rz = document.createElement("div");
+    rz.className = "knopf-reihe";
+    const bz = document.createElement("button");
+    bz.className = "knopf";
+    bz.textContent = "Notiert";
+    bz.addEventListener("click", () => {
+      const wert = nf.value.trim() || notizWert;
+      if (!wert) { melden("Da steht nichts."); return; }
+      st.kontakte = (st.kontakte || []).concat([{ datum: heuteISO(), was: wert }]);
+      sichern();
+      melden("Notiert.");
+      zeichnen();
+    });
+    rz.appendChild(bz);
+
+    const bn = document.createElement("button");
+    bn.className = "knopf";
+    bn.textContent = st.notfall ? "Kein Notfallkontakt" : "Als Notfallkontakt";
+    bn.addEventListener("click", () => {
+      st.notfall = !st.notfall;
+      sichern();
+      melden(st.notfall ? "Steht jetzt bei den Warnzeichen." : "Nicht mehr bei den Warnzeichen.");
+      zeichnen();
+    });
+    rz.appendChild(bn);
+
+    const bw = document.createElement("button");
+    bw.className = "knopf warn";
+    bw.textContent = "Weg";
+    bw.addEventListener("click", () => {
+      if (!confirm("Diese Stelle entfernen?")) return;
+      D.stellen = D.stellen.filter((x) => x.id !== st.id);
+      sichern();
+      zeichnen();
+    });
+    rz.appendChild(bw);
+    box.appendChild(rz);
+
+    det.appendChild(box);
+    return det;
+  }
+
+  /* -------------------------------------------------------- Eine Stelle finden */
+
+  function seiteSuchen(ziel) {
+    const e = D.einstellungen;
+    const land = e.suchLand || "at";
+    const thema = e.suchThema || "beides";
+
+    /* Die Seite faengt mit dem Werkzeug an, nicht mit dem Vorbehalt. Der
+       Vorbehalt gehoert dazu und steht zwei Zeilen darunter; als ganze
+       Bildschirmseite gelesen haette ihn niemand. */
+    const kf = karte(
+      `<p class="kicker">Wo suchst du</p><h2 class="h2">Der Weg, nicht die Adresse</h2>
+       <p class="lead">Anker nennt keine Ambulanz. Es kann keine pruefen. Was hier steht, sind
+       Wege und die Woerter, mit denen man sie findet.</p>`,
+    );
+    schalterListe(kf, {
+      einzeln: true,
+      optionen: INHALT.suche.laender,
+      gewaehlt: land,
+      beiWahl: (w) => { e.suchLand = w; sichern(); zeichnen(); return w; },
+    });
+    const kt = document.createElement("p");
+    kt.className = "kicker klein-abstand";
+    kt.textContent = "Wofuer";
+    kf.appendChild(kt);
+    schalterListe(kf, {
+      einzeln: true,
+      optionen: [
+        { wert: "beides", text: "Beides" },
+        { wert: "lupus", text: "Lupus" },
+        { wert: "zoeliakie", text: "Zoeliakie" },
+      ],
+      gewaehlt: thema,
+      beiWahl: (w) => { e.suchThema = w; sichern(); zeichnen(); return w; },
+    });
+    ziel.appendChild(kf);
+
+    const passend = INHALT.suche.wege.filter(
+      (w) => w.land === land && (thema === "beides" || w.thema === thema || w.thema === "beides"),
+    );
+
+    const ks = karte(
+      `<p class="kicker">${passend.length} ${passend.length === 1 ? "Weg" : "Wege"}</p>
+       <h2 class="h2">Wo du fragst</h2>
+       <p class="lead">Die sichersten Wege stehen oben, und es sind die, die nicht im Netz liegen.
+       Der Suchbegriff daneben ist zum Kopieren gedacht: einmal tippen, dann Safari, dann einfuegen.</p>`,
+    );
+    const rang = { hoch: 0, mittel: 1, niedrig: 2 };
+    passend
+      .slice()
+      .sort((a, b) => rang[a.sicherheit] - rang[b.sicherheit])
+      .forEach((w) => {
+        const d = document.createElement("details");
+        d.className = "weg";
+        const sum = document.createElement("summary");
+        sum.innerHTML =
+          `<span class="stelle-kopf"><b>${esc(w.name)}</b><small>${esc(w.was)}</small></span>` +
+          `<span class="marke marke-${esc(w.sicherheit)}">${w.sicherheit === "hoch" ? "sicher" : w.sicherheit === "mittel" ? "wohl" : "unsicher"}</span>`;
+        d.appendChild(sum);
+        const box = document.createElement("div");
+        box.className = "details-inhalt";
+        const p = document.createElement("p");
+        p.textContent = w.weg;
+        box.appendChild(p);
+
+        const z = document.createElement("div");
+        z.className = "suchzeile";
+        const code = document.createElement("span");
+        code.className = "suchwort";
+        code.textContent = w.suchbegriff;
+        const bk = document.createElement("button");
+        /* Der leichtere Schalter, nicht der gefuellte Knopf: sonst stehen elf
+           dunkle Flecken untereinander und die Seite wird laut. */
+        bk.className = "schalter";
+        bk.type = "button";
+        bk.textContent = "Kopieren";
+        bk.addEventListener("click", () => kopieren(w.suchbegriff, "Suchbegriff"));
+        z.append(code, bk);
+        box.appendChild(z);
+        d.appendChild(box);
+        ks.appendChild(d);
+      });
+    ziel.appendChild(ks);
+
+    /* Das Lange steht zugeklappt. Wer es wissen will, macht es auf. */
+    const kg = karte(`<p class="kicker">Zum Nachlesen</p><h2 class="h2">Wie verlaesslich das hier ist</h2>`);
+    const dg = document.createElement("details");
+    const sg = document.createElement("summary");
+    sg.textContent = "Warum kein einziger Link dasteht";
+    const bg = document.createElement("div");
+    bg.className = "details-inhalt";
+    const pg1 = document.createElement("p");
+    pg1.textContent =
+      "Anker koennte eine Adresse hinschreiben, aber nicht pruefen, ob sie stimmt und ob dort " +
+      "heute noch dasselbe steht. Ein Suchbegriff ueberlebt einen Seitenumbau, eine gespeicherte " +
+      "Adresse nicht. Und es geht keine Anfrage von dieser App aus, auch keine, die verraet, " +
+      "wonach du suchst.";
+    const pg2 = document.createElement("p");
+    pg2.textContent = INHALT.suche.warnung;
+    bg.append(pg1, pg2);
+    dg.append(sg, bg);
+    kg.appendChild(dg);
+    ziel.appendChild(kg);
+
+    const kw = karte(`<p class="kicker">Wenn du eine gefunden hast</p><h2 class="h2">Eintragen</h2>`);
+    const rw = document.createElement("div");
+    rw.className = "knopf-reihe";
+    [["#/stellen", "Zu meinen Stellen"], ["#/erstgespraech", "Beim ersten Mal"]].forEach(([h, t]) => {
+      const a = document.createElement("a");
+      a.className = "knopf leer";
+      a.href = h;
+      a.textContent = t;
+      rw.appendChild(a);
+    });
+    kw.appendChild(rw);
+    ziel.appendChild(kw);
+
+    zurueck(ziel, "#/stellen", "Zurueck");
+  }
+
+  /* --------------------------------------------------------- Beim ersten Mal */
+
+  function seiteErstgespraech(ziel) {
+    ziel.appendChild(
+      karte(
+        `<p class="kicker">Zum Mitnehmen</p>
+         <h2 class="h2">Beim ersten Mal</h2>
+         <p class="lead">Diese Seite beurteilt nicht die Krankheit, sondern die Stelle. Das ist etwas
+         anderes als die Fragen unter Wissen, die in die Sprechstunde gehoeren. Zum Ausdrucken ueber
+         den Teilen-Knopf des Browsers.</p>`,
+      ),
+    );
+
+    const km = karte(`<p class="kicker">Woran du sie erkennst</p><h2 class="h2">Merkmale einer guten Stelle</h2>`);
+    const ul = document.createElement("ul");
+    ul.className = "liste";
+    INHALT.suche.merkmale.forEach((m) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="punkt gut"></span><div class="txt"><b>${esc(m.punkt)}</b></div>`;
+      ul.appendChild(li);
+    });
+    km.appendChild(ul);
+    ziel.appendChild(km);
+
+    const ke = karte(`<p class="kicker">Mitnehmen und fragen</p><h2 class="h2">Der erste Termin</h2>`);
+    const ue = document.createElement("ul");
+    ue.className = "liste";
+    INHALT.suche.erstgespraech.forEach((t) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<div class="txt"><b>${esc(t)}</b></div>`;
+      ue.appendChild(li);
+    });
+    ke.appendChild(ue);
+    ziel.appendChild(ke);
+
+    const r = document.createElement("div");
+    r.className = "knopf-reihe";
+    const b = document.createElement("button");
+    b.className = "knopf";
+    b.textContent = "Drucken oder als PDF";
+    b.addEventListener("click", () => window.print());
+    r.appendChild(b);
+    ziel.appendChild(r);
+
+    zurueck(ziel, "#/stellen", "Zurueck");
   }
 
   /* --------------------------------------------------------------- Termine */
