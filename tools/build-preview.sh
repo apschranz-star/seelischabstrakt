@@ -8,12 +8,13 @@
 #     /portfolio/    die persoenliche Seite, hinter dem Zugangscode
 #     /schranz-ai/   Schranz AI in Deutsch und Englisch, hinter dem Zugangscode
 #     /shop/         der Kunst-Shop, offen
+#     /anker/        die App Anker, hinter dem Zugangscode
 #     /jing/         bleibt unberuehrt, die baut ihr eigener Workflow
 #
 # Dazu eine robots.txt, die Suchmaschinen von der ganzen Vorschau fernhaelt, denn
 # die Vorschau ist nicht die oeffentliche Seite.
 #
-# Dasselbe machen die vier Workflows unter .github/workflows/ bei jedem Push,
+# Dasselbe machen die Workflows unter .github/workflows/ bei jedem Push,
 # sobald das Repository-Secret SITE_ACCESS_KEY gesetzt ist. Dieses Skript ist der
 # Weg von Hand, solange es fehlt.
 set -e
@@ -65,6 +66,17 @@ cp "$here/index.html" "$here/404.html" "$here/site.json" "$here/works.json" "$ta
 cp -R "$here/img" "$target/shop/img"
 cp -R "$here/fonts" "$target/shop/fonts"
 
+# Anker, die App bei SLE und Zoeliakie
+mkdir -p "$target/anker"
+cp "$here/anker/index.html" "$here/anker/app.css" "$here/anker/app.js" \
+   "$here/anker/content.js" "$here/anker/sw.js" "$here/anker/manifest.webmanifest" \
+   "$here/anker/icon.svg" "$here/anker/icon-180.png" "$here/anker/icon-192.png" \
+   "$here/anker/icon-512.png" "$here/anker/icon-512-maskable.png" "$target/anker/"
+# Die App verbietet in ihrem Kopf Inline-Code, deshalb kommt das Tor dort als
+# zwei eigene Dateien statt als eingesetzter Block. Siehe gate/split.py.
+python3 "$here/gate/split.py" "$target/anker" "Anker" "Alexander Schranz"
+sh "$here/gate/inject.sh" "$target/anker/zugang.js" "$key"
+
 printf 'User-agent: *\nDisallow: /\n' > "$target/robots.txt"
 touch "$target/.nojekyll"
 
@@ -75,10 +87,11 @@ echo "Vorschau gebaut in $target"
 # Seite laege offen im Netz.
 fehler=0
 for f in "$target/index.html" "$target/modulo.html" "$target/portfolio/index.html" \
-         "$target/schranz-ai/index.html" "$target/schranz-ai/en/index.html"; do
+         "$target/schranz-ai/index.html" "$target/schranz-ai/en/index.html" \
+         "$target/anker/zugang.js"; do
   [ -f "$f" ] || continue
   if grep -q "__ACCESS_KEY__" "$f"; then echo "FEHLER: kein Zugangscode in $f" >&2; fehler=1; fi
   if ! grep -q "$key" "$f"; then echo "FEHLER: der Code steht nicht in $f" >&2; fehler=1; fi
 done
 [ "$fehler" = 0 ] || exit 1
-echo "Zugang gesetzt in Praxisseite, Formular, persoenlicher Seite und Schranz AI. Shop offen."
+echo "Zugang gesetzt in Praxisseite, Formular, persoenlicher Seite, Schranz AI und Anker. Shop offen."

@@ -69,7 +69,7 @@ jobs:
           git add -A
           if git diff --cached --quiet; then echo "gh-pages already current"; exit 0; fi
           git commit -q -m "Publish the Schranz AI site from ${GITHUB_SHA::7}"
-          # Fuenf Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # Sechs Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
           # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
           for try_ in 1 2 3; do
             if git push -q origin HEAD:gh-pages; then echo "gh-pages updated"; exit 0; fi

@@ -37,8 +37,8 @@ jobs:
           path: pages
       - name: Replace the practice site, keep everything else on the branch
         # The branch also carries the JING demo under jing/ (published by hand), the Schranz AI
-        # site under schranz-ai/, the portfolio under portfolio/ and the art shop preview under
-        # shop/ (each its own workflow).
+        # site under schranz-ai/, the portfolio under portfolio/, the art shop preview under
+        # shop/ and the Anker app under anker/ (each its own workflow).
         # Only the practice site is replaced here.
         env:
           KEY: ${{ secrets.SITE_ACCESS_KEY }}
@@ -97,7 +97,7 @@ jobs:
           git add -A
           if git diff --cached --quiet; then echo "gh-pages already current"; exit 0; fi
           git commit -q -m "Publish the practice site from ${GITHUB_SHA::7}"
-          # Fuenf Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # Sechs Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
           # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
           for try_ in 1 2 3; do
             if git push -q origin HEAD:gh-pages; then echo "gh-pages updated"; exit 0; fi

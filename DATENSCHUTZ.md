@@ -78,6 +78,27 @@ Was hier steht, ist aus dem Code gelesen, nicht aus einem Mustertext. Jede Seite
                   jing-access (Zugang). Keine Cookies
     Banner        keines nötig, solange kein Zahlungsdienst eingebunden ist
 
+    Anker, hinter Code
+    Verarbeitet   Serverprotokolle des Hosters beim Laden der App. Sonst nichts:
+                  alle Einträge bleiben im lokalen Speicher des Geräts und werden
+                  nirgendwo hingeschickt
+    Dritte        GitHub Inc., USA (Auslieferung der Dateien). Sonst keine. Keine
+                  Schrift, kein Skript, kein Bild von einer fremden Adresse
+    Speicher      localStorage: anker-v1 (Tagebuch, Medikamente, Laborwerte, Termine,
+                  Einstellungen), sa-access (Zugang). Dazu die Offline-Ablage des
+                  Service Workers mit den Dateien der App, nicht mit Einträgen.
+                  Keine Cookies
+    Banner        keines nötig
+    Aufsicht      Österreichische Datenschutzbehörde
+    Achtung       Die Einträge sind Gesundheitsdaten nach Art. 9 DSGVO. Sie entstehen
+                  und bleiben im Gerät der Person, die sie führt, und erreichen keinen
+                  Server; die Seite erklärt dafür `connect-src 'none'` und kann gar
+                  keine Verbindung aufbauen. Hier wird also nichts im Auftrag
+                  verarbeitet, sondern von der betroffenen Person für sich selbst,
+                  Art. 2 Abs. 2 lit. c DSGVO. Das ändert sich in dem Moment, in dem
+                  irgendetwas an der App etwas sendet, und dann ist es eine andere
+                  Rechtslage und keine kleine Änderung
+
 ### Verträge, die noch fehlen
 
 GitHub und Netlify verarbeiten die Serverprotokolle im Auftrag. Der Vertrag dazu nach Art. 28 DSGVO ist bei keinem der beiden geschlossen. Beide halten einen in ihren Bedingungen bereit; er ist vor einem öffentlichen Start anzunehmen, ebenso die Grundlage für die Übermittlung in die USA nach Art. 44 ff. DSGVO. Bis dahin steht in jedem Rechtstext ein Platzhalter an dieser Stelle, und das soll auch so bleiben.
@@ -103,3 +124,5 @@ Diese Werte hat noch niemand geliefert, deshalb stehen überall Platzhalter in e
 ## Was der Zugangscode leistet und was nicht
 
 Er hält Suchmaschinen und Zufallsbesucher fern. Er ist kein Passwortschutz: GitHub Pages liefert die Datei aus und prüft nichts, der Code steht in der ausgelieferten Seite, und ohne JavaScript greift er gar nicht. Für eine Vorschau ohne personenbezogene Daten ist das vertretbar. Sobald hinter dem Code echte Personendaten lägen, wäre er zu wenig: Art. 32 DSGVO verlangt Schutz nach dem Stand der Technik, und der heißt Prüfung auf dem Server. Der Weg dorthin ist Netlify mit Site protection im bezahlten Tarif oder ein Zugang über Cloudflare.
+
+Bei Anker ist das kein Widerspruch, obwohl dort Gesundheitsdaten im Spiel sind. Was auf dem Server liegt, ist das Programm. Die Einträge liegen im Gerät und kommen dort nie weg. Der Code hält also Zufallsbesucher von einer leeren App fern, mehr soll er nicht. Wer an die Einträge will, braucht das entsperrte Telefon, und dagegen hilft kein Zugangscode, sondern die Sperre des Geräts.

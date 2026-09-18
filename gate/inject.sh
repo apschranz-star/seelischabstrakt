@@ -31,6 +31,15 @@ if ! grep -q "__ACCESS_KEY__" "$file"; then
 fi
 sed -i "s/__ACCESS_KEY__/$key/g" "$file"
 
+# The gate also ships as a pair of separate files, zugang.js and zugang.css, for
+# a page whose own rules forbid inline code. Those carry the placeholder too and
+# are armed the same way, but they have no head to put a robots line in, so the
+# rest of this script only applies to HTML.
+case "$file" in
+  *.html|*.htm) ;;
+  *) echo "gate: armed in $file"; exit 0 ;;
+esac
+
 # Search engines are the one thing the gate really has to keep out, and the gate
 # runs in the browser. A crawler that does not run scripts sees the whole page
 # and no instruction at all. So the instruction is written into the file itself,

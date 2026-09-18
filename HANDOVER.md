@@ -10,12 +10,22 @@ Zugang: Alle Vorschauen auf GitHub Pages außer dem Kunst-Shop stehen hinter ein
     faridabenslimane.netlify.app     die Praxisseite von Farida Benslimane, Ordner /farida im Repo
     JING                             der Beauty-Shop, eigener Branch jing in diesem Repo,
                                      eigene Anleitung dort: HANDOVER.md, Start: LAUNCH.md
+    apschranz-star.github.io/seelischabstrakt/anker/   Anker, die App bei SLE und Zöliakie,
+                                     Ordner /anker, eigene Anleitung dort: README.md
 
 Beide bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
 
 ## JING
 
 JING liegt nicht in einem Ordner, sondern im Branch jing dieses Repositorys, weil es ein eigener Code ist (Next.js) und später in ein eigenes Repository umzieht. Der Custom GPT für JING arbeitet über den GitHub-Connector direkt an den Dateien, seine Instructions stehen in HANDOVER.md im Branch jing. Der Start auf Netlify ist ein Prompt, er steht in LAUNCH.md im selben Branch. Eine statische Demo läuft unter apschranz-star.github.io/seelischabstrakt/jing/ auf dem Branch gh-pages neben der Praxisseite; der Workflow der Praxisseite lässt den Ordner jing dort in Ruhe.
+
+## Anker
+
+Anker ist kein Auftritt, sondern eine App für den eigenen Gebrauch: ein Tagebuch bei systemischem Lupus und Zöliakie, dazu ein Nachschlagewerk und ein Arztbericht. Sie liegt im Ordner /anker, ist reines HTML, CSS und JavaScript ohne Bauschritt und wird von einem eigenen Workflow nach gh-pages unter /anker/ veröffentlicht, hinter demselben Zugangscode wie die übrigen Vorschauen.
+
+Auf dem iPhone wird sie in Safari geöffnet und über Teilen, Zum Home-Bildschirm abgelegt. Danach läuft sie im Vollbild und ohne Netz. Alle Einträge bleiben im Gerät, es gibt keinen Server und kein Konto; die Seite erklärt `connect-src 'none'` und kann gar nichts senden. Der Preis dafür steht in anker/README.md: gesichert wird nur, was man selbst sichert, und dafür gibt es in der App unter Mehr eine Sicherung als Datei.
+
+Inhalte ändern geht in einer einzigen Datei, anker/content.js. Der ausführliche Bericht zu Müdigkeit, Bewegung und Ernährung liegt daneben als anker/REPORT.md und wird nicht mitveröffentlicht.
 
 ## Teil 1: Netlify einrichten (einmalig)
 

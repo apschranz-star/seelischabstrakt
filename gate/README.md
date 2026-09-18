@@ -4,6 +4,8 @@ Ein Code, ein Link, alle Seiten. Wer den Link mit `?zugang=<Code>` öffnet, sieh
 
     gate.snippet.html   die Vorlage, die in den Kopf jeder Seite gehört, mit Platzhaltern
     apply.py            setzt die Vorlage in eine Seite ein, mit Name, Betreiber und Kontakt
+    split.py            löst dieselbe Vorlage in zwei eigene Dateien heraus, zugang.js und
+                        zugang.css, für Seiten, die kein Inline-Skript erlauben
     inject.sh           schreibt den Zugangscode an die Stelle des Platzhalters, beim Veröffentlichen
 
 Das Zugangsfenster nennt, bevor irgendetwas gespeichert ist, wer die Seite betreibt, was im Browser
@@ -35,7 +37,7 @@ Suchmaschinen fernzuhalten ist die Aufgabe, die dieses Tor wirklich erfüllen ka
 ## Wo der Code herkommt
 
 Ein Repository-Secret namens `SITE_ACCESS_KEY`: github.com, Settings, Secrets and variables, Actions,
-New repository secret. Alle fünf Workflows lesen es zuerst.
+New repository secret. Alle Workflows, die eine geschützte Seite veröffentlichen, lesen es zuerst.
 
 Fehlt das Secret, lesen sie den Code aus der zuletzt veröffentlichten Ausgabe der jeweiligen Seite
 zurück. So läuft ein Repository ohne Secret weiter, aber es ist der schlechtere Weg: jede Seite hat
@@ -58,6 +60,16 @@ und kommt erst beim Veröffentlichen hinein. Im Workflow nach dem Kopieren `sh g
 aufrufen, für jede Seite des Ordners, nicht nur für die Startseite. Gebaute Seite (schranz-ai): `build.mjs`
 liest `SITE_ACCESS_KEY` und setzt den Code beim Bauen ein; fehlt dabei `gate.snippet.html`, bricht der Bau ab,
 statt still eine offene Seite zu schreiben.
+
+Seite mit strenger Content-Security-Policy (Anker): dort ist ein eingesetzter Block wertlos. Die App
+erklärt in ihrem Kopf `script-src 'self'` und `style-src 'self'`, weil sie Gesundheitsdaten trägt; ein
+`<script>` im Dokument würde stumm blockiert, das Tor täte nichts, und der Lauf wäre trotzdem grün.
+Deshalb `python3 gate/split.py <zielordner> "<Name der Seite>" "<Betreiber, Ort>" ["<Kontakt>"]`: das
+löst denselben Code aus derselben Vorlage in `zugang.js` und `zugang.css` heraus, die von derselben
+Adresse geladen werden und die Regel damit erfüllen. Danach `sh gate/inject.sh <zielordner>/zugang.js "$KEY"`.
+Die Seite selbst verweist mit `<link>` und `<script src>` auf die beiden Dateien; im Repository gibt es
+sie nicht, sie entstehen beim Veröffentlichen, und lokal fehlen sie einfach. Eine zweite Fassung des
+Tors ist das nicht: die Vorlage bleibt `gate.snippet.html`, `split.py` schreibt nichts Eigenes.
 
 Den Code ändern: das Secret ändern, die Workflows einmal laufen lassen. Alle alten Links hören auf zu
 funktionieren, Besucher sehen wieder das Feld.

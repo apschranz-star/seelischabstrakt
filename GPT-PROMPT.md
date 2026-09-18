@@ -14,7 +14,7 @@ Alle fünf Seiten lassen sich aus ChatGPT heraus betreiben. Der Weg ist bei alle
     JING                config/products.ts und             Workflow "Publish the JING demo"        Code
                         config/site.ts, Branch jing
 
-Zugang: Farida, die persönliche Seite, Schranz AI und JING stehen hinter einem Code, nur der Kunst-Shop ist offen. Der Link mit `?zugang=<Code>` öffnet, der Browser merkt sich das. Die Workflows lesen den Code aus einem Repository-Secret. Ohne das Secret veröffentlichen sie nichts, damit nie eine offene Fassung die geschützte ersetzt. Anlegen, einmal: github.com, Repository seelischabstrakt, Settings, Secrets and variables, Actions, New repository secret, Name `SITE_ACCESS_KEY`, Wert der Code aus deinem Zugangslink. Danach unter Actions die vier Workflows einmal mit "Run workflow" starten. Alles dazu in gate/README.md.
+Zugang: Farida, die persönliche Seite, Schranz AI, JING und Anker stehen hinter einem Code, nur der Kunst-Shop ist offen. Der Link mit `?zugang=<Code>` öffnet, der Browser merkt sich das. Die Workflows lesen den Code aus einem Repository-Secret. Ohne das Secret veröffentlichen sie nichts, damit nie eine offene Fassung die geschützte ersetzt. Anlegen, einmal: github.com, Repository seelischabstrakt, Settings, Secrets and variables, Actions, New repository secret, Name `SITE_ACCESS_KEY`, Wert der Code aus deinem Zugangslink. Danach unter Actions alle Workflows einmal mit "Run workflow" starten. Alles dazu in gate/README.md.
 
 ## Wie ChatGPT auf GitHub schreibt
 
