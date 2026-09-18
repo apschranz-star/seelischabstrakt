@@ -46,12 +46,6 @@ jobs:
           SITE_ACCESS_KEY="$SITE_ACCESS_KEY" node build.mjs
           test -f dist/index.html && test -f dist/en/index.html
       - name: Replace only the folder schranz-ai on the branch
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: pages
-      - name: Replace only the folder schranz-ai on the branch
-        if: env.skip != '1'
         run: |
           rm -rf pages/schranz-ai
           mkdir -p pages/schranz-ai
