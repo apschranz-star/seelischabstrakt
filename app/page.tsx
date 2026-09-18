@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 import { RITUAL } from "@/components/home/ritual-copy";
 import { RitualHero } from "@/components/home/ritual-hero";
+import { RitualStory } from "@/components/home/ritual-story";
 import { ProductCard } from "@/components/product/product-card";
 import { Reveal, STAGGER } from "@/components/ui/reveal";
 import { SectionHandoff } from "@/components/ui/section-handoff";
@@ -36,19 +37,20 @@ function CollectionSection({
   /** Cards appear at once instead of gliding in, after a switch the visitor made. */
   instant: boolean;
 }) {
-  // After a switch the visitor made, the grid that appears is what they want
-  // to see. It mounts once the old one has faded out, so the scroll happens
-  // here, on mount, not on the click. The first load never scrolls.
-  const gridMounted = useCallback(
-    (node: HTMLUListElement | null) => {
-      if (!node || !instant) return;
+  const section = useRef<HTMLElement>(null);
+  // After a switch the visitor made, the story of the ritual they chose is what
+  // they want to read, with the five pieces beneath it. Story and grid mount
+  // together once the old side has faded out, so the scroll happens here, on
+  // mount, and lands on the top of the section. The first load never scrolls.
+  const storyMounted = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node || !instant || !section.current) return;
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      node.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      section.current.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     },
     [instant],
   );
   const reduceMotion = useReducedMotion() ?? false;
-  const section = useRef<HTMLElement>(null);
   const copy = RITUAL[collection];
   const products = getProductsByCollection(collection);
   const headingId = `${collection}-titel`;
@@ -93,28 +95,34 @@ function CollectionSection({
 
         <AnimatePresence initial={false} mode="wait">
           {active ? (
-            <motion.ul
-              key="grid"
-              ref={gridMounted}
-              role="list"
+            <motion.div
+              key="story-and-grid"
+              ref={storyMounted}
               initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, y: -8 }}
               transition={swap}
-              className="mt-8 scroll-mt-24 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
             >
-              {products.map((product, index) => (
-                <Reveal
-                  key={product.id}
-                  as="li"
-                  from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
-                  delay={instant ? 0 : (index % 4) * STAGGER}
-                  className="h-full"
-                >
-                  <ProductCard product={product} />
-                </Reveal>
-              ))}
-            </motion.ul>
+              <RitualStory collection={collection} instant={instant} />
+              <ul
+                id={`${collection}-produkte`}
+                role="list"
+                aria-label={`Die fünf Stücke von ${copy.title}`}
+                className="mt-10 scroll-mt-24 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
+              >
+                {products.map((product, index) => (
+                  <Reveal
+                    key={product.id}
+                    as="li"
+                    from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
+                    delay={instant ? 0 : (index % 4) * STAGGER}
+                    className="h-full"
+                  >
+                    <ProductCard product={product} />
+                  </Reveal>
+                ))}
+              </ul>
+            </motion.div>
           ) : (
             <motion.div
               key="invite"

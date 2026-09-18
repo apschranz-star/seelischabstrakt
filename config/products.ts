@@ -602,6 +602,10 @@ export function getProductsByCollection(collection: Collection): Product[] {
   return PRODUCTS.filter((p) => p.collection === collection).sort((a, b) => a.order - b.order);
 }
 
+export function getProductById(id: string): Product | undefined {
+  return PRODUCTS.find((p) => p.id === id);
+}
+
 export function getProductBySlug(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
 }
