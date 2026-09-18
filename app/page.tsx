@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { RITUAL } from "@/components/home/ritual-copy";
 import { RitualHero } from "@/components/home/ritual-hero";
@@ -16,9 +15,8 @@ import { useYinYang } from "@/components/theme/yin-yang-provider";
 import { getProductsByCollection } from "@/config/products";
 import { DEFAULT_REGION, REGIONS, SITE, WITHDRAWAL_DAYS } from "@/config/site";
 import { useLang, useT } from "@/lib/i18n";
-import { DURATION } from "@/lib/motion";
 import { useJingStore, type Mode } from "@/lib/store";
-import type { SwitchOptions } from "@/lib/switch-origin";
+import { originFromEvent } from "@/lib/switch-origin";
 import { deliveryWindow } from "@/lib/utils";
 
 /** The store opens on yang, so server markup and first client render agree on it. */
@@ -37,16 +35,29 @@ function CollectionSection({
   const section = useRef<HTMLElement>(null);
   // After a switch the visitor made, the story of the ritual they chose is what
   // they want to read, with the five pieces beneath it. Story and grid mount
-  // together once the old side has faded out, so the scroll happens here, on
-  // mount, and lands on the top of the section. The first load never scrolls.
-  const storyMounted = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (!node || !instant || !section.current) return;
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      section.current.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    },
-    [instant],
-  );
+  // together once the old side has faded out, so the scroll happens on mount and
+  // lands on the top of the section. The first load never scrolls.
+  //
+  // In an effect, not in a ref callback: React attaches refs from the inside out,
+  // so a callback on a child still sees section.current as null and the jump was
+  // silently skipped every single time.
+  //
+  // The flag is read once, at mount, and cleared right afterwards. Left standing
+  // it would scroll the visitor past the hero on every later return to the start
+  // page, and the cards would keep appearing without their choreography.
+  const clearSwitch = useJingStore((state) => state.clearModeSwitch);
+  // A snapshot, taken once when this section mounts. Clearing the flag makes the
+  // parent hand down instant={false} on the next render, and a live read would
+  // restart the reveal choreography under the visitor's eyes.
+  const [jump] = useState(instant);
+  useEffect(() => {
+    if (!jump) return;
+    clearSwitch();
+    const node = section.current;
+    if (!node) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    node.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }, [jump, clearSwitch]);
   const t = useT();
   const copy = RITUAL[collection];
   const title = t(copy.title);
@@ -88,8 +99,8 @@ function CollectionSection({
           </Reveal>
         </div>
 
-        <div ref={storyMounted}>
-          <RitualStory collection={collection} instant={instant} />
+        <div>
+          <RitualStory collection={collection} instant={jump} />
           <ul
             id={`${collection}-produkte`}
             role="list"
@@ -103,8 +114,8 @@ function CollectionSection({
               <Reveal
                 key={product.id}
                 as="li"
-                from={instant ? "none" : index % 2 === 0 ? "left" : "right"}
-                delay={instant ? 0 : (index % 4) * STAGGER}
+                from={jump ? "none" : index % 2 === 0 ? "left" : "right"}
+                delay={jump ? 0 : (index % 4) * STAGGER}
                 className="h-full"
               >
                 <ProductCard product={product} />
@@ -134,10 +145,11 @@ export default function HomePage() {
   //
   // hashchange alone is not enough. The App Router navigates with
   // history.pushState, which fires no hashchange, so clicking Yin in the header
-  // while already on the home page would scroll to a section that is still
-  // showing its dimmed placeholder. Listening to click in the capture phase
-  // catches the in page link before the router handles it; hashchange and
-  // popstate still cover the browser's own back and forward.
+  // while already on the home page would reach nothing at all: only one ritual
+  // is in the document, and the other has no anchor to land on. Listening to
+  // click in the capture phase catches the in page link before the router
+  // handles it; hashchange and popstate still cover the browser's own back and
+  // forward.
   //
   // Only the click is a moment, so only the click grows the eclipse from the
   // pointer. A deep link on load or a history step switches instantly with the
@@ -145,19 +157,50 @@ export default function HomePage() {
   useEffect(() => {
     if (!hydrated) return;
 
+    // The section of the ritual that is not showing is not in the document, so
+    // the browser has no anchor to jump to. Asking for the ritual that is
+    // already open therefore has to do the jump itself, otherwise Yang in the
+    // header does nothing at all for a visitor who is already in the day.
+    const scrollToRitual = (target: Mode) => {
+      const node = document.getElementById(target);
+      if (!node) return;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      node.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    };
+
     const applyHash = () => {
       const hash = window.location.hash.slice(1);
-      if (hash === "yin" || hash === "yang") setMode(hash, { instant: true });
+      if (hash !== "yin" && hash !== "yang") return;
+      if (useJingStore.getState().mode === hash) scrollToRitual(hash);
+      else setMode(hash, { instant: true });
     };
 
     const onClick = (event: MouseEvent) => {
       const anchor = (event.target as Element | null)?.closest?.("a[href]");
+      if (!anchor) return;
       // endsWith, because a basePath (the static demo under /seelischabstrakt/jing)
       // is prepended to every href and would otherwise defeat the exact match.
-      const href = anchor?.getAttribute("href") ?? "";
-      const options: SwitchOptions = { origin: { x: event.clientX, y: event.clientY } };
-      if (href.endsWith("#yin")) setMode("yin", options);
-      if (href.endsWith("#yang")) setMode("yang", options);
+      const href = anchor.getAttribute("href") ?? "";
+      const target: Mode | null = href.endsWith("#yin")
+        ? "yin"
+        : href.endsWith("#yang")
+          ? "yang"
+          : null;
+      if (!target) return;
+      if (useJingStore.getState().mode === target) {
+        scrollToRitual(target);
+        return;
+      }
+      // originFromEvent, not the raw coordinates: a link reached with the
+      // keyboard reports 0/0, and the eclipse would grow from the top left
+      // corner instead of from the control that was pressed.
+      setMode(target, {
+        origin: originFromEvent({
+          clientX: event.clientX,
+          clientY: event.clientY,
+          currentTarget: anchor,
+        }),
+      });
     };
 
     applyHash();
@@ -172,7 +215,6 @@ export default function HomePage() {
   }, [hydrated, setMode]);
 
   const regionLabel = lang === "en" ? activeRegion.labelEn : activeRegion.label;
-  const reduceSwap = useReducedMotion() === true;
   const otherMode: Mode = activeMode === "yang" ? "yin" : "yang";
   const otherCopy = { titleText: t(RITUAL[otherMode].title) };
   const facts = [
@@ -237,21 +279,21 @@ export default function HomePage() {
         at once made the shop a catalogue with two halves; showing one makes it a
         shop that is in a time of day.
 
+        The swap has no animation of its own, on purpose. The palette changes in
+        a single frame, inside the eclipse the provider runs, and a crossfade on
+        the content would run on a second, slower clock: for its whole length the
+        pieces of the day would stand in the colours of the night. One clock, so
+        colour and content are never out of step. The eclipse is the transition.
+
         The element tree follows activeMode, which is the fallback yang until the
         store has rehydrated, so the server markup and the first client render
-        agree and a stored Yin arrives as an ordinary update afterwards.
+        agree and a stored Yin arrives as an ordinary update afterwards. For the
+        few milliseconds until then, globals.css keeps the collection that does
+        not match the stamped mode out of sight.
       */}
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          key={activeMode}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: reduceSwap ? 0 : DURATION.swift, ease: "easeOut" }}
-        >
-          <CollectionSection collection={activeMode} instant={modeSwitched} />
-        </motion.div>
-      </AnimatePresence>
+      <div key={activeMode} data-collection={activeMode}>
+        <CollectionSection collection={activeMode} instant={modeSwitched} />
+      </div>
 
       {/*
         Without JavaScript there is no switch, so the other half would have no

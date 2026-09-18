@@ -47,7 +47,7 @@ ein Prompt für einen GPT mit GitHub- und Netlify-Anbindung steht in `LAUNCH.md`
 app/
   globals.css                Tailwind-Import, @theme-Tokens und beide Paletten, einzige Stelle mit Farbwerten
   layout.tsx                 Wurzel-Layout, Schriften, Metadaten, Bootstrap-Skript, Kopf, Fuß, Warenkorb
-  page.tsx                   Startseite, Faktenband, die beiden Kollektionsabschnitte #yang und #yin, die These
+  page.tsx                   Startseite, Faktenband, der Abschnitt des gerade gewählten Rituals, die These. Es ist immer nur eines im Baum, der Schalter tauscht es; ein Link auf #yin schaltet um und springt hin, statt auf einen Anker zu zeigen, den es nicht gibt
   products/[slug]/page.tsx   Produktseite, Server Component, statisch vorgerendert, mit Pflichtangaben
   cart/page.tsx              Warenkorb als eigene Seite, Lieferland, Versandschwelle, Kostenrechnung
   checkout/page.tsx          Kasse, Zahlartwahl, Bestellübersicht, ruft den Mock-Endpunkt auf
@@ -131,8 +131,10 @@ ist, fällt es auf `yang` zurück. Ohne dieses Skript blitzt bei einem Besucher 
 einen Frame die helle Fläche auf.
 
 **4. Der Store mit `skipHydration`.** `lib/store.ts` legt den Zustand-Store mit dem
-`persist`-Middleware an, Name `jing-store`, `version: 1`, `partialize` auf `mode`, `region` und
-`items`. Entscheidend ist `skipHydration: true`, der Store liest den Speicher beim Import also nicht
+`persist`-Middleware an, Name `jing-store`, `version: 1`, `partialize` auf `mode`, `lang`, `region`
+und `items`. Ein `merge` lässt stehen, was der Besucher schon selbst gewählt hat: wer in den
+wenigen Millisekunden vor der Rehydrierung die Sprache oder das Ritual umstellt, bekommt seine
+Wahl sonst wortlos zurückgenommen. Entscheidend ist `skipHydration: true`, der Store liest den Speicher beim Import also nicht
 von selbst. Das erledigt der `YinYangProvider` in einem Effekt über
 `useJingStore.persist.rehydrate()` und setzt danach `hydrated` auf `true`. Auf dem Server greift
 bewusst ein Memory-Storage, der nichts liefert und nichts schreibt.
@@ -141,7 +143,11 @@ bewusst ein Memory-Storage, der nichts liefert und nichts schreibt.
 Region `DE`, leerer Warenkorb. Genau diese Werte hat auch das Servermarkup. Rendert ein Bauteil den
 gespeicherten Wert schon im ersten Client-Render, unterscheidet sich sein Baum vom ausgelieferten
 HTML, und React meldet einen Hydration-Mismatch. Deshalb gilt ohne Ausnahme: alles, was aus der
-Persistenz kommt, also Ritual, Lieferland und Warenkorb, wird erst gelesen, wenn `hydrated` wahr ist.
+Persistenz kommt, also Ritual, Sprache, Lieferland und Warenkorb, wird erst gelesen, wenn `hydrated`
+wahr ist. Die Palette ist dabei schneller als der Inhalt, weil das Bootstrap-Skript sie vor dem
+ersten Pixel stempelt. Damit in dieser Lücke nie die Nachtfläche über den Stücken des Tages steht,
+hält eine Regel in `globals.css` die Kollektion zurück, die nicht zum gestempelten Modus passt, bis
+der Provider `data-store="ready"` setzt.
 Das Muster steht in `app/page.tsx` und in `components/product/product-card.tsx`:
 
 ```tsx
@@ -245,7 +251,7 @@ den Publikumsbetrieb gehen.
 | Kasse | `app/api/checkout/route.ts` | Der Endpunkt erzeugt eine lokale Pseudo-Sitzung, antwortet mit `live: false` und leitet nur in den Shop zurück. Ersetzen durch einen serverseitigen Aufruf beim Anbieter. Zwei Eigenschaften müssen den Umbau überleben: der Betrag wird serverseitig aus Katalog und Region neu gerechnet und nie vom Client übernommen, und der Client erfährt nur die Sitzung, nicht den Betrag. |
 | CHF-Kurs | `config/site.ts`, `CHF_PER_EUR` | Fester Anzeigekurs von 0,94. Ersetzen durch einen Kurs, der am Bestelltag vom Zahlungsanbieter kommt, für die Bestellung eingefroren wird und dessen Quelle in den AGB steht. |
 | Zahlungsanbieter | `.env.example`, `components/cart/payment-badges.tsx` | `PAYMENT_PROVIDER_KEY` ist leer, es ist kein Anbieter angebunden. Die Badges für Klarna, EPS, TWINT, Apple Pay, PayPal, SEPA und Karte sind reine Beschriftungen. Verträge schließen, Schlüssel serverseitig hinterlegen, je Zahlart den echten Ablauf mit Rückkanal, Storno und Fehlerfällen bauen. |
-| Content Security Policy | `next.config.ts`, `CSP` | Alles ausser Skripten und Styles ist auf die eigene Herkunft begrenzt. `script-src` und `style-src` tragen noch `'unsafe-inline'`, weil der Mode-Bootstrap und der Reveal-Fallback vor dem ersten Paint laufen müssen und Next eigene Inline-Skripte einfügt. Auf Nonces umstellen heisst eine Middleware, die pro Anfrage eine Nonce setzt, und damit werden aus 19 statischen Seiten dynamisch gerenderte. Vor dem Livegang entscheiden. |
+| Content Security Policy | `config/security.ts`, `next.config.ts` | Alles ausser Skripten und Styles ist auf die eigene Herkunft begrenzt. Auf einem Server geht die Regel als Kopfzeile hinaus; der statische Export hat keinen Server, dort trägt sie ein meta-Element im Dokumentkopf, und `frame-ancestors` fällt dabei weg, weil meta diese Direktive nicht kennt. `script-src` und `style-src` tragen noch `'unsafe-inline'`, weil der Mode-Bootstrap und der Reveal-Fallback vor dem ersten Paint laufen müssen und Next eigene Inline-Skripte einfügt. Auf Nonces umstellen heisst eine Middleware, die pro Anfrage eine Nonce setzt, und damit werden aus 19 statischen Seiten dynamisch gerenderte. Vor dem Livegang entscheiden. |
 | Steuer- und Versandwerte | `config/site.ts`, `REGIONS` | Steuersätze, Versandpauschalen, Schwellen für kostenfreien Versand und die Schweizer Abfertigungspauschale sind Konfiguration, kein Gesetzestext. Vor dem Start mit Steuerberatung und Logistikpartner bestätigen, OSS-Anmeldung klären und danach regelmäßig prüfen. |
 
 ## Hinweis zum Katalog

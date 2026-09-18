@@ -14,7 +14,6 @@ import { flushSync } from "react-dom";
 import { useJingStore, type Mode } from "@/lib/store";
 import type { RegionCode } from "@/config/site";
 import type { SwitchOptions } from "@/lib/switch-origin";
-import { useMounted } from "@/lib/use-mounted";
 
 interface YinYangContextValue {
   mode: Mode;
@@ -39,8 +38,6 @@ export function YinYangProvider({ children }: { children: ReactNode }) {
   const setRegionInStore = useJingStore((state) => state.setRegion);
   const setHydrated = useJingStore((state) => state.setHydrated);
   const pruneCart = useJingStore((state) => state.pruneCart);
-
-  const mounted = useMounted();
 
   // The eclipse in flight, if any. A second press skips it and starts the
   // reverse instead of queueing behind it.
@@ -96,20 +93,24 @@ export function YinYangProvider({ children }: { children: ReactNode }) {
   // hyphenation and the browser's translate prompt.
   const lang = useJingStore((state) => state.lang);
   useEffect(() => {
-    if (!mounted || !hydrated) return;
+    if (!hydrated) return;
     document.documentElement.lang = lang;
-  }, [lang, mounted, hydrated]);
+  }, [lang, hydrated]);
 
   useEffect(() => {
-    if (!mounted || !hydrated) return;
+    if (!hydrated) return;
     const root = document.documentElement;
     root.dataset.mode = mode;
+    // The stylesheet keeps the ritual that does not match the stamped mode out
+    // of sight until this line runs, so the night palette is never shown with
+    // the pieces of the day. See "One ritual at a time" in globals.css.
+    root.dataset.store = "ready";
     const surface = getComputedStyle(root).getPropertyValue("--jing-surface").trim();
     if (!surface) return;
     document
       .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
       .forEach((meta) => meta.setAttribute("content", surface));
-  }, [mode, mounted, hydrated]);
+  }, [mode, hydrated]);
 
   /*
    * The eclipse.

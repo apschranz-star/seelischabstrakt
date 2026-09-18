@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/ui/site-header";
 import { SiteFooter } from "@/components/ui/site-footer";
 import { AccessGate } from "@/components/ui/access-gate";
 import { SITE } from "@/config/site";
+import { CSP_META } from "@/config/security";
 
 const display = Bodoni_Moda({
   subsets: ["latin"],
@@ -45,17 +46,29 @@ export const metadata: Metadata = {
     url: SITE.url,
     siteName: SITE.name,
   },
-  // Behind an access link nothing may be indexed, the pre-rendered HTML is the
-  // gate anyway (see components/ui/access-gate.tsx).
+  // Behind an access link nothing may be indexed. The prerendered HTML is the
+  // gate itself, but the access code and the whole catalogue travel in the
+  // JavaScript bundle beside it, where anyone who fetches the files can read
+  // them. That is what the gate is and is not: it keeps search engines and
+  // passers by out, it is not a lock. See components/ui/access-gate.tsx and
+  // DATENSCHUTZ.md in the seelischabstrakt repository.
   robots: process.env.NEXT_PUBLIC_JING_ACCESS_KEY
     ? { index: false, follow: false }
     : { index: true, follow: true },
 };
 
+/*
+ * The browser chrome before the first script runs. These two are the surface of
+ * the day and the surface of the night, --jing-surface in app/globals.css, and
+ * they have to be written out here because a meta tag takes no custom property.
+ * They are the only colour literals in the app; the provider replaces them with
+ * the live token as soon as it runs, so a changed palette only ever shows here
+ * for the first frame. Change a surface there, change it here.
+ */
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f9f9fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d0d0d" },
+    { media: "(prefers-color-scheme: light)", color: "#faf9f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0c10" },
   ],
 };
 
@@ -70,14 +83,28 @@ const MODE_BOOTSTRAP = `(function(){try{var s=localStorage.getItem("jing-store")
  * bundle never hydrates, a chunk that 404s or a script blocked by an extension,
  * that content would stay invisible with no way back. The provider stamps
  * data-hydrated on the document as soon as React is running; if that has not
- * happened after four seconds, everything is shown unconditionally.
+ * happened after four seconds, everything is shown unconditionally. The same
+ * timer releases the collection that globals.css holds back until the store has
+ * been read, so a stored Yin cannot leave the page without any pieces at all.
  */
-const REVEAL_FALLBACK = `(function(){setTimeout(function(){if(document.documentElement.hasAttribute("data-hydrated"))return;var s=document.createElement("style");s.textContent="[data-reveal]{opacity:1!important;transform:none!important}";document.head.appendChild(s);},4000);})();`;
+const REVEAL_FALLBACK = `(function(){setTimeout(function(){if(document.documentElement.hasAttribute("data-hydrated"))return;document.documentElement.setAttribute("data-store","ready");var s=document.createElement("style");s.textContent="[data-reveal]{opacity:1!important;transform:none!important}";document.head.appendChild(s);},4000);})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" data-mode="yang" suppressHydrationWarning>
       <head>
+        {/*
+          The static demo has no server, so nothing sends the headers that
+          next.config.ts declares. The policy travels in the document instead.
+          On a real deployment the header is already there and this would only
+          repeat it, so it is written for the export alone. See config/security.ts.
+        */}
+        {process.env.NEXT_PUBLIC_JING_STATIC_DEMO === "1" ? (
+          <>
+            <meta httpEquiv="Content-Security-Policy" content={CSP_META} />
+            <meta name="referrer" content="strict-origin-when-cross-origin" />
+          </>
+        ) : null}
         <script dangerouslySetInnerHTML={{ __html: MODE_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: REVEAL_FALLBACK }} />
         {/* Without scripting the reveal animation must not hide anything. */}

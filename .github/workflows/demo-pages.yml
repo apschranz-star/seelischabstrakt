@@ -2,12 +2,14 @@
 # to the branch gh-pages under jing/. This is what makes a change by the GPT visible
 # without anyone running a build by hand.
 #
-# The access code is the one code for every gated site: the repository secret
-# SITE_ACCESS_KEY when it exists, otherwise gate/access-code.txt on main. Without
-# either nothing is published, so the demo never goes live without its gate.
+# The access code comes from the repository secret SITE_ACCESS_KEY. Without the
+# secret the run falls back to the code that is already in the published demo, so a
+# repository that never got a secret keeps working. Finds it neither way, it stops
+# and publishes nothing, so the demo never goes live without its gate. There is no
+# file anywhere that holds the code: a code in the repository would be public.
 #
 # Once JING moves to its own repository, gh-pages of that repository takes over and
-# the two checkout steps below lose their `repository` line.
+# the second checkout below loses its `repository` line.
 name: Publish the JING demo
 
 on:
@@ -29,12 +31,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Der Zugangscode steht schon in der veroeffentlichten Demo, im Bundle neben dem
-      # Schluessel jing-access. Ihn dort zu lesen ist verlaesslicher als ein Secret, das
-      # jemand erst anlegen muss, und er wird nirgends abgelegt. Findet der Lauf keinen
-      # Code, bricht er ab und veroeffentlicht nichts, statt die Demo offen zu stellen.
-      # Der Ordner heisst nicht pages: Next.js wuerde jeden Ordner dieses Namens im
-      # Projekt fuer seinen Pages-Router halten und am Export scheitern.
+      # Die veroeffentlichte Demo wird gebraucht, um nur den Ordner jing zu ersetzen,
+      # und im Notfall auch, um den Zugangscode zurueckzulesen. Der Ordner heisst
+      # nicht pages: Next.js hielte jeden Ordner dieses Namens im Projekt fuer seinen
+      # Pages-Router und scheiterte am Export.
       - name: Check out the published branch
         uses: actions/checkout@v4
         with:
@@ -42,18 +42,26 @@ jobs:
           ref: gh-pages
           path: published
 
+      # Der Rueckfall liest den Code aus dem minifizierten Bundle der schon
+      # veroeffentlichten Demo. Das ist bewusst nur der zweite Weg: die Form, auf die
+      # der Ausdruck passt, entsteht erst im Minifier und kann sich mit jeder
+      # Werkzeugversion aendern. Wer den Code sicher in der Hand behalten will, legt
+      # das Secret SITE_ACCESS_KEY an; dann wird hier gar nichts gelesen.
       - name: Read the access code, secret first, published demo second
         env:
           SECRET: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
           KEY="$SECRET"
+          if [ -n "$KEY" ]; then echo "Zugangscode aus dem Secret."; fi
           if [ -z "$KEY" ] && [ -d published/jing/_next/static/chunks ]; then
+            echo "::warning::Kein Secret SITE_ACCESS_KEY. Der Code wird aus der veroeffentlichten Demo zurueckgelesen."
             KEY="$(node -e 'const fs=require("fs"),path=require("path");const dir="published/jing/_next/static/chunks";const re=/"([A-Za-z0-9_-]{6,64})"\s*,\s*[A-Za-z_$][\w$]*\s*=\s*"jing-access"/;for(const f of fs.readdirSync(dir)){const p=path.join(dir,f);if(!fs.statSync(p).isFile())continue;const m=fs.readFileSync(p,"utf8").match(re);if(m){process.stdout.write(m[1]);process.exit(0);}}process.exit(1);' || true)"
           fi
           if [ -z "$KEY" ]; then
-            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Demo. Nichts veroeffentlicht."
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Demo. Nichts veroeffentlicht. Abhilfe: Repository-Secret SITE_ACCESS_KEY anlegen."
             exit 1
           fi
+          case "$KEY" in __*) echo "::error::Der gefundene Wert ist der Platzhalter, kein Code."; exit 1;; esac
           echo "::add-mask::$KEY"
           echo "KEY=$KEY" >> "$GITHUB_ENV"
 
@@ -68,8 +76,12 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: "1"
         run: |
-          scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing "$KEY"
+          JING_ACCESS_KEY="$KEY" scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
           test -f out/index.html
+          grep -qF "$KEY" out/index.html out/_next/static/chunks/*.js || {
+            echo "::error::Der Zugangscode steht nicht im Export. Die Demo waere offen. Nichts veroeffentlicht."
+            exit 1
+          }
 
       - name: Replace only the folder jing on the branch
         run: |
@@ -83,5 +95,14 @@ jobs:
           git add -A
           if git diff --cached --quiet; then echo "demo already current"; exit 0; fi
           git commit -q -m "Publish the JING demo from ${GITHUB_SHA::7}"
-          git push -q origin HEAD:gh-pages
-          echo "demo updated"
+          # Fuenf Workflows schreiben denselben Zweig. Laufen zwei gleichzeitig,
+          # wird der zweite Push abgewiesen; ohne Nachziehen bliebe die Aenderung
+          # liegen. Drei Versuche, dazwischen neu aufsetzen.
+          for try in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "demo updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1

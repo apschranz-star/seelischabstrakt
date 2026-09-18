@@ -50,9 +50,11 @@ Alle Werte stehen in config/site.ts und sind Konfiguration, kein Gesetzestext. V
 
 Nach jeder Änderung am Code, im Ordner des Codes:
 
-    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Code>
+    JING_ACCESS_KEY=<Code> scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
 
-Das schreibt out/. Dessen Inhalt in den Ordner jing/ des Branches gh-pages von seelischabstrakt legen, committen, pushen. Ohne dritten Parameter baut die Vorschau ohne Zugangscode, also öffentlich.
+Das schreibt out/. Dessen Inhalt in den Ordner jing/ des Branches gh-pages von seelischabstrakt legen, committen, pushen.
+
+Ohne JING_ACCESS_KEY baut die Vorschau ohne Zugangscode, also offen im Netz. Das ist nicht nur diese eine Veröffentlichung: der Workflow liest den Code, wenn kein Secret gesetzt ist, aus der zuletzt veröffentlichten Ausgabe zurück, und eine offen veröffentlichte Ausgabe enthält keinen. Von da an fehlt ihm die Quelle und er bricht ab. Wer von Hand veröffentlicht, setzt also den Code, oder legt vorher das Repository-Secret SITE_ACCESS_KEY an.
 
 ## Vor dem Verkauf
 
@@ -109,6 +111,10 @@ Adresse in den Instructions des GPT eintragen, damit er weiss, was live ist. Die
 
 # Übergabe: JING ohne Claude betreiben
 
+> Dieser Abschnitt und der Abschnitt "JING starten" darüber sind Abschriften von HANDOVER.md
+> und LAUNCH.md, damit das Kit an einem Stück weitergegeben werden kann. Maßgeblich sind die
+> beiden Dateien. Wer hier etwas ändert, ändert es dort mit, sonst laufen sie auseinander.
+
 JING ist ein Shop-Frontend für eine monochrome Beauty-Eigenmarke im DACH-Raum. Ein Repository, ein Ordner, eine Datei pro Frage. Diese Anleitung ist für Alexander und für den Custom GPT, der die Seite über GitHub pflegt.
 
     Code          Branch jing im Repository apschranz-star/seelischabstrakt
@@ -145,6 +151,13 @@ Instructions, dieser Text hinein:
     Ändere nur, was Alexander genannt hat. Eine Änderung ist ein Commit mit einem Satz,
     der sagt, was sich für Besucher ändert. Nach dem Commit läuft die CI (Typecheck, Lint,
     Build). Ist sie rot, lies den Fehler vor und behebe ihn, bevor du etwas anderes machst.
+
+    Sprachen: Die Seite ist deutsch und englisch, der Besucher wechselt im Kopf der Seite.
+    Jeder Text im Code steht als Paar { de: "...", en: "..." }, jedes Produkt hat einen Block
+    translations.en mit tagline, description, ritual, warnings (gleiche Anzahl wie die
+    deutschen), bei Kerzen und Inhalatoren clpStatements im amtlichen englischen Wortlaut.
+    Änderst du einen deutschen Text, änderst du den englischen mit. Die Rechtsseiten bleiben
+    deutsch, im englischen Modus steht darüber, dass die deutsche Fassung gilt.
 
     Produkte: config/products.ts. Preise stehen in Cent, brutto, also 5400 für 54,00 Euro.
     Füllmenge als { value, unit } mit ml oder g, damit der Grundpreis stimmt. Jedes
@@ -188,7 +201,7 @@ Zahlart in einer Region an- oder abschalten: REGIONS[Land].paymentMethods. Klarn
 
 Firmendaten: SITE.legalEntity und RESPONSIBLE_PERSON in config/site.ts. Alle Werte in eckigen Klammern ersetzen. Impressum, Widerrufsbelehrung und GPSR-Block lesen daraus.
 
-Neues Produkt: einen Eintrag in PRODUCTS kopieren, id, slug, code, order eindeutig vergeben, Füllmenge und regulatorischen Block vollständig ausfüllen. Die Produktseite entsteht beim Build von selbst.
+Neues Produkt: einen Eintrag in PRODUCTS kopieren, id, slug, code, order eindeutig vergeben, Füllmenge, regulatorischen Block und den Block translations.en vollständig ausfüllen. Die Produktseite entsteht beim Build von selbst.
 
 ## Teil 4: Prüfen und ausspielen
 
@@ -203,9 +216,9 @@ Alle drei müssen ohne Fehler durchlaufen. Dasselbe fährt die CI bei jedem Push
 
 Demo neu bauen und veröffentlichen:
 
-    scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing <Zugangscode>
+    JING_ACCESS_KEY=<Zugangscode> scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
 
-Von Hand ist das nur noch der Ersatz. Der Workflow .github/workflows/demo-pages.yml macht dasselbe bei jedem Push, mit dem Code aus gate/access-code.txt auf main, oder aus dem Secret SITE_ACCESS_KEY, wenn es eines gibt.
+Von Hand ist das nur noch der Ersatz. Der Workflow .github/workflows/demo-pages.yml macht dasselbe bei jedem Push. Seinen Code nimmt er aus dem Repository-Secret SITE_ACCESS_KEY; fehlt das Secret, liest er ihn aus der zuletzt veröffentlichten Ausgabe zurück. Findet er ihn weder so noch so, bricht er ab und veröffentlicht nichts. Eine Datei mit dem Code gibt es nirgends, sie läge in einem öffentlichen Repository.
 
 Das schreibt den Ordner out. Dessen Inhalt gehört auf den Branch gh-pages des Repositories seelischabstrakt in den Unterordner jing. Der Workflow der Praxisseite lässt diesen Ordner in Ruhe.
 

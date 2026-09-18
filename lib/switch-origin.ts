@@ -2,9 +2,9 @@
  * Where a mode switch starts.
  *
  * The eclipse in components/theme/yin-yang-provider.tsx grows the new palette
- * from the point the visitor touched. Every switch point in the tree (the
- * header toggle, the hero halves, the invite buttons, the #yin and #yang
- * links) hands that point along through these options. A switch that is not
+ * from the point the visitor touched. Every switch point in the tree, the
+ * header toggle, the two hero halves and the #yin and #yang links, hands that
+ * point along through these options. A switch that is not
  * a moment, a deep link on load or a history step, passes instant instead
  * and gets the plain token crossfade.
  */

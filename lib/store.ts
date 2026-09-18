@@ -10,7 +10,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { DEFAULT_REGION, REGIONS, type RegionCode } from "@/config/site";
+import { DEFAULT_REGION, type RegionCode } from "@/config/site";
 import { PRODUCTS, type Collection, type Product } from "@/config/products";
 import { estimateOrder, type OrderEstimate, type OrderLine } from "@/lib/utils";
 
@@ -43,7 +43,8 @@ interface JingState {
   addStamp: number;
 
   setMode: (mode: Mode) => void;
-  toggleMode: () => void;
+  /** Takes the switch flag back once the new grid has used it. */
+  clearModeSwitch: () => void;
   setLang: (lang: StoreLang) => void;
   setRegion: (region: RegionCode) => void;
   addItem: (productId: string, quantity?: number) => void;
@@ -58,6 +59,21 @@ interface JingState {
 }
 
 const MAX_PER_LINE = 10;
+
+/** The persisted keys, so a change made too early can be named. */
+type Persisted = "mode" | "lang" | "region" | "items";
+
+/**
+ * What the visitor changed before the persisted state came back.
+ *
+ * Rehydration runs in an effect, a few milliseconds after the first paint, and
+ * it writes the whole persisted slice at once. Someone who presses the switch,
+ * the language button or the country list inside that window would see their
+ * change taken back without a word, and the mode would then disagree with the
+ * palette the bootstrap script already stamped. Every setter that writes a
+ * persisted value names its key here, and merge below leaves those keys alone.
+ */
+const touched = new Set<Persisted>();
 
 const memoryStorage = {
   getItem: () => null,
@@ -82,14 +98,24 @@ export const useJingStore = create<JingState>()(
       // appears afterwards must not play the scroll-in choreography: the
       // visitor is looking straight at it and wants the products, not a wait.
       setMode: (mode) =>
-        set((state) => (state.mode === mode ? {} : { mode, modeSwitched: true })),
-      toggleMode: () =>
-        set((state) => ({ mode: state.mode === "yin" ? "yang" : "yin", modeSwitched: true })),
-      setLang: (lang) => set({ lang }),
-      setRegion: (region) => set({ region }),
+        set((state) => {
+          if (state.mode === mode) return {};
+          touched.add("mode");
+          return { mode, modeSwitched: true };
+        }),
+      clearModeSwitch: () => set({ modeSwitched: false }),
+      setLang: (lang) => {
+        touched.add("lang");
+        set({ lang });
+      },
+      setRegion: (region) => {
+        touched.add("region");
+        set({ region });
+      },
 
       addItem: (productId, quantity = 1) =>
         set((state) => {
+          touched.add("items");
           const existing = state.items.find((item) => item.productId === productId);
           const stamp = state.addStamp + 1;
           const mark = { lastAdded: { productId, stamp }, addStamp: stamp, isCartOpen: true };
@@ -110,21 +136,30 @@ export const useJingStore = create<JingState>()(
         }),
 
       removeItem: (productId) =>
-        set((state) => ({ items: state.items.filter((item) => item.productId !== productId) })),
+        set((state) => {
+          touched.add("items");
+          return { items: state.items.filter((item) => item.productId !== productId) };
+        }),
 
       setQuantity: (productId, quantity) =>
-        set((state) => ({
-          items:
-            quantity <= 0
-              ? state.items.filter((item) => item.productId !== productId)
-              : state.items.map((item) =>
-                  item.productId === productId
-                    ? { ...item, quantity: Math.min(quantity, MAX_PER_LINE) }
-                    : item,
-                ),
-        })),
+        set((state) => {
+          touched.add("items");
+          return {
+            items:
+              quantity <= 0
+                ? state.items.filter((item) => item.productId !== productId)
+                : state.items.map((item) =>
+                    item.productId === productId
+                      ? { ...item, quantity: Math.min(quantity, MAX_PER_LINE) }
+                      : item,
+                  ),
+          };
+        }),
 
-      clearCart: () => set({ items: [] }),
+      clearCart: () => {
+        touched.add("items");
+        set({ items: [] });
+      },
 
       // A basket persisted before a catalogue change can hold an id that no
       // longer resolves. Those entries are invisible in every list and every
@@ -139,7 +174,10 @@ export const useJingStore = create<JingState>()(
 
       openCart: () => set({ isCartOpen: true }),
       closeCart: () => set({ isCartOpen: false }),
-      setHydrated: (value) => set({ hydrated: value }),
+      setHydrated: (value) => {
+        if (value) touched.clear();
+        set({ hydrated: value });
+      },
     }),
     {
       name: "jing-store",
@@ -154,6 +192,15 @@ export const useJingStore = create<JingState>()(
         region: state.region,
         items: state.items,
       }),
+      // Anything the visitor already chose in this visit outranks the stored
+      // value, see the note on `touched` above.
+      merge: (persisted, current) => {
+        const incoming = { ...(persisted as Partial<JingState>) };
+        touched.forEach((key) => {
+          delete incoming[key];
+        });
+        return { ...current, ...incoming };
+      },
     },
   ),
 );
@@ -181,8 +228,4 @@ export function selectItemCount(state: { items: CartItem[] }): number {
 
 export function selectEstimate(state: { items: CartItem[]; region: RegionCode }): OrderEstimate {
   return estimateOrder(resolveLines(state.items), state.region);
-}
-
-export function selectRegion(state: { region: RegionCode }) {
-  return REGIONS[state.region];
 }

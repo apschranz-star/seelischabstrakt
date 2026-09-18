@@ -119,14 +119,12 @@ export function ThemeToggle({ className }: { className?: string }) {
           animate={{ x: isYin ? TRAVEL : 0 }}
           transition={travel}
         >
-          <motion.span
-            aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-inverse-surface"
-            initial={false}
-            animate={{ scale: 1 }}
-            whileTap={reduceMotion ? undefined : { scale: 0.88 }}
-            transition={{ duration: reduceMotion ? 0 : 0.18, ease: EASE_RITUAL }}
-          />
+          {/* Das Gestirn gibt unter dem Finger nach. Das macht CSS, nicht die
+              Bewegungsbibliothek: deren whileTap haengt dem Element ein
+              tabindex an, damit es auch mit der Tastatur zu druecken waere, und
+              damit stuende ein Tabstopp in einem Bereich, der aria-hidden ist.
+              Gedrueckt wird der Knopf, nicht die Scheibe darin. */}
+          <span className="jing-disc absolute inset-0 rounded-full bg-inverse-surface" />
           <motion.span
             key={word}
             aria-hidden="true"

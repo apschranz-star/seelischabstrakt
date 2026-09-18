@@ -1,5 +1,5 @@
 /**
- * Seed catalogue. Eight private label products, four per collection.
+ * Seed catalogue. Ten private label products, five per collection.
  *
  * Prices are gross, in euro cents, as required for consumer facing prices in the EU.
  * Net quantities drive the Grundpreis under the German Preisangabenverordnung, see
@@ -901,14 +901,10 @@ export function getProductBySlug(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
 }
 
-export function isCosmetic(product: Product): product is Product & { regulatory: CosmeticRegulatory } {
-  return product.regulatory.kind === "cosmetic";
-}
-
 /**
  * True for a cosmetic and for a set that encloses one. The hygiene exception of
  * section 312g Abs. 2 Nr. 3 BGB and the Article 4 responsible person statement
- * both follow this, not the narrower isCosmetic.
+ * both follow this, and a plain kind === "cosmetic" test would miss the sets.
  */
 export function hasCosmeticPart(product: Product): boolean {
   const r = product.regulatory;

@@ -5,17 +5,23 @@
 # are moved aside for the duration of the build and put back afterwards, also
 # when the build fails. The checkout knows it is in the demo
 # (NEXT_PUBLIC_JING_STATIC_DEMO) and computes its mock session in the browser.
-#   scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing [zugangscode]
+#   JING_ACCESS_KEY=<code> scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
 set -euo pipefail
 BASE_PATH="${1:-}"
 SITE_URL="${2:-https://jing.example}"
-# Optional third argument: an access code. With it the demo only opens through
-# ?zugang=<code> or the code typed on the gate, and asks not to be indexed.
-ACCESS_KEY="${3:-}"
+# The access code. With it the demo only opens through ?zugang=<code> or the code
+# typed on the gate, and asks not to be indexed. Preferably in JING_ACCESS_KEY:
+# a third argument stands in the process list, where every other process on the
+# machine can read it. The argument stays for calls by hand.
+ACCESS_KEY="${JING_ACCESS_KEY:-${3:-}}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 restore() { if [ -d .api-aside ]; then rm -rf app/api; mv .api-aside app/api; fi; }
+# A run that was killed between the move and the restore leaves the routes lying
+# in .api-aside. Put them back before moving again: mv into an existing directory
+# nests instead of renaming, and the restore would then rebuild app/api/api.
+restore
 trap restore EXIT
 mv app/api .api-aside
 rm -rf out

@@ -143,6 +143,13 @@ export function AccessGate({ children }: { children: ReactNode }) {
             {t({ de: "Der Code stimmt nicht.", en: "The code is not correct." })}
           </p>
         ) : null}
+
+        <noscript>
+          <p className="mt-4 text-[12px] leading-relaxed text-seal">
+            Diese Vorschau prüft den Code im Browser. Ohne JavaScript lässt sie sich nicht öffnen.
+            · This preview checks the code in the browser. Without JavaScript it cannot be opened.
+          </p>
+        </noscript>
       </form>
 
       {/*
@@ -178,8 +185,14 @@ export function AccessGate({ children }: { children: ReactNode }) {
         </p>
         <p className="mt-3">
           {t({
-            de: "Die vollständige Datenschutzerklärung und das Impressum stehen hinter dem Zugang.",
-            en: "The full privacy policy and the imprint are behind the access code.",
+            de:
+              "Verantwortlich für diese Vorschau ist Alexander Schranz, erreichbar über die Person, " +
+              "die dir den Link geschickt hat. Gehostet wird sie von GitHub, Inc., USA (GitHub Pages). " +
+              "Die vollständige Datenschutzerklärung und das Impressum stehen hinter dem Zugang.",
+            en:
+              "This preview is run by Alexander Schranz, reachable through whoever sent you the link. " +
+              "It is hosted by GitHub, Inc., USA (GitHub Pages). The full privacy policy and the " +
+              "imprint are behind the access code.",
           })}
         </p>
       </details>

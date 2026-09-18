@@ -27,7 +27,6 @@
   --color-control: var(--jing-control);
 
   --ease-ritual: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
 
   /* The floor a vessel stands on. Greys only, a shade off the surface. */
   --color-stage: var(--jing-stage);
@@ -224,10 +223,6 @@ body {
 .jing-focus-within:focus-within {
   outline: 2px solid var(--jing-ink);
   outline-offset: 2px;
-}
-
-.jing-hairline {
-  border-color: var(--jing-line);
 }
 
 /* The floor. Lit from above, a shade darker toward the bottom edge. */
@@ -595,5 +590,45 @@ header[data-scrolled] {
   }
   .jing-bloom {
     display: none;
+  }
+}
+
+/*
+  One ritual at a time, from the very first frame.
+
+  The bootstrap script in the root layout stamps the stored mode on the document
+  before the first paint, so the palette is right immediately. The markup cannot
+  follow that fast: it is prerendered, it always carries Yang, and the store is
+  read back a few milliseconds later inside an effect. In those milliseconds a
+  visitor who left in the night saw the night palette over the pieces of the day.
+
+  So the ritual that does not match the stamped mode stays out of sight until the
+  provider sets data-store, which it does the moment the persisted state is back.
+  Without scripting nothing stamps and nothing hides: data-mode stays at the Yang
+  of the markup, and the Yang collection is exactly what is there to read.
+*/
+html[data-mode="yin"]:not([data-store="ready"]) [data-collection="yang"],
+html[data-mode="yang"]:not([data-store="ready"]) [data-collection="yin"] {
+  display: none;
+}
+
+/*
+  Das Gestirn im Schalter gibt unter dem Finger nach. Der Knopf traegt :active,
+  die Scheibe darin zeichnet es; so bleibt der Bereich unter aria-hidden frei von
+  allem, was Fokus annehmen koennte.
+*/
+.jing-disc {
+  transition: transform 180ms var(--ease-ritual);
+}
+
+button:active .jing-disc {
+  transform: scale(0.88);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jing-disc,
+  button:active .jing-disc {
+    transition: none;
+    transform: none;
   }
 }

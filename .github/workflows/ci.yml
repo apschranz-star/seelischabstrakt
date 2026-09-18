@@ -1,5 +1,9 @@
-# Every push and pull request has to pass the same three checks a contributor
-# runs locally. A red build here is the earliest, cheapest place to catch it.
+# Every push and pull request has to pass the same checks a contributor runs
+# locally. A red build here is the earliest, cheapest place to catch it.
+#
+# The static export is built as well, because that, not the server build, is what
+# is actually published today. The two differ enough to break separately: the
+# export has no route handlers, no image optimiser and no response headers.
 name: CI
 
 on:
@@ -38,3 +42,6 @@ jobs:
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Build the static export, the build that is published
+        run: scripts/build-static-demo.sh /seelischabstrakt/jing https://apschranz-star.github.io/seelischabstrakt/jing
