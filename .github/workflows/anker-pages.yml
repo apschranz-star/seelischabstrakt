@@ -38,7 +38,7 @@ jobs:
           node-version: 22
       - name: Check that the app parses
         run: |
-          for f in anker/app.js anker/inhalt-de.js anker/sw.js anker/inhalt-*.js; do
+          for f in anker/app.js anker/sw.js anker/inhalt-*.js; do
             node --check "$f"
           done
           # Jede angebotene Sprache muss dieselbe Struktur haben wie das deutsche

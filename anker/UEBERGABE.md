@@ -7,9 +7,8 @@ ChatGPT selbst weiter.
 
 Keine Umlaute in diesem Ordner, das ist hier so und bleibt so.
 
-Wenn die erste Aufgabe erledigt ist, ist die zweite in `HANDOVER-CHATGPT.md`
-beschrieben. Die Aufgaben stehen dort, nicht hier; diese Datei muss nicht
-nachgezogen werden.
+Die Aufgaben selbst stehen in `HANDOVER-CHATGPT.md`. Hier steht nur, welche
+gerade dran ist.
 
 ---
 
@@ -91,16 +90,46 @@ nachgezogen werden.
     wird. Ob eine Sprache angeboten wird, bevor sie fertig ist. In all dem
     fragst du Alexander und wartest.
 
-    DIE ERSTE AUFGABE IST ERLEDIGT
+    DEINE ERSTE AUFGABE
 
-    Die deutsche Inhaltsdatei heisst jetzt inhalt-de.js und hat dieselbe
-    Form wie die anderen vier Sprachdateien:
-    window.INHALT = window.INHALT || {}; window.INHALT.de = { ... }.
+    Die Oberflaeche auf Italienisch.
 
-    app.js verwendet direkt window.INHALT. index.html, sw.js, der Workflow
-    und werkzeug/pruefe-sprache.js zeigen auf den neuen Namen. Die alten
-    Uebergangsbloecke sind entfernt.
+    Der Inhalt liegt in inhalt-it.js schon vollstaendig auf Italienisch.
+    Was fehlt, ist die Oberflaeche: 290 Knopf- und Meldungstexte, die
+    inhalt-en.js unter dem Schluessel ui schon beantwortet. Deutsch ist die
+    Schluesselsprache, der deutsche Satz ist der Schluessel. Solange die
+    Tabelle fehlt, wird Italienisch nicht angeboten, und das ist Absicht:
+    deutsche Knoepfe ueber italienischem Text waeren schlechter als eine
+    Sprache weniger.
 
-    Bei weiteren Aenderungen gelten die Pruefungen in
-    anker/HANDOVER-CHATGPT.md. Die naechste offene Aufgabe dort ist die
-    Oberflaeche fuer Italienisch, Franzoesisch und Spanisch.
+    Der Weg steht Schritt fuer Schritt in anker/HANDOVER-CHATGPT.md unter
+    "The open task". Lies ihn, bevor du anfaengst.
+
+    Fertig heisst:
+
+    - inhalt-it.js traegt eine ui-Tabelle mit denselben 290 deutschen
+      Schluesseln wie inhalt-en.js, uebersetzt ist nur die rechte Seite.
+    - Jeder Platzhalter in geschweiften Klammern, den ein Schluessel
+      traegt, steht auch in der Uebersetzung. Die Reihenfolge darf sich
+      aendern, der Bestand nicht.
+    - "it" steht in OBERFLAECHE_FERTIG in app.js. Vorher nicht.
+    - Alle Pruefungen laufen sauber durch:
+
+          cd anker
+          for f in app.js sw.js inhalt-*.js; do node --check "$f" || echo "BROKEN $f"; done
+          for l in en it fr es; do node werkzeug/pruefe-sprache.js inhalt-$l.js $l; done
+          node werkzeug/pruefe-texte.js
+          node werkzeug/pruefe-deutsch.js
+          grep -c 'style="' app.js index.html inhalt-*.js
+
+    - Der Lauf "Publish Anker" ist gruen.
+
+    Fuehr die Pruefungen wirklich aus, bevor du committest. Der Workflow
+    prueft dasselbe noch einmal und veroeffentlicht nichts, wenn etwas
+    nicht stimmt; dann steht die App still, bis es jemand merkt.
+
+    Am deutschen und am englischen Text aendert sich kein einziges Wort.
+    Meldet pruefe-deutsch.js etwas, hast du mehr angefasst als vorgesehen.
+
+    Wenn du fertig bist, schreib in drei Saetzen: was du geaendert hast,
+    was du geprueft hast, und was du nicht pruefen konntest.
