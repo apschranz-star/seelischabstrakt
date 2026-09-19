@@ -9,6 +9,43 @@ Bewegung und Ernaehrung. Die App enthaelt dieselben Inhalte in kuerzerer Form.
 
 ---
 
+## Wohin die App kommt
+
+Die Adresse ist
+
+    https://apschranz-star.github.io/seelischabstrakt/anker/
+
+Dorthin legt sie der Workflow `.github/workflows/anker-pages.yml`, sobald auf
+dem Zweig `main` etwas in `anker/` liegt. Der Workflow prueft vorher, dass
+jede Datei parst, dass jede angebotene Sprache vollstaendig ist und dass
+`index.html` nichts laedt, was nicht mitkopiert wurde. Danach dauert es etwa
+drei Minuten. Die Seite fragt nach dem Zugangscode; das ist derselbe, den die
+anderen Seiten auch verlangen, und er steht im Repository-Secret
+`SITE_ACCESS_KEY`.
+
+Das Veroeffentlichen ist kein Umweg, sondern Voraussetzung. Ein Service
+Worker laeuft nur auf einer sicheren Verbindung, und *Zum Home-Bildschirm*
+bietet Safari nur dort als eigene App an. Ohne HTTPS gibt es keine Offline-App.
+
+### Vorher kurz ausprobieren, im eigenen WLAN
+
+Zum Anschauen reicht ein Rechner im selben Netz. Im Ordner ueber `anker/`:
+
+    python3 -m http.server 8000
+
+Dann am iPhone in Safari `http://<IP-des-Rechners>:8000/anker/` oeffnen. Die IP
+zeigt `ipconfig getifaddr en0` am Mac oder `hostname -I` unter Linux.
+
+Zwei Dinge sind dabei anders als spaeter:
+
+- Kein Service Worker und kein *Zum Home-Bildschirm* als eigene App. Dafuer
+  braucht es HTTPS. Zum Lesen und Tippen genuegt es trotzdem.
+- Eintraege, die unter dieser Adresse entstehen, bleiben dort. Der Browser
+  haelt den Speicher je Adresse getrennt; sie wandern nicht zur
+  veroeffentlichten Fassung mit. Zum Ausprobieren ist das gut so.
+
+---
+
 ## Auf dem iPhone installieren
 
 Anker ist eine Web-App. Sie kommt nicht aus dem App Store, sondern wird aus
@@ -145,15 +182,31 @@ aendern will, aendert die Datei und laedt neu.
 
 Der Inhalt liegt je Sprache in einer eigenen Datei. Eine Sprache wird erst
 angeboten, wenn zweierlei uebersetzt ist: der Inhalt und die Oberflaeche.
-Der Inhalt ist es in allen fuenf Sprachen, die Oberflaeche bisher nur auf
-Deutsch, denn rund zweihundert Knopf- und Meldungstexte stecken noch in
-`app.js`. Deshalb steht in `OBERFLAECHE_FERTIG` heute nur `de`, und die App
-laeuft durchgehend deutsch statt halb englisch. Was zu tun bleibt, steht in
+Der Inhalt ist es in allen fuenf Sprachen. Die Oberflaeche, also rund
+zweihundertneunzig Knopf- und Meldungstexte aus `app.js`, ist es auf Englisch
+und auf Deutsch. Deshalb stehen in `OBERFLAECHE_FERTIG` heute `en` und `de`,
+und die App laeuft in beiden Sprachen durchgehend. Italienisch, Franzoesisch
+und Spanisch haben den Inhalt, aber noch keine `ui`-Tabelle; sie werden
+deshalb nicht angeboten. Was dafuer zu tun ist, steht in
 `HANDOVER-CHATGPT.md`.
 
-    node werkzeug/finde-texte.js       zeigt die Texte, die noch in app.js stecken
+Deutsch ist die Schluesselsprache: in `app.js` steht der deutsche Satz selbst
+als Schluessel, und `inhalt-en.js` traegt unter `ui` die Uebersetzung dazu.
+Drei Formen gibt es:
+
+    T("Heute")                             ein fester Satz
+    TV("Letzte {n} Tage", { n: 30 })       mit Platzhaltern, die die
+                                           Uebersetzung umstellen darf
+    TP("{n} Tag", "{n} Tage", n)           Einzahl und Mehrzahl als zwei
+                                           eigene Schluessel
+
+Gespeichert wird nie das Uebersetzte, sondern immer der deutsche Schluessel.
+Das gilt fuer die angekreuzten Zeichen und fuer die Rolle einer Anlaufstelle.
+Andersherum verlore ein Sprachwechsel jedes Kreuz, das schon gesetzt ist.
+
+    node werkzeug/finde-texte.js       zeigt die Texte, die in app.js stecken
     node werkzeug/pruefe-sprache.js inhalt-en.js en    Struktur gegen das Original
-    node werkzeug/pruefe-texte.js      fehlende Oberflaechentexte je Sprache
+    node werkzeug/pruefe-texte.js      fehlende, tote und schiefe Oberflaechentexte
     node werkzeug/textabzug.js         Text aller Seiten abziehen und vergleichen
 
 Die Felder `id`, `schluessel`, `dringend`, `land`, `thema`, `sicherheit`, `wert`,

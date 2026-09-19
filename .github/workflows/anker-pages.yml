@@ -38,9 +38,16 @@ jobs:
           node-version: 22
       - name: Check that the app parses
         run: |
-          for f in anker/app.js anker/content.js anker/sw.js; do
+          for f in anker/app.js anker/content.js anker/sw.js anker/inhalt-*.js; do
             node --check "$f"
           done
+          # Jede angebotene Sprache muss dieselbe Struktur haben wie das deutsche
+          # Original, und jeder Oberflaechentext muss uebersetzt sein. Fehlt etwas,
+          # stuende es in der App auf Deutsch zwischen englischen Saetzen.
+          for l in en it fr es; do
+            node anker/werkzeug/pruefe-sprache.js "anker/inhalt-$l.js" "$l"
+          done
+          node anker/werkzeug/pruefe-texte.js
           python3 -c "import json;json.load(open('anker/manifest.webmanifest'));print('manifest ok')"
       - name: Check out the branch gh-pages
         uses: actions/checkout@v4
@@ -66,9 +73,19 @@ jobs:
           rm -rf pages/anker
           mkdir -p pages/anker
           cp anker/index.html anker/app.css anker/app.js anker/content.js anker/sw.js \
+             anker/inhalt-en.js anker/inhalt-it.js anker/inhalt-fr.js anker/inhalt-es.js \
              anker/manifest.webmanifest anker/icon.svg anker/icon-180.png \
              anker/icon-192.png anker/icon-512.png anker/icon-512-maskable.png \
              pages/anker/
+          # Jede Datei, die index.html laedt, muss auch hier liegen. Fehlt eine,
+          # startet die App nicht, und zwar erst beim Benutzer, nicht hier.
+          for f in $(grep -o 'src="[a-z0-9.-]*\.js"' anker/index.html | cut -d'"' -f2); do
+            [ "$f" = "zugang.js" ] && continue
+            if [ ! -s "pages/anker/$f" ]; then
+              echo "::error::index.html laedt $f, die Datei wurde aber nicht mitkopiert. Nichts veroeffentlicht."
+              exit 1
+            fi
+          done
           # Die Schrift liegt im Repository und wird mitgeliefert. Fehlt sie,
           # faellt die App still auf die Systemschrift zurueck und alle Breiten,
           # die im Diagramm gerechnet sind, stimmen nicht mehr.

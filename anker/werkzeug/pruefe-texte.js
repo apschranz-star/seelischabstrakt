@@ -17,10 +17,19 @@ const wurzel = path.join(__dirname, "..");
 
 const app = fs.readFileSync(path.join(wurzel, "app.js"), "utf8");
 
-/* Alle Schluessel, die app.js ueber T("...") anfordert. */
+/*
+ * Alle Schluessel, die app.js anfordert: T("..."), TV("...", werte) und
+ * TP("einer", "mehrere", n). Bei TP zaehlen beide Formen, eine fehlende
+ * Einzahl faellt sonst erst auf, wenn genau ein Eintrag dasteht.
+ */
 const verlangt = new Set();
-for (const m of app.matchAll(/\bT\(\s*"((?:[^"\\]|\\.)*)"\s*\)/g)) {
-  verlangt.add(m[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\"));
+const sauber = (t) => t.replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+for (const m of app.matchAll(/\bTV?\(\s*"((?:[^"\\]|\\.)*)"\s*[,)]/g)) {
+  verlangt.add(sauber(m[1]));
+}
+for (const m of app.matchAll(/\bTP\(\s*"((?:[^"\\]|\\.)*)"\s*,\s*"((?:[^"\\]|\\.)*)"/g)) {
+  verlangt.add(sauber(m[1]));
+  verlangt.add(sauber(m[2]));
 }
 
 /* Welche Sprachen die App ueberhaupt anbietet. */
@@ -46,9 +55,20 @@ for (const code of fertig) {
   if (tabelle === undefined) { console.log(`${code}: FEHLER, inhalt-${code}.js fehlt.`); schlimm++; continue; }
   const fehlt = [...verlangt].filter((k) => !(k in tabelle));
   const tot = Object.keys(tabelle).filter((k) => !verlangt.has(k));
-  if (!fehlt.length && !tot.length) { console.log(`${code}: alle ${verlangt.size} Texte da, keine toten Eintraege.`); continue; }
+  /*
+   * Platzhalter. Faellt {n} aus der Uebersetzung heraus, verschwindet die Zahl,
+   * und die Zeile behauptet dann etwas anderes als der Eintrag hergibt. Die
+   * Reihenfolge darf sich aendern, der Bestand nicht.
+   */
+  const platz = (t) => (String(t).match(/\{\w+\}/g) || []).slice().sort().join(",");
+  const schief = [...verlangt].filter((k) => k in tabelle && platz(k) !== platz(tabelle[k]));
+  if (!fehlt.length && !tot.length && !schief.length) { console.log(`${code}: alle ${verlangt.size} Texte da, keine toten Eintraege.`); continue; }
   schlimm++;
   console.log(`${code}: FEHLER`);
+  if (schief.length) {
+    console.log(`  falsche Platzhalter (${schief.length}), da fehlt oder steht zu viel in geschweiften Klammern:`);
+    schief.slice(0, 10).forEach((k) => console.log(`    ${k.slice(0, 84)}`));
+  }
   if (fehlt.length) {
     console.log(`  fehlen (${fehlt.length}), die App zeigt dort Deutsch:`);
     fehlt.slice(0, 15).forEach((k) => console.log(`    ${k.slice(0, 84)}`));

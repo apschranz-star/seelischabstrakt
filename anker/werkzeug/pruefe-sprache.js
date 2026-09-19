@@ -43,7 +43,11 @@ const zielDatei = process.argv[2], zielZweig = process.argv[3];
 const de = laden(__dirname + "/../content.js", null);
 const ziel = laden(zielDatei.includes("/") ? zielDatei : __dirname + "/../" + zielDatei, zielZweig);
 
-const a = form(de, "", []), b = form(ziel, "", []);
+/* Der Zweig ui ist Absicht und gehoert nur in die Uebersetzungen: Deutsch ist
+   die Schluesselsprache, dort ist der Satz selbst der Schluessel. Er wird
+   deshalb hier nicht verglichen, sondern von werkzeug/pruefe-texte.js geprueft. */
+const ohneUi = (x) => x.filter((p) => !p.startsWith(".ui"));
+const a = ohneUi(form(de, "", [])), b = ohneUi(form(ziel, "", []));
 const fehlt = a.filter((x) => !b.includes(x));
 const zuviel = b.filter((x) => !a.includes(x));
 

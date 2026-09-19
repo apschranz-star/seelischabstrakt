@@ -119,95 +119,77 @@ That is the entire privacy promise. Consequences you must respect:
 
 ```js
 const SPRACHEN = [ {code,name,locale}, ... ]      // five entries
-const OBERFLAECHE_FERTIG = ["de"]                 // which ones are offered
-let L   // current language code
-let I   // = INHALT[L], the content for that language
-T(key)  // an interface string
+const OBERFLAECHE_FERTIG = ["en", "de"]           // which ones are offered
+let L                     // current language code
+let I                     // = INHALT[L], the content for that language
+T("Heute")                // one interface string
+TV("Letzte {n} Tage", { n: 30 })        // with placeholders
+TP("{n} Tag", "{n} Tage", n)            // singular and plural
 ```
 
 A language is only offered when **both** its content file and its interface
-strings exist. Today all five content files exist, but the interface strings
-exist only in German, so `OBERFLAECHE_FERTIG` contains only `"de"`. The app
-therefore runs entirely in German and is internally consistent. This is
-deliberate: German buttons over English text is worse than one language.
+strings exist. All five content files exist. The interface exists in English
+and in German, so `OBERFLAECHE_FERTIG` contains `"en"` and `"de"`, and the app
+runs entirely in whichever of the two is chosen. Italian, French and Spanish
+have the content but no `ui` table yet, so they are not offered. German
+buttons over English text would be worse than one language; that is what this
+gate is for.
+
+**German is the key language.** The German sentence in `app.js` *is* the
+lookup key, and `inhalt-en.js` carries the translation under `ui`. `T()`
+returns the key when nothing is found, so a missing translation degrades to
+German rather than to an empty screen. The risk is that editing a German
+sentence in `app.js` silently breaks the lookup; `werkzeug/pruefe-texte.js`
+exists to catch exactly that, and it also reports dead entries and mismatched
+placeholders.
+
+**What is stored is never what is displayed.** The ticked signs and the role
+of a place are written to the diary as the *German* key and translated only on
+the way to the screen (`zeichenListe()`, `zeichenText()`, `ROLLEN`). The other
+way round, switching language would orphan every tick a real user has already
+made, and the doctor's summary would count the same sign twice. Keep it that
+way.
+
+**The static shell.** The tab bar, the skip link and the meta description live
+in `index.html` so the page shows something before the first script runs.
+`huelleUebersetzen()` in `app.js` rewrites them whenever the language is set.
+Page titles in `SEITEN` are *functions*, not strings, for the same reason: that
+table is built before the language is known.
 
 ## The open task
 
-**Move the remaining interface strings out of `app.js` so English can be
-switched on.** This is the only thing standing between the app and a five
-language release. Everything else is done and tested.
-
-There are **244 strings, 7553 characters**. Run this to see them:
+**Write the `ui` tables for Italian, French and Spanish, and add each to
+`OBERFLAECHE_FERTIG`.** The content for all three is already translated and
+passes the structure checker. What is missing is the interface: the same 290
+keys that `inhalt-en.js` already answers.
 
 ```bash
-cd anker && node werkzeug/finde-texte.js
+cd anker
+node werkzeug/pruefe-texte.js        # lists what each offered language is missing
 ```
 
-It prints each string with its line number and a type:
-
-- `str` (121 of them) a plain `"..."` string literal. Easy.
-- `tpl` (114 of them) prose inside a backtick template between two tags, like
-  `` `<h2 class="h2">Termine</h2>` ``. These have to become
-  `` `<h2 class="h2">${esc(T("Termine"))}</h2>` ``. 18 of these span several
-  lines and need their whitespace normalised first.
-- `str+tpl` (9) appear both ways.
-
-### The design decision already made, keep it
-
-**The German sentence is the key.** Do not invent short keys. Write:
-
-```js
-T("Noch nichts eingetragen.")
-```
-
-and then in `inhalt-en.js`:
-
-```js
-window.INHALT.en = {
-  ui: {
-    "Noch nichts eingetragen.": "Nothing logged yet.",
-    ...
-  },
-  symptome: [ ... ],   // the content that is already there
-  ...
-};
-```
-
-German needs no `ui` table at all: `T()` returns the key when no translation is
-found, and the key is the German sentence. That also means a missing
-translation degrades to German rather than to an empty screen.
-
-The risk of this approach is that editing a German sentence in `app.js` silently
-breaks the lookup. `werkzeug/pruefe-texte.js` exists precisely to catch that.
-Run it after every change.
+To see the full list of keys, copy the `ui` block out of `inhalt-en.js`: the
+left-hand side is the German key, the right-hand side is what you replace.
 
 ### Step by step
 
-1. Start a local server and take a **before** snapshot:
-   ```bash
-   cd anker && python3 -m http.server 8137 --bind 127.0.0.1 &
-   NODE_PATH=/path/to/node_modules node werkzeug/textabzug.js /tmp/vorher.json de-AT
-   ```
-2. Wrap the strings in `app.js` with `T(...)`. Work in batches, not all at once.
-3. Take an **after** snapshot and compare. With German active the rendered text
-   must be **identical**, because the key is the German sentence:
-   ```bash
-   node werkzeug/textabzug.js /tmp/nachher.json de-AT
-   node werkzeug/textabzug.js --vergleich /tmp/vorher.json /tmp/nachher.json
-   ```
-   It must say `Alle 14 Seiten gleich.` If it does not, you broke something.
-   The comparison prints the first differing words so you can find it.
-4. Add the `ui` table to `inhalt-en.js`. Then run:
-   ```bash
-   node werkzeug/pruefe-texte.js
-   ```
-5. Add `"en"` to `OBERFLAECHE_FERTIG` in `app.js`. The language switcher on the
-   **Mehr** page appears by itself once more than one language is available; it
-   is already written, you do not need to build it.
-6. Repeat step 4 for `it`, `fr`, `es`, adding each to `OBERFLAECHE_FERTIG` only
-   when its table is complete.
-7. Finally, translate the interface strings **in the same register as the rest**:
-   short, plain, no exclamation marks, no dashes.
+1. Copy the `ui` block from `inhalt-en.js` into `inhalt-it.js` as the first
+   key of `window.INHALT.it`, keeping every German key exactly as it is.
+2. Translate only the right-hand side. Keep every `{placeholder}` that the key
+   carries; the order may change, the set may not. `pruefe-texte.js` checks it.
+3. Translate in the same register as the rest: short, plain, no exclamation
+   marks, no dashes.
+4. The source lines in `wissen` still carry German descriptive fragments in
+   `it`, `fr` and `es`, for example
+   `"ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022"`. In
+   `inhalt-en.js` these are translated; do the same here. The PMID, DOI,
+   journal, year and author names stay untouched.
+5. Add `"it"` to `OBERFLAECHE_FERTIG` in `app.js`. The language switcher on the
+   **Mehr** page grows by itself; it is already written.
+6. Run the whole check list below. The German page dump must still be
+   identical, because German is the key language and nothing you did touched
+   it.
+7. Repeat for `fr` and `es`.
 
 ### After that, the remaining smaller items
 
@@ -215,10 +197,6 @@ Run it after every change.
   `window.INHALT.de = {...}` shape as the others. There is a transition shim in
   `app.js` that currently bridges the two declaration styles, marked with a
   comment saying it can be deleted once this is done.
-- The source lines in every language still carry German descriptive fragments,
-  for example `"ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022"`.
-  Ask Alexander whether the descriptive part should be translated. The PMID,
-  DOI, journal, year and author names must stay untouched either way.
 - `dringend: "nein"` renders as the **most urgent** red dot, and `dringend: "ja"`
   renders green. The naming is backwards and confusing. Renaming it means
   touching all five content files and `app.css` together. Worth doing, but only

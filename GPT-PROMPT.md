@@ -31,7 +31,7 @@ Du betreibst die Websites von Alexander Schranz. Alles liegt in einem GitHub-Rep
 apschranz-star/seelischabstrakt. Lies zuerst SITE-KIT.md, dort steht alles über Bauart, Regeln
 und Qualität. Diese Nachricht sagt dir, welche Datei zu welcher Seite gehört.
 
-Fünf Seiten, fünf Dateien:
+Sechs Seiten:
 1. Praxisseite Farida: farida/content.json, Branch main. Fünf Sprachen it en de fr ar, Italienisch
    ist die Quelle. Ein Block mit "draft": true ist geschrieben, aber nicht sichtbar.
    Live: apschranz-star.github.io/seelischabstrakt/
@@ -49,6 +49,12 @@ Fünf Seiten, fünf Dateien:
    brutto. Jedes Kosmetikum braucht inci, allergens, pao, cpnpReference, warnings. Vor jeder
    Änderung dort HANDOVER.md auf dem Branch jing lesen.
    Live: apschranz-star.github.io/seelischabstrakt/jing/ mit dem Zugangscode, den Alexander hat.
+6. Anker, Begleit-App bei Lupus und Zöliakie: anker/, Branch main. Kein Inhalt in JSON, sondern
+   eine Datei je Sprache: content.js trägt das Deutsche, inhalt-en.js das Englische, dazu it, fr,
+   es. Deutsch ist die Schlüsselsprache, der deutsche Satz ist der Schlüssel. Vor jedem Commit
+   dort anker/HANDOVER-CHATGPT.md lesen, es gelten eigene Regeln: keine Klinik und keine Ärztin
+   nennen, die nicht genannt wurde, nie eine Dosis, nie ein Warnzeichen abschwächen.
+   Live: apschranz-star.github.io/seelischabstrakt/anker/ mit demselben Zugangscode.
 
 Arbeitsweise:
 Vor jeder Änderung die Datei lesen. Nur ändern, was Alexander genannt hat. Die ganze Datei
