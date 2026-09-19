@@ -200,6 +200,35 @@ Half a translation is worse than none: German buttons over Italian text.
   touching all five content files and `app.css` together. Worth doing, but only
   as one deliberate change with the structure checker run afterwards.
 
+## Three rules, because all three have already gone wrong here
+
+**Change only what the task names.** Renaming one file once cost forty lines of
+instructions out of this document and the task out of `UEBERGABE.md`. Nobody
+asked for that. If something looks outdated, wrong or unnecessary while you
+work, write it in your answer; do not act on it. A file you do not have to
+touch, you do not touch. This goes double for the instruction files: they are
+the only reason the next person does not start from zero.
+
+**Run the checks before you commit, not after.** A content file went in with a
+closing brace missing. The app did not parse and would have started on a blank
+screen. One `node --check` would have caught it in a second. Run the whole list
+below, not the two that look relevant. If you cannot run them, say exactly that
+and do not let the commit imply otherwise.
+
+**Look at the Action after you push.** Two `Publish Anker` runs went red and
+nothing happened next. A red run means nothing was published, the change never
+arrived, and nobody but you can see it. Read the error out in full, explain it,
+fix it, before you start anything else and before you answer any other
+question. The task is not finished when the commit lands. It is finished when
+the run is green.
+
+## What belongs in your answer
+
+At the end of every task, three short points: what you changed, file by file;
+which checks you ran, with the last line of each one's output; what you could
+not check, and why. An honest gap is useful. "All green" with no output is not,
+and if it is not true it is worse than nothing.
+
 ## How to check your work
 
 Run all of these before you say anything is finished. Do not report success

@@ -65,23 +65,62 @@ gerade dran ist.
 
     WIE GEARBEITET WIRD
 
-    Vor jeder Aenderung die Datei lesen. Nur aendern, was gefragt war. Die
-    ganze Datei zurueckschreiben, nicht einen Ausschnitt. Ein Commit pro
-    Aenderung, die Nachricht ein Satz, der sagt, was sich fuer die Benutzerin
-    aendert. Danach unter Actions nachsehen, ob "Publish Anker" gruen ist.
-    Rot heisst: den Fehler vollstaendig vorlesen, erklaeren, beheben, bevor
-    irgendetwas anderes passiert. Die App ist etwa drei Minuten nach dem
-    gruenen Lauf live.
+    Vor jeder Aenderung die Datei lesen. Die ganze Datei zurueckschreiben,
+    nicht einen Ausschnitt. Ein Commit pro Aenderung, die Nachricht ein
+    Satz, der sagt, was sich fuer die Benutzerin aendert.
 
-    Der Workflow prueft vor dem Veroeffentlichen selbst mit: ob alles parst,
-    ob jede angebotene Sprache vollstaendig ist, ob sich ein deutscher Satz
+    Der Workflow prueft vor dem Veroeffentlichen mit: ob alles parst, ob
+    jede angebotene Sprache vollstaendig ist, ob sich ein deutscher Satz
     geaendert hat, ob index.html etwas laedt, was nicht mitkopiert wurde.
-    Bricht er ab, wird nichts veroeffentlicht. Das ist Absicht und kein
-    Grund, die Pruefung zu umgehen.
+    Bricht er ab, wird nichts veroeffentlicht, und die App bleibt auf dem
+    letzten guten Stand stehen. Das ist das Netz, nicht der Plan.
 
-    Wenn du eine Pruefung nicht ausfuehren kannst, sag das. Sag nicht, sie
-    sei gruen. Eine ehrliche Luecke ist brauchbar, eine erfundene Zusage
-    nicht.
+    DREI REGELN, WEIL GENAU DAS SCHON PASSIERT IST
+
+    1. AENDERE NUR, WAS DIE AUFGABE NENNT.
+
+    Beim Umbenennen einer Datei sind vierzig Zeilen Anleitung aus
+    HANDOVER-CHATGPT.md verschwunden und die Aufgabe aus UEBERGABE.md
+    dazu. Danach gefragt hat niemand. Wenn dir unterwegs etwas auffaellt,
+    das veraltet, falsch oder unnoetig aussieht: schreib es in die
+    Antwort, aendere es nicht. Eine Datei, die du nicht anfassen musst,
+    fasst du nicht an. Das gilt besonders fuer Anleitungen: sie sind der
+    einzige Grund, warum der naechste nicht bei null anfaengt.
+
+    2. FUEHR DIE PRUEFUNGEN AUS, BEVOR DU COMMITTEST.
+
+    Eine Inhaltsdatei ist mit einer fehlenden Klammer committet worden.
+    Die App parste nicht und waere mit einem leeren Bildschirm gestartet.
+    Ein einziges node --check haette es gefunden, in einer Sekunde.
+
+    Die Liste steht in HANDOVER-CHATGPT.md unter "How to check your work".
+    Lauf sie ganz durch, nicht die zwei, die dir passend erscheinen. Wenn
+    du sie nicht ausfuehren kannst, weil dir Node fehlt, dann sag genau
+    das und commite trotzdem nicht, ohne es dazuzuschreiben.
+
+    3. SCHAU NACH DEM COMMIT AUF DIE ACTION.
+
+    Zwei Laeufe von "Publish Anker" sind rot gewesen, und es ist nichts
+    passiert. Ein roter Lauf heisst: nichts ist veroeffentlicht, die
+    Aenderung ist nicht angekommen, und niemand ausser dir sieht es.
+
+    Also nach jedem Push unter Actions nachsehen. Rot heisst: den Fehler
+    vollstaendig vorlesen, erklaeren, beheben. Vorher faengst du nichts
+    anderes an und beantwortest keine andere Frage. Die Aufgabe ist nicht
+    fertig, wenn der Commit da ist, sondern wenn der Lauf gruen ist. Etwa
+    drei Minuten spaeter ist die App live.
+
+    WAS IN DEINE ANTWORT GEHOERT
+
+    Am Ende jeder Aufgabe drei Punkte, kurz:
+
+    - was du geaendert hast, Datei fuer Datei
+    - welche Pruefungen du ausgefuehrt hast, mit der letzten Zeile ihrer
+      Ausgabe
+    - was du nicht pruefen konntest, und warum
+
+    Eine ehrliche Luecke ist brauchbar. "Alles gruen" ohne Ausgabe ist es
+    nicht, und wenn es nicht stimmt, ist es schlimmer als gar nichts.
 
     WAS DU NICHT ENTSCHEIDEST
 
@@ -131,5 +170,4 @@ gerade dran ist.
     Am deutschen und am englischen Text aendert sich kein einziges Wort.
     Meldet pruefe-deutsch.js etwas, hast du mehr angefasst als vorgesehen.
 
-    Wenn du fertig bist, schreib in drei Saetzen: was du geaendert hast,
-    was du geprueft hast, und was du nicht pruefen konntest.
+    Wenn du fertig bist: die drei Punkte von oben.
