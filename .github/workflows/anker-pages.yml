@@ -58,11 +58,19 @@ jobs:
         env:
           KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
-          # Wie bei der Praxisseite: fehlt das Secret, wird der Code aus der
-          # zuletzt veroeffentlichten Fassung zurueckgelesen. Der Platzhalter
+          # Wie bei der Praxisseite: fehlt das Secret, wird der Code aus einer
+          # schon veroeffentlichten Seite zurueckgelesen. Beim ersten Mal gibt
+          # es pages/anker/zugang.js noch nicht, deshalb stehen die
+          # Geschwisterseiten mit in der Liste. Es ist ohnehin derselbe Code:
+          # alle Vorschauen dieser Seite teilen ihn sich. Der Platzhalter
           # zaehlt dabei nicht als Code.
-          if [ -z "$KEY" ] && [ -f "pages/anker/zugang.js" ]; then
-            KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/anker/zugang.js","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' || true)"
+          if [ -z "$KEY" ]; then
+            for f in pages/anker/zugang.js pages/portfolio/index.html pages/schranz-ai/index.html pages/index.html; do
+              [ -f "$f" ] || continue
+              KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync(process.argv[1],"utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' "$f" || true)"
+              case "$KEY" in __*) KEY="" ;; esac
+              [ -n "$KEY" ] && break
+            done
           fi
           case "$KEY" in __*) KEY="" ;; esac
           if [ -z "$KEY" ]; then

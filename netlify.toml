@@ -14,6 +14,16 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
+# Anker gehoert nicht auf diese Seite. Netlify liefert die Wurzel des
+# Repositories aus, der Ordner anker/ waere hier also ohne das Tor erreichbar,
+# waehrend der Workflow Publish Anker sich ausdruecklich weigert, eine
+# ungeschuetzte Gesundheits-App online zu stellen. Die App hat genau eine
+# Adresse, und die ist apschranz-star.github.io/seelischabstrakt/anker/.
+[[redirects]]
+  from = "/anker/*"
+  to = "/404.html"
+  status = 404
+
 # Forms: enable "Form detection" once in Netlify UI (Site configuration → Forms). The static <form name="order"> in index.html is then picked up.
 
 # Security and caching headers

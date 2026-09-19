@@ -20,8 +20,18 @@ dem Zweig `main` etwas in `anker/` liegt. Der Workflow prueft vorher, dass
 jede Datei parst, dass jede angebotene Sprache vollstaendig ist und dass
 `index.html` nichts laedt, was nicht mitkopiert wurde. Danach dauert es etwa
 drei Minuten. Die Seite fragt nach dem Zugangscode; das ist derselbe, den die
-anderen Seiten auch verlangen, und er steht im Repository-Secret
-`SITE_ACCESS_KEY`.
+anderen Seiten auch verlangen.
+
+Der Code sollte im Repository-Secret `SITE_ACCESS_KEY` stehen. Steht er dort
+nicht, liest der Workflow ihn aus einer schon veroeffentlichten Schwesterseite
+zurueck, und wenn auch dort keiner steht, bricht er ab und veroeffentlicht
+nichts. Das Secret anzulegen ist trotzdem der richtige Weg: Settings, Secrets
+and variables, Actions, New repository secret, Name `SITE_ACCESS_KEY`.
+
+Die Netlify-Seite liefert `anker/` nicht aus. Sie veroeffentlicht die Wurzel
+des Repositories, der Ordner waere dort also ohne Tor erreichbar; eine Regel in
+`netlify.toml` gibt fuer `/anker/*` eine 404 zurueck. Die App hat genau eine
+Adresse.
 
 Das Veroeffentlichen ist kein Umweg, sondern Voraussetzung. Ein Service
 Worker laeuft nur auf einer sicheren Verbindung, und *Zum Home-Bildschirm*
