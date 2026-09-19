@@ -43,15 +43,19 @@ def main() -> int:
         # CSP im Dokument gilt erst ab der Stelle, an der sie steht, und das Tor
         # stuende sonst ausserhalb der Regeln, die die Seite fuer sich erklaert.
         # Sonst hinter das viewport-Tag.
+        lines = html.splitlines(keepends=True)
         anchors = [
             line
-            for line in html.splitlines(keepends=True)
+            for line in lines
             if "http-equiv" in line and "Content-Security-Policy" in line
         ]
-        anchor = anchors[0] if anchors else (
-            '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
-        )
-        if anchor not in html:
+        if not anchors:
+            # Die Zeile wird gesucht, nicht buchstabiert. Vorher stand hier eine
+            # wortwoertliche Zeichenkette, und eine Seite mit einem Leerzeichen
+            # hinter dem Komma oder mit viewport-fit=cover fiel durch.
+            anchors = [line for line in lines if 'name="viewport"' in line]
+        anchor = anchors[0] if anchors else None
+        if anchor is None:
             print(f"{page}: weder CSP noch viewport-Tag gefunden, nichts eingefuegt", file=sys.stderr)
             return 1
         joiner = "" if anchor.endswith("\n") else "\n"

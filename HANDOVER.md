@@ -15,7 +15,11 @@ Zugang: Alle Vorschauen auf GitHub Pages außer dem Kunst-Shop stehen hinter ein
 
 Alle bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
 
-Nicht veröffentlicht: der Ordner /oasi, eine Anteprima für die Bar Oasi Cafè in Acquapendente. Eine einzige Datei, Italienisch mit Umschalter auf Deutsch und Englisch. Kein Workflow rührt sie an. Was vor einer Veröffentlichung fehlt, steht in oasi/README.md; unter anderem die Bestätigung von Fabio, dass die Telefonnummer stimmt und auf WhatsApp liegt.
+    apschranz-star.github.io/seelischabstrakt/oasi/   Anteprima für die Bar Oasi Cafè in
+                                     Acquapendente, Ordner /oasi, Italienisch mit Umschalter auf
+                                     Deutsch und Englisch, hinter dem Zugangscode
+
+Die Oasi-Seite ist ein Entwurf und sagt das in einem Streifen ganz oben. Was vor einer echten Veröffentlichung fehlt, steht in oasi/README.md; unter anderem die Bestätigung von Fabio, dass die Telefonnummer stimmt und auf WhatsApp liegt.
 
 ## JING
 
