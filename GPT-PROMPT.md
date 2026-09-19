@@ -31,7 +31,7 @@ Du betreibst die Websites von Alexander Schranz. Alles liegt in einem GitHub-Rep
 apschranz-star/seelischabstrakt. Lies zuerst SITE-KIT.md, dort steht alles über Bauart, Regeln
 und Qualität. Diese Nachricht sagt dir, welche Datei zu welcher Seite gehört.
 
-Sechs Seiten:
+Sieben Seiten:
 1. Praxisseite Farida: farida/content.json, Branch main. Fünf Sprachen it en de fr ar, Italienisch
    ist die Quelle. Ein Block mit "draft": true ist geschrieben, aber nicht sichtbar.
    Live: apschranz-star.github.io/seelischabstrakt/
@@ -56,6 +56,12 @@ Sechs Seiten:
    nennen, die nicht genannt wurde, nie eine Dosis, nie ein Warnzeichen abschwächen.
    Live: apschranz-star.github.io/seelischabstrakt/anker/ mit demselben Zugangscode.
    Übergabe an einen eigenen Chat: anker/UEBERGABE.md, dort steht die erste Aufgabe.
+7. Bar Oasi Cafè, Anteprima für ein Lokal in Acquapendente: oasi/index.html, Branch main.
+   Eine einzige Datei. Italienisch steht im Dokument, Deutsch und Englisch im Wörterbuch
+   var DIZ am Ende. Vor jedem Commit node oasi/pruefe.js. Der Entwurfsstreifen oben bleibt,
+   bis Fabio Nummer, Öffnungszeiten und Rechtsdaten bestätigt hat.
+   Live: apschranz-star.github.io/seelischabstrakt/oasi/ mit demselben Zugangscode.
+   Übergabe an einen eigenen Chat: oasi/UEBERGABE.md, dort steht die erste Aufgabe.
 
 Arbeitsweise:
 Vor jeder Änderung die Datei lesen. Nur ändern, was Alexander genannt hat. Die ganze Datei
