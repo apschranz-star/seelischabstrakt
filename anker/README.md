@@ -137,7 +137,29 @@ aendern will, aendert die Datei und laedt neu.
 | `app.js` | Mechanik: Speicher, Router, Seiten, Diagramme, Sicherung |
 | `content.js` | **Alle Texte und Listen.** Hier stehen Symptome, Essensregeln, Rezepte, Laborwerte, Warnzeichen, Fragen und die Wissenskapitel. |
 | `sw.js` | Offline-Ablage |
+| `inhalt-en.js` und drei weitere | Derselbe Inhalt auf Englisch, Italienisch, Franzoesisch, Spanisch |
 | `fonts/` | Die Schrift, selbst ausgeliefert. Nicht von Hand aendern, siehe unten. |
+| `werkzeug/` | Die Pruefwerkzeuge. Vor jedem Commit laufen lassen. |
+
+### Sprachen
+
+Der Inhalt liegt je Sprache in einer eigenen Datei. Eine Sprache wird erst
+angeboten, wenn zweierlei uebersetzt ist: der Inhalt und die Oberflaeche.
+Der Inhalt ist es in allen fuenf Sprachen, die Oberflaeche bisher nur auf
+Deutsch, denn rund zweihundert Knopf- und Meldungstexte stecken noch in
+`app.js`. Deshalb steht in `OBERFLAECHE_FERTIG` heute nur `de`, und die App
+laeuft durchgehend deutsch statt halb englisch. Was zu tun bleibt, steht in
+`HANDOVER-CHATGPT.md`.
+
+    node werkzeug/finde-texte.js       zeigt die Texte, die noch in app.js stecken
+    node werkzeug/pruefe-sprache.js inhalt-en.js en    Struktur gegen das Original
+    node werkzeug/pruefe-texte.js      fehlende Oberflaechentexte je Sprache
+    node werkzeug/textabzug.js         Text aller Seiten abziehen und vergleichen
+
+Die Felder `id`, `schluessel`, `dringend`, `land`, `thema`, `sicherheit`, `wert`,
+`art` und `einheit` sind keine Sprache, sondern Technik. Wer sie beim Uebersetzen
+verschiebt, nimmt einer echten Nutzerin ihre Eintraege und ihre gesetzten Haken
+weg, ohne dass es jemand merkt. `pruefe-sprache.js` faengt genau das ab.
 
 **Wer Inhalte aendern will, braucht nur `content.js`.** Die Datei ist ein
 einziges Objekt `INHALT` mit benannten Abschnitten. Ein neues Symptom ist ein

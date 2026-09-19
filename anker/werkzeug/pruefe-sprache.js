@@ -1,7 +1,7 @@
 /*
  * Prueft eine Sprachdatei gegen das deutsche Original.
  *
- *     node pruefe-sprache.js inhalt-en.js en
+ *     node werkzeug/pruefe-sprache.js inhalt-en.js en
  *
  * Uebersetzt werden nur die lesbaren Texte. Alles, was der Code anfasst, muss
  * gleich bleiben: jeder Objektschluessel, jede id, jeder schluessel, und jeder
@@ -40,8 +40,8 @@ function form(o, pfad, raus) {
 }
 
 const zielDatei = process.argv[2], zielZweig = process.argv[3];
-const de = laden("content.js", null);
-const ziel = laden(zielDatei, zielZweig);
+const de = laden(__dirname + "/../content.js", null);
+const ziel = laden(zielDatei.includes("/") ? zielDatei : __dirname + "/../" + zielDatei, zielZweig);
 
 const a = form(de, "", []), b = form(ziel, "", []);
 const fehlt = a.filter((x) => !b.includes(x));

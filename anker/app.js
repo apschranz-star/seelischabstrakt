@@ -977,6 +977,28 @@
     k.appendChild(ul);
     ziel.appendChild(k);
 
+    /* Sprache. Der Schalter erscheint erst, wenn es etwas zu waehlen gibt:
+       eine Sprache ist keine Wahl, und ein Schalter mit einem Knopf ist Zierde.
+       Sobald eine Sprache ihre Oberflaechentexte bekommt und in
+       OBERFLAECHE_FERTIG steht, ist er von selbst da. */
+    const moeglich = sprachenDa();
+    if (moeglich.length > 1) {
+      const ks = karte(`<p class="kicker">${esc(T("Sprache"))}</p><h2 class="h2">${esc(T("In welcher Sprache"))}</h2>`);
+      schalterListe(ks, {
+        einzeln: true,
+        optionen: moeglich.map((x) => ({ wert: x.code, text: x.name })),
+        gewaehlt: L,
+        beiWahl: (w) => {
+          D.einstellungen.sprache = w;
+          sichern();
+          spracheSetzen(w);
+          zeichnen();
+          return w;
+        },
+      });
+      ziel.appendChild(ks);
+    }
+
     /* Darstellung */
     const kt = karte(`<p class="kicker">Darstellung</p><h2 class="h2">Hell oder dunkel</h2>`);
     schalterListe(kt, {
