@@ -55,6 +55,7 @@ Sechs Seiten:
    dort anker/HANDOVER-CHATGPT.md lesen, es gelten eigene Regeln: keine Klinik und keine Ärztin
    nennen, die nicht genannt wurde, nie eine Dosis, nie ein Warnzeichen abschwächen.
    Live: apschranz-star.github.io/seelischabstrakt/anker/ mit demselben Zugangscode.
+   Übergabe an einen eigenen Chat: anker/UEBERGABE.md, dort steht die erste Aufgabe.
 
 Arbeitsweise:
 Vor jeder Änderung die Datei lesen. Nur ändern, was Alexander genannt hat. Die ganze Datei
