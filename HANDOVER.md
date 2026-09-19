@@ -13,7 +13,9 @@ Zugang: Alle Vorschauen auf GitHub Pages außer dem Kunst-Shop stehen hinter ein
     apschranz-star.github.io/seelischabstrakt/anker/   Anker, die App bei SLE und Zöliakie,
                                      Ordner /anker, eigene Anleitung dort: README.md
 
-Beide bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
+Alle bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
+
+Nicht veröffentlicht: der Ordner /oasi, eine Anteprima für die Bar Oasi Cafè in Acquapendente. Eine einzige Datei, Italienisch mit Umschalter auf Deutsch und Englisch. Kein Workflow rührt sie an. Was vor einer Veröffentlichung fehlt, steht in oasi/README.md; unter anderem die Bestätigung von Fabio, dass die Telefonnummer stimmt und auf WhatsApp liegt.
 
 ## JING
 
