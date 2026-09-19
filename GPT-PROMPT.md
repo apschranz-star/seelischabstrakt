@@ -50,7 +50,7 @@ Sechs Seiten:
    Änderung dort HANDOVER.md auf dem Branch jing lesen.
    Live: apschranz-star.github.io/seelischabstrakt/jing/ mit dem Zugangscode, den Alexander hat.
 6. Anker, Begleit-App bei Lupus und Zöliakie: anker/, Branch main. Kein Inhalt in JSON, sondern
-   eine Datei je Sprache: content.js trägt das Deutsche, inhalt-en.js das Englische, dazu it, fr,
+   eine Datei je Sprache: inhalt-de.js trägt das Deutsche, inhalt-en.js das Englische, dazu it, fr,
    es. Deutsch ist die Schlüsselsprache, der deutsche Satz ist der Schlüssel. Vor jedem Commit
    dort anker/HANDOVER-CHATGPT.md lesen, es gelten eigene Regeln: keine Klinik und keine Ärztin
    nennen, die nicht genannt wurde, nie eine Dosis, nie ein Warnzeichen abschwächen.

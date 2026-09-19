@@ -87,7 +87,7 @@ anker/
   index.html        shell, tab bar, a strict Content-Security-Policy
   app.css           all styling, light and dark
   app.js            all logic, about 1900 lines
-  content.js        German content. Declares `const INHALT = {}`.
+  inhalt-de.js        German content. Declares `const INHALT = {}`.
   inhalt-en.js      English content   } each does
   inhalt-it.js      Italian content   } window.INHALT = window.INHALT || {}
   inhalt-fr.js      French content    } window.INHALT.<code> = { ... }
@@ -160,47 +160,14 @@ in `index.html` so the page shows something before the first script runs.
 Page titles in `SEITEN` are *functions*, not strings, for the same reason: that
 table is built before the language is known.
 
-## The open task
+## Current open work
 
-**Write the `ui` tables for Italian, French and Spanish, and add each to
-`OBERFLAECHE_FERTIG`.** The content for all three is already translated and
-passes the structure checker. What is missing is the interface: the same 290
-keys that `inhalt-en.js` already answers.
-
-```bash
-cd anker
-node werkzeug/pruefe-texte.js        # lists what each offered language is missing
-```
-
-To see the full list of keys, copy the `ui` block out of `inhalt-en.js`: the
-left-hand side is the German key, the right-hand side is what you replace.
-
-### Step by step
-
-1. Copy the `ui` block from `inhalt-en.js` into `inhalt-it.js` as the first
-   key of `window.INHALT.it`, keeping every German key exactly as it is.
-2. Translate only the right-hand side. Keep every `{placeholder}` that the key
-   carries; the order may change, the set may not. `pruefe-texte.js` checks it.
-3. Translate in the same register as the rest: short, plain, no exclamation
-   marks, no dashes.
-4. The source lines in `wissen` still carry German descriptive fragments in
-   `it`, `fr` and `es`, for example
-   `"ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022"`. In
-   `inhalt-en.js` these are translated; do the same here. The PMID, DOI,
-   journal, year and author names stay untouched.
-5. Add `"it"` to `OBERFLAECHE_FERTIG` in `app.js`. The language switcher on the
-   **Mehr** page grows by itself; it is already written.
-6. Run the whole check list below. The German page dump must still be
-   identical, because German is the key language and nothing you did touched
-   it.
-7. Repeat for `fr` and `es`.
+Italian, French and Spanish still need complete `ui` tables before they can be
+offered. Do not add them to `OBERFLAECHE_FERTIG` until their interface
+translations are complete.
 
 ### After that, the remaining smaller items
 
-- `content.js` should become `inhalt-de.js` with the same
-  `window.INHALT.de = {...}` shape as the others. There is a transition shim in
-  `app.js` that currently bridges the two declaration styles, marked with a
-  comment saying it can be deleted once this is done.
 - `dringend: "nein"` renders as the **most urgent** red dot, and `dringend: "ja"`
   renders green. The naming is backwards and confusing. Renaming it means
   touching all five content files and `app.css` together. Worth doing, but only
@@ -215,7 +182,7 @@ without having run them.
 cd anker
 
 # 1. Does everything still parse?
-for f in app.js content.js sw.js inhalt-*.js; do node --check "$f" || echo "BROKEN $f"; done
+for f in app.js inhalt-de.js sw.js inhalt-*.js; do node --check "$f" || echo "BROKEN $f"; done
 
 # 2. Does every language still have the same structure as the German original?
 #    This catches a renamed key, a dropped section, a changed id.
@@ -233,7 +200,7 @@ node werkzeug/pruefe-deutsch.js
 node werkzeug/textabzug.js --vergleich /tmp/vorher.json /tmp/nachher.json
 
 # 6. No inline styles anywhere, they are silently dropped by the CSP
-grep -c 'style="' app.js index.html content.js inhalt-*.js    # must all be 0
+grep -c 'style="' app.js index.html inhalt-de.js inhalt-*.js    # must all be 0
 ```
 
 Accessibility is currently clean: zero axe-core violations across all fourteen

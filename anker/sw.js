@@ -17,7 +17,7 @@ const DATEIEN = [
   "./index.html",
   "./app.css",
   "./app.js",
-  "./content.js",
+  "./inhalt-de.js",
   "./inhalt-en.js",
   "./inhalt-it.js",
   "./inhalt-fr.js",

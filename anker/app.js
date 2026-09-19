@@ -88,23 +88,8 @@
   const ABSCHNITTE = ["symptome", "essen", "rezepte", "laborwerte", "warnzeichen",
                       "fragen", "wissen", "ueberwachung", "suche"];
 
-  /* content.js legt INHALT als const an, das landet nicht auf window. Die
-     Sprachdateien haengen sich dagegen an window. Hier kommen beide zusammen. */
-  if (typeof window !== "undefined" && window.INHALT && window.INHALT !== INHALT) {
-    Object.keys(window.INHALT).forEach((k) => { INHALT[k] = window.INHALT[k]; });
-  }
-
-  /* Uebergangsform: solange der deutsche Inhalt noch flach dasteht, wird er als
-     Deutsch eingehaengt. Verschoben werden nur die bekannten Abschnitte, nicht
-     etwa eine schon geladene Sprache. Faellt weg, sobald content.js selbst zu
-     inhalt-de.js geworden ist. */
-  if (typeof INHALT === "object" && INHALT.wissen && !INHALT.de) {
-    const flach = {};
-    ABSCHNITTE.forEach((k) => {
-      if (k in INHALT) { flach[k] = INHALT[k]; delete INHALT[k]; }
-    });
-    INHALT.de = flach;
-  }
+  /* Alle Sprachdateien haengen sich an window.INHALT. */
+  const INHALT = window.INHALT || {};
 
   /*
    * Welche Sprachen die App wirklich anbietet.
@@ -114,8 +99,6 @@
    * Sprache hier, muss werkzeug/pruefe-texte.js fuer sie sauber durchlaufen,
    * sonst stehen deutsche Knoepfe ueber uebersetztem Text.
    *
-   * Italienisch, Franzoesisch und Spanisch haben den ganzen Inhalt, aber noch
-   * keine ui-Tabelle. Sie kommen dazu, sobald sie eine haben.
    */
   const OBERFLAECHE_FERTIG = ["en", "de"];
 

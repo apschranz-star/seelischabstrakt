@@ -15,11 +15,12 @@
  * "steht so im Internet" ist die ganze Sache wert.
  */
 
-const INHALT = {};
+window.INHALT = window.INHALT || {};
+window.INHALT.de = {
 
 /* ------------------------------------------------------------------ Zeichen */
 
-INHALT.symptome = [
+symptome: [
   "Gelenkschmerz",
   "Morgensteifigkeit",
   "Schmetterlingsausschlag",
@@ -44,11 +45,11 @@ INHALT.symptome = [
   "geschwollene Beine",
   "schaeumender Urin",
   "Muskelschmerz",
-];
+],
 
 /* -------------------------------------------------------------------- Essen */
 
-INHALT.essen = [
+essen: [
   {
     kicker: "Zoeliakie",
     titel: "Die Regel ohne Ausnahme",
@@ -139,11 +140,11 @@ INHALT.essen = [
       { art: "vielleicht", was: "Wenig B-Vitamine", warum: "Weizenmehl ist in vielen Laendern angereichert, glutenfreies Mehl meist nicht." },
     ],
   },
-];
+],
 
 /* ------------------------------------------------------------------ Rezepte */
 
-INHALT.rezepte = [
+rezepte: [
   {
     name: "Teller ohne Kochen",
     aufwand: "0 Minuten",
@@ -286,11 +287,11 @@ INHALT.rezepte = [
     ],
     schritte: ["Alles in den Mixer.", "Orange nicht weglassen, das Vitamin C holt das Eisen aus dem Spinat."],
   },
-];
+],
 
 /* -------------------------------------------------------------- Laborwerte */
 
-INHALT.laborwerte = [
+laborwerte: [
   { schluessel: "dsdna", gruppe: "Lupus", name: "Anti-dsDNA", einheit: "IU/ml", bedeutung: "Ein Antikoerper, der bei Lupus oft mit der Krankheitsaktivitaet steigt und faellt. Steigende Werte sind ein Signal, keine Diagnose." },
   { schluessel: "c3", gruppe: "Lupus", name: "Komplement C3", einheit: "g/l", bedeutung: "Faellt typischerweise, wenn Lupus aktiv ist, weil Komplement im Entzuendungsprozess verbraucht wird." },
   { schluessel: "c4", gruppe: "Lupus", name: "Komplement C4", einheit: "g/l", bedeutung: "Wie C3. Beide zusammen werden als Verlauf gelesen, nicht als Einzelwert." },
@@ -308,11 +309,11 @@ INHALT.laborwerte = [
   { schluessel: "b12", gruppe: "Naehrstoffe", name: "Vitamin B12", einheit: "pg/ml", bedeutung: "Wird im Duenndarm aufgenommen, also genau dort, wo Zoeliakie wirkt." },
   { schluessel: "folat", gruppe: "Naehrstoffe", name: "Folsaeure", einheit: "ng/ml", bedeutung: "Wie B12. Bei Kinderwunsch und unter manchen Medikamenten besonders wichtig." },
   { schluessel: "tsh", gruppe: "Schilddruese", name: "TSH", einheit: "mU/l", bedeutung: "Eine unterfunktionierende Schilddruese macht genau die Muedigkeit, die man dem Lupus zuschreibt. Autoimmune Schilddruesenerkrankungen kommen bei beiden Grunderkrankungen gehaeuft vor." },
-];
+],
 
 /* ----------------------------------------------------------- Warnzeichen */
 
-INHALT.warnzeichen = [
+warnzeichen: [
   {
     kicker: "Sofort",
     titel: "Notruf oder Notaufnahme",
@@ -346,11 +347,11 @@ INHALT.warnzeichen = [
       { dringend: "ja", zeichen: "Kinderwunsch, auch wenn er noch weit weg ist", warum: "Manche Medikamente muessen lange vorher umgestellt werden, und eine Schwangerschaft wird bei Lupus am besten in einer ruhigen Phase geplant." },
     ],
   },
-];
+],
 
 /* -------------------------------------------------------------- Fragen */
 
-INHALT.fragen = [
+fragen: [
   { frage: "Wie aktiv ist mein Lupus gerade, in Zahlen?", warum: "Es gibt Messinstrumente dafuer. Die eigene Zahl zu kennen macht den Verlauf ueber Jahre lesbar." },
   { frage: "Wann wurde zuletzt der Urin auf Eiweiss geprueft?", warum: "Die Niere meldet sich nicht von selbst." },
   { frage: "Welche Werte sollen wie oft kontrolliert werden, und wer veranlasst das?", warum: "Damit nichts zwischen Hausarztpraxis und Ambulanz liegen bleibt." },
@@ -363,11 +364,11 @@ INHALT.fragen = [
   { frage: "Was mache ich bei Fieber oder einer Infektion, wen rufe ich an?", warum: "Diesen Plan will man haben, bevor man ihn braucht." },
   { frage: "Welche Verhuetung passt zu meiner Situation?", warum: "Bei Antiphospholipid-Antikoerpern gelten fuer oestrogenhaltige Verhuetung besondere Ueberlegungen." },
   { frage: "Darf ich Sport machen, und wie viel, auch wenn es mir schlecht geht?", warum: "Die Antwort ist fast immer ja, aber die Dosis gehoert besprochen, besonders bei Herz-, Lungen- oder Nierenbeteiligung." },
-];
+],
 
 /* ------------------------------------------------------------------ Wissen */
 
-INHALT.wissen = [
+wissen: [
   {
     kicker: "Zuerst",
     titel: "Wie dieser Text entstanden ist",
@@ -879,11 +880,11 @@ INHALT.wissen = [
       },
     ],
   },
-];
+],
 
 /* ------------------------------------------------------- Ueberwachung */
 
-INHALT.ueberwachung = [
+ueberwachung: [
   {
     titel: "Augen, unter Hydroxychloroquin",
     text: [
@@ -931,7 +932,7 @@ INHALT.ueberwachung = [
     ],
     quellen: ["ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022. DOI 10.1002/art.42646"],
   },
-];
+],
 
 
 /* ------------------------------------------------------------------ Suche
@@ -949,7 +950,7 @@ INHALT.ueberwachung = [
  * sucht und was man dort fragt. Ein Weg ueber einen Suchbegriff ueberlebt
  * einen Seitenumbau, eine gespeicherte Adresse nicht.
  */
-INHALT.suche = {
+suche: {
   warnung:
     "Diese Zusammenstellung ist aus dem Gedaechtnis entstanden. Aus der Umgebung, in der sie gebaut wurde, war keine einzige Fachseite und keine einzige Patientenorganisation erreichbar, das wurde geprueft und es stimmt. Nachgesehen werden konnte also nichts. Deshalb steht hier bewusst keine Adresse, keine Telefonnummer und kein Name einer Klinik oder einer Aerztin: auf dieser Ebene waere ein Irrtum gefaehrlich, und eine falsche Nummer, die jemand im Schub waehlt, richtet echten Schaden an. Was hier steht, sind Arten von Stellen, ihre Namen und Suchbegriffe. Namen koennen sich geaendert haben, Organisationen koennen verschmolzen oder umbenannt sein, ein Verzeichnis kann es nicht mehr geben. Jeder Eintrag traegt deshalb eine Sicherheit. Die App prueft davon nichts nach, sie kann es nicht, sie hat keine Verbindung nach draussen. Bevor man sich auf eine Stelle verlaesst, gehoert sie einmal bestaetigt: von der Hausarztpraxis, von der Ambulanz oder von einer Selbsthilfegruppe.",
 
@@ -1286,4 +1287,5 @@ INHALT.suche = {
     "Wenn etwas unklar bleibt, den Satz sagen: ich habe das nicht verstanden, koennen Sie es anders sagen. Das ist keine Schwaeche, das ist der Sinn des Termins.",
     "Gleich nach dem Termin eine kurze Notiz, solange es frisch ist. Bei Nebel ist die Erinnerung an das Gespraech schlechter, als man denkt.",
   ],
+}
 };

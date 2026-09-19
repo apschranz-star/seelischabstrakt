@@ -91,53 +91,16 @@ nachgezogen werden.
     wird. Ob eine Sprache angeboten wird, bevor sie fertig ist. In all dem
     fragst du Alexander und wartest.
 
-    DEINE ERSTE AUFGABE
+    DIE ERSTE AUFGABE IST ERLEDIGT
 
-    content.js wird zu inhalt-de.js.
+    Die deutsche Inhaltsdatei heisst jetzt inhalt-de.js und hat dieselbe
+    Form wie die anderen vier Sprachdateien:
+    window.INHALT = window.INHALT || {}; window.INHALT.de = { ... }.
 
-    Heute heisst die deutsche Inhaltsdatei content.js und legt INHALT als
-    const an. Die vier anderen heissen inhalt-en.js, inhalt-it.js,
-    inhalt-fr.js, inhalt-es.js und haengen sich an window.INHALT. app.js
-    traegt eine Uebergangsform, die beide zusammenbringt; im Code steht
-    dabei, dass sie wegfaellt, sobald das hier erledigt ist. Es ist eine
-    kleine Aufgabe mit vielen Beruehrungspunkten, und genau deshalb ist sie
-    die erste.
+    app.js verwendet direkt window.INHALT. index.html, sw.js, der Workflow
+    und werkzeug/pruefe-sprache.js zeigen auf den neuen Namen. Die alten
+    Uebergangsbloecke sind entfernt.
 
-    Such dir die Stellen selbst zusammen, bevor du anfaengst. Ein
-    Ausgangspunkt:
-
-        grep -rn "content\.js" --include=*.js --include=*.html \
-             --include=*.yml --include=*.md .
-
-    Nicht jeder Treffer gehoert dazu. content.json der anderen Seiten hat
-    damit nichts zu tun, und in inhalt-it.js und inhalt-es.js steht
-    content.js nur in einem Kommentar, der die Herkunft erklaert.
-
-    Fertig heisst:
-
-    - Die Datei heisst inhalt-de.js und hat dieselbe Form wie die anderen
-      vier: window.INHALT = window.INHALT || {}; window.INHALT.de = { ... }.
-    - Die beiden Uebergangsbloecke in app.js sind weg, und app.js kommt
-      trotzdem an INHALT.
-    - index.html, sw.js, der Workflow und werkzeug/pruefe-sprache.js zeigen
-      auf den neuen Namen.
-    - Die Stellen in den Anleitungen, die content.js nennen, stimmen wieder.
-    - Alle Pruefungen laufen sauber durch:
-
-          cd anker
-          for f in app.js sw.js inhalt-*.js; do node --check "$f" || echo "BROKEN $f"; done
-          for l in en it fr es; do node werkzeug/pruefe-sprache.js inhalt-$l.js $l; done
-          node werkzeug/pruefe-texte.js
-          node werkzeug/pruefe-deutsch.js
-          grep -c 'style="' app.js index.html inhalt-*.js
-
-    - Der Lauf "Publish Anker" ist gruen.
-    - Die App zeigt auf Deutsch und auf Englisch dasselbe wie vorher. Wenn
-      du das nicht selbst nachsehen kannst, sag es und bitte Alexander, in
-      der App einmal auf Mehr, Sprache umzuschalten und zurueck.
-
-    Am Text der App aendert sich bei dieser Aufgabe kein einziges Wort. Wenn
-    pruefe-deutsch.js etwas meldet, hast du mehr angefasst als vorgesehen.
-
-    Wenn du fertig bist, schreib in drei Saetzen: was du geaendert hast,
-    was du geprueft hast, und was du nicht pruefen konntest.
+    Bei weiteren Aenderungen gelten die Pruefungen in
+    anker/HANDOVER-CHATGPT.md. Die naechste offene Aufgabe dort ist die
+    Oberflaeche fuer Italienisch, Franzoesisch und Spanisch.

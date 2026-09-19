@@ -40,7 +40,7 @@ function form(o, pfad, raus) {
 }
 
 const zielDatei = process.argv[2], zielZweig = process.argv[3];
-const de = laden(__dirname + "/../content.js", null);
+const de = laden(__dirname + "/../inhalt-de.js", "de");
 const ziel = laden(zielDatei.includes("/") ? zielDatei : __dirname + "/../" + zielDatei, zielZweig);
 
 /* Der Zweig ui ist Absicht und gehoert nur in die Uebersetzungen: Deutsch ist

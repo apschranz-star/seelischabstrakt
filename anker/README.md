@@ -182,7 +182,7 @@ aendern will, aendert die Datei und laedt neu.
 | `index.html` | Geruest, Kopf, Tableiste, Sicherheitsregel |
 | `app.css` | Aussehen, Farben, hell und dunkel |
 | `app.js` | Mechanik: Speicher, Router, Seiten, Diagramme, Sicherung |
-| `content.js` | **Alle Texte und Listen.** Hier stehen Symptome, Essensregeln, Rezepte, Laborwerte, Warnzeichen, Fragen und die Wissenskapitel. |
+| `inhalt-de.js` | **Alle Texte und Listen.** Hier stehen Symptome, Essensregeln, Rezepte, Laborwerte, Warnzeichen, Fragen und die Wissenskapitel. |
 | `sw.js` | Offline-Ablage |
 | `inhalt-en.js` und drei weitere | Derselbe Inhalt auf Englisch, Italienisch, Franzoesisch, Spanisch |
 | `fonts/` | Die Schrift, selbst ausgeliefert. Nicht von Hand aendern, siehe unten. |
@@ -232,11 +232,11 @@ Die Felder `id`, `schluessel`, `dringend`, `land`, `thema`, `sicherheit`, `wert`
 verschiebt, nimmt einer echten Nutzerin ihre Eintraege und ihre gesetzten Haken
 weg, ohne dass es jemand merkt. `pruefe-sprache.js` faengt genau das ab.
 
-**Wer Inhalte aendern will, braucht nur `content.js`.** Die Datei ist ein
+**Wer Inhalte aendern will, braucht nur `inhalt-de.js`.** Die Datei ist ein
 einziges Objekt `INHALT` mit benannten Abschnitten. Ein neues Symptom ist ein
 Eintrag mehr in einer Liste, ein neues Rezept ein Objekt mehr.
 
-Nach einer Aenderung an `app.js`, `app.css` oder `content.js` sieht man die
+Nach einer Aenderung an `app.js`, `app.css` oder `inhalt-de.js` sieht man die
 neue Fassung beim uebernaechsten Start: der Service Worker liefert beim
 naechsten Start noch die abgelegte Fassung und holt die neue im Hintergrund.
 Zweimal schliessen und oeffnen genuegt.
