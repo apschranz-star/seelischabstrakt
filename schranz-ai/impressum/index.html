@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <!-- gate:start -->
+<!--
+  Das Tor fuer die statischen Seiten. JING hat ein zweites, in React, unter
+  components/ui/access-gate.tsx im JING-Code: dieselbe Aufgabe, aber ein anderer
+  Stapel, deshalb zwei Fassungen statt einer. Was an einer geaendert wird, gehoert
+  an beide: der Parameter heisst dort zugang wie hier, der gespeicherte Wert
+  jing-access statt sa-access, und der Hinweis nach Art. 13 DSGVO steht in beiden
+  vor dem Zugang. Siehe gate/README.md.
+-->
 <script>
 (function(){
   var KEY="5rdoHGJM3mlN";
@@ -12,18 +20,33 @@
   try{q=new URLSearchParams(location.search).get(PARAM);}catch(e){}
   var ok=false;
   try{if(q===KEY){localStorage.setItem(STORE,KEY);}ok=localStorage.getItem(STORE)===KEY;}catch(e){ok=q===KEY;}
-  /* Der Code gehoert nicht in die Adresszeile und damit nicht in die Server-Logs des Hosters.
-     Sobald er geprueft ist, wird er aus der URL entfernt. */
-  if(q!==null){try{history.replaceState(null,"",location.pathname+location.hash);}catch(e){}}
+  /* Der Code wird aus der Adresszeile genommen, sobald er geprueft ist: was der
+     Besucher danach kopiert oder weitergibt, traegt ihn nicht mehr, und er steht
+     in keinem Verlauf und in keinem Referrer der naechsten Seite. Im Protokoll
+     des Hosters steht er trotzdem, denn die erste Anfrage ging mit ihm hinaus.
+     Nur der Parameter zugang wird entfernt; alle anderen bleiben stehen, sonst
+     reisst das Tor jeden Deep Link der Seite mit. */
+  if(q!==null){try{var u=new URL(location.href);u.searchParams.delete(PARAM);history.replaceState(null,"",u.pathname+u.search+u.hash);}catch(e){}}
   if(ok)return;
+  /* Kein noindex von hier: die Anweisung steht schon fest in der Datei, gesetzt
+     beim Veroeffentlichen von gate/inject.sh und von schranz-ai/build.mjs. Das
+     ist der einzige Weg, der auch bei einem Crawler ohne JavaScript haelt, und
+     zweimal dasselbe im Kopf ist eine Zeile, die auseinanderlaufen kann. */
   document.documentElement.setAttribute("data-gated","");
-  var m=document.createElement("meta");m.name="robots";m.content="noindex,nofollow";document.head.appendChild(m);
   var open=function(){
-    try{localStorage.setItem(STORE,KEY);}catch(e){}
-    location.reload();
+    /* Erst schreiben, dann nachsehen, ob es angekommen ist. Ein Browser im
+       privaten Fenster oder mit gesperrtem Speicher nimmt nichts an; ein Neuladen
+       faende dann wieder nichts und stellte dieselbe Maske hin, also oeffnet sich
+       die Seite in diesem Fall hier, fuer diesen Besuch. */
+    var kept=false;
+    try{localStorage.setItem(STORE,KEY);kept=localStorage.getItem(STORE)===KEY;}catch(e){}
+    if(kept){location.reload();return;}
+    var f=document.getElementById("sa-gate");
+    if(f&&f.parentNode)f.parentNode.removeChild(f);
+    document.documentElement.removeAttribute("data-gated");
   };
   document.addEventListener("DOMContentLoaded",function(){
-    var f=document.createElement("form");f.id="sa-gate";f.method="get";f.action=location.pathname;f.setAttribute("lang","de");
+    var f=document.createElement("form");f.id="sa-gate";f.setAttribute("lang","de");
     f.innerHTML='<p class="k">Zugang &middot; Access</p><h1>SCHRANZ AI SOLUTIONS</h1>'
       +'<p>Diese Seite ist nicht &ouml;ffentlich. Bitte den Zugangscode eingeben.<br><span lang="en">This page is not public. Please enter the access code.</span></p>'
       +'<label for="sa-gate-code">Zugangscode &middot; <span lang="en">Access code</span></label>'
@@ -37,7 +60,10 @@
       +'<p lang="en">Private preview by Alexander Schranz, Wien. This screen only keeps your access in your browser storage so you do not have to type the code again. That storage is strictly necessary for the service you asked for and needs no consent. The page is hosted by GitHub Inc., USA, whose servers log your IP address on each request, Art. 6 (1) (f) GDPR. No tracking, no third party cookies, no fonts from other servers. The imprint and the privacy policy are on the page itself.</p>'
       +'</details>';
     if(q!==null){var e=f.querySelector(".e");if(e)e.hidden=false;}
-    /* Mit JavaScript wird im Feld geprueft. Ohne JavaScript bleibt das GET-Formular der Weg. */
+    /* Geprueft wird hier im Feld, deshalb hat der Knopf kein Ziel: das Formular
+       wird nie abgeschickt. Ohne JavaScript gibt es weder diese Maske noch die
+       Sperre darunter, die Seite liegt dann offen. Das Tor haelt Suchmaschinen
+       und Zufallsbesucher fern, es ist kein Schutz. Siehe gate/README.md. */
     f.addEventListener("submit",function(ev){
       var v=(f.querySelector("#sa-gate-code")||{}).value;
       if(v===KEY){ev.preventDefault();open();return;}
@@ -68,7 +94,7 @@ html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;
 <!-- gate:end -->
 <title>Impressum. SCHRANZ AI SOLUTIONS</title>
 <meta name="description" content="Diagnose. Bauen. Messen. EU-konform und verlässlich. Eine KI-Agentur in Wien, die 100.000 Euro Pre-Seed für den ersten Aufbau sucht.">
-<meta name="robots" content="noindex,follow">
+<meta name="robots" content="noindex,nofollow">
 <link rel="canonical" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/impressum/">
 <link rel="alternate" hreflang="de" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/impressum/">
 <link rel="alternate" hreflang="en" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/en/impressum/">
