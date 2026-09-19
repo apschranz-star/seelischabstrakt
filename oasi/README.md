@@ -10,12 +10,21 @@ Italienisch ist die Seite selbst, Deutsch und Englisch kommen aus dem
 Woerterbuch in index.html. Ohne JavaScript bleibt Italienisch stehen, und das
 ist fuer ein italienisches Lokal die richtige Sprache.
 
-## Kein Workflow
+## Wohin die Seite kommt
 
-Diese Seite wird von keinem Workflow veroeffentlicht und steht nicht in
-.github/pages-owned.txt. Sie liegt hier, damit sie nicht verlorengeht. Wer sie
-online stellt, legt vorher einen eigenen Workflow an und traegt oasi in
-pages-owned.txt ein, sonst raeumt der Workflow der Praxisseite sie weg.
+    https://apschranz-star.github.io/seelischabstrakt/oasi/
+
+Dorthin legt sie .github/workflows/oasi-pages.yml, sobald auf dem Zweig main
+etwas in oasi/ liegt. Hinter demselben Zugangscode wie die uebrigen
+Vorschauen, mit noindex, und oasi steht in .github/pages-owned.txt, damit der
+Workflow der Praxisseite den Ordner stehen laesst.
+
+Der Workflow bricht ab und veroeffentlicht nichts, wenn der Seite das doctype,
+das charset oder das viewport-Tag fehlt, wenn ein src auf eine fremde Adresse
+zeigt, wenn eines der beiden Portraets fehlt oder wenn der Entwurfsstreifen
+nicht mehr da ist. Das Letzte ist der wichtigste Punkt: solange Telefonnummer,
+Oeffnungszeiten und Rechtsdaten nicht bestaetigt sind, muss die Seite selbst
+sagen, dass sie nicht die offizielle ist.
 
 ## Was vor einer Veroeffentlichung fehlt
 

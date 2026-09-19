@@ -1,0 +1,122 @@
+# Veroeffentlicht die Anteprima fuer die Bar Oasi Cafè auf dem Zweig gh-pages
+# unter oasi/, hinter demselben Zugangscode wie die uebrigen Vorschauen.
+#
+# Die Seite ist ein Entwurf und sagt das selbst, in einem Streifen ganz oben.
+# Sie traegt den Namen, die Anschrift und die Telefonnummer eines echten
+# Lokals, also gehoert sie hinter das Tor und mit noindex ins Netz, und beides
+# prueft dieser Workflow nach, statt es zu hoffen.
+name: Publish Oasi
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "oasi/**"
+      - "gate/**"
+      - ".github/pages-owned.txt"
+      - ".github/workflows/oasi-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oasi-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check out the branch gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+      - name: Replace only the folder oasi on the branch
+        env:
+          KEY: ${{ secrets.SITE_ACCESS_KEY }}
+        run: |
+          # Fehlt das Secret, wird der Code aus einer schon veroeffentlichten
+          # Seite zurueckgelesen. Beim ersten Mal gibt es pages/oasi noch nicht,
+          # deshalb stehen die Geschwisterseiten mit in der Liste. Der
+          # Platzhalter zaehlt nicht als Code.
+          if [ -z "$KEY" ]; then
+            for f in pages/oasi/index.html pages/portfolio/index.html pages/schranz-ai/index.html pages/index.html; do
+              [ -f "$f" ] || continue
+              KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync(process.argv[1],"utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' "$f" || true)"
+              case "$KEY" in __*) KEY="" ;; esac
+              [ -n "$KEY" ] && break
+            done
+          fi
+          if [ -z "$KEY" ]; then
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in einer veroeffentlichten Seite. Nichts veroeffentlicht. Abhilfe: Repository-Secret SITE_ACCESS_KEY anlegen."
+            exit 1
+          fi
+          echo "::add-mask::$KEY"
+
+          # Die Seite muss ein vollstaendiges Dokument sein. Ohne diese drei
+          # Zeilen legt ein Telefon sie auf 980 Pixel aus und zoomt sie heraus,
+          # und genau so ist sie einmal im Repository gelegen.
+          for muster in '<!doctype html>' '<meta charset=' '<meta name="viewport"'; do
+            if ! grep -qi -- "$muster" oasi/index.html; then
+              echo "::error::oasi/index.html fehlt $muster. Nichts veroeffentlicht."
+              exit 1
+            fi
+          done
+          # Keine Datei von einer fremden Adresse. Die Schriften und die beiden
+          # Portraets liegen eingebettet oder daneben; ein zurueckgelassener
+          # Verweis waere die Anfrage nach draussen, die diese Seite nicht
+          # stellt. Die wa.me-Links sind Ziele zum Antippen, keine Anfragen.
+          if grep -qE 'src="https?:' oasi/index.html; then
+            echo "::error::In oasi/index.html steht ein src auf eine fremde Adresse. Nichts veroeffentlicht."
+            exit 1
+          fi
+          for f in oasi/img/fabio.jpg oasi/img/fabio-farida.jpg; do
+            if [ ! -s "$f" ]; then echo "::error::$f fehlt oder ist leer. Nichts veroeffentlicht."; exit 1; fi
+          done
+          # Der Entwurfsstreifen ist keine Deko. Solange Telefonnummer,
+          # Oeffnungszeiten und Rechtsdaten nicht bestaetigt sind, muss die
+          # Seite sagen, dass sie nicht die offizielle ist.
+          if ! grep -q 'data-i18n="avviso"' oasi/index.html; then
+            echo "::error::Der Hinweisstreifen fehlt in oasi/index.html. Nichts veroeffentlicht."
+            exit 1
+          fi
+
+          rm -rf pages/oasi
+          mkdir -p pages/oasi
+          cp oasi/index.html pages/oasi/index.html
+          cp -R oasi/img pages/oasi/img
+          # README bleibt im Repository, die Vorschau ist die Seite selbst.
+          # Das Tor kommt hier eingesetzt in die Datei, nicht als zwei eigene
+          # Dateien: diese Seite erklaert keine eigene Sicherheitsregel und
+          # darf Inline-Code. inject.sh traegt dabei auch das noindex nach.
+          python3 gate/apply.py pages/oasi/index.html "Bar Oasi Cafè" "Alexander Schranz"
+          sh gate/inject.sh pages/oasi/index.html "$KEY"
+          if ! grep -qi '<meta name="robots"' pages/oasi/index.html; then
+            echo "::error::pages/oasi/index.html traegt kein robots-noindex. Nichts veroeffentlicht."
+            exit 1
+          fi
+
+          touch pages/.nojekyll
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "oasi already current"; exit 0; fi
+          git commit -q -m "Publish Oasi from ${GITHUB_SHA::7}"
+          # Sieben Workflows schreiben denselben Zweig. Laeuft ein zweiter
+          # gleichzeitig, weist git den Push ab; ohne Nachziehen bliebe die
+          # Aenderung liegen.
+          for try_ in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "oasi updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1
