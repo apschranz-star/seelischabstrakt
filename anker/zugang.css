@@ -1,0 +1,16 @@
+/* Aus gate/gate.snippet.html erzeugt von gate/split.py. Nicht von Hand
+   aendern: die naechste Veroeffentlichung ueberschreibt die Datei. */
+html[data-gated] body>*:not(#sa-gate){display:none!important}
+html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;color:#111;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+#sa-gate{display:grid;gap:14px;width:min(460px,calc(100vw - 48px));padding:32px;border:1px solid #ddd;border-radius:16px;box-sizing:border-box}
+#sa-gate .k{margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#777}
+#sa-gate h1{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em}
+#sa-gate p{margin:0;color:#555;font-size:14px}
+#sa-gate label{font-size:13px;color:#555}
+#sa-gate input{font:inherit;padding:10px 12px;border:1px solid #bbb;border-radius:8px;min-width:0}
+#sa-gate button{font:inherit;padding:10px 14px;border:0;border-radius:999px;background:#111;color:#fff;cursor:pointer}
+#sa-gate .e{color:#b3261e}
+#sa-gate .n{border-top:1px solid #eee;padding-top:12px;font-size:13px;color:#666}
+#sa-gate .n summary{cursor:pointer;color:#111}
+#sa-gate .n p{font-size:13px;margin-top:8px}
+@media (prefers-color-scheme:dark){html[data-gated] body{background:#000;color:#f5f5f7}#sa-gate{border-color:#333}#sa-gate p,#sa-gate label{color:#a1a1a6}#sa-gate input{background:#111;color:#f5f5f7;border-color:#444}#sa-gate button{background:#f5f5f7;color:#000}#sa-gate .n{border-top-color:#222;color:#8e8e93}#sa-gate .n summary{color:#f5f5f7}}
