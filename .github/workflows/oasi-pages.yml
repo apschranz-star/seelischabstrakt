@@ -87,6 +87,11 @@ jobs:
             exit 1
           fi
 
+          # Und die Pruefung, die das Werkzeug selbst mitbringt: fehlt eine
+          # Uebersetzung, bleibt an der Stelle Italienisch im deutschen Text
+          # stehen, und das sieht nur, wer umschaltet.
+          node oasi/pruefe.js
+
           rm -rf pages/oasi
           mkdir -p pages/oasi
           cp oasi/index.html pages/oasi/index.html
