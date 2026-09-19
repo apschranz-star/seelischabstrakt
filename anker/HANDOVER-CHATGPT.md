@@ -6,6 +6,10 @@ access to the repository `apschranz-star/seelischabstrakt`, branch
 
 ---
 
+> The message Alexander pastes into a fresh chat to hand this over lives in
+> `anker/UEBERGABE.md`. It points here. This file is the reference; that one is
+> the first message and the first task.
+
 ## Who you are and what this is
 
 You are taking over maintenance of a small set of hand-built websites and one
