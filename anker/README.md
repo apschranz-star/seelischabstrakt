@@ -217,7 +217,15 @@ Andersherum verlore ein Sprachwechsel jedes Kreuz, das schon gesetzt ist.
     node werkzeug/finde-texte.js       zeigt die Texte, die in app.js stecken
     node werkzeug/pruefe-sprache.js inhalt-en.js en    Struktur gegen das Original
     node werkzeug/pruefe-texte.js      fehlende, tote und schiefe Oberflaechentexte
+    node werkzeug/pruefe-deutsch.js    hat sich ein deutscher Satz geaendert?
     node werkzeug/textabzug.js         Text aller Seiten abziehen und vergleichen
+
+`pruefe-deutsch.js` haelt die 290 deutschen Saetze in `werkzeug/deutsch.json`
+fest. Wer einen davon in `app.js` umformuliert, aendert zugleich den
+Schluessel, unter dem die Uebersetzung liegt, und Englisch faellt dort still
+auf Deutsch zurueck. Ist die Aenderung gewollt, folgt `--merken`, und die Datei
+geht mit in den Commit. `textabzug.js` prueft dasselbe gruendlicher, indem es
+die Seiten wirklich rendert, braucht dafuer aber Playwright und einen Chromium.
 
 Die Felder `id`, `schluessel`, `dringend`, `land`, `thema`, `sicherheit`, `wert`,
 `art` und `einheit` sind keine Sprache, sondern Technik. Wer sie beim Uebersetzen

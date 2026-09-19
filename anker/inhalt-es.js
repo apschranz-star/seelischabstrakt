@@ -492,7 +492,7 @@ wissen: [
         staerke: "Para el brote: solo consenso de expertos, ningún estudio. Para las fases estables: media.",
         quellen: [
           "Blaess J et al., RMD Open 2024;10:e004171. DOI 10.1136/rmdopen-2024-004171",
-          "Parodis I et al., EULAR, nicht medikamentoese Behandlung, Ann Rheum Dis 2024;83:720-729. PMID 37433575",
+          "Parodis I et al., EULAR, tratamiento no farmacológico, Ann Rheum Dis 2024;83:720-729. PMID 37433575",
         ],
       },
       {
@@ -611,9 +611,9 @@ wissen: [
         ],
         staerke: "Alta para el tratamiento en sí. Débil a media para el umbral exacto.",
         quellen: [
-          "ACG-Leitlinie, Am J Gastroenterol 2023. PMID 36602836",
+          "Guía ACG, Am J Gastroenterol 2023. PMID 36602836",
           "Ludvigsson JF et al., BSG, Gut 2014;63:1210-1228. PMID 24917550",
-          "ESsCD 2025, United European Gastroenterol J. PMID 40999951 und PMID 41831197",
+          "ESsCD 2025, United European Gastroenterol J. PMID 40999951 y PMID 41831197",
         ],
       },
       {
@@ -659,8 +659,8 @@ wissen: [
         ],
         staerke: "Media a alta para el valor limitado de la serología. Procede de un resumen de varios estudios.",
         quellen: [
-          "Meta-Analyse zu tTG und Endomysium-Antikoerpern bei persistierender Zottenatrophie, Gastroenterology 2017",
-          "Leitlinien zur Verlaufskontrolle, Nat Rev Gastroenterol Hepatol 2023. PMID 38110546",
+          "Metaanálisis sobre anticuerpos anti-tTG y antiendomisio en la atrofia vellositaria persistente, Gastroenterology 2017",
+          "Guías sobre el seguimiento, Nat Rev Gastroenterol Hepatol 2023. PMID 38110546",
         ],
       },
       {
@@ -725,7 +725,7 @@ wissen: [
             "cuándo, hay que hacerla, no esperar a que llegue.",
         ],
         staerke: "Basada en guías.",
-        quellen: ["Humphrey MB et al., ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022. DOI 10.1002/art.42646"],
+        quellen: ["Humphrey MB et al., guía ACR sobre la osteoporosis inducida por glucocorticoides 2022. DOI 10.1002/art.42646"],
       },
       {
         frage: "¿Y si la fatiga sigue pese a una alimentación sin gluten estricta?",
@@ -768,8 +768,8 @@ wissen: [
         staerke: "Guías, el nivel más alto disponible.",
         quellen: [
           "Fanouriakis A et al., EULAR 2023, Ann Rheum Dis 2024;83:15-29. PMID 37827694",
-          "ACR-Leitlinie zur Behandlung des SLE 2025. PMID 41182321",
-          "EULAR 2025, Lupus mit Nierenbeteiligung. PMID 41107121",
+          "Guía ACR sobre el tratamiento del LES 2025. PMID 41182321",
+          "EULAR 2025, lupus con afectación renal. PMID 41107121",
         ],
       },
       {
@@ -789,7 +789,7 @@ wissen: [
         ],
         staerke: "Guías de oftalmología. Los intervalos exactos varían según el país y la versión.",
         quellen: [
-          "AAO, Empfehlungen zum Screening auf Hydroxychloroquin-Retinopathie, Ophthalmology. PMID 41232611",
+          "AAO, recomendaciones sobre el cribado de la retinopatía por hidroxicloroquina, Ophthalmology. PMID 41232611",
           "Royal College of Ophthalmologists, Monitoring-Empfehlungen 2020. PMID 33423043",
         ],
       },
@@ -804,7 +804,7 @@ wissen: [
             "más barata y más eficaz de todo el seguimiento. No hay que olvidarla cuando una se encuentra bien.",
         ],
         staerke: "Recomendación fuerte de guía.",
-        quellen: ["ACR-Leitlinie zur Lupusnephritis 2024. DOI 10.1002/art.43212"],
+        quellen: ["Guía ACR sobre la nefritis lúpica 2024. DOI 10.1002/art.43212"],
       },
     ],
   },
@@ -831,8 +831,8 @@ wissen: [
         ],
         staerke: "Guías.",
         quellen: [
-          "Sammaritano LR et al., ACR-Leitlinie zur reproduktiven Gesundheit 2020, Arthritis Rheumatol 2020;72:529-556. PMID 32090466",
-          "Andreoli L et al., EULAR, Frauengesundheit bei SLE und APS, Ann Rheum Dis 2017;76:476-485",
+          "Sammaritano LR et al., guía ACR sobre salud reproductiva 2020, Arthritis Rheumatol 2020;72:529-556. PMID 32090466",
+          "Andreoli L et al., EULAR, salud de la mujer en el LES y el SAF, Ann Rheum Dis 2017;76:476-485",
         ],
       },
       {
@@ -882,7 +882,7 @@ wissen: [
         staerke: "Para la fotoprotección: buena, estudio controlado en personas. Para el tabaco: resumen de varios estudios.",
         quellen: [
           "Kuhn A et al., J Am Acad Dermatol 2011;64:37-48. PMID 21167404",
-          "Systematische Uebersicht und Metaanalyse zum Rauchen bei SLE, Autoimmun Rev 2019. PMID 31520802",
+          "Revisión sistemática y metaanálisis sobre el tabaco en el LES, Autoimmun Rev 2019. PMID 31520802",
         ],
       },
     ],
@@ -939,7 +939,7 @@ ueberwachung: [
         "se mide en vez de calcular.",
       "Calcio y vitamina D suficientes, movimiento con el peso sobre las piernas, no fumar.",
     ],
-    quellen: ["ACR-Leitlinie zur glukokortikoid-induzierten Osteoporose 2022. DOI 10.1002/art.42646"],
+    quellen: ["Guía ACR sobre la osteoporosis inducida por glucocorticoides 2022. DOI 10.1002/art.42646"],
   },
 ],
 

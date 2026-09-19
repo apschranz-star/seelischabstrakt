@@ -220,10 +220,15 @@ for l in en it fr es; do node werkzeug/pruefe-sprache.js inhalt-$l.js $l; done
 # 3. Does every interface string exist in every offered language?
 node werkzeug/pruefe-texte.js
 
-# 4. Did the rendered text change when it should not have?
+# 4. Did a German sentence change? No browser needed, so run this one always.
+node werkzeug/pruefe-deutsch.js
+
+# 5. Did the rendered text change when it should not have?
+#    Needs Playwright and a Chromium. If you cannot run it, say so plainly
+#    rather than claiming the check passed. Step 4 covers most of it.
 node werkzeug/textabzug.js --vergleich /tmp/vorher.json /tmp/nachher.json
 
-# 5. No inline styles anywhere, they are silently dropped by the CSP
+# 6. No inline styles anywhere, they are silently dropped by the CSP
 grep -c 'style="' app.js index.html content.js inhalt-*.js    # must all be 0
 ```
 

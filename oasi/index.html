@@ -6,6 +6,14 @@
 :root{
   --verde:#234F3C; --verde-chiaro:#3E7A5E; --verde-scuro:#12231C;
   --ocra:#C9932F; --ocra-testo:#8A6414;
+  /* Ocker auf dem gruenen Band. Der normale Ocker kommt dort auf 3,4 zu 1,
+     und das ist bei 11,5 Pixel gesperrter Versalschrift zu wenig. Dieser
+     hier steht bei 5,0 zu 1 auf dem hellen Gruen und hoeher auf dem dunklen,
+     das Band ist in beiden Modi dunkel. */
+  --ocra-su-verde:#E3B863;
+  /* Der WhatsApp-Knopf traegt seine eigene Farbe, nicht --verde. Im dunklen
+     Modus wird --verde hell, und heller Text darauf kam auf 2,6 zu 1. */
+  --verde-bottone:#1E5B45;
   --cotto:#A34A2A;
   --carta:#F6F1E4; --carta-2:#EFE8D6; --carta-3:#E4DBC4;
   --inchiostro:#1C201B; --inchiostro-2:#5E6357;
@@ -17,7 +25,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --verde:#5FA483; --verde-chiaro:#7FBFA0; --verde-scuro:#0C1813;
   --ocra:#C9932F; --ocra-testo:#D9A84A;
-  --cotto:#D4714B;
+  --cotto:#E4875F;
   --carta:#12231C; --carta-2:#182C23; --carta-3:#1F372B;
   --inchiostro:#F1EDE0; --inchiostro-2:#A9B3A4;
   --filo:#2B4638;
@@ -26,7 +34,7 @@
 :root[data-theme="dark"]{
   --verde:#5FA483; --verde-chiaro:#7FBFA0; --verde-scuro:#0C1813;
   --ocra:#C9932F; --ocra-testo:#D9A84A;
-  --cotto:#D4714B;
+  --cotto:#E4875F;
   --carta:#12231C; --carta-2:#182C23; --carta-3:#1F372B;
   --inchiostro:#F1EDE0; --inchiostro-2:#A9B3A4;
   --filo:#2B4638;
@@ -51,7 +59,9 @@ img{max-width:100%}
 /* ---- Hinweisstreifen: die Seite ist ein Entwurf, und das muss man sehen ---- */
 .avviso{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
-  background:var(--cotto);color:#FDF8EE;
+  /* Fest, nicht --cotto: im dunklen Modus wird das Terrakotta hell, und
+     cremefarbene Versalschrift darauf kam auf 3,2 zu 1. */
+  background:#A34A2A;color:#FDF8EE;
   font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
 }
 .avviso .avvolge{padding-block:7px;display:flex;gap:10px;align-items:center;justify-content:center;text-align:center}
@@ -96,7 +106,9 @@ section+section{border-top:1px solid var(--filo)}
 :root:not([data-theme="dark"]) .verde{background:#234F3C}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .verde{background:var(--verde-scuro)}}
 .verde h2{color:#F6F1E4}
-.verde .occhiello{color:var(--ocra)}
+.verde .occhiello{color:var(--ocra-su-verde)}
+/* Das Schild oben steht auf demselben Gruen wie das Band. */
+.testata .occhiello{color:var(--ocra-su-verde)}
 .verde p{color:#DCD8C8}
 
 h2{font-size:clamp(26px,5.4vw,36px);color:var(--verde);margin-bottom:14px}
@@ -104,7 +116,7 @@ h2{font-size:clamp(26px,5.4vw,36px);color:var(--verde);margin-bottom:14px}
 h3{font-size:20px;margin-bottom:6px}
 .occhiello-b{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
   color:var(--ocra-testo);margin-bottom:10px}
-.verde .occhiello-b{color:var(--ocra)}
+.verde .occhiello-b{color:var(--ocra-su-verde)}
 .testo p+p{margin-top:15px}
 .testo{max-width:34rem;font-size:17.5px}
 
@@ -188,11 +200,11 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
 .stagione{display:inline-block;margin-top:9px;font-size:11.5px;letter-spacing:.14em;
   text-transform:uppercase;font-weight:700;color:var(--ocra-testo);
   border:1px solid var(--filo);border-radius:999px;padding:4px 11px}
-.verde .stagione{color:var(--ocra);border-color:rgba(246,241,228,.28)}
+.verde .stagione{color:var(--ocra-su-verde);border-color:rgba(246,241,228,.28)}
 
 .wa{
   display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
-  background:var(--verde);color:#F6F1E4;text-decoration:none;
+  background:var(--verde-bottone);color:#F6F1E4;text-decoration:none;
   font-size:15.5px;font-weight:700;padding:12px 19px;border-radius:2px;
   min-height:46px;box-sizing:border-box;border:1px solid transparent;
 }
@@ -208,9 +220,9 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
 }
 </style>
 
-<div class="avviso" role="note">
+<aside class="avviso" aria-label="Avviso">
   <div class="avvolge"><span data-i18n="avviso">Anteprima di studio. Non è il sito ufficiale del Bar Oasi Cafè.</span></div>
-</div>
+</aside>
 
 <header class="testata">
   <div class="avvolge">
@@ -226,6 +238,8 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
     </div>
   </div>
 </header>
+
+<main id="contenuto">
 
 <section class="apertura">
   <div class="avvolge">
@@ -428,6 +442,8 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
     </div>
   </div>
 </section>
+
+</main>
 
 <footer>
   <div class="avvolge">

@@ -48,6 +48,11 @@ jobs:
             node anker/werkzeug/pruefe-sprache.js "anker/inhalt-$l.js" "$l"
           done
           node anker/werkzeug/pruefe-texte.js
+          # Und hat jemand einen deutschen Satz in app.js umformuliert, ohne
+          # es zu merken? Dann stimmt der Schluessel nicht mehr, unter dem die
+          # Uebersetzung liegt, und Englisch faellt an dieser Stelle auf Deutsch
+          # zurueck. Gewollte Aenderungen tragen werkzeug/deutsch.json mit.
+          node anker/werkzeug/pruefe-deutsch.js
           python3 -c "import json;json.load(open('anker/manifest.webmanifest'));print('manifest ok')"
       - name: Check out the branch gh-pages
         uses: actions/checkout@v4

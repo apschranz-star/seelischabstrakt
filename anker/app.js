@@ -81,8 +81,8 @@
     { code: "en", name: "English", locale: "en-GB" },
     { code: "de", name: "Deutsch", locale: "de-AT" },
     { code: "it", name: "Italiano", locale: "it-IT" },
-    { code: "fr", name: "Francais", locale: "fr-FR" },
-    { code: "es", name: "Espanol", locale: "es-ES" },
+    { code: "fr", name: "Français", locale: "fr-FR" },
+    { code: "es", name: "Español", locale: "es-ES" },
   ];
 
   const ABSCHNITTE = ["symptome", "essen", "rezepte", "laborwerte", "warnzeichen",

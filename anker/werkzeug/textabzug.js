@@ -50,7 +50,21 @@ if (process.argv[2] === "--vergleich") {
 }
 
 (async () => {
-  const { chromium } = require("playwright");
+  /* Ohne Playwright bricht require mit einem Stapelauszug ab, und wer das
+     zum ersten Mal sieht, haelt das Werkzeug fuer kaputt. Es fehlt nur ein
+     Paket, und pruefe-deutsch.js kann dasselbe ohne Browser. */
+  let chromium;
+  try {
+    ({ chromium } = require("playwright"));
+  } catch (e) {
+    console.error(
+      "Playwright fehlt. Dieses Werkzeug braucht einen Browser.\n" +
+      "  npm install playwright        (irgendwo)\n" +
+      "  NODE_PATH=/pfad/zu/node_modules node werkzeug/textabzug.js ...\n" +
+      "Ohne Browser: node werkzeug/pruefe-deutsch.js prueft dasselbe statisch.",
+    );
+    process.exit(2);
+  }
   const b = await chromium.launch({ executablePath: EXE });
   const ctx = await b.newContext({ viewport: { width: 393, height: 852 }, isMobile: true,
     locale: process.argv[3] || "de-AT", timezoneId: "Europe/Vienna" });
