@@ -69,7 +69,9 @@ cp -R "$here/fonts" "$target/shop/fonts"
 # Anker, die App bei SLE und Zoeliakie
 mkdir -p "$target/anker"
 cp "$here/anker/index.html" "$here/anker/app.css" "$here/anker/app.js" \
-   "$here/anker/inhalt-de.js" "$here/anker/sw.js" "$here/anker/manifest.webmanifest" \
+   "$here/anker/inhalt-de.js" "$here/anker/inhalt-en.js" "$here/anker/inhalt-it.js" \
+   "$here/anker/inhalt-fr.js" "$here/anker/inhalt-es.js" \
+   "$here/anker/sw.js" "$here/anker/manifest.webmanifest" \
    "$here/anker/icon.svg" "$here/anker/icon-180.png" "$here/anker/icon-192.png" \
    "$here/anker/icon-512.png" "$here/anker/icon-512-maskable.png" "$target/anker/"
 cp -R "$here/anker/fonts" "$target/anker/fonts"

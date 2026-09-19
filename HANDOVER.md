@@ -27,7 +27,7 @@ Anker ist kein Auftritt, sondern eine App für den eigenen Gebrauch: ein Tagebuc
 
 Auf dem iPhone wird sie in Safari geöffnet und über Teilen, Zum Home-Bildschirm abgelegt. Danach läuft sie im Vollbild und ohne Netz. Alle Einträge bleiben im Gerät, es gibt keinen Server und kein Konto; die Seite erklärt `connect-src 'none'` und kann gar nichts senden. Der Preis dafür steht in anker/README.md: gesichert wird nur, was man selbst sichert, und dafür gibt es in der App unter Mehr eine Sicherung als Datei.
 
-Inhalte ändern geht in einer einzigen Datei, anker/content.js. Der ausführliche Bericht zu Müdigkeit, Bewegung und Ernährung liegt daneben als anker/REPORT.md und wird nicht mitveröffentlicht.
+Inhalte ändern geht in einer einzigen Datei, anker/inhalt-de.js. Der ausführliche Bericht zu Müdigkeit, Bewegung und Ernährung liegt daneben als anker/REPORT.md und wird nicht mitveröffentlicht.
 
 ## Teil 1: Netlify einrichten (einmalig)
 

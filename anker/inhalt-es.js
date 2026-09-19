@@ -1,7 +1,7 @@
 /*
  * El contenido de Anker en español.
  *
- * Este archivo es la traducción de content.js. La estructura es idéntica:
+ * Este archivo es la traducción de inhalt-de.js. La estructura es idéntica:
  * las mismas claves, los mismos id, las mismas fuentes. Solo se traduce el
  * texto legible.
  */

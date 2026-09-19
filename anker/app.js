@@ -99,6 +99,8 @@
    * Sprache hier, muss werkzeug/pruefe-texte.js fuer sie sauber durchlaufen,
    * sonst stehen deutsche Knoepfe ueber uebersetztem Text.
    *
+   * Italienisch, Franzoesisch und Spanisch haben den ganzen Inhalt, aber noch
+   * keine ui-Tabelle. Sie kommen dazu, sobald sie eine haben.
    */
   const OBERFLAECHE_FERTIG = ["en", "de"];
 

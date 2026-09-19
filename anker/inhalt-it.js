@@ -1,7 +1,7 @@
 /*
  * Il contenuto di Anker in italiano.
  *
- * Questo file è la traduzione di content.js. La struttura resta identica:
+ * Questo file è la traduzione di inhalt-de.js. La struttura resta identica:
  * stesse chiavi, stessi id, stesse fonti. Tradotto è solo il testo leggibile.
  */
 
