@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>seelischabstrakt · Studio desk</title>
 <meta name="robots" content="noindex, nofollow">
+<!-- Dieselben selbst ausgelieferten Schriften wie der Shop. Ohne diese Zeile
+     stand das Pult als einzige Seite des Repositories auf Courier New, obwohl
+     jede Regel darunter Courier Prime verlangt. -->
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{--bg:#F1EBE0;--ink:#171212;--mute:#6b5a55;--line:#cbbfae;--red:#8C1D1D;--frame:#0D0A0A;--ok:#2f6b3a;--warn:#a1541c}
 *{box-sizing:border-box}
@@ -97,7 +101,7 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
 
     <section id="tab-design" hidden>
       <h2>Design</h2>
-      <p class="hint">Pick a preset or switch to custom and set every colour. Fonts are Google Fonts names, spelled exactly as on fonts.google.com (e.g. "Bricolage Grotesque", "Fraunces", "Space Mono"). Changes show in the preview immediately.</p>
+      <p class="hint">Pick a preset or switch to custom and set every colour. Changes show in the preview immediately. Fonts are the three the shop carries as files: "Bricolage Grotesque", "Source Serif 4" and "Courier Prime". Nothing is fetched from Google any more, so another name only falls back to a system font. A new family means new files: run <code>tools/selfhost-fonts.py</code> and commit what it writes into <code>fonts/</code>.</p>
       <fieldset><legend>Preset and pattern</legend>
         <label><span>Preset</span><select id="th-preset"><option value="carpet">carpet (red Bokhara)</option><option value="shawl">shawl (black paisley)</option><option value="paper">paper (light)</option><option value="gallery">gallery (near black)</option><option value="custom">custom</option></select></label>
         <label><span>Pattern (custom only)</span><select id="th-pattern"><option value="gul">gul carpet</option><option value="paisley">paisley</option><option value="none">none</option></select></label>
@@ -200,6 +204,7 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
         <label><span>Confirmation within (hours)</span><input type="number" data-path="commerce.payment.confirmationHours"></label>
         <label><span>Order delivery</span><select data-path="commerce.orders.provider"><option value="netlify">Netlify Forms (free, when hosted on Netlify)</option><option value="formspree">Formspree endpoint</option><option value="mailto">Buyer's email app</option></select></label>
         <label><span>Formspree endpoint (if chosen)</span><input data-path="commerce.orders.endpoint" placeholder="https://formspree.io/f/xxxx"></label>
+        <p class="hint">Formspree is a processor in the USA. Choosing it makes every order, with the buyer's name, address and email, travel to a third party that the privacy policy does not name today. Before switching: sign a processing agreement under Art. 28 GDPR, add Formspree to the recipients in the privacy text, and check the transfer basis under Art. 44 ff. GDPR. Netlify Forms keeps the data with the host that already serves the site.</p>
         <label><span>Order notification email</span><input data-path="commerce.orders.notifyEmail"></label>
         <p class="hint full">Netlify Forms: after the first deploy open your Netlify site → Forms → "order" → Notifications → add your email. Orders then arrive in your inbox with name, address, work and order number. Each order shows the buyer your Revolut link with the amount prefilled and asks them to write the order number in the transfer message.</p>
       </fieldset>
@@ -290,7 +295,11 @@ const status=(m,c="")=>{ const el=$("#status"); el.textContent=m; el.className="
 const get=(o,p)=>p.split(".").reduce((a,k)=>a?.[k],o);
 const set=(o,p,v)=>{ const ks=p.split("."); let cur=o; ks.slice(0,-1).forEach(k=>{ if(typeof cur[k]!=="object"||cur[k]===null) cur[k]={}; cur=cur[k]; }); cur[ks.at(-1)]=v; };
 const COLOR_KEYS=["ground","groundLine","groundDot","section2","section2Line","frame","mat","ink","ink2","mute","paper","paperInk","accent"];
-const PRESETS={carpet:{ground:"#8C1D1D",groundLine:"#3A0708",groundDot:"#5C0F10",section2:"#1A1210",section2Line:"#3B2118",frame:"#0D0A0A",mat:"#EFE7D8",ink:"#F3EBDE",ink2:"#E2CDBF",mute:"#C99E93",paper:"#F1EBE0",paperInk:"#171212",accent:"#F2B429"},shawl:{ground:"#1A1210",groundLine:"#3B2118",groundDot:"#7A1B1B",section2:"#8C1D1D",section2Line:"#3A0708",frame:"#0D0A0A",mat:"#EFE7D8",ink:"#F3EBDE",ink2:"#D9C9B8",mute:"#9E8578",paper:"#F1EBE0",paperInk:"#171212",accent:"#F2B429"},paper:{ground:"#EFE9DD",groundLine:"#D9D0C0",groundDot:"#C9BFAE",section2:"#1A1210",section2Line:"#3B2118",frame:"#151010",mat:"#FBF8F2",ink:"#1B1614",ink2:"#3F3530",mute:"#7A6C63",paper:"#FFFFFF",paperInk:"#171212",accent:"#8C1D1D"},gallery:{ground:"#141416",groundLine:"#222226",groundDot:"#2B2B30",section2:"#0D0D0F",section2Line:"#26262B",frame:"#050505",mat:"#F2F0EB",ink:"#F2F0EB",ink2:"#C9C6BF",mute:"#8A877F",paper:"#F5F3EE",paperInk:"#131315",accent:"#F2B429"}};
+/* Dieselben Werte wie THEMES in index.html. Die Seite ist die Quelle: was hier
+   abweicht, zeigt das Pult in einer Vorschau, die es so nie gibt. carpet.mute
+   stand hier auf #C99E93 und kam damit auf dem roten Grund auf 3,83:1, unter den
+   4,5:1 von Erfolgskriterium 1.4.3; die Seite selbst hatte laengst #E3C2B8. */
+const PRESETS={carpet:{ground:"#8C1D1D",groundLine:"#3A0708",groundDot:"#5C0F10",section2:"#1A1210",section2Line:"#3B2118",frame:"#0D0A0A",mat:"#EFE7D8",ink:"#F3EBDE",ink2:"#E2CDBF",mute:"#E3C2B8",paper:"#F1EBE0",paperInk:"#171212",accent:"#F2B429"},shawl:{ground:"#1A1210",groundLine:"#3B2118",groundDot:"#7A1B1B",section2:"#8C1D1D",section2Line:"#3A0708",frame:"#0D0A0A",mat:"#EFE7D8",ink:"#F3EBDE",ink2:"#D9C9B8",mute:"#9E8578",paper:"#F1EBE0",paperInk:"#171212",accent:"#F2B429"},paper:{ground:"#EFE9DD",groundLine:"#D9D0C0",groundDot:"#C9BFAE",section2:"#1A1210",section2Line:"#3B2118",frame:"#151010",mat:"#FBF8F2",ink:"#1B1614",ink2:"#3F3530",mute:"#7A6C63",paper:"#FFFFFF",paperInk:"#171212",accent:"#8C1D1D"},gallery:{ground:"#141416",groundLine:"#222226",groundDot:"#2B2B30",section2:"#0D0D0F",section2Line:"#26262B",frame:"#050505",mat:"#F2F0EB",ink:"#F2F0EB",ink2:"#C9C6BF",mute:"#8A877F",paper:"#F5F3EE",paperInk:"#131315",accent:"#F2B429"}};
 
 /* tabs */
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{ document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",String(x===b))); document.querySelectorAll("section[id^=tab-]").forEach(s=>s.hidden = s.id!=="tab-"+b.dataset.tab); }));
@@ -426,7 +435,7 @@ function handlePhoto(file,w){
 }
 
 /* preview + export */
-function preview(){ const fr=$("#preview"); const works=WORKS.map(w=>w._preview?{...w,img:w._preview}:w); fr.contentWindow?.postMessage({type:"sa-preview",site:SITE,works},"*"); }
+function preview(){ const fr=$("#preview"); const works=WORKS.map(w=>w._preview?{...w,img:w._preview}:w); const org=location.protocol==="file:"?"*":window.location.origin; fr.contentWindow?.postMessage({type:"sa-preview",site:SITE,works},org); }
 $("#btn-preview").onclick=()=>{ $("#preview").src="index.html?v="+Date.now(); $("#preview").onload=()=>setTimeout(preview,300); };
 $("#btn-export").onclick=()=>{ const dl=(name,blob)=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; a.click(); }; dl("site.json",new Blob([JSON.stringify(SITE,null,2)],{type:"application/json"})); setTimeout(()=>dl("works.json",new Blob([JSON.stringify({works:cleanWorks()},null,2)],{type:"application/json"})),400); WORKS.filter(w=>w._newFile).forEach((w,i)=>setTimeout(()=>dl(w._newFile.name,w._newFile.blob),800+i*400)); status("Downloaded. Move the JSON files into the site folder and photos into img/, then redeploy.","ok"); };
 function cleanWorks(){ return WORKS.map(w=>{ const c={...w}; delete c._open; delete c._preview; delete c._newFile; return c; }); }

@@ -8,12 +8,13 @@
 #     /portfolio/    die persoenliche Seite, hinter dem Zugangscode
 #     /schranz-ai/   Schranz AI in Deutsch und Englisch, hinter dem Zugangscode
 #     /shop/         der Kunst-Shop, offen
+#     /anker/        die App Anker, hinter dem Zugangscode
 #     /jing/         bleibt unberuehrt, die baut ihr eigener Workflow
 #
 # Dazu eine robots.txt, die Suchmaschinen von der ganzen Vorschau fernhaelt, denn
 # die Vorschau ist nicht die oeffentliche Seite.
 #
-# Dasselbe machen die vier Workflows unter .github/workflows/ bei jedem Push,
+# Dasselbe machen die Workflows unter .github/workflows/ bei jedem Push,
 # sobald das Repository-Secret SITE_ACCESS_KEY gesetzt ist. Dieses Skript ist der
 # Weg von Hand, solange es fehlt.
 set -e
@@ -33,12 +34,18 @@ find "$target" -mindepth 1 -maxdepth 1 ! -name .git ! -name jing -exec rm -rf {}
 # Praxisseite an die Wurzel
 cp -R "$here/farida/." "$target/"
 rm -f "$target/netlify.toml" "$target/README.md" "$target/sitemap.xml"
-sh "$here/gate/inject.sh" "$target/index.html" "$key"
+# Abschnitte mit draft stehen nicht auf der Seite, wohl aber in der Datei daneben.
+python3 "$here/tools/strip-drafts.py" "$target/content.json"
+# Beide Seiten des Ordners hinter den Code, nicht nur die Startseite.
+for f in index.html modulo.html; do
+  if [ -f "$target/$f" ]; then sh "$here/gate/inject.sh" "$target/$f" "$key"; fi
+done
 
 # Persoenliche Seite
 mkdir -p "$target/portfolio"
 cp -R "$here/portfolio/." "$target/portfolio/"
 rm -f "$target/portfolio/netlify.toml" "$target/portfolio/README.md"
+rm -f "$target/portfolio/robots.txt" "$target/portfolio/sitemap.xml"
 sh "$here/gate/inject.sh" "$target/portfolio/index.html" "$key"
 
 # Schranz AI, beim Bauen kommt der Code hinein
@@ -59,10 +66,33 @@ cp "$here/index.html" "$here/404.html" "$here/site.json" "$here/works.json" "$ta
 cp -R "$here/img" "$target/shop/img"
 cp -R "$here/fonts" "$target/shop/fonts"
 
+# Anker, die App bei SLE und Zoeliakie
+mkdir -p "$target/anker"
+cp "$here/anker/index.html" "$here/anker/app.css" "$here/anker/app.js" \
+   "$here/anker/content.js" "$here/anker/sw.js" "$here/anker/manifest.webmanifest" \
+   "$here/anker/icon.svg" "$here/anker/icon-180.png" "$here/anker/icon-192.png" \
+   "$here/anker/icon-512.png" "$here/anker/icon-512-maskable.png" "$target/anker/"
+cp -R "$here/anker/fonts" "$target/anker/fonts"
+# Die App verbietet in ihrem Kopf Inline-Code, deshalb kommt das Tor dort als
+# zwei eigene Dateien statt als eingesetzter Block. Siehe gate/split.py.
+python3 "$here/gate/split.py" "$target/anker" "Anker" "Alexander Schranz"
+sh "$here/gate/inject.sh" "$target/anker/zugang.js" "$key"
+
 printf 'User-agent: *\nDisallow: /\n' > "$target/robots.txt"
 touch "$target/.nojekyll"
 
 echo "Vorschau gebaut in $target"
-grep -l "__ACCESS_KEY__" "$target/index.html" "$target/portfolio/index.html" 2>/dev/null \
-  && { echo "FEHLER: Zugangscode nicht eingesetzt" >&2; exit 1; }
-echo "Zugang gesetzt in Praxisseite, persoenlicher Seite und Schranz AI. Shop offen."
+
+# Nachsehen statt behaupten. Jede Seite, die hinter den Code gehoert, muss ihn
+# tragen; steht irgendwo noch der Platzhalter, ist etwas schiefgegangen und die
+# Seite laege offen im Netz.
+fehler=0
+for f in "$target/index.html" "$target/modulo.html" "$target/portfolio/index.html" \
+         "$target/schranz-ai/index.html" "$target/schranz-ai/en/index.html" \
+         "$target/anker/zugang.js"; do
+  [ -f "$f" ] || continue
+  if grep -q "__ACCESS_KEY__" "$f"; then echo "FEHLER: kein Zugangscode in $f" >&2; fehler=1; fi
+  if ! grep -q "$key" "$f"; then echo "FEHLER: der Code steht nicht in $f" >&2; fehler=1; fi
+done
+[ "$fehler" = 0 ] || exit 1
+echo "Zugang gesetzt in Praxisseite, Formular, persoenlicher Seite, Schranz AI und Anker. Shop offen."

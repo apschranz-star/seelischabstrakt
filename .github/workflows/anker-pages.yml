@@ -1,0 +1,138 @@
+# Publishes Anker, the companion app for SLE and coeliac disease, to the branch
+# gh-pages under anker/, so it can be installed on an iPhone from Safari.
+#
+# The app needs HTTPS for two reasons: a service worker only runs on a secure
+# origin, and "Add to Home Screen" only offers a standalone app there. That is
+# the whole reason this folder is published at all; nothing about the app itself
+# wants a server.
+#
+# No entry from the diary ever comes here. The app writes to the local storage of
+# one browser on one device and declares connect-src 'none', so it cannot send
+# anything anywhere. What is published is the program, not the data.
+name: Publish Anker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "anker/**"
+      - "gate/**"
+      - ".github/pages-owned.txt"
+      - ".github/workflows/anker-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: anker-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check that the app parses
+        run: |
+          for f in anker/app.js anker/content.js anker/sw.js anker/inhalt-*.js; do
+            node --check "$f"
+          done
+          # Jede angebotene Sprache muss dieselbe Struktur haben wie das deutsche
+          # Original, und jeder Oberflaechentext muss uebersetzt sein. Fehlt etwas,
+          # stuende es in der App auf Deutsch zwischen englischen Saetzen.
+          for l in en it fr es; do
+            node anker/werkzeug/pruefe-sprache.js "anker/inhalt-$l.js" "$l"
+          done
+          node anker/werkzeug/pruefe-texte.js
+          python3 -c "import json;json.load(open('anker/manifest.webmanifest'));print('manifest ok')"
+      - name: Check out the branch gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+      - name: Replace only the folder anker on the branch
+        env:
+          KEY: ${{ secrets.SITE_ACCESS_KEY }}
+        run: |
+          # Wie bei der Praxisseite: fehlt das Secret, wird der Code aus der
+          # zuletzt veroeffentlichten Fassung zurueckgelesen. Der Platzhalter
+          # zaehlt dabei nicht als Code.
+          if [ -z "$KEY" ] && [ -f "pages/anker/zugang.js" ]; then
+            KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/anker/zugang.js","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' || true)"
+          fi
+          case "$KEY" in __*) KEY="" ;; esac
+          if [ -z "$KEY" ]; then
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Fassung. Nichts veroeffentlicht. Abhilfe: Repository-Secret SITE_ACCESS_KEY anlegen."
+            exit 1
+          fi
+          echo "::add-mask::$KEY"
+          rm -rf pages/anker
+          mkdir -p pages/anker
+          cp anker/index.html anker/app.css anker/app.js anker/content.js anker/sw.js \
+             anker/inhalt-en.js anker/inhalt-it.js anker/inhalt-fr.js anker/inhalt-es.js \
+             anker/manifest.webmanifest anker/icon.svg anker/icon-180.png \
+             anker/icon-192.png anker/icon-512.png anker/icon-512-maskable.png \
+             pages/anker/
+          # Jede Datei, die index.html laedt, muss auch hier liegen. Fehlt eine,
+          # startet die App nicht, und zwar erst beim Benutzer, nicht hier.
+          for f in $(grep -o 'src="[a-z0-9.-]*\.js"' anker/index.html | cut -d'"' -f2); do
+            [ "$f" = "zugang.js" ] && continue
+            if [ ! -s "pages/anker/$f" ]; then
+              echo "::error::index.html laedt $f, die Datei wurde aber nicht mitkopiert. Nichts veroeffentlicht."
+              exit 1
+            fi
+          done
+          # Die Schrift liegt im Repository und wird mitgeliefert. Fehlt sie,
+          # faellt die App still auf die Systemschrift zurueck und alle Breiten,
+          # die im Diagramm gerechnet sind, stimmen nicht mehr.
+          cp -R anker/fonts pages/anker/fonts
+          # Der Bericht und die Anleitung sind Markdown. GitHub Pages liefert sie
+          # als Text aus, was zum Lesen am Telefon nichts taugt, und sie gehoeren
+          # nicht in die App. Sie bleiben im Repository.
+          # Das Tor kommt als zwei eigene Dateien, weil die Seite Inline-Code
+          # verbietet. Siehe gate/split.py.
+          python3 gate/split.py pages/anker "Anker" "Alexander Schranz"
+          sh gate/inject.sh pages/anker/zugang.js "$KEY"
+          # Die Seite traegt noindex schon selbst, gate/inject.sh muss dort nichts
+          # nachtragen. Geprueft wird es trotzdem, damit ein Umbau am Kopf der
+          # Seite nicht unbemerkt die Anweisung mitnimmt.
+          if ! grep -qi '<meta name="robots"' pages/anker/index.html; then
+            echo "::error::anker/index.html traegt kein robots-noindex. Nichts veroeffentlicht."
+            exit 1
+          fi
+          # Und die Regel selbst: ohne sie koennte die Seite senden.
+          if ! grep -q "connect-src 'none'" pages/anker/index.html; then
+            echo "::error::anker/index.html traegt kein connect-src 'none'. Nichts veroeffentlicht."
+            exit 1
+          fi
+          # Die Schrift muss von hier kommen und nicht von Google. Ein
+          # zurueckgelassener Verweis auf fonts.googleapis.com waere genau die
+          # Anfrage nach draussen, die diese App nicht stellen soll.
+          if grep -q "fonts.googleapis.com\|fonts.gstatic.com" pages/anker/index.html pages/anker/app.css pages/anker/fonts/fonts.css; then
+            echo "::error::In anker steht noch ein Verweis auf Google Fonts. Nichts veroeffentlicht."
+            exit 1
+          fi
+          for f in pages/anker/fonts/fonts.css pages/anker/fonts/ibm-plex-sans-latin-normal-400-700.woff2; do
+            if [ ! -s "$f" ]; then echo "::error::$f fehlt oder ist leer. Nichts veroeffentlicht."; exit 1; fi
+          done
+          touch pages/.nojekyll
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "anker already current"; exit 0; fi
+          git commit -q -m "Publish Anker from ${GITHUB_SHA::7}"
+          # Sechs Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
+          for try_ in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "anker updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1

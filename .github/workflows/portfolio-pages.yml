@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - "portfolio/**"
+      - "gate/**"
       - ".github/workflows/portfolio-pages.yml"
   workflow_dispatch:
 
@@ -25,6 +26,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Check that the journal file is valid JSON
+        run: python3 -c "import json;json.load(open('portfolio/journal.json'));print('journal.json ok')"
       - name: Check out gh-pages
         uses: actions/checkout@v4
         with:
@@ -34,21 +37,26 @@ jobs:
         env:
           KEY: ${{ secrets.SITE_ACCESS_KEY }}
         run: |
-          # Der Zugangscode steht schon in der veroeffentlichten Seite. Ihn dort zu lesen ist
-          # verlaesslicher als ein Secret, das jemand erst anlegen muss, und er wird nirgends
-          # abgelegt. Ein Secret SITE_ACCESS_KEY hat Vorrang, falls es doch eines gibt.
+          # Der Zugangscode kommt aus dem Repository-Secret SITE_ACCESS_KEY. Fehlt das
+          # Secret, wird er aus der zuletzt veroeffentlichten Seite zurueckgelesen. Der
+          # Platzhalter zaehlt nicht als Code: er passt auf dasselbe Muster, wuerde das Tor
+          # aber abschalten und die Seite mit gruenem Lauf offen ins Netz stellen.
           if [ -z "$KEY" ] && [ -f "pages/portfolio/index.html" ]; then
             KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/portfolio/index.html","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' || true)"
           fi
+          case "$KEY" in __*) KEY="" ;; esac
           if [ -z "$KEY" ]; then
-            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Seite. Nichts veroeffentlicht."
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Seite. Nichts veroeffentlicht. Abhilfe: Repository-Secret SITE_ACCESS_KEY anlegen."
             exit 1
           fi
           echo "::add-mask::$KEY"
           rm -rf pages/portfolio
           mkdir -p pages/portfolio
           cp -R portfolio/. pages/portfolio/
+          # Wie bei der Praxisseite: die Vorschau ist nicht die oeffentliche Seite, also
+          # gelten deren robots.txt und sitemap.xml hier nicht.
           rm -f pages/portfolio/netlify.toml pages/portfolio/README.md
+          rm -f pages/portfolio/robots.txt pages/portfolio/sitemap.xml
           sh gate/inject.sh pages/portfolio/index.html "$KEY"
           touch pages/.nojekyll
           cd pages
@@ -57,5 +65,13 @@ jobs:
           git add -A
           if git diff --cached --quiet; then echo "portfolio preview already current"; exit 0; fi
           git commit -q -m "Publish Behind the Artist from ${GITHUB_SHA::7}"
-          git push -q origin HEAD:gh-pages
-          echo "portfolio preview updated"
+          # Sechs Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
+          for try_ in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "portfolio preview updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1

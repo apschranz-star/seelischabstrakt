@@ -19,6 +19,14 @@
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'"
 
 [[headers]]
+  # Selbst ausgelieferte Schriften. Der Dateiname traegt Familie, Schnitt und
+  # Zeichensatz, eine geaenderte Schrift ist also eine andere Datei; damit darf
+  # der Browser sie behalten, statt sie bei jedem Aufruf neu zu holen.
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
   for = "/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"

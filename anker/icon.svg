@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Anker">
+  <rect width="512" height="512" rx="112" fill="#1d3a5f"/>
+  <g fill="none" stroke="#f4f1ea" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="148" r="40"/>
+    <path d="M256 188v186"/>
+    <path d="M196 232h120"/>
+    <path d="M140 296c0 78 52 122 116 122s116-44 116-122"/>
+    <path d="M140 296l-34 22M372 296l34 22"/>
+  </g>
+</svg>

@@ -7,6 +7,9 @@ on:
     branches: [main]
     paths:
       - "farida/**"
+      - "gate/**"
+      - "tools/strip-drafts.py"
+      - ".github/pages-owned.txt"
       - ".github/workflows/farida-pages.yml"
   workflow_dispatch:
 
@@ -34,38 +37,73 @@ jobs:
           path: pages
       - name: Replace the practice site, keep everything else on the branch
         # The branch also carries the JING demo under jing/ (published by hand), the Schranz AI
-        # site under schranz-ai/, the portfolio under portfolio/ and the art shop preview under
-        # shop/ (each its own workflow).
+        # site under schranz-ai/, the portfolio under portfolio/, the art shop preview under
+        # shop/ and the Anker app under anker/ (each its own workflow).
         # Only the practice site is replaced here.
         env:
           KEY: ${{ secrets.SITE_ACCESS_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Der Zugangscode steht schon in der veroeffentlichten Seite. Ihn dort zu lesen ist
-          # verlaesslicher als ein Secret, das jemand erst anlegen muss, und er wird nirgends
-          # abgelegt. Ein Secret SITE_ACCESS_KEY hat Vorrang, falls es doch eines gibt.
+          # Der Zugangscode kommt aus dem Repository-Secret SITE_ACCESS_KEY. Fehlt das
+          # Secret, wird er aus der zuletzt veroeffentlichten Seite zurueckgelesen, damit
+          # ein Repository ohne Secret weiterlaeuft. Der Platzhalter zaehlt dabei nicht als
+          # Code: er passt auf dasselbe Muster, wuerde das Tor aber abschalten und die Seite
+          # mit gruenem Lauf offen ins Netz stellen.
           if [ -z "$KEY" ] && [ -f "pages/index.html" ]; then
             KEY="$(node -e 'const fs=require("fs"); const s=fs.readFileSync("pages/index.html","utf8"); const m=s.match(/var KEY="([A-Za-z0-9_-]+)"/); if(!m) process.exit(1); process.stdout.write(m[1]);' || true)"
           fi
+          case "$KEY" in __*) KEY="" ;; esac
           if [ -z "$KEY" ]; then
-            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Seite. Nichts veroeffentlicht."
+            echo "::error::Kein Zugangscode gefunden, weder als Secret noch in der veroeffentlichten Seite. Nichts veroeffentlicht. Abhilfe: Repository-Secret SITE_ACCESS_KEY anlegen."
             exit 1
           fi
           echo "::add-mask::$KEY"
+          # Was anderen Seiten gehoert, steht in .github/pages-owned.txt und bleibt stehen.
+          KEEP=""
+          while IFS= read -r line; do
+            case "$line" in ''|\#*) continue ;; esac
+            KEEP="$KEEP ! -name $line"
+          done < .github/pages-owned.txt
           cd pages
-          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name jing ! -name schranz-ai ! -name portfolio ! -name shop -exec rm -rf {} +
+          eval "find . -mindepth 1 -maxdepth 1 ! -name .git $KEEP -exec rm -rf {} +"
           cp -R ../farida/. .
           rm -f netlify.toml README.md
-          sh ../gate/inject.sh index.html "$KEY"
+          # Die Seite haelt Abschnitte mit draft zurueck, die Datei daneben nicht: wer sie
+          # direkt aufruft, laese den Entwurf mit. Vor dem Veroeffentlichen fliegt er raus.
+          python3 ../tools/strip-drafts.py content.json
+          # Beide Seiten des Ordners kommen hinter den Code, nicht nur die Startseite.
+          for f in index.html modulo.html; do
+            if [ -f "$f" ]; then sh ../gate/inject.sh "$f" "$KEY"; fi
+          done
           # Die Vorschau ist nicht die oeffentliche Seite. Die robots.txt der Praxisseite gilt auf
           # deren echter Adresse, hier wird sie durch eine ersetzt, die Suchmaschinen fernhaelt.
           printf 'User-agent: *\nDisallow: /\n' > robots.txt
           rm -f sitemap.xml
+          # Eine Fehlerseite fuer den ganzen Zweig. GitHub Pages liefert die
+          # 404.html der Wurzel fuer jede Adresse aus, die es nicht gibt; bisher
+          # lag hier keine, und Besucher sahen die Standardseite von GitHub.
+          cat > 404.html <<'HTML'
+          <!doctype html><html lang="de"><head><meta charset="utf-8">
+          <meta name="robots" content="noindex,nofollow">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>Nicht gefunden</title>
+          <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#fff;color:#111;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;text-align:center;padding:24px}
+          @media (prefers-color-scheme:dark){body{background:#000;color:#f5f5f7}}</style></head>
+          <body><div><p style="font-size:44px;margin:0 0 8px">404</p>
+          <p>Diese Seite gibt es hier nicht. &middot; <span lang="en">This page is not here.</span></p></div></body></html>
+          HTML
           touch .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then echo "gh-pages already current"; exit 0; fi
           git commit -q -m "Publish the practice site from ${GITHUB_SHA::7}"
-          git push -q origin HEAD:gh-pages
-          echo "gh-pages updated"
+          # Sechs Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
+          # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
+          for try_ in 1 2 3; do
+            if git push -q origin HEAD:gh-pages; then echo "gh-pages updated"; exit 0; fi
+            echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            git fetch -q origin gh-pages
+            git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
+          done
+          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          exit 1
