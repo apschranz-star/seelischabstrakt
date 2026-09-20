@@ -32,14 +32,14 @@
     "whatsapp": "",
     "_whatsapp": "Numero WhatsApp in formato internazionale senza spazi, per esempio +393331234567. Compare come pulsante fisso in basso.",
     "city": {
-      "it": "Acquapendente · Bagnoregio",
-      "en": "Acquapendente · Bagnoregio",
-      "de": "Acquapendente · Bagnoregio",
-      "fr": "Acquapendente · Bagnoregio",
-      "ar": "أكوابندنتي · بانيوريجو"
+      "it": "Acquapendente · Bagnoregio · Bolsena",
+      "en": "Acquapendente · Bagnoregio · Bolsena",
+      "de": "Acquapendente · Bagnoregio · Bolsena",
+      "fr": "Acquapendente · Bagnoregio · Bolsena",
+      "ar": "أكوابندنتي · بانيوريجو · بولسينا"
     },
     "email": "",
-    "phone": "",
+    "phone": "+39 353 444 0165",
     "bookingUrl": "",
     "profileUrl": "https://www.miodottore.it/profilo/farida-benslimane",
     "languages": [],
@@ -263,7 +263,48 @@
           "ar": ""
         },
         "mapUrl": "",
-        "hours": []
+        "hours": [
+          {
+            "day": {
+              "it": "lunedì",
+              "en": "Monday",
+              "de": "Montag",
+              "fr": "lundi",
+              "ar": "الاثنين"
+            },
+            "time": "9:00 - 10:30"
+          },
+          {
+            "day": {
+              "it": "mercoledì",
+              "en": "Wednesday",
+              "de": "Mittwoch",
+              "fr": "mercredi",
+              "ar": "الأربعاء"
+            },
+            "time": "9:00 - 10:30"
+          },
+          {
+            "day": {
+              "it": "giovedì",
+              "en": "Thursday",
+              "de": "Donnerstag",
+              "fr": "jeudi",
+              "ar": "الخميس"
+            },
+            "time": "17:00 - 19:00"
+          },
+          {
+            "day": {
+              "it": "venerdì",
+              "en": "Friday",
+              "de": "Freitag",
+              "fr": "vendredi",
+              "ar": "الجمعة"
+            },
+            "time": "10:00 - 11:30"
+          }
+        ]
       },
       {
         "label": {
@@ -273,7 +314,7 @@
           "fr": "Cabinet de Bagnoregio",
           "ar": "عيادة بانيوريجو"
         },
-        "street": "",
+        "street": "Casa della Comunità, Viale Alfonso e Giovanni 6",
         "zipCity": "Bagnoregio VT",
         "note": {
           "it": "",
@@ -283,10 +324,62 @@
           "ar": ""
         },
         "mapUrl": "",
-        "hours": []
+        "hours": [
+          {
+            "day": {
+              "it": "martedì",
+              "en": "Tuesday",
+              "de": "Dienstag",
+              "fr": "mardi",
+              "ar": "الثلاثاء"
+            },
+            "time": "8:00 - 14:00"
+          },
+          {
+            "day": {
+              "it": "mercoledì",
+              "en": "Wednesday",
+              "de": "Mittwoch",
+              "fr": "mercredi",
+              "ar": "الأربعاء"
+            },
+            "time": "14:00 - 17:00"
+          }
+        ]
+      },
+      {
+        "label": {
+          "it": "Studio medico Bolsena",
+          "en": "Practice in Bolsena",
+          "de": "Praxis Bolsena",
+          "fr": "Cabinet de Bolsena",
+          "ar": "عيادة بولسينا"
+        },
+        "street": "Casa della Comunità, Via 4 Novembre snc",
+        "zipCity": "Bolsena VT",
+        "note": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "fr": "",
+          "ar": ""
+        },
+        "mapUrl": "",
+        "hours": [
+          {
+            "day": {
+              "it": "lunedì",
+              "en": "Monday",
+              "de": "Montag",
+              "fr": "lundi",
+              "ar": "الاثنين"
+            },
+            "time": "11:00 - 17:00"
+          }
+        ]
       }
     ],
-    "_locations": "Indirizzo 1 dal profilo MioDottore. Per Bagnoregio manca la via, e per tutti e due mancano gli orari e il telefono: da aggiungere. hours è una lista di {\"day\":{\"it\":\"lunedì\",...},\"time\":\"09:00 - 13:00\"}."
+    "_locations": "Indirizzo di Acquapendente dal profilo MioDottore. Bagnoregio e Bolsena sono entrambi nella Casa della Comunità, indirizzi e orari confermati da Alexander il 20 settembre 2026, come il telefono in profile.phone. hours è una lista di {\"day\":{\"it\":\"lunedì\",...},\"time\":\"9:00 - 10:30\"}."
   },
   "legal": {
     "_help": "In Italia il sito di un medico deve essere informativo, non promozionale, e deve indicare titolo, specializzazione, numero di iscrizione all'Ordine con la provincia e la partita IVA. Finché questi campi sono vuoti il blocco resta nascosto.",
