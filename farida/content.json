@@ -266,16 +266,6 @@
         "hours": [
           {
             "day": {
-              "it": "lunedì",
-              "en": "Monday",
-              "de": "Montag",
-              "fr": "lundi",
-              "ar": "الاثنين"
-            },
-            "time": "9:00 - 10:30"
-          },
-          {
-            "day": {
               "it": "mercoledì",
               "en": "Wednesday",
               "de": "Mittwoch",
@@ -365,21 +355,10 @@
           "ar": ""
         },
         "mapUrl": "",
-        "hours": [
-          {
-            "day": {
-              "it": "lunedì",
-              "en": "Monday",
-              "de": "Montag",
-              "fr": "lundi",
-              "ar": "الاثنين"
-            },
-            "time": "11:00 - 17:00"
-          }
-        ]
+        "hours": []
       }
     ],
-    "_locations": "Indirizzo di Acquapendente dal profilo MioDottore. Bagnoregio e Bolsena sono entrambi nella Casa della Comunità, indirizzi e orari confermati da Alexander il 20 settembre 2026, come il telefono in profile.phone. hours è una lista di {\"day\":{\"it\":\"lunedì\",...},\"time\":\"9:00 - 10:30\"}."
+    "_locations": "Indirizzo di Acquapendente dal profilo MioDottore. Bagnoregio e Bolsena sono entrambi nella Casa della Comunità. Indirizzi, orari e telefono confermati da Alexander il 20 settembre 2026; il lunedì è stato tolto da Acquapendente e da Bolsena. Bolsena resta in elenco con l'indirizzo ma senza orario: è voluto. hours è una lista di {\"day\":{\"it\":\"mercoledì\",...},\"time\":\"9:00 - 10:30\"}."
   },
   "legal": {
     "_help": "In Italia il sito di un medico deve essere informativo, non promozionale, e deve indicare titolo, specializzazione, numero di iscrizione all'Ordine con la provincia e la partita IVA. Finché questi campi sono vuoti il blocco resta nascosto.",
