@@ -266,6 +266,16 @@
         "hours": [
           {
             "day": {
+              "it": "lunedì",
+              "en": "Monday",
+              "de": "Montag",
+              "fr": "lundi",
+              "ar": "الاثنين"
+            },
+            "time": "9:00 - 10:30"
+          },
+          {
+            "day": {
               "it": "mercoledì",
               "en": "Wednesday",
               "de": "Mittwoch",
@@ -369,7 +379,7 @@
         ]
       }
     ],
-    "_locations": "Indirizzo di Acquapendente dal profilo MioDottore. Bagnoregio e Bolsena sono entrambi nella Casa della Comunità. Indirizzi, orari e telefono confermati dalla dottoressa il 20 settembre 2026: il lunedì di Bolsena resta, quello di Acquapendente è stato tolto. hours è una lista di {\"day\":{\"it\":\"lunedì\",...},\"time\":\"11:00 - 17:00\"}."
+    "_locations": "Indirizzo di Acquapendente dal profilo MioDottore. Bagnoregio e Bolsena sono entrambi nella Casa della Comunità. Indirizzi, orari e telefono confermati dalla dottoressa il 20 settembre 2026, il lunedì in tutte e due le sedi compreso. hours è una lista di {\"day\":{\"it\":\"lunedì\",...},\"time\":\"9:00 - 10:30\"}."
   },
   "legal": {
     "_help": "In Italia il sito di un medico deve essere informativo, non promozionale, e deve indicare titolo, specializzazione, numero di iscrizione all'Ordine con la provincia e la partita IVA. Finché questi campi sono vuoti il blocco resta nascosto.",
