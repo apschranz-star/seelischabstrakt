@@ -572,6 +572,11 @@ function mapsUrl(){
 }
 function renderFab(){
   const p=D.profile||{}, box=$("#fab"); box.innerHTML="";
+  /* Die Leiste ist eine Landmarke, sonst liegen ihre Knoepfe ausserhalb von
+     allem und axe meldet sie zu Recht. Die Beschriftung kommt aus dem
+     Woerterbuch, es gibt sie also in allen fuenf Sprachen. */
+  box.setAttribute("role","navigation");
+  box.setAttribute("aria-label",U("contactAction"));
   const icon=(href,label,svg,cls,blank)=>{ const u=safeUrl(href); if(!u) return;
     const a=document.createElement("a"); a.className="ico"+(cls?" "+cls:""); a.href=u; a.setAttribute("aria-label",label);
     a.innerHTML=svg; if(blank){ a.target="_blank"; a.rel="noopener"; } box.appendChild(a); };
