@@ -11,7 +11,7 @@
  * Sicherheitsregel im Dokument verbietet ohnehin jede Verbindung nach draussen.
  */
 
-const VERSION = "anker-v3";
+const VERSION = "anker-v4";
 const DATEIEN = [
   "./",
   "./index.html",
@@ -36,6 +36,8 @@ const DATEIEN = [
   "./fonts/fonts.css",
   "./fonts/ibm-plex-sans-latin-normal-400-700.woff2",
   "./fonts/ibm-plex-sans-latin-ext-normal-400-700.woff2",
+  "./fonts/bricolage-grotesque-latin-normal-300-800.woff2",
+  "./fonts/bricolage-grotesque-latin-ext-normal-300-800.woff2",
 ];
 
 /*
