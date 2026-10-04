@@ -636,6 +636,7 @@ function LOKAL() {
     }
 
     erinnerungSicherung(ziel);
+    if (!nachtragTag) demnaechst(ziel);
 
     /* Das Wichtigste zuerst, gross und mit dem Daumen erreichbar: eine Zahl
        fuer den ganzen Tag. Sie laeuft nach rechts, wenn es besser geht. */
@@ -765,6 +766,9 @@ function LOKAL() {
     });
     ziel.appendChild(k7);
 
+    /* Der Stand der letzten zwei Wochen, kurz. Das Ganze steht im Verlauf. */
+    if (!nachtragTag) standKarten(ziel, { kurz: true });
+
     /* Ein Rezept aus der Auswahl des Monats, jeden Tag ein anderes. */
     const auswahl = rezepteDesMonats();
     if (auswahl.length) {
@@ -826,6 +830,333 @@ function LOKAL() {
     ziel.appendChild(k);
   }
 
+  /* ---------------------------------------------------------------- Stand
+   *
+   * Die Zusammenfassung der letzten vierzehn Tage, aus dem, was sie selbst
+   * eingetragen hat. Keine Diagnose und kein Krankheitsindex: Lupus- oder
+   * Crohn-Aktivitaet misst die Praxis mit Untersuchung und Labor. Was die App
+   * kann, ist dreierlei: Mittelwerte einordnen, wie es die Schmerz-, Fatigue-
+   * und Juckreizforschung fuer 0-bis-10-Skalen tut, Veraenderungen erst ab
+   * einer Groesse melden, die in Studien als spuerbar gilt, und Zeichen
+   * herausheben, die bei der jeweiligen Erkrankung nicht bis zum naechsten
+   * Routinetermin warten sollten.
+   *
+   * Quellen fuer die Schwellen, auch im Text unter der Karte:
+   *   Mendoza TR et al. Cancer 1999;85:1186-96 (Fatigue 1-3, 4-6, 7-10)
+   *   Serlin RC et al. Pain 1995;61:277-84 (Schmerz, 7-10 stark)
+   *   Reich A et al. Acta Derm Venereol 2012;92:497-501 (Juckreiz)
+   *   Farrar JT et al. Pain 2001;94:149-58 (rund 2 Punkte gelten als spuerbar)
+   */
+  const STAND_TAGE = 14;
+
+  function mittelIn(tage, schluessel) {
+    const v = tage.map((d) => D.tage[d] && D.tage[d][schluessel]).filter((x) => typeof x === "number");
+    if (v.length < 3) return null;
+    return { wert: v.reduce((a, b) => a + b, 0) / v.length, n: v.length };
+  }
+
+  /* Stufe eines Mittelwerts. Juckreiz nach Reich 2012, alle anderen
+     Beschwerde-Regler nach den ueblichen Grenzen 1-3, 4-6, 7-10. Wo hoch gut
+     ist, gibt es keine Stufe, nur den Verlauf. */
+  function stufeVon(schluessel, w) {
+    if (schluessel === "befinden" || schluessel === "schlafQualitaet") return null;
+    const r = Math.round(w * 10) / 10;
+    if (schluessel === "juckreiz") {
+      if (r < 1) return { ton: "gut", text: T("kaum") };
+      if (r < 4) return { ton: "gut", text: T("leicht") };
+      if (r < 7) return { ton: "mittel", text: T("mittel") };
+      if (r < 9) return { ton: "schlecht", text: T("stark") };
+      return { ton: "schlecht", text: T("sehr stark") };
+    }
+    if (r < 1) return { ton: "gut", text: T("kaum") };
+    if (r < 4) return { ton: "gut", text: T("leicht") };
+    if (r < 7) return { ton: "mittel", text: T("mittel") };
+    return { ton: "schlecht", text: T("stark") };
+  }
+
+  function standBerechnen(bis) {
+    const von = verschoben(bis, -(STAND_TAGE - 1));
+    const davorBis = verschoben(von, -1);
+    const davorVon = verschoben(davorBis, -(STAND_TAGE - 1));
+    const im = (a, b) => Object.keys(D.tage).filter((d) => d >= a && d <= b && !tagLeer(D.tage[d])).sort();
+    const jetzt = im(von, bis);
+    const davor = im(davorVon, davorBis);
+
+    const regler = [];
+    if (GRUND.befinden) regler.push({ schluessel: "befinden", name: MT(GRUND.befinden.name), gutHoch: true });
+    skalenAktiv().forEach((s) => regler.push({ schluessel: s.schluessel, name: MT(s.name), gutHoch: false }));
+    regler.push({ schluessel: "schlafQualitaet", name: T("Schlafqualitaet"), gutHoch: true });
+
+    const zeilen = [];
+    regler.forEach((r) => {
+      const a = mittelIn(jetzt, r.schluessel);
+      if (!a) return;
+      const b = mittelIn(davor, r.schluessel);
+      let richtung = null;
+      if (b) {
+        const diff = a.wert - b.wert;
+        const besser = r.gutHoch ? diff > 0 : diff < 0;
+        const gross = Math.abs(diff);
+        if (gross >= 2) richtung = besser ? "deutlich-besser" : "deutlich-schlechter";
+        else if (gross >= 1) richtung = besser ? "besser" : "schlechter";
+        else richtung = "gleich";
+      }
+      zeilen.push({ ...r, mittel: a.wert, n: a.n, davor: b ? b.wert : null, richtung, stufe: stufeVon(r.schluessel, a.wert) });
+    });
+
+    /* Warnzeichen: jedes Zeichen einmal, mit dem Text jeder gewaehlten
+       Erkrankung, die es fuer wichtig haelt, und den Tagen, an denen es da war. */
+    const warn = [];
+    aktiveModule().forEach((m) => (m.warnzeichen || []).forEach((w) => {
+      const tage = jetzt.filter((d) => (D.tage[d].symptome || []).includes(w.zeichen));
+      if (!tage.length) return;
+      let e = warn.find((x) => x.zeichen === w.zeichen);
+      if (!e) { e = { zeichen: w.zeichen, tage, texte: [] }; warn.push(e); }
+      e.texte.push({ modul: m, text: MT(w.text) });
+    }));
+
+    const signale = [];
+    aktiveModule().forEach((m) => (m.signale || []).forEach((g) => {
+      const tage = jetzt.filter((d) => g.werte.includes(D.tage[d][g.check]));
+      if (tage.length >= g.ab) signale.push({ modul: m, tage, text: MT(g.text) });
+    }));
+
+    const meds = D.medikamente.map((m) => ({
+      name: m.name,
+      genommen: jetzt.filter((d) => (D.tage[d].medsGenommen || []).includes(m.id)).length,
+    }));
+
+    const schlaf = mittelIn(jetzt, "schlafStunden");
+
+    /* Das Gesamtbild in einem Satz. Reihenfolge nach Dringlichkeit. */
+    let bild;
+    const stark = zeilen.filter((z) => z.stufe && z.stufe.ton === "schlecht");
+    const schlechter = zeilen.filter((z) => z.richtung === "deutlich-schlechter");
+    const besser = zeilen.filter((z) => z.richtung === "deutlich-besser");
+    if (warn.length || signale.length) bild = { ton: "schlecht", text: T("Es gibt Punkte fuer die Praxis") };
+    else if (stark.length) bild = { ton: "schlecht", text: T("Starke Beschwerden") };
+    else if (schlechter.length) bild = { ton: "mittel", text: T("Schlechter als davor") };
+    else if (besser.length) bild = { ton: "gut", text: T("Besser als davor") };
+    else bild = { ton: "gut", text: T("Ruhig und gleichbleibend") };
+
+    return { von, bis, jetzt, davor, zeilen, warn, signale, meds, schlaf, bild, stark };
+  }
+
+  function richtungText(r) {
+    return {
+      "deutlich-besser": T("deutlich besser"), besser: T("etwas besser"), gleich: T("gleich"),
+      schlechter: T("etwas schlechter"), "deutlich-schlechter": T("deutlich schlechter"),
+    }[r] || "";
+  }
+  function richtungTon(r) {
+    return r === "deutlich-besser" || r === "besser" ? "gut" : r === "deutlich-schlechter" ? "schlecht" : r === "schlechter" ? "mittel" : "neutral";
+  }
+
+  /*
+   * Die Karten. kurz: nur das Gesamtbild und ein Link, fuer die Heute-Seite.
+   */
+  function standKarten(ziel, { kurz = false } = {}) {
+    const s = standBerechnen(heuteISO());
+    if (s.jetzt.length < 4) {
+      if (!kurz) {
+        ziel.appendChild(karte(
+          `<p class="kicker">${esc(T("Dein Stand"))}</p><h2 class="h2">${esc(T("Noch zu wenig fuer ein Bild"))}</h2>
+           <p class="lead">${esc(TV("Ab vier Tagen mit Eintrag in den letzten {n} Tagen fasst Anker hier zusammen. Bisher: {k}.", { n: STAND_TAGE, k: s.jetzt.length }))}</p>`,
+        ));
+      }
+      return;
+    }
+
+    const kb = karte(
+      `<p class="kicker">${esc(TV("Dein Stand, letzte {n} Tage", { n: STAND_TAGE }))}</p>
+       <h2 class="h2 stand-bild" data-ton="${s.bild.ton}">${esc(s.bild.text)}</h2>
+       <p class="lead">${esc(TV("{k} Tage mit Eintrag, verglichen mit den {n} Tagen davor.", { k: s.jetzt.length, n: STAND_TAGE }))}</p>`,
+    );
+    kb.classList.add("stand");
+    if (kurz) {
+      const zuerst = s.warn.length ? zeichenText(s.warn[0].zeichen) : s.signale.length ? MT(s.signale[0].modul.kurz) : "";
+      if (zuerst) kb.insertAdjacentHTML("beforeend", `<p class="klein">${esc(TV("Zuerst: {was}", { was: zuerst }))}</p>`);
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      const a = document.createElement("a");
+      a.className = "knopf leer";
+      a.href = "#/verlauf";
+      a.textContent = T("Ganzen Stand ansehen");
+      r.appendChild(a);
+      kb.appendChild(r);
+      ziel.appendChild(kb);
+      return;
+    }
+
+    const ul = document.createElement("ul");
+    ul.className = "liste stand-liste";
+    s.zeilen.forEach((z) => {
+      const li = document.createElement("li");
+      const marken = [];
+      if (z.stufe) marken.push(`<span class="stufe" data-ton="${z.stufe.ton}">${esc(z.stufe.text)}</span>`);
+      if (z.richtung) marken.push(`<span class="stufe" data-ton="${richtungTon(z.richtung)}">${esc(richtungText(z.richtung))}</span>`);
+      li.innerHTML =
+        `<div class="txt"><b>${esc(z.name)}</b><small>${esc(TV("Mittel {m} von 10", { m: z.mittel.toFixed(1) }))}${z.davor != null ? " · " + esc(TV("davor {m}", { m: z.davor.toFixed(1) })) : ""}</small></div>` +
+        `<div class="stufen">${marken.join("")}</div>`;
+      ul.appendChild(li);
+    });
+    if (s.schlaf) {
+      const li = document.createElement("li");
+      li.innerHTML = `<div class="txt"><b>${esc(T("Schlaf, Stunden"))}</b><small>${esc(TV("Mittel {m}", { m: s.schlaf.wert.toFixed(1) }))}</small></div>`;
+      ul.appendChild(li);
+    }
+    kb.appendChild(ul);
+    ziel.appendChild(kb);
+
+    if (s.warn.length || s.signale.length) {
+      const kw = karte(`<p class="kicker">${esc(T("Nicht bis zum Routinetermin warten"))}</p><h2 class="h2">${esc(T("Punkte fuer die Praxis"))}</h2>
+        <p class="lead">${esc(T("Aus deinen Eintraegen. Bei starken oder rasch schlimmer werdenden Beschwerden nicht warten: Notruf 112, in Oesterreich auch 144."))}</p>`);
+      const ul2 = document.createElement("ul");
+      ul2.className = "liste";
+      s.warn.forEach((w) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          `<span class="punkt nein"></span><div class="txt"><b>${esc(zeichenText(w.zeichen))}</b><small>${esc(TP("an {n} Tag, zuletzt {datum}", "an {n} Tagen, zuletzt {datum}", w.tage.length, { datum: kurzesDatum(w.tage[w.tage.length - 1]) }))}</small>` +
+          w.texte.map((t) => `<small class="stand-grund"><i class="modul-punkt"></i>${esc(MT(t.modul.kurz))}: ${esc(t.text)}</small>`).join("") +
+          `</div>`;
+        li.querySelectorAll(".stand-grund").forEach((el, i) => el.style.setProperty("--punkt", w.texte[i].modul.farbe));
+        ul2.appendChild(li);
+      });
+      s.signale.forEach((g) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          `<span class="punkt vielleicht"></span><div class="txt"><b>${esc(MT(g.modul.kurz))}</b><small>${esc(g.text)}</small><small>${esc(TP("an {n} Tag", "an {n} Tagen", g.tage.length))}</small></div>`;
+        ul2.appendChild(li);
+      });
+      kw.appendChild(ul2);
+      ziel.appendChild(kw);
+    }
+
+    if (s.meds.length) {
+      const km = karte(`<p class="kicker">${esc(T("Genommen"))}</p><h2 class="h2">${esc(T("Medikamente abgehakt"))}</h2>`);
+      const ul3 = document.createElement("ul");
+      ul3.className = "liste";
+      s.meds.forEach((m) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<div class="txt"><b>${esc(m.name)}</b><small>${esc(TV("an {n} von {gesamt} Tagen mit Eintrag", { n: m.genommen, gesamt: s.jetzt.length }))}</small></div>`;
+        ul3.appendChild(li);
+      });
+      km.appendChild(ul3);
+      km.insertAdjacentHTML("beforeend", `<p class="klein">${esc(T("Gezaehlt wird nur, was abgehakt ist. Nicht abgehakt heisst nicht unbedingt vergessen."))}</p>`);
+      ziel.appendChild(km);
+    }
+
+    const ki = karte("");
+    const det = document.createElement("details");
+    det.innerHTML =
+      `<summary>${esc(T("Wie dieser Stand entsteht"))}</summary><div class="details-inhalt">` +
+      `<p>${esc(T("Alles beruht auf deinen eigenen Eintraegen. Anker stellt keine Diagnose und berechnet keinen Krankheitsindex; wie aktiv eine Erkrankung ist, beurteilt die Praxis mit Untersuchung und Labor."))}</p>` +
+      `<p>${esc(T("Einordnung der Mittelwerte: 0 bis unter 1 kaum, 1 bis unter 4 leicht, 4 bis unter 7 mittel, ab 7 stark. So werden Muedigkeit und Schmerz auf 0-bis-10-Skalen in Studien eingeteilt; fuer Juckreiz gilt zusaetzlich ab 9 sehr stark. Fuer die anderen Regler ist das eine Orientierung, keine gepruefte Grenze."))}</p>` +
+      `<p>${esc(T("Veraenderung: verglichen mit den vierzehn Tagen davor. Ab einem Punkt Unterschied heisst es etwas, ab zwei Punkten deutlich, weil rund zwei Punkte in Studien als spuerbare Veraenderung gelten. Fuer einen Mittelwert braucht es mindestens drei Eintraege."))}</p>` +
+      `<p class="quelle">Mendoza TR et al. Cancer 1999;85:1186-96 · Serlin RC et al. Pain 1995;61:277-84 · Reich A et al. Acta Derm Venereol 2012;92:497-501 · Farrar JT et al. Pain 2001;94:149-58</p>` +
+      `</div>`;
+    ki.appendChild(det);
+    ziel.appendChild(ki);
+  }
+
+  /* -------------------------------------------------------------- Kalender
+   *
+   * Eine Webseite ohne Server darf auf dem iPhone keine Benachrichtigung
+   * schicken. Der Kalender des Telefons darf es. Also gibt Anker eine
+   * .ics-Datei heraus, mit Erinnerung darin, und der Kalender uebernimmt.
+   */
+  function icsText(eintraege) {
+    const zeit = (d) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+    const schutz = (t) => String(t || "").replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+    const falten = (z) => {
+      const teile = [];
+      while (z.length > 72) { teile.push(z.slice(0, 72)); z = " " + z.slice(72); }
+      teile.push(z);
+      return teile.join("\r\n");
+    };
+    const z = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Anker//Begleitbuch//DE", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+    eintraege.forEach((e) => {
+      z.push("BEGIN:VEVENT", "UID:" + e.uid + "@anker", "DTSTAMP:" + zeit(new Date()));
+      const tg = e.datum.replace(/-/g, "");
+      if (e.uhr) {
+        const [h, m] = e.uhr.split(":");
+        const start = new Date(e.datum + "T" + e.uhr + ":00");
+        const ende = new Date(start.getTime() + (e.dauer || 30) * 60000);
+        const lokal = (d) => heuteISO(d).replace(/-/g, "") + "T" + String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0") + "00";
+        z.push("DTSTART:" + tg + "T" + h.padStart(2, "0") + m.padStart(2, "0") + "00", "DTEND:" + lokal(ende));
+      } else {
+        z.push("DTSTART;VALUE=DATE:" + tg, "DTEND;VALUE=DATE:" + verschoben(e.datum, 1).replace(/-/g, ""));
+      }
+      if (e.taeglich) z.push("RRULE:FREQ=DAILY");
+      z.push("SUMMARY:" + schutz(e.titel));
+      if (e.text) z.push("DESCRIPTION:" + schutz(e.text));
+      (e.alarme || []).forEach((a) => z.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + schutz(e.titel), "TRIGGER:" + a, "END:VALARM"));
+      z.push("END:VEVENT");
+    });
+    z.push("END:VCALENDAR");
+    return z.map(falten).join("\r\n") + "\r\n";
+  }
+
+  function kalenderLaden(name, eintraege) {
+    const blob = new Blob([icsText(eintraege)], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    melden(T("Kalenderdatei erstellt. Oeffnen, dann uebernimmt der Kalender die Erinnerung."));
+  }
+
+  function terminKalender(t) {
+    kalenderLaden(`anker-termin-${t.datum}.ics`, [{
+      uid: t.id, datum: t.datum, uhr: t.uhr || null, dauer: 60,
+      titel: t.was, text: [t.wer, t.notiz].filter(Boolean).join("\n"),
+      /* Ganztags: Vorabend 18 Uhr. Mit Uhrzeit: am Vortag und zwei Stunden vorher. */
+      alarme: t.uhr ? ["-P1D", "-PT2H"] : ["-PT6H"],
+    }]);
+  }
+
+  function medikamentKalender(m) {
+    kalenderLaden(`anker-${m.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "medikament"}.ics`, [{
+      uid: m.id, datum: heuteISO(), uhr: m.uhr, dauer: 5, taeglich: true,
+      titel: TV("{name} nehmen", { name: m.name }) + (m.dosis ? " · " + m.dosis : ""),
+      text: m.notiz || "",
+      alarme: ["PT0M"],
+    }]);
+  }
+
+  /* Was in den naechsten sieben Tagen ansteht, fuer die Heute-Seite. */
+  function demnaechst(ziel) {
+    const heute = heuteISO();
+    const bald = D.termine
+      .filter((t) => t.datum >= heute && tageZwischen(heute, t.datum) <= 7)
+      .sort((a, b) => (a.datum + (a.uhr || "")).localeCompare(b.datum + (b.uhr || "")));
+    if (!bald.length) return;
+    const k = karte(`<p class="kicker">${esc(T("Demnaechst"))}</p><h2 class="h2">${esc(TP("{n} Termin diese Woche", "{n} Termine diese Woche", bald.length))}</h2>`);
+    const ul = document.createElement("ul");
+    ul.className = "liste";
+    bald.forEach((t) => {
+      const n = tageZwischen(heute, t.datum);
+      const wann = n === 0 ? T("heute") : n === 1 ? T("morgen") : langesDatum(t.datum);
+      const li = document.createElement("li");
+      li.innerHTML = `<div class="txt"><b>${esc(t.was)}</b><small>${esc(wann)}${t.uhr ? " · " + esc(t.uhr) : ""}${t.wer ? " · " + esc(t.wer) : ""}${t.notiz ? "<br>" + esc(t.notiz) : ""}</small></div>`;
+      ul.appendChild(li);
+    });
+    k.appendChild(ul);
+    const r = document.createElement("div");
+    r.className = "knopf-reihe";
+    const a = document.createElement("a");
+    a.className = "knopf leer";
+    a.href = "#/bericht";
+    a.textContent = T("Arztmappe vorbereiten");
+    r.appendChild(a);
+    k.appendChild(r);
+    ziel.appendChild(k);
+  }
+
   /* -------------------------------------------------------------- Verlauf */
 
   function seiteVerlauf(ziel) {
@@ -836,6 +1167,8 @@ function LOKAL() {
       );
       return;
     }
+
+    standKarten(ziel);
 
     const spanne = D.einstellungen.spanne || 30;
     const bis = heuteISO();
@@ -1178,17 +1511,44 @@ function LOKAL() {
   /* Alle Rezepte in einer Form: die acht uebersetzten aus inhalt-*.js und die
      neuen aus rezepte.js. Die id ist der Schluessel fuer "Gemerkt" und
      aendert sich nie. */
+  /*
+   * Was in einem Rezept zu einer gewaehlten Erkrankung nicht passt: Alkohol
+   * bei Psoriasis und Methotrexat, Alfalfa bei Lupus, Soja neben der
+   * Schilddruesentablette. Die Muster stehen in module.js und laufen ueber
+   * die deutschen und englischen Zutaten, damit es in jeder Sprache greift.
+   */
+  function rezeptAchtung(zutaten) {
+    const text = (zutaten || []).join("\n");
+    const aus = [];
+    aktiveModule().forEach((m) => (m.rezeptAchtung || []).forEach((a) => {
+      if (new RegExp(a.muster, "i").test(text) && !aus.some((x) => x.text === MT(a.text))) aus.push({ modul: m, text: MT(a.text) });
+    }));
+    return aus;
+  }
+
+  function achtungZeigen(wirt, liste) {
+    if (!liste.length) return;
+    const box = document.createElement("div");
+    box.className = "hinweis pruefen";
+    box.innerHTML = `<b>${esc(T("Fuer deine Erkrankungen:"))}</b><ul>${liste.map((a) => `<li>${esc(a.text)}</li>`).join("")}</ul>`;
+    wirt.appendChild(box);
+  }
+
   function rezepteAlle() {
     const liste = [];
+    const deR = (INHALT.de && INHALT.de.rezepte) || [];
+    const enR = (INHALT.en && INHALT.en.rezepte) || [];
     (REZEPTE.bestand || []).forEach((b) => {
       const r = (I.rezepte || [])[b.index];
       if (!r) return;
       liste.push({
         id: "bestand-" + b.index, name: r.name, minuten: b.minuten, kraft: b.kraft, tags: b.tags,
         aufwand: r.aufwand, warum: r.warum, zutaten: r.zutaten, schritte: r.schritte, hinweis: r.achtung || "",
+        roh: [].concat((deR[b.index] || {}).zutaten || [], (enR[b.index] || {}).zutaten || []),
       });
     });
     (REZEPTE.neu || []).forEach((r) => liste.push({
+      roh: [].concat(r.zutaten.de || [], r.zutaten.en || []),
       id: r.id, name: MT(r.name), minuten: r.minuten, kraft: r.kraft, tags: r.tags,
       aufwand: TP("{n} Minute", "{n} Minuten", r.minuten), warum: MT(r.warum),
       zutaten: MT(r.zutaten) || [], schritte: MT(r.schritte) || [], hinweis: MT(r.hinweis),
@@ -1222,8 +1582,9 @@ function LOKAL() {
       .map((r) => ({ r, k: streuwert(samen + ":" + r.id) }))
       .sort((x, y) => x.k - y.k)
       .map((x) => x.r);
-    const passend = mischen(erlaubt.filter((r) => r.tags.some((t) => gut.has(t))));
-    const andere = mischen(erlaubt.filter((r) => !r.tags.some((t) => gut.has(t))));
+    const ohneAchtung = (r) => !rezeptAchtung(r.roh).length;
+    const passend = mischen(erlaubt.filter((r) => r.tags.some((t) => gut.has(t)) && ohneAchtung(r)));
+    const andere = mischen(erlaubt.filter((r) => !passend.includes(r)));
     const jetzt = new Date();
     const monat = jetzt.getFullYear() * 12 + jetzt.getMonth();
     const stueck = (liste, n) => {
@@ -1301,6 +1662,7 @@ function LOKAL() {
     const box = document.createElement("div");
     box.className = "details-inhalt";
     rezeptMarken(box, r);
+    achtungZeigen(box, rezeptAchtung(r.roh));
     box.insertAdjacentHTML(
       "beforeend",
       `<p>${esc(r.warum)}</p>` +
@@ -1325,7 +1687,7 @@ function LOKAL() {
     return (NETZ.rezepte || [])
       .map((r) => ({
         r,
-        wert: r.tags.filter((t) => gut.has(t)).length * 2 + (r.sprache === L ? 3 : 0) + (r.pruefen.length ? -1 : 0),
+        wert: r.tags.filter((t) => gut.has(t)).length * 2 + (r.sprache === L ? 3 : 0) + (r.pruefen.length ? -1 : 0) - rezeptAchtung(r.zutaten).length * 3,
       }))
       .sort((a, b) => b.wert - a.wert || streuwert(a.r.id) - streuwert(b.r.id))
       .map((x) => x.r);
@@ -1383,6 +1745,7 @@ function LOKAL() {
     if (r.portionen) info.push(TV("Portionen: {n}", { n: r.portionen }));
     if (r.autor) info.push(TV("von {autor}", { autor: r.autor }));
     if (info.length) box.insertAdjacentHTML("beforeend", `<p class="klein">${esc(info.join(" · "))}</p>`);
+    achtungZeigen(box, rezeptAchtung(r.zutaten));
     if (r.pruefen.length) {
       box.insertAdjacentHTML("beforeend",
         `<div class="hinweis pruefen"><b>${esc(T("Bitte pruefen, ob glutenfrei:"))}</b><ul>${r.pruefen.map((z) => `<li lang="${esc(r.sprache)}">${esc(z)}</li>`).join("")}</ul></div>`);
@@ -1986,7 +2349,15 @@ function LOKAL() {
       D.medikamente.forEach((m) => {
         const li = document.createElement("li");
         li.innerHTML =
-          `<div class="txt"><b>${esc(m.name)}</b><small>${esc([m.dosis, m.zeit, m.seit ? T("seit") + " " + m.seit : ""].filter(Boolean).join(" · "))}${m.notiz ? "<br>" + esc(m.notiz) : ""}</small></div>`;
+          `<div class="txt"><b>${esc(m.name)}</b><small>${esc([m.dosis, m.zeit, m.uhr, m.seit ? T("seit") + " " + m.seit : ""].filter(Boolean).join(" · "))}${m.notiz ? "<br>" + esc(m.notiz) : ""}</small></div>`;
+        const kal = document.createElement("button");
+        kal.className = "schalter";
+        kal.textContent = T("Erinnern");
+        kal.addEventListener("click", () => {
+          if (!m.uhr) { melden(T("Fuer eine Erinnerung fehlt die Uhrzeit. Eintrag loeschen und mit Uhrzeit neu anlegen.")); return; }
+          medikamentKalender(m);
+        });
+        li.appendChild(kal);
         const b = document.createElement("button");
         b.className = "schalter";
         b.textContent = T("Loeschen");
@@ -2004,14 +2375,18 @@ function LOKAL() {
     ziel.appendChild(k);
 
     const kn = karte(`<p class="kicker">${esc(T("Hinzufuegen"))}</p><h2 class="h2">${esc(T("Neues Medikament"))}</h2>`);
-    const neu = { name: "", dosis: "", zeit: "", seit: "", notiz: "" };
+    const neu = { name: "", dosis: "", zeit: "", uhr: "", seit: "", notiz: "" };
     feld(kn, { label: T("Name"), wert: "", platzhalter: "Hydroxychloroquin", beiAenderung: (v) => (neu.name = v) });
     const z = document.createElement("div");
     z.className = "zwei";
     feld(z, { label: T("Dosis"), wert: "", platzhalter: T("200 mg"), beiAenderung: (v) => (neu.dosis = v) });
     feld(z, { label: T("Wann"), wert: "", platzhalter: T("morgens"), beiAenderung: (v) => (neu.zeit = v) });
     kn.appendChild(z);
-    feld(kn, { label: T("Seit"), typ: "date", wert: "", beiAenderung: (v) => (neu.seit = v) });
+    const z2 = document.createElement("div");
+    z2.className = "zwei";
+    feld(z2, { label: T("Uhrzeit fuer die Erinnerung"), typ: "time", wert: "", beiAenderung: (v) => (neu.uhr = v) });
+    feld(z2, { label: T("Seit"), typ: "date", wert: "", beiAenderung: (v) => (neu.seit = v) });
+    kn.appendChild(z2);
     feld(kn, { label: T("Notiz"), mehrzeilig: true, wert: "", platzhalter: T("verschrieben von ..."), beiAenderung: (v) => (neu.notiz = v) });
     const r = document.createElement("div");
     r.className = "knopf-reihe";
@@ -2574,8 +2949,15 @@ function LOKAL() {
         const vorbei = t.datum < heuteISO();
         const li = document.createElement("li");
         li.innerHTML =
-          `<div class="txt"><b>${esc(t.was)}${vorbei ? " " : ""}</b><small>${esc(langesDatum(t.datum))}${t.wer ? " · " + esc(t.wer) : ""}${t.notiz ? "<br>" + esc(t.notiz) : ""}</small></div>`;
-        if (vorbei) li.style.opacity = "0.5";
+          `<div class="txt"><b>${esc(t.was)}${vorbei ? " " : ""}</b><small>${esc(langesDatum(t.datum))}${t.uhr ? " · " + esc(t.uhr) : ""}${t.wer ? " · " + esc(t.wer) : ""}${t.notiz ? "<br>" + esc(t.notiz) : ""}</small></div>`;
+        if (vorbei) li.classList.add("vorbei");
+        if (!vorbei) {
+          const kal = document.createElement("button");
+          kal.className = "schalter";
+          kal.textContent = T("In den Kalender");
+          kal.addEventListener("click", () => terminKalender(t));
+          li.appendChild(kal);
+        }
         const del = document.createElement("button");
         del.className = "schalter";
         del.textContent = T("Weg");
@@ -2592,8 +2974,12 @@ function LOKAL() {
     ziel.appendChild(k);
 
     const kn = karte(`<p class="kicker">${esc(T("Hinzufuegen"))}</p><h2 class="h2">${esc(T("Neuer Termin"))}</h2>`);
-    const neu = { datum: heuteISO(), was: "", wer: "", notiz: "" };
-    feld(kn, { label: T("Datum"), typ: "date", wert: neu.datum, beiAenderung: (v) => (neu.datum = v) });
+    const neu = { datum: heuteISO(), uhr: "", was: "", wer: "", notiz: "" };
+    const zt = document.createElement("div");
+    zt.className = "zwei";
+    feld(zt, { label: T("Datum"), typ: "date", wert: neu.datum, beiAenderung: (v) => (neu.datum = v) });
+    feld(zt, { label: T("Uhrzeit"), typ: "time", wert: "", beiAenderung: (v) => (neu.uhr = v) });
+    kn.appendChild(zt);
     feld(kn, { label: T("Was"), wert: "", platzhalter: T("Rheumatologie, Kontrolle"), beiAenderung: (v) => (neu.was = v) });
     feld(kn, { label: T("Bei wem"), wert: "", platzhalter: "", beiAenderung: (v) => (neu.wer = v) });
     feld(kn, { label: T("Mitnehmen, fragen"), mehrzeilig: true, wert: "", beiAenderung: (v) => (neu.notiz = v) });
@@ -2604,10 +2990,12 @@ function LOKAL() {
     b.textContent = T("Eintragen");
     b.addEventListener("click", () => {
       if (!neu.was) { melden(T("Der Anlass fehlt.")); return; }
-      D.termine.push(Object.assign({ id: id() }, neu));
+      if (!neu.datum) { melden(T("Das Datum fehlt.")); return; }
+      const t = Object.assign({ id: id() }, neu);
+      D.termine.push(t);
       sichern();
-      melden(T("Eingetragen."));
       zeichnen();
+      if (t.datum >= heuteISO() && confirm(T("Eingetragen. Auch in den Kalender des Telefons, mit Erinnerung?"))) terminKalender(t);
     });
     r.appendChild(b);
     kn.appendChild(r);
@@ -2615,7 +3003,7 @@ function LOKAL() {
 
     ziel.appendChild(
       karte(
-        `<div class="hinweis"><b>${esc(T("Anker kann nicht erinnern."))}</b> ${esc(T("Eine Webseite darf auf dem iPhone keine Benachrichtigung schicken, solange sie keinen Server dahinter hat, und einen Server hat diese hier absichtlich nicht. Trag den Termin zusaetzlich in den Kalender des Telefons ein."))}</div>`,
+        `<div class="hinweis"><b>${esc(T("Erinnern macht der Kalender."))}</b> ${esc(T("Eine Webseite ohne Server darf auf dem iPhone keine Benachrichtigung schicken, und einen Server hat Anker absichtlich nicht. Der Knopf In den Kalender gibt den Termin samt Erinnerung an den Kalender des Telefons weiter: am Vortag und zwei Stunden vorher, ohne Uhrzeit am Vorabend um 18 Uhr."))}</div>`,
       ),
     );
     zurueck(ziel, "#/mehr", T("Zurueck"));
@@ -2662,6 +3050,7 @@ function LOKAL() {
     if (!tage.length) {
       ziel.appendChild(karte(`<div class="leer">${esc(T("Fuer diesen Zeitraum gibt es noch keine Eintraege."))}</div>`));
     }
+    if (!nur) standKarten(ziel);
 
     const zahl = (s2) => {
       const v = tage.map((d) => D.tage[d][s2]).filter((x) => x != null);

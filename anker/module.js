@@ -22,6 +22,10 @@
  * Verweis auf ein Zeichen oder einen Laborwert aufgeht.
  */
 
+/* Alkohol in Zutatenlisten, Deutsch und Englisch. Weinessig und Weinstein
+   sind kein Alkohol, Mirin und Kochwein schon. */
+const ALKOHOL = "\\b(red |white |dry |cooking )?wine\\b(?! vinegar)|\\b(rum|vodka|brandy|liqueur|bourbon|whiske?y|sherry|prosecco|champagne|marsala|amaretto|cognac|mirin|sake|beer)\\b|(rot|weiss|wei\u00df|koch|port)wein(?!essig)|\\bwein\\b(?!essig|stein)|wodka|lik(\u00f6|oe)r|\\bsekt\\b|\\bprosecco\\b|\\bcognac\\b|weinbrand|\\bbier\\b";
+
 window.ANKER_MODULE = [
 
 /* -------------------------------------------------------------- Zoeliakie */
@@ -57,6 +61,9 @@ window.ANKER_MODULE = [
     { art: "gut", was: { de: "Eisen, Kalzium, Vitamin D, Folsaeure, B12 im Blick", en: "Iron, calcium, vitamin D, folate, B12 in view" }, warum: { de: "Bei Zoeliakie oft niedrig, besonders am Anfang. Messen lassen statt auf Verdacht ergaenzen.", en: "Often low in coeliac disease, especially at first. Have them measured rather than supplementing on a hunch." } },
   ],
   rezepte: { bevorzugt: ["eisen", "kalzium"], meiden: [] },
+  signale: [
+    { check: "gluten", werte: ["exposition"], ab: 2, text: { de: "Mehrmals Gluten in zwei Wochen. Versteckte Quellen suchen: Sojasauce, Bruehen, Hafer, gemeinsamer Toaster. Halten Beschwerden trotz Diaet an, gehoert das zum Termin.", en: "Gluten several times in two weeks. Look for hidden sources: soy sauce, stocks, oats, a shared toaster. If symptoms persist despite the diet, raise it at the appointment." } },
+  ],
   forschung: {
     suche: '("celiac disease"[MeSH Terms] OR celiac[tiab] OR coeliac[tiab])',
   },
@@ -99,6 +106,19 @@ window.ANKER_MODULE = [
     { art: "gut", was: { de: "Kalzium und Vitamin D bei Kortison", en: "Calcium and vitamin D with steroids" }, warum: { de: "Kortison kostet Knochen. Ob und wie viel ergaenzt wird, entscheidet die Aerztin nach Messung.", en: "Steroids cost bone. Whether and how much to supplement is decided by the doctor after measuring." } },
   ],
   rezepte: { bevorzugt: ["mediterran", "omega3", "kalzium"], meiden: [] },
+  rezeptAchtung: [
+    { muster: "alfalfa|luzerne", text: { de: "Alfalfa-Sprossen: bei Lupus besser weglassen.", en: "Alfalfa sprouts: better left out with lupus." } },
+  ],
+  warnzeichen: [
+    { zeichen: "Brustschmerz beim Atmen", text: { de: "Kann eine Entzuendung von Rippenfell oder Herzbeutel sein. Zeitnah aerztlich abklaeren lassen, bei Atemnot sofort.", en: "May be inflammation of the lining of the lungs or heart. Have it checked soon, at once if you are short of breath." } },
+    { zeichen: "schaeumender Urin", text: { de: "Kann Eiweiss im Urin bedeuten, ein fruehes Zeichen einer Nierenbeteiligung. Urin untersuchen lassen.", en: "May mean protein in the urine, an early sign of kidney involvement. Have the urine tested." } },
+    { zeichen: "geschwollene Beine", text: { de: "Wassereinlagerungen koennen mit der Niere zusammenhaengen. Ansprechen und den Urin pruefen lassen.", en: "Fluid in the legs can be related to the kidneys. Mention it and have the urine checked." } },
+    { zeichen: "Kurzatmig", text: { de: "Lunge, Herz oder Blutarmut koennen dahinterstecken. Zeitnah abklaeren, bei Atemnot in Ruhe sofort.", en: "Lungs, heart or anaemia may be behind it. Have it checked soon, at once if breathless at rest." } },
+    { zeichen: "Fieber", text: { de: "Kann ein Schub oder ein Infekt sein, unter Immunsuppression zaehlt beides. Mit der Praxis klaeren.", en: "May be a flare or an infection, and on immunosuppression both matter. Check with the clinic." } },
+  ],
+  signale: [
+    { check: "sonne", werte: ["viel"], ab: 3, text: { de: "Oft viel Sonne abbekommen. UV-Licht kann Haut- und Allgemeinschuebe ausloesen, Schutz lohnt sich jeden Tag.", en: "Often a lot of sun. UV light can trigger skin and general flares, protection pays off every day." } },
+  ],
   forschung: {
     suche: '("lupus erythematosus, systemic"[MeSH Terms] OR "systemic lupus"[tiab])',
   },
@@ -150,6 +170,13 @@ window.ANKER_MODULE = [
     { art: "vorsicht", was: { de: "Glutenfrei nur mit Grund", en: "Gluten free only with a reason" }, warum: { de: "Hilft in Studien nur, wenn Zoeliakie-Antikoerper nachweisbar sind. Dann aber deutlich. Testen lassen statt raten.", en: "In studies it only helps when coeliac antibodies are present. Then it helps clearly. Test, do not guess." } },
   ],
   rezepte: { bevorzugt: ["mediterran", "omega3"], meiden: [] },
+  rezeptAchtung: [
+    { muster: ALKOHOL, text: { de: "Enthaelt Alkohol. Bei Psoriasis und unter Methotrexat zurueckhaltend, beim Kochen verfliegt nicht alles.", en: "Contains alcohol. Go easy with psoriasis and on methotrexate, cooking does not remove all of it." } },
+  ],
+  warnzeichen: [
+    { zeichen: "geschwollener Finger oder Zeh", text: { de: "Ein ganz geschwollener Finger oder Zeh ist typisch fuer eine Psoriasis-Arthritis. Frueh in der Dermatologie oder Rheumatologie ansprechen.", en: "A whole swollen finger or toe is typical of psoriatic arthritis. Raise it early with dermatology or rheumatology." } },
+    { zeichen: "Infekt", text: { de: "Halsentzuendungen durch Streptokokken koennen einen Psoriasis-Schub ausloesen, unter systemischer Behandlung zaehlt jeder Infekt. Der Praxis sagen.", en: "Strep throat can trigger a psoriasis flare, and on systemic treatment every infection matters. Tell the clinic." } },
+  ],
   forschung: {
     suche: '(psoriasis[MeSH Terms] OR psoria*[tiab])',
   },
@@ -202,6 +229,15 @@ window.ANKER_MODULE = [
     { art: "vorsicht", was: { de: "Jod und Selen nicht auf eigene Faust", en: "Iodine and selenium not on your own" }, warum: { de: "Normale Ernaehrung mit Jodsalz reicht. Hoch dosierte Praeparate koennen schaden, der Nutzen von Selen ist nicht gesichert.", en: "A normal diet with iodised salt is enough. High-dose products can harm, the benefit of selenium is not established." } },
   ],
   rezepte: { bevorzugt: ["eiweiss", "ballaststoffe"], meiden: [] },
+  rezeptAchtung: [
+    { muster: "tofu|edamame|tempeh|soy ?milk|soja(milch|drink|bohnen)|soybeans?", text: { de: "Soja: nicht kurz nach der Schilddruesentablette essen, sonst wird weniger Hormon aufgenommen.", en: "Soy: do not eat it soon after the thyroid tablet, or less hormone is absorbed." } },
+  ],
+  warnzeichen: [
+    { zeichen: "Herzrasen", text: { de: "Kann bedeuten, dass die Dosis zu hoch ist. TSH kontrollieren lassen.", en: "May mean the dose is too high. Have the TSH checked." } },
+  ],
+  signale: [
+    { check: "levo", werte: ["mitessen", "vergessen"], ab: 3, text: { de: "Die Tablette oefter vergessen oder mit Essen genommen. Das verschiebt den TSH-Wert; vor der naechsten Kontrolle ansprechen.", en: "The tablet was often forgotten or taken with food. That shifts the TSH; mention it before the next check." } },
+  ],
   forschung: {
     suche: '("hashimoto disease"[MeSH Terms] OR hashimoto*[tiab] OR "autoimmune thyroiditis"[tiab])',
   },
@@ -251,6 +287,15 @@ window.ANKER_MODULE = [
     { art: "gut", was: { de: "Nicht rauchen", en: "Not smoking" }, warum: { de: "Rauchen verschlechtert den Verlauf und das Ansprechen auf Medikamente deutlich.", en: "Smoking clearly worsens the course and the response to medication." } },
   ],
   rezepte: { bevorzugt: ["mediterran", "omega3"], meiden: [] },
+  rezeptAchtung: [
+    { muster: ALKOHOL, text: { de: "Enthaelt Alkohol. Unter Methotrexat zurueckhaltend, beim Kochen verfliegt nicht alles.", en: "Contains alcohol. Go easy on methotrexate, cooking does not remove all of it." } },
+  ],
+  warnzeichen: [
+    { zeichen: "Fieber", text: { de: "Unter Basistherapie und Biologika koennen Infekte schwerer verlaufen. Die Praxis fragen, ob an den Medikamenten etwas zu aendern ist.", en: "On disease-modifying drugs and biologics infections can be more serious. Ask the clinic whether anything about the medication should change." } },
+  ],
+  signale: [
+    { check: "steif", werte: ["lang"], ab: 3, text: { de: "An mehreren Tagen ueber eine Stunde steif am Morgen. Das spricht fuer aktive Entzuendung und gehoert vor den naechsten Routinetermin.", en: "Stiff for over an hour on several mornings. That points to active inflammation and belongs before the next routine visit." } },
+  ],
   forschung: {
     suche: '("arthritis, rheumatoid"[MeSH Terms] OR "rheumatoid arthritis"[tiab])',
   },
@@ -299,6 +344,14 @@ window.ANKER_MODULE = [
     { art: "gut", was: { de: "Eisen, B12, Vitamin D messen lassen", en: "Have iron, B12, vitamin D measured" }, warum: { de: "Blutverlust und Entzuendung zehren daran, besonders bei Befall des Duenndarms.", en: "Blood loss and inflammation wear them down, especially when the small intestine is involved." } },
   ],
   rezepte: { bevorzugt: ["schonend", "eisen"], meiden: [] },
+  warnzeichen: [
+    { zeichen: "Blut im Stuhl", text: { de: "Kann einen Schub anzeigen. Der Praxis melden, mit Fieber oder vielen Stuhlgaengen noch am selben Tag.", en: "May signal a flare. Tell the clinic, the same day if there is fever or many bowel movements." } },
+    { zeichen: "Fieber", text: { de: "Bei CED kann Fieber Schub, Abszess oder Infekt bedeuten, unter Immunsuppression zaehlt alles davon. Mit der Praxis klaeren.", en: "In IBD fever can mean a flare, an abscess or an infection, and on immunosuppression all of them matter. Check with the clinic." } },
+    { zeichen: "naechtlicher Stuhlgang", text: { de: "Stuhlgang in der Nacht spricht eher fuer Entzuendung als fuer einen gereizten Darm. Beim Termin ansprechen.", en: "Bowel movements at night point more to inflammation than to an irritable gut. Raise it at the appointment." } },
+  ],
+  signale: [
+    { check: "stuhl", werte: ["viel"], ab: 2, text: { de: "An mehreren Tagen sieben oder mehr Stuhlgaenge. Das kann ein Schub sein; der Praxis melden.", en: "Seven or more bowel movements on several days. That may be a flare; tell the clinic." } },
+  ],
   forschung: {
     suche: '("inflammatory bowel diseases"[MeSH Terms] OR crohn*[tiab] OR "ulcerative colitis"[tiab])',
   },

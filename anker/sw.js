@@ -11,7 +11,7 @@
  * Sicherheitsregel im Dokument verbietet ohnehin jede Verbindung nach draussen.
  */
 
-const VERSION = "anker-v4";
+const VERSION = "anker-v5";
 const DATEIEN = [
   "./",
   "./index.html",
