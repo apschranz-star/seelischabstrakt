@@ -145,11 +145,14 @@ jobs:
           git commit -q -m "Publish Anker from ${GITHUB_SHA::7}"
           # Sechs Workflows schreiben denselben Zweig. Laeuft ein zweiter gleichzeitig,
           # weist git den Push ab; ohne Nachziehen bliebe die Aenderung liegen.
-          for try_ in 1 2 3; do
+          for try_ in 1 2 3 4 5 6 7 8; do
             if git push -q origin HEAD:gh-pages; then echo "anker updated"; exit 0; fi
             echo "Push abgewiesen, Versuch $try_. Zweig wird nachgezogen."
+            # Bis zu sieben Workflows starten mit demselben Push und schreiben
+            # denselben Zweig. Eine zufaellige Pause zieht sie auseinander.
+            sleep $(( try_ * 3 + RANDOM % 7 ))
             git fetch -q origin gh-pages
             git rebase -q origin/gh-pages || { git rebase --abort || true; exit 1; }
           done
-          echo "::error::Der Zweig gh-pages liess sich nach drei Versuchen nicht beschreiben."
+          echo "::error::Der Zweig gh-pages liess sich nach acht Versuchen nicht beschreiben."
           exit 1

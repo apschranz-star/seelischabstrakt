@@ -60,11 +60,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add anker/aktuell.js anker/rezepte-netz.js
           git commit -q -m "Anker: Forschung und Rezepte $(date -u +%Y-%m)"
-          for try_ in 1 2 3; do
+          for try_ in 1 2 3 4 5 6 7 8; do
             if git push -q origin HEAD:main; then echo "neu=ja" >> "$GITHUB_OUTPUT"; exit 0; fi
             git pull -q --rebase origin main
           done
-          echo "::error::main liess sich nach drei Versuchen nicht beschreiben."
+          echo "::error::main liess sich nach acht Versuchen nicht beschreiben."
           exit 1
       - name: Publish Anker again
         if: steps.commit.outputs.neu == 'ja'
