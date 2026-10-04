@@ -181,15 +181,17 @@ const GESPERRT = [
      Gerstenmalz. Deshalb ohne Wortgrenze vorne. */
   /(weizen|dinkel|roggen|gerste|gerstenmalz|malzextrakt|gr(ü|ue)nkern|bulgur|couscous|seitan|einkorn|\bemmer\b|\bbier\b|\bmalz\b)/i,
 ];
-/* Zutaten, die es glutenfrei gibt, aber nur mit diesem Zusatz. */
+/* Zutaten, die es glutenfrei gibt, aber nur mit diesem Zusatz. Bruehen und
+   Bruehwuerfel gehoeren dazu: viele enthalten Weizen oder Gerstenmalz. Auch
+   Backpulver, in Oesterreich und Deutschland teils mit Weizenstaerke. */
 const NUR_MIT_ZUSATZ = [
-  /\b(flour|bread|breadcrumbs?|panko|pasta|noodles?|spaghetti|macaroni|tortillas?|crackers?|oats?|oatmeal|granola|soy sauce|baking powder|cookies?|pretzels?|cereal|graham)\b/i,
+  /\b(flour|bread|breadcrumbs?|panko|pasta|noodles?|spaghetti|macaroni|tortillas?|crackers?|oats?|oatmeal|granola|soy sauce|baking powder|cookies?|pretzels?|cereal|graham|stock|broth|bouillon|worcestershire|miso)\b/i,
   /* Ebenso: Butterkekse, Semmelbroesel, Vollkornnudeln, Haferdrink. */
-  /(mehl|brot|br(ö|oe)sel|nudeln|spaghetti|pasta|tortilla|hafer|sojasauce|sojaso(ss|ß)e|backpulver|keks|zwieback|bl(ä|ae)tterteig|m(ü|ue)rbeteig|lasagne|gnocchi|schupfnudel|knödel|knoedel|panier)/i,
+  /(mehl|brot|br(ö|oe)sel|nudeln|spaghetti|pasta|tortilla|hafer|sojasauce|sojaso(ss|ß)e|backpulver|keks|zwieback|br(ü|ue)he|bouillon|\bfond\b|suppenw(ü|ue)rfel|worcester|miso|bl(ä|ae)tterteig|m(ü|ue)rbeteig|lasagne|gnocchi|schupfnudel|knödel|knoedel|panier)/i,
 ];
 const ZUSATZ = /gluten[\s-]?free|\bgf\b|glutenfrei|certified|zertifiziert|tamari|rice flour|reismehl|almond flour|mandelmehl|coconut flour|kokosmehl|buckwheat|buchweizen|cassava|maniok|tapioca|tapioka|chickpea flour|kichererbsenmehl|corn ?(flour|starch|meal)|maismehl|maisst(ä|ae)rke|potato starch|kartoffelst(ä|ae)rke|arrowroot|sorghum|millet|hirse|teff|quinoa|amaranth|rice noodles|reisnudeln|rice paper|reispapier|oat[\s-]?free|nut flour|cashew/i;
 /* Kokosmilch, Buchweizen und Co. sind keine Getreidefallen. */
-const HARMLOS = /buckwheat|buchweizen|coconut|kokos|cream of tartar|weinstein|rice malt|eggplant|johannisbrotkern|guarkern|flohsamen|locust bean|psyllium/i;
+const HARMLOS = /buckwheat|buchweizen|coconut|kokos|cream of tartar|weinstein(?!-?backpulver)|rice malt|eggplant|johannisbrotkern|guarkern|flohsamen|locust bean|psyllium/i;
 
 /* "Couscous (glutenfrei moeglich)" heisst: normaler Couscous, ausser man
    kauft den anderen. Ein glutenfrei mit so einem Zusatz ist kein Freibrief,

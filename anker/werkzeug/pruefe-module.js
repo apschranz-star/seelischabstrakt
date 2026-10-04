@@ -75,6 +75,24 @@ MODULE.forEach((m) => {
     if (!["weg", "vorsicht", "gut"].includes(p.art)) fehler.push(`${w}.essen[${i}]: art muss weg, vorsicht oder gut sein`);
   });
   (m.fragen || []).forEach((f, i) => zwei(f, `${w}.fragen[${i}]`));
+  /* Warnzeichen zeigen auf ein Zeichen der Erkrankung, Signale auf eine
+     Antwort ihrer Frage des Tages, und jedes Rezeptmuster muss sich bauen
+     lassen. Sonst schweigt die Uebersicht genau dort, wo sie warnen soll. */
+  (m.warnzeichen || []).forEach((z, i) => {
+    zwei(z.text, `${w}.warnzeichen[${i}]`);
+    if (!(m.zeichen || []).includes(z.zeichen)) fehler.push(`${w}.warnzeichen[${i}]: "${z.zeichen}" ist kein Zeichen dieser Erkrankung`);
+  });
+  (m.signale || []).forEach((g, i) => {
+    zwei(g.text, `${w}.signale[${i}]`);
+    const c = (m.checks || []).find((x) => x.schluessel === g.check);
+    if (!c) fehler.push(`${w}.signale[${i}]: Frage ${g.check} gibt es nicht`);
+    else g.werte.forEach((v) => { if (!c.optionen.some((o) => o.wert === v)) fehler.push(`${w}.signale[${i}]: Antwort ${v} gibt es nicht`); });
+    if (!(g.ab >= 1)) fehler.push(`${w}.signale[${i}]: ab fehlt`);
+  });
+  (m.rezeptAchtung || []).forEach((a, i) => {
+    zwei(a.text, `${w}.rezeptAchtung[${i}]`);
+    try { new RegExp(a.muster, "i"); } catch (e) { fehler.push(`${w}.rezeptAchtung[${i}]: Muster kaputt`); }
+  });
   if (!m.forschung || !String(m.forschung.suche || "").trim()) fehler.push(`${w}: forschung.suche fehlt`);
 });
 
