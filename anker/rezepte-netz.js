@@ -994,7 +994,8 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [
-    "250 g Butterkekse (350 g)"
+    "250 g Butterkekse (350 g)",
+    "1 TL Weinsteinbackpulver ((1,5 TL)"
    ],
    "datum": "2025-07-12"
   },
@@ -1033,7 +1034,8 @@ window.ANKER_NETZREZEPTE = {
     "mediterran"
    ],
    "pruefen": [
-    "125 g Couscous (glutenfrei möglich)"
+    "125 g Couscous (glutenfrei möglich)",
+    "300 ml Gemüsebrühe"
    ],
    "datum": "2025-05-04"
   },
@@ -1107,7 +1109,9 @@ window.ANKER_NETZREZEPTE = {
     "kalzium",
     "vegetarisch"
    ],
-   "pruefen": [],
+   "pruefen": [
+    "½ TL Weinstein-Backpulver"
+   ],
    "datum": "2025-04-15"
   }
  ]

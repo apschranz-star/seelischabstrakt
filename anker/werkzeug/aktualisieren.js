@@ -89,9 +89,19 @@ function eintrag(d) {
   };
 }
 
+/* Einmal je PMID, und einmal je Titel: Leitlinien erscheinen oft gleich in
+   zwei Zeitschriften, mit zwei PMIDs und demselben Titel. Kurze Titel wie
+   "Celiac Disease." teilen sich verschiedene Uebersichten, die bleiben. */
 function einmalig(liste) {
   const gesehen = new Set();
-  return liste.filter((e) => (gesehen.has(e.pmid) ? false : (gesehen.add(e.pmid), true)));
+  const titel = (e) => "t:" + e.titel.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 70);
+  return liste.filter((e) => {
+    const t = titel(e).length >= 42 ? titel(e) : null;
+    if (gesehen.has(e.pmid) || (t && gesehen.has(t))) return false;
+    gesehen.add(e.pmid);
+    if (t) gesehen.add(t);
+    return true;
+  });
 }
 
 (async () => {

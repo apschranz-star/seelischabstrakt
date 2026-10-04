@@ -740,6 +740,28 @@ details.netz > .details-inhalt { padding: 6px 18px 20px; }
   accent-color: var(--neon);
 }
 
+/* ---------------------------------------------------------------- Stand */
+
+.stand-bild { display: flex; align-items: center; gap: 12px; }
+.stand-bild::before {
+  content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--gut); box-shadow: 0 0 16px var(--gut);
+}
+.stand-bild[data-ton="mittel"]::before { background: var(--warnung); box-shadow: 0 0 16px var(--warnung); }
+.stand-bild[data-ton="schlecht"]::before { background: var(--kritisch); box-shadow: 0 0 16px var(--kritisch); }
+.stand-liste li { align-items: center; }
+.stufen { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; max-width: 52%; }
+.stufe {
+  font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid var(--linie); color: var(--tinte-2);
+}
+.stufe[data-ton="gut"] { color: var(--gut); border-color: color-mix(in srgb, var(--gut) 45%, transparent); background: color-mix(in srgb, var(--gut) 10%, transparent); }
+.stufe[data-ton="mittel"] { color: var(--warnung); border-color: color-mix(in srgb, var(--warnung) 45%, transparent); background: color-mix(in srgb, var(--warnung) 10%, transparent); }
+.stufe[data-ton="schlecht"] { color: var(--kritisch); border-color: color-mix(in srgb, var(--kritisch) 45%, transparent); background: color-mix(in srgb, var(--kritisch) 10%, transparent); }
+.liste .txt small.stand-grund { display: flex; gap: 8px; align-items: baseline; color: var(--tinte-2); margin-top: 6px; }
+.stand-grund .modul-punkt { flex: none; transform: translateY(-1px); }
+.liste li.vorbei { opacity: .5; }
+
 @media print {
   .aura, .leiste, .kopf, .skip, .toast, .knopf-reihe, .nicht-drucken, .herz, .studie-knoepfe { display: none !important; }
   :root { --tinte: #000; --tinte-2: #222; --tinte-3: #555; --linie: #ccc; --linie-2: #bbb; --flaeche-3: #fff; }

@@ -98,13 +98,6 @@ window.ANKER_AKTUELL = {
      "art": "leitlinie"
     },
     {
-     "pmid": "40912974",
-     "titel": "ERS/EULAR clinical practice guidelines for connective tissue disease-associated interstitial lung disease developed by the task force for connective tissue disease-associated interstitial lung disease of the European Respiratory Society (ERS) and the European Alliance of Associations for Rheumatology (EULAR) Endorsed by the European Reference Network on rare respiratory diseases (ERN-LUNG).",
-     "zeitschrift": "Annals of the rheumatic diseases",
-     "datum": "2026-01-01",
-     "art": "leitlinie"
-    },
-    {
      "pmid": "41789864",
      "titel": "Efficacy and Safety of Obinutuzumab in Active Systemic Lupus Erythematosus.",
      "zeitschrift": "The New England journal of medicine",
@@ -338,13 +331,6 @@ window.ANKER_AKTUELL = {
      "zeitschrift": "Clinical reviews in allergy & immunology",
      "datum": "2025-11-19",
      "art": "uebersicht"
-    },
-    {
-     "pmid": "40912974",
-     "titel": "ERS/EULAR clinical practice guidelines for connective tissue disease-associated interstitial lung disease developed by the task force for connective tissue disease-associated interstitial lung disease of the European Respiratory Society (ERS) and the European Alliance of Associations for Rheumatology (EULAR) Endorsed by the European Reference Network on rare respiratory diseases (ERN-LUNG).",
-     "zeitschrift": "Annals of the rheumatic diseases",
-     "datum": "2026-01-01",
-     "art": "leitlinie"
     },
     {
      "pmid": "41226627",

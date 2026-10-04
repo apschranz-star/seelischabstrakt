@@ -116,11 +116,11 @@ aussagekraeftig. Wer die Sicherung weitergibt, gibt das mit weiter.
 
 | Bereich | Was er macht |
 |---|---|
-| **Heute** | Oben ein grosser Regler fuer das Befinden, 0 bis 10, nach rechts heisst besser. Darunter die Regler aller gewaehlten Erkrankungen, je Erkrankung eine Frage des Tages (Gluten, Sonne, Schilddruesentablette, Stuhlgang ...), Schlaf, Zeichen, Bewegung, Medikamente, Notiz, ein Rezeptvorschlag. Ein unberuehrter Regler bleibt leer, und leer ist auch eine Antwort. |
-| **Verlauf** | Bis zu drei Regler als Linien ueber 14, 30 oder 90 Tage, frei waehlbar. Kalender nach Befinden, Tabelle, Nachtragen eines beliebigen Tages. |
-| **Essen** | Rezepte des Monats, passend zu den Erkrankungen, mit Herz zum Merken. Gemerkte Rezepte. Die Regeln je Erkrankung. |
+| **Heute** | Oben ein grosser Regler fuer das Befinden, 0 bis 10, nach rechts heisst besser. Darunter die Regler aller gewaehlten Erkrankungen, je Erkrankung eine Frage des Tages (Gluten, Sonne, Schilddruesentablette, Stuhlgang ...), Schlaf, Zeichen, Bewegung, Medikamente, Notiz, ein Rezeptvorschlag. Ein unberuehrter Regler bleibt leer, und leer ist auch eine Antwort. Oben die Termine der naechsten sieben Tage, unten der Stand in einem Satz. |
+| **Verlauf** | Oben der Stand der letzten 14 Tage (siehe unten). Bis zu drei Regler als Linien ueber 14, 30 oder 90 Tage, frei waehlbar. Kalender nach Befinden, Tabelle, Nachtragen eines beliebigen Tages. |
+| **Essen** | Rezepte des Monats, passend zu den Erkrankungen, mit Herz zum Merken. Hinweise, wo eine Zutat nicht zur Erkrankung passt. Gemerkte Rezepte. Die Regeln je Erkrankung. |
 | **Wissen** | Aktuelle Forschung aus PubMed je Erkrankung und fuer jedes Paar, Arbeiten zum Merken. Die Kapitel aus dem Bericht, Warnzeichen, Fragen fuer den Termin. |
-| **Mappe** | Meine Erkrankungen, Arztmappe je Erkrankung oder alles, Gemerktes, Medikamente, Laborwerte mit Verlaufslinie, Termine, Anlaufstellen, Sicherung, Darstellung. |
+| **Mappe** | Meine Erkrankungen, Arztmappe je Erkrankung oder alles, Gemerktes, Medikamente mit Erinnerung, Laborwerte mit Verlaufslinie, Termine mit Erinnerung, Anlaufstellen, Sicherung, Darstellung. |
 
 ### Erkrankungen als Bausteine
 
@@ -135,6 +135,37 @@ und jeder Verweis auf ein Zeichen oder einen Laborwert aufgeht.
 
 Wer Anker schon vorher benutzt hat, bekommt beim ersten Start Lupus und
 Zoeliakie gesetzt, denn dafuer war die App gebaut. Nichts geht verloren.
+
+### Stand der letzten 14 Tage
+
+Auf der Seite Verlauf, kurz auf Heute und in der Arztmappe. Alles aus den
+eigenen Eintraegen, keine Diagnose und kein Krankheitsindex: Krankheitsaktivitaet
+misst die Praxis. Was der Stand tut:
+
+- **Mittelwerte einordnen**: 1 bis unter 4 leicht, 4 bis unter 7 mittel, ab 7
+  stark, wie Muedigkeit und Schmerz auf 0-bis-10-Skalen in Studien eingeteilt
+  werden (Mendoza 1999, Serlin 1995); Juckreiz zusaetzlich ab 9 sehr stark
+  (Reich 2012). Fuer die anderen Regler eine Orientierung, das steht so in der App.
+- **Veraenderung**: gegen die 14 Tage davor, ab 1 Punkt "etwas", ab 2 Punkten
+  "deutlich" (rund 2 Punkte gelten als spuerbar, Farrar 2001). Ein Mittelwert
+  braucht mindestens drei Eintraege, der Stand mindestens vier Tage.
+- **Punkte fuer die Praxis**: `warnzeichen` und `signale` in `module.js`.
+  Ein Warnzeichen ist ein Zeichen, das bei dieser Erkrankung nicht bis zum
+  Routinetermin warten sollte (schaeumender Urin bei Lupus, Blut im Stuhl bei
+  CED, ein ganz geschwollener Finger bei Psoriasis). Ein Signal ist eine
+  Antwort der Frage des Tages, die oft vorkam (zweimal Gluten in 14 Tagen,
+  dreimal ueber eine Stunde steif). `pruefe-module.js` prueft, dass jedes
+  Warnzeichen ein Zeichen der Erkrankung ist und jedes Signal auf eine
+  vorhandene Antwort zeigt.
+- **Medikamente**: an wie vielen Tagen mit Eintrag abgehakt.
+
+### Erinnerungen
+
+Eine Webseite ohne Server darf auf dem iPhone keine Benachrichtigung schicken.
+Deshalb gibt Anker eine Kalenderdatei (.ics) heraus, und der Kalender des
+Telefons erinnert: Termine am Vortag und zwei Stunden vorher (ohne Uhrzeit am
+Vorabend um 18 Uhr), Medikamente taeglich zur eingetragenen Uhrzeit. Die Datei
+entsteht auf dem Geraet, es geht nichts nach draussen.
 
 ### Aktuelle Forschung, einmal im Monat
 
@@ -161,11 +192,16 @@ verlinkt sie. Bilder werden nicht kopiert.
 Gluten, dreifach: die Quelle ist glutenfrei oder markiert das Rezept so; eine
 Zutat auf der Sperrliste (Weizen, Dinkel, Gerste, Roggen, Malz, Couscous ...)
 verwirft das Rezept; eine Zutat, die nur mit Zusatz sicher ist (Mehl, Hafer,
-Brot, Kekse, Sojasauce, Backpulver ...), muss den Zusatz tragen, sonst steht
+Brot, Kekse, Sojasauce, Backpulver, Bruehe, Bruehwuerfel ...), muss den Zusatz tragen, sonst steht
 beim Rezept sichtbar "Bitte pruefen". Ein schwacher Zusatz wie "glutenfrei
 moeglich" oder "gluten-free as needed" zaehlt nicht. Deutsche
 Zusammensetzungen (Butterkekse, Hartweizengriess) werden erkannt. Eine Garantie
 ist das nicht, und die App sagt das bei jedem Rezept aus dem Netz.
+
+Passend zur Erkrankung: `rezeptAchtung` in `module.js` sucht in den Zutaten
+nach dem, was nicht passt (Alkohol bei Psoriasis und Arthritis wegen
+Methotrexat, Alfalfa bei Lupus, Soja bei Hashimoto wegen der Tablette). Das
+Rezept zeigt dann einen Hinweis und rutscht in der Liste nach unten.
 
 Gemerkt wird eine Kopie, damit ein Rezept nicht verschwindet, wenn es im
 naechsten Monat nicht mehr gesammelt wird. Eine neue Quelle ist eine Zeile in
@@ -309,6 +345,9 @@ naechsten Start noch die abgelegte Fassung und holt die neue im Hintergrund.
 Zweimal schliessen und oeffnen genuegt.
 
 ### Schrift
+
+Ueberschriften in Bricolage Grotesque (variabel, 300 bis 800), der Rest in
+IBM Plex Sans. Beide liegen in `fonts/`, beide nicht von Google geladen.
 
 IBM Plex Sans, als variable Datei fuer den Bereich 400 bis 700, 88 kB fuer latin und
 latin-ext. Sie liegt in `fonts/` und wird nicht von Google geladen: es soll keine
