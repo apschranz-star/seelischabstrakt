@@ -32,6 +32,7 @@
   const MODUL_LISTE = window.ANKER_MODULE || [];
   const GRUND = window.ANKER_GRUND || { befinden: null, skalen: [] };
   const REZEPTE = window.ANKER_REZEPTE || { bestand: [], neu: [] };
+  const NETZ = window.ANKER_NETZREZEPTE || { stand: null, rezepte: [] };
 
   const LEER = {
     version: 1,
@@ -42,7 +43,7 @@
     termine: [],
     stellen: [],
     schuebe: [],
-    gemerkt: { rezepte: [], studien: [] },
+    gemerkt: { rezepte: [], studien: [], netz: [] },
     einstellungen: { thema: "auto", letzteSicherung: null, start: heuteISO() },
   };
 
@@ -69,7 +70,7 @@
     }
     const bekannt = MODUL_LISTE.map((m) => m.id);
     d.profil.module = d.profil.module.filter((m) => bekannt.includes(m));
-    d.gemerkt = Object.assign({ rezepte: [], studien: [] }, d.gemerkt || {});
+    d.gemerkt = Object.assign({ rezepte: [], studien: [], netz: [] }, d.gemerkt || {});
     d.einstellungen = Object.assign({}, LEER.einstellungen, d.einstellungen || {});
     return d;
   }
@@ -133,10 +134,11 @@
    * Sprache hier, muss werkzeug/pruefe-texte.js fuer sie sauber durchlaufen,
    * sonst stehen deutsche Knoepfe ueber uebersetztem Text.
    *
-   * Italienisch, Franzoesisch und Spanisch haben den ganzen Inhalt, aber noch
-   * keine ui-Tabelle. Sie kommen dazu, sobald sie eine haben.
+   * Seit Oktober 2026 haben alle fuenf eine ui-Tabelle. Die italienische,
+   * franzoesische und spanische sind nicht von Muttersprachlerinnen geprueft;
+   * Mappe, Sprache sagt das in der App.
    */
-  const OBERFLAECHE_FERTIG = ["en", "de"];
+  const OBERFLAECHE_FERTIG = ["en", "de", "it", "fr", "es"];
 
   function sprachenDa() {
     return SPRACHEN.filter(
@@ -306,7 +308,7 @@ function LOKAL() {
     /* Zeichen, die erst eine Erkrankung mitbringt, stehen in module.js. */
     for (const m of MODUL_LISTE) {
       const z = (m.eigeneZeichen || []).find((x) => x.schluessel === schluessel);
-      if (z) return z[L] != null ? z[L] : (z.en != null ? z.en : z.de);
+      if (z) return MT(z);
     }
     return schluessel;
   }
@@ -315,10 +317,21 @@ function LOKAL() {
 
   /* Ein Text aus module.js oder rezepte.js: { de, en }. Fehlt die laufende
      Sprache, greift Englisch, dann Deutsch. Leer bleibt nie etwas. */
+  /* Italienisch, Franzoesisch und Spanisch stehen nicht in den Bausteinen
+     selbst, sondern in uebersetzung.js, mit dem deutschen Text als
+     Schluessel. Fehlt dort etwas, greift Englisch. */
+  const UEBERSETZUNG = window.ANKER_UEBERSETZUNG || {};
   function MT(o) {
     if (o == null) return "";
     if (typeof o === "string" || Array.isArray(o)) return o;
-    return o[L] != null ? o[L] : (o.en != null ? o.en : o.de);
+    if (o[L] != null) return o[L];
+    const tafel = UEBERSETZUNG[L];
+    if (tafel && o.de != null) {
+      if (Array.isArray(o.de)) {
+        if (o.de.every((x) => tafel[x] != null)) return o.de.map((x) => tafel[x]);
+      } else if (tafel[o.de] != null) return tafel[o.de];
+    }
+    return o.en != null ? o.en : o.de;
   }
   function modulVon(mid) { return MODUL_LISTE.find((m) => m.id === mid); }
   function aktiveModule() { return (D.profil.module || []).map(modulVon).filter(Boolean); }
@@ -1291,20 +1304,110 @@ function LOKAL() {
     return det;
   }
 
+  /* ----------------------------------------------------- Rezepte aus dem Netz
+   *
+   * Gesammelt einmal im Monat von werkzeug/rezepte-holen.js, aus Seiten, die
+   * glutenfrei kochen. In der Datei stehen Name, Zutaten, Zeiten und die
+   * Adresse; die Zubereitung bleibt beim Original und wird verlinkt. Gemerkt
+   * wird eine Kopie, damit ein Rezept nicht verschwindet, wenn im naechsten
+   * Monat andere in der Datei stehen.
+   */
+  function netzRezepte() {
+    const gut = bevorzugteTags();
+    return (NETZ.rezepte || [])
+      .map((r) => ({
+        r,
+        wert: r.tags.filter((t) => gut.has(t)).length * 2 + (r.sprache === L ? 3 : 0) + (r.pruefen.length ? -1 : 0),
+      }))
+      .sort((a, b) => b.wert - a.wert || streuwert(a.r.id) - streuwert(b.r.id))
+      .map((x) => x.r);
+  }
+
+  function gemerktNetz(rid) { return D.gemerkt.netz.some((x) => x.id === rid); }
+
+  const DECKEL = {
+    omega3: ["#2a78d6", "#5fc4e8"], eisen: ["#b4462f", "#f08a5d"], kalzium: ["#7b6cff", "#c6b8ff"],
+    eiweiss: ["#d9822b", "#f6c177"], ballaststoffe: ["#2f9e5b", "#9be3a8"], mediterran: ["#1f8a8a", "#f2c14e"],
+  };
+
+  function netzKarte(r) {
+    const det = document.createElement("details");
+    det.className = "netz";
+    const [f1, f2] = DECKEL[r.tags.find((t) => DECKEL[t])] || ["#4b5563", "#9ca3af"];
+    const sum = document.createElement("summary");
+    const deckel = document.createElement("span");
+    deckel.className = "deckel";
+    deckel.style.setProperty("--d1", f1);
+    deckel.style.setProperty("--d2", f2);
+    deckel.innerHTML =
+      `<span class="deckel-quelle">${esc(r.quelle)}${r.sprache !== L ? ` · ${esc(r.sprache.toUpperCase())}` : ""}</span>` +
+      `<b class="deckel-name" lang="${esc(r.sprache)}">${esc(r.name)}</b>` +
+      `<span class="deckel-fuss">${r.minuten ? esc(TP("{n} Minute", "{n} Minuten", r.minuten)) : ""}${r.zutaten.length ? (r.minuten ? " · " : "") + esc(TP("{n} Zutat", "{n} Zutaten", r.zutaten.length)) : ""}</span>`;
+    sum.appendChild(deckel);
+    const herz = document.createElement("button");
+    herz.type = "button";
+    herz.className = "herz auf-deckel";
+    const setzen = () => {
+      const an = gemerktNetz(r.id);
+      herz.setAttribute("aria-pressed", String(an));
+      herz.setAttribute("aria-label", an ? T("Nicht mehr merken") : T("Merken"));
+    };
+    setzen();
+    herz.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
+    herz.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      D.gemerkt.netz = gemerktNetz(r.id)
+        ? D.gemerkt.netz.filter((x) => x.id !== r.id)
+        : D.gemerkt.netz.concat([Object.assign({ gemerkt: heuteISO() }, r)]);
+      sichern();
+      setzen();
+      melden(gemerktNetz(r.id) ? T("In der Mappe gemerkt.") : T("Nicht mehr gemerkt."));
+    });
+    sum.appendChild(herz);
+    det.appendChild(sum);
+
+    const box = document.createElement("div");
+    box.className = "details-inhalt";
+    const marken = { aufwand: r.minuten ? TP("{n} Minute", "{n} Minuten", r.minuten) : T("Zeit beim Original"), tags: r.tags, kraft: r.minuten && r.minuten <= 20 ? "wenig" : "mittel" };
+    rezeptMarken(box, marken);
+    const info = [];
+    if (r.portionen) info.push(TV("Portionen: {n}", { n: r.portionen }));
+    if (r.autor) info.push(TV("von {autor}", { autor: r.autor }));
+    if (info.length) box.insertAdjacentHTML("beforeend", `<p class="klein">${esc(info.join(" · "))}</p>`);
+    if (r.pruefen.length) {
+      box.insertAdjacentHTML("beforeend",
+        `<div class="hinweis pruefen"><b>${esc(T("Bitte pruefen, ob glutenfrei:"))}</b><ul>${r.pruefen.map((z) => `<li lang="${esc(r.sprache)}">${esc(z)}</li>`).join("")}</ul></div>`);
+    }
+    box.insertAdjacentHTML("beforeend",
+      `<h4>${esc(T("Zutaten"))}</h4><ul class="zutaten" lang="${esc(r.sprache)}">${r.zutaten.map((z) => `<li>${esc(z)}</li>`).join("")}</ul>`);
+    const reihe = document.createElement("div");
+    reihe.className = "knopf-reihe";
+    const a = document.createElement("a");
+    a.className = "knopf";
+    a.textContent = TV("Zur Zubereitung bei {quelle}", { quelle: r.quelle });
+    if (zielSetzen(a, r.url, ["https:"])) reihe.appendChild(a);
+    box.appendChild(reihe);
+    box.insertAdjacentHTML("beforeend",
+      `<p class="quelle">${esc(r.schritte ? TP("{n} Schritt beim Original.", "{n} Schritte beim Original.", r.schritte) + " " : "")}${esc(T("Glutenfrei laut Quelle und nach Pruefung der Zutatenliste. Beim Einkauf jede Packung trotzdem selbst pruefen."))}</p>`);
+    det.appendChild(box);
+    return det;
+  }
+
   let essenAnsicht = "monat";
 
   function seiteEssen(ziel) {
     const mods = aktiveModule();
     const kopf = karte(
       `<p class="kicker">${esc(T("Fuer deine Erkrankungen"))}</p><h2 class="h2">${esc(T("Essen, das passt"))}</h2>
-       <p class="lead">${esc(T("Jedes Rezept hier ist glutenfrei. Die Auswahl wechselt jeden Monat und richtet sich nach dem, was deine Erkrankungen brauchen. Eine Merkhilfe, keine Verordnung."))}</p>`,
+       <p class="lead">${esc(T("Nur glutenfreie Rezepte, aus dem Netz und aus der eigenen Sammlung. Die Auswahl wechselt jeden Monat und richtet sich nach dem, was deine Erkrankungen brauchen. Eine Merkhilfe, keine Verordnung."))}</p>`,
     );
     modulChips(kopf, mods, "#/profil");
     const tabs = schalterListe(kopf, {
       einzeln: true,
       optionen: [
         { wert: "monat", text: T("Diesen Monat") },
-        { wert: "gemerkt", text: TV("Gemerkt ({n})", { n: D.gemerkt.rezepte.length }) },
+        { wert: "gemerkt", text: TV("Gemerkt ({n})", { n: D.gemerkt.rezepte.length + D.gemerkt.netz.length }) },
         { wert: "regeln", text: T("Regeln") },
       ],
       gewaehlt: essenAnsicht,
@@ -1314,8 +1417,19 @@ function LOKAL() {
     ziel.appendChild(kopf);
 
     if (essenAnsicht === "monat") {
+      const netz = netzRezepte();
+      if (netz.length) {
+        const kn = karte(`<p class="kicker">${esc(TV("Stand {monat}", { monat: monatJahr(NETZ.stand) }))}</p><h2 class="h2">${esc(T("Aus dem Netz, glutenfrei"))}</h2>
+          <p class="lead">${esc(T("Jeden Monat neu gesammelt von Seiten, die glutenfrei kochen, sortiert nach deinen Erkrankungen. Hier stehen die Zutaten, die Zubereitung steht beim Original."))}</p>`);
+        kn.classList.add("netz-karte");
+        const gitter = document.createElement("div");
+        gitter.className = "netz-gitter";
+        netz.forEach((r) => gitter.appendChild(netzKarte(r)));
+        kn.appendChild(gitter);
+        ziel.appendChild(kn);
+      }
       const auswahl = rezepteDesMonats();
-      const km = karte(`<p class="kicker">${esc(monatJahr())}</p><h2 class="h2">${esc(T("Rezepte des Monats"))}</h2>
+      const km = karte(`<p class="kicker">${esc(T("Aus der Anker-Sammlung"))}</p><h2 class="h2">${esc(T("Rezepte des Monats"))}</h2>
         <p class="lead">${esc(T("Was zu deinen Erkrankungen passt, ist hervorgehoben. Mit dem Herz landet ein Rezept in der Mappe und bleibt dort, auch wenn der Monat wechselt."))}</p>`);
       auswahl.forEach((r) => km.appendChild(rezeptKarte(r)));
       ziel.appendChild(km);
@@ -1327,11 +1441,7 @@ function LOKAL() {
     }
 
     if (essenAnsicht === "gemerkt") {
-      const meine = rezepteAlle().filter((r) => gemerktRezept(r.id));
-      const kg = karte(`<p class="kicker">${esc(T("In deiner Mappe"))}</p><h2 class="h2">${esc(T("Gemerkte Rezepte"))}</h2>`);
-      if (!meine.length) kg.insertAdjacentHTML("beforeend", `<div class="leer">${esc(T("Noch nichts gemerkt. Tippe bei einem Rezept auf das Herz."))}</div>`);
-      meine.forEach((r) => kg.appendChild(rezeptKarte(r)));
-      ziel.appendChild(kg);
+      ziel.appendChild(gemerkteRezepteKarte());
       return;
     }
 
@@ -1663,7 +1773,7 @@ function LOKAL() {
     ziel.appendChild(kt);
 
     const eintraege = [
-      { href: "#/gemerkt", name: T("Gemerkt"), was: TP("{n} Rezept", "{n} Rezepte", D.gemerkt.rezepte.length) + ", " + TP("{n} Arbeit", "{n} Arbeiten", D.gemerkt.studien.length) },
+      { href: "#/gemerkt", name: T("Gemerkt"), was: TP("{n} Rezept", "{n} Rezepte", D.gemerkt.rezepte.length + D.gemerkt.netz.length) + ", " + TP("{n} Arbeit", "{n} Arbeiten", D.gemerkt.studien.length) },
       { href: "#/medikamente", name: T("Medikamente"), was: TV("{n} eingetragen", { n: D.medikamente.length }) },
       { href: "#/werte", name: T("Laborwerte"), was: TP("{n} Messung", "{n} Messungen", D.werte.length) },
       { href: "#/termine", name: T("Termine"), was: naechsterTermin() },
@@ -1703,6 +1813,11 @@ function LOKAL() {
           return w;
         },
       });
+      /* Ehrlich bleiben: Deutsch ist das Original, Englisch ist geprueft, die
+         drei anderen sind es noch nicht. */
+      if (!["de", "en"].includes(L)) {
+        ks.insertAdjacentHTML("beforeend", `<p class="klein klein-abstand">${esc(T("Diese Uebersetzung ist sorgfaeltig gemacht, aber noch nicht von Muttersprachlerinnen oder medizinischem Fachpersonal geprueft. Im Zweifel gilt die deutsche Fassung."))}</p>`);
+      }
       ziel.appendChild(ks);
     }
 
@@ -1790,12 +1905,26 @@ function LOKAL() {
 
   /* ------------------------------------------------------------- Gemerkt */
 
-  function seiteGemerkt(ziel) {
+  /* Gemerkte Rezepte aus beiden Quellen. Die aus dem Netz sind Kopien und
+     bleiben, auch wenn sie im naechsten Monat nicht mehr gesammelt werden. */
+  function gemerkteRezepteKarte() {
     const rez = rezepteAlle().filter((r) => gemerktRezept(r.id));
-    const kr = karte(`<p class="kicker">${esc(TP("{n} Rezept", "{n} Rezepte", rez.length))}</p><h2 class="h2">${esc(T("Gemerkte Rezepte"))}</h2>`);
-    if (!rez.length) kr.insertAdjacentHTML("beforeend", `<div class="leer">${esc(T("Noch nichts gemerkt. Tippe bei einem Rezept auf das Herz."))}</div>`);
+    const netz = D.gemerkt.netz.slice().reverse();
+    const n = rez.length + netz.length;
+    const kr = karte(`<p class="kicker">${esc(TP("{n} Rezept", "{n} Rezepte", n))}</p><h2 class="h2">${esc(T("Gemerkte Rezepte"))}</h2>`);
+    if (!n) kr.insertAdjacentHTML("beforeend", `<div class="leer">${esc(T("Noch nichts gemerkt. Tippe bei einem Rezept auf das Herz."))}</div>`);
+    if (netz.length) {
+      const g = document.createElement("div");
+      g.className = "netz-gitter";
+      netz.forEach((r) => g.appendChild(netzKarte(r)));
+      kr.appendChild(g);
+    }
     rez.forEach((r) => kr.appendChild(rezeptKarte(r)));
-    ziel.appendChild(kr);
+    return kr;
+  }
+
+  function seiteGemerkt(ziel) {
+    ziel.appendChild(gemerkteRezepteKarte());
 
     const st = D.gemerkt.studien.slice().reverse();
     const ks = karte(`<p class="kicker">${esc(TP("{n} Arbeit", "{n} Arbeiten", st.length))}</p><h2 class="h2">${esc(T("Fuer den Termin gemerkt"))}</h2>

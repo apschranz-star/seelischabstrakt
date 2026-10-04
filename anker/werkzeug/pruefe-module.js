@@ -113,9 +113,57 @@ if (akt) {
   });
 }
 
+/* Die Uebersetzungen in uebersetzung.js: jeder deutsche Text aus module.js
+   und rezepte.js in jeder Sprache, und jede Zahl darin dieselbe. Eine
+   Mengenangabe, die beim Uebersetzen aus 200 g 20 g macht, faellt sonst
+   niemandem auf. */
+let UEB = null;
+try { UEB = laden("uebersetzung.js").ANKER_UEBERSETZUNG; } catch (e) { fehler.push(`uebersetzung.js parst nicht: ${e.message}`); }
+if (UEB) {
+  const deutsch = new Set();
+  const sammeln = (x) => {
+    if (Array.isArray(x)) return x.forEach(sammeln);
+    if (!x || typeof x !== "object") return;
+    if ("de" in x && "en" in x) [].concat(x.de).forEach((d) => deutsch.add(d));
+    for (const k in x) if (k !== "de" && k !== "en") sammeln(x[k]);
+  };
+  sammeln(MODULE); sammeln(GRUND); sammeln(REZ);
+  const zahlen = (t) => (String(t).match(/\d+(?:[.,]\d+)?/g) || []).map((z) => z.replace(",", ".")).sort().join(" ");
+  for (const l of ["it", "fr", "es"]) {
+    const tafel = UEB[l] || {};
+    let fehlt = 0;
+    deutsch.forEach((d) => {
+      const t = tafel[d];
+      if (t == null || !String(t).trim()) { fehlt++; if (fehlt <= 5) fehler.push(`uebersetzung.js ${l}: fehlt "${d.slice(0, 60)}"`); return; }
+      if (zahlen(d) !== zahlen(t)) fehler.push(`uebersetzung.js ${l}: Zahlen weichen ab bei "${d.slice(0, 50)}" -> "${String(t).slice(0, 50)}"`);
+    });
+    if (fehlt > 5) fehler.push(`uebersetzung.js ${l}: und ${fehlt - 5} weitere fehlen`);
+    const tot = Object.keys(tafel).filter((k) => !deutsch.has(k));
+    if (tot.length) fehler.push(`uebersetzung.js ${l}: ${tot.length} tote Eintraege, z.B. "${tot[0].slice(0, 50)}"`);
+  }
+}
+
+/* Die Rezepte aus dem Netz: jedes mit https-Adresse, Zutaten und ohne
+   gesperrte Zutat. Die Sperre selbst steht in rezepte-holen.js; hier wird
+   nur geprueft, dass die Datei die Form hat, die die App erwartet. */
+let netz = null;
+try { netz = laden("rezepte-netz.js").ANKER_NETZREZEPTE; } catch (e) { fehler.push(`rezepte-netz.js parst nicht: ${e.message}`); }
+if (netz) {
+  const nid = new Set();
+  (netz.rezepte || []).forEach((r) => {
+    const w = `Netzrezept ${r.id}`;
+    if (nid.has(r.id)) fehler.push(`${w}: id doppelt`);
+    nid.add(r.id);
+    if (!/^https:\/\//.test(r.url || "")) fehler.push(`${w}: keine https-Adresse`);
+    if (!r.name || !Array.isArray(r.zutaten) || r.zutaten.length < 2) fehler.push(`${w}: Name oder Zutaten fehlen`);
+    if (!Array.isArray(r.tags) || r.tags.some((t) => !TAGS.includes(t))) fehler.push(`${w}: unbekanntes Merkmal`);
+    if (!Array.isArray(r.pruefen)) fehler.push(`${w}: pruefen fehlt`);
+  });
+}
+
 if (fehler.length) {
   console.log(`FEHLER (${fehler.length}):`);
   fehler.forEach((f) => console.log("  " + f));
   process.exit(1);
 }
-console.log(`OK: ${MODULE.length} Erkrankungen, ${REZ.bestand.length + REZ.neu.length} Rezepte, Forschung vom ${akt.stand}.`);
+console.log(`OK: ${MODULE.length} Erkrankungen, ${REZ.bestand.length + REZ.neu.length} Rezepte, ${(netz.rezepte || []).length} aus dem Netz, Uebersetzungen it fr es vollstaendig, Forschung vom ${akt.stand}.`);

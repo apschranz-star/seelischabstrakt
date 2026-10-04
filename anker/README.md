@@ -146,14 +146,34 @@ Uebersichten und randomisierten Studien der letzten zwoelf Monate, schreibt
 Zeitschrift, Datum, Art und PubMed-Nummer, keine Zusammenfassungen. Von Hand:
 Actions, Refresh Anker research, Run workflow, oder `node werkzeug/aktualisieren.js`.
 
-### Rezepte des Monats
+### Rezepte: aus dem Netz und aus der eigenen Sammlung
 
-`rezepte.js` haelt die Sammlung, jedes Rezept glutenfrei und mit Merkmalen
-(Omega-3, Eisen, Kalzium, schonend ...). Jeden Monat stehen sechs andere oben,
-vier davon passend zu den Erkrankungen. Rezepte werden bewusst nicht aus dem
-Netz geholt: ob eine fremde Bruehe oder ein fremder Hafer glutenfrei ist, laesst
-sich nicht pruefen, und bei Zoeliakie ist das kein Schoenheitsfehler. Neue
-Rezepte kommen von Hand in `rezepte.js`.
+**Aus dem Netz.** Am Ersten jedes Monats sammelt `werkzeug/rezepte-holen.js`
+glutenfreie Rezepte von Seiten, die glutenfrei kochen (derzeit Meaningful Eats,
+Mama Knows Gluten Free, Dish by Dish, Minimalist Baker, Gluten Free Palate,
+Kochtrotz). Gelesen wird der RSS-Feed jeder Seite und auf jeder Rezeptseite das
+maschinenlesbare Rezept (schema.org/Recipe), robots.txt wird beachtet, zwischen
+zwei Anfragen an dieselbe Seite liegen zwei Sekunden. Gespeichert werden Name,
+Zutaten, Zeiten, Portionen, Autorin und Adresse in `rezepte-netz.js`. Die
+Zubereitung ist Text der Autorin und bleibt auf der Originalseite; die App
+verlinkt sie. Bilder werden nicht kopiert.
+
+Gluten, dreifach: die Quelle ist glutenfrei oder markiert das Rezept so; eine
+Zutat auf der Sperrliste (Weizen, Dinkel, Gerste, Roggen, Malz, Couscous ...)
+verwirft das Rezept; eine Zutat, die nur mit Zusatz sicher ist (Mehl, Hafer,
+Brot, Kekse, Sojasauce, Backpulver ...), muss den Zusatz tragen, sonst steht
+beim Rezept sichtbar "Bitte pruefen". Ein schwacher Zusatz wie "glutenfrei
+moeglich" oder "gluten-free as needed" zaehlt nicht. Deutsche
+Zusammensetzungen (Butterkekse, Hartweizengriess) werden erkannt. Eine Garantie
+ist das nicht, und die App sagt das bei jedem Rezept aus dem Netz.
+
+Gemerkt wird eine Kopie, damit ein Rezept nicht verschwindet, wenn es im
+naechsten Monat nicht mehr gesammelt wird. Eine neue Quelle ist eine Zeile in
+`QUELLEN` oben in `rezepte-holen.js`.
+
+**Aus der eigenen Sammlung.** `rezepte.js`, jedes Rezept glutenfrei, mit
+Zubereitung. Jeden Monat stehen sechs andere oben, vier davon passend zu den
+Erkrankungen.
 
 ### Anlaufstellen
 
@@ -220,7 +240,9 @@ aendern will, aendert die Datei und laedt neu.
 | `app.js` | Mechanik: Speicher, Router, Seiten, Diagramme, Sicherung |
 | `inhalt-de.js` | **Alle Texte und Listen.** Hier stehen Symptome, Essensregeln, Rezepte, Laborwerte, Warnzeichen, Fragen und die Wissenskapitel. |
 | `module.js` | Die Erkrankungen als Bausteine, Deutsch und Englisch |
-| `rezepte.js` | Die Rezeptsammlung fuer die monatliche Auswahl |
+| `rezepte.js` | Die eigene Rezeptsammlung fuer die monatliche Auswahl |
+| `rezepte-netz.js` | Glutenfreie Rezepte aus dem Netz. Wird erzeugt, nicht von Hand aendern. |
+| `uebersetzung.js` | Italienisch, Franzoesisch, Spanisch fuer module.js und rezepte.js |
 | `aktuell.js` | Die Forschungsuebersicht. Wird erzeugt, nicht von Hand aendern. |
 | `sw.js` | Offline-Ablage |
 | `inhalt-en.js` und drei weitere | Derselbe Inhalt auf Englisch, Italienisch, Franzoesisch, Spanisch |
@@ -233,11 +255,17 @@ Der Inhalt liegt je Sprache in einer eigenen Datei. Eine Sprache wird erst
 angeboten, wenn zweierlei uebersetzt ist: der Inhalt und die Oberflaeche.
 Der Inhalt ist es in allen fuenf Sprachen. Die Oberflaeche, also rund
 zweihundertneunzig Knopf- und Meldungstexte aus `app.js`, ist es auf Englisch
-und auf Deutsch. Deshalb stehen in `OBERFLAECHE_FERTIG` heute `en` und `de`,
-und die App laeuft in beiden Sprachen durchgehend. Italienisch, Franzoesisch
-und Spanisch haben den Inhalt, aber noch keine `ui`-Tabelle; sie werden
-deshalb nicht angeboten. Was dafuer zu tun ist, steht in
-`HANDOVER-CHATGPT.md`.
+und auf Deutsch, und seit Oktober 2026 auch auf Italienisch, Franzoesisch und
+Spanisch. In `OBERFLAECHE_FERTIG` stehen alle fuenf. Die Bausteine aus
+`module.js` und `rezepte.js` sind fuer diese drei Sprachen in `uebersetzung.js`
+uebersetzt, mit dem deutschen Text als Schluessel; `werkzeug/pruefe-module.js`
+prueft, dass jeder Text da ist und jede Zahl darin stimmt.
+
+Italienisch, Franzoesisch und Spanisch sind sorgfaeltig uebersetzt, aber nicht
+von Muttersprachlerinnen und nicht von medizinischem Fachpersonal geprueft.
+Die App sagt das unter Mappe, Sprache. Eine weitere Sprache braucht dreierlei:
+den ganzen Inhalt als `inhalt-<code>.js`, die `ui`-Tabelle und die Eintraege in
+`uebersetzung.js`.
 
 Deutsch ist die Schluesselsprache: in `app.js` steht der deutsche Satz selbst
 als Schluessel, und `inhalt-en.js` traegt unter `ui` die Uebersetzung dazu.

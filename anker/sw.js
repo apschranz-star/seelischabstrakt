@@ -11,7 +11,7 @@
  * Sicherheitsregel im Dokument verbietet ohnehin jede Verbindung nach draussen.
  */
 
-const VERSION = "anker-v2";
+const VERSION = "anker-v3";
 const DATEIEN = [
   "./",
   "./index.html",
@@ -23,7 +23,9 @@ const DATEIEN = [
   "./inhalt-fr.js",
   "./inhalt-es.js",
   "./module.js",
+  "./uebersetzung.js",
   "./rezepte.js",
+  "./rezepte-netz.js",
   "./aktuell.js",
   "./icon.svg",
   "./icon-180.png",

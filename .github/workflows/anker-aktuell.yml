@@ -1,5 +1,6 @@
 # Erneuert einmal im Monat die Forschungsuebersicht von Anker (anker/aktuell.js)
-# aus PubMed und veroeffentlicht die App danach neu.
+# aus PubMed und die glutenfreien Rezepte aus dem Netz (anker/rezepte-netz.js)
+# und veroeffentlicht die App danach neu.
 #
 # Warum hier und nicht in der App: die App darf keine Verbindung nach draussen
 # aufbauen (connect-src 'none'), weil sie Gesundheitsdaten traegt. Also holt
@@ -10,7 +11,7 @@
 #
 # Ein Push mit dem GITHUB_TOKEN startet keine weiteren Workflows. Deshalb stoesst
 # dieser Lauf "Publish Anker" am Ende ausdruecklich an.
-name: Refresh Anker research
+name: Refresh Anker research and recipes
 
 on:
   schedule:
@@ -37,22 +38,28 @@ jobs:
           node-version: 22
       - name: Fetch the research overview from PubMed
         run: node anker/werkzeug/aktualisieren.js
+      # Rezepte: faellt eine Quelle aus, bleibt die alte Datei stehen und die
+      # Forschung wird trotzdem veroeffentlicht.
+      - name: Collect gluten free recipes
+        continue-on-error: true
+        run: node anker/werkzeug/rezepte-holen.js
       - name: Check it before anything is committed
         run: |
           node --check anker/aktuell.js
+          node --check anker/rezepte-netz.js
           node anker/werkzeug/pruefe-module.js
       - name: Commit, if anything changed
         id: commit
         run: |
-          if git diff --quiet -- anker/aktuell.js; then
+          if git diff --quiet -- anker/aktuell.js anker/rezepte-netz.js; then
             echo "Nichts Neues."
             echo "neu=nein" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add anker/aktuell.js
-          git commit -q -m "Anker: Forschungsuebersicht $(date -u +%Y-%m)"
+          git add anker/aktuell.js anker/rezepte-netz.js
+          git commit -q -m "Anker: Forschung und Rezepte $(date -u +%Y-%m)"
           for try_ in 1 2 3; do
             if git push -q origin HEAD:main; then echo "neu=ja" >> "$GITHUB_OUTPUT"; exit 0; fi
             git pull -q --rebase origin main

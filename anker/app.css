@@ -487,6 +487,41 @@ details[open] > summary::after { transform: rotate(-135deg); }
 .herz:active { transform: scale(.9); }
 .karte.vorschlag { border-left: 4px solid var(--modul); }
 
+/* ------------------------------------------------- Rezepte aus dem Netz
+ *
+ * Kein fremdes Bild: die App laedt nichts von fremden Adressen, und die Fotos
+ * gehoeren den Seiten. Stattdessen ein Deckel im Verlauf des wichtigsten
+ * Merkmals, darauf Quelle, Name und Zeit.
+ */
+.netz-gitter { display: grid; gap: 12px; margin-top: 16px; }
+@media (min-width: 560px) { .netz-gitter { grid-template-columns: 1fr 1fr; align-items: start; } }
+details.netz { border: 0; border-radius: 20px; background: var(--flaeche-2); overflow: hidden; border: 1px solid var(--linie); }
+details.netz + details.netz { border-top: 1px solid var(--linie); }
+details.netz > summary { padding: 0; position: relative; display: block; }
+details.netz > summary::after { display: none; }
+.deckel {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 6px;
+  min-height: 150px; padding: 16px 64px 16px 16px; color: #fff;
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--d2) 85%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--d1), color-mix(in srgb, var(--d1) 55%, #000));
+}
+.deckel-quelle { font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.deckel-name { font-size: 18px; line-height: 1.25; font-weight: 650; letter-spacing: -0.01em; text-wrap: balance; }
+.deckel-fuss { font-size: 12.5px; opacity: .85; }
+.herz.auf-deckel {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(255, 255, 255, .18); border-color: rgba(255, 255, 255, .35);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.herz.auf-deckel svg { stroke: #fff; }
+.herz.auf-deckel[aria-pressed="true"] { background: #fff; border-color: #fff; }
+details.netz > .details-inhalt { padding: 4px 16px 18px; }
+.zutaten { padding-left: 18px; }
+.zutaten li { margin-top: 5px; }
+.hinweis.pruefen { margin-top: 12px; border-color: color-mix(in srgb, var(--warnung) 55%, var(--linie)); background: color-mix(in srgb, var(--warnung) 10%, var(--flaeche)); }
+.hinweis.pruefen ul { margin: 6px 0 0; padding-left: 18px; }
+
 /* ------------------------------------------------------------- Forschung */
 
 .studie .txt > b { margin-top: 8px; line-height: 1.4; }
