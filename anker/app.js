@@ -44,7 +44,7 @@
     stellen: [],
     schuebe: [],
     gemerkt: { rezepte: [], studien: [], netz: [] },
-    einstellungen: { thema: "auto", letzteSicherung: null, start: heuteISO() },
+    einstellungen: { thema: "dark", themaV2: true, letzteSicherung: null, start: heuteISO() },
   };
 
   let migriert = false;
@@ -71,7 +71,15 @@
     const bekannt = MODUL_LISTE.map((m) => m.id);
     d.profil.module = d.profil.module.filter((m) => bekannt.includes(m));
     d.gemerkt = Object.assign({ rezepte: [], studien: [], netz: [] }, d.gemerkt || {});
+    const ohneV2 = !d.einstellungen || !d.einstellungen.themaV2;
     d.einstellungen = Object.assign({}, LEER.einstellungen, d.einstellungen || {});
+    /* Neue Gestaltung ist dunkel zuerst: wer bisher "Wie das Geraet" hatte,
+       bekommt einmalig Dunkel. Eine bewusste Wahl danach bleibt. */
+    if (ohneV2) {
+      if (d.einstellungen.thema === "auto") d.einstellungen.thema = "dark";
+      d.einstellungen.themaV2 = true;
+      migriert = true;
+    }
     return d;
   }
 
@@ -1826,11 +1834,11 @@ function LOKAL() {
     schalterListe(kd, {
       einzeln: true,
       optionen: [
-        { wert: "auto", text: T("Wie das Geraet") },
-        { wert: "light", text: T("Hell") },
         { wert: "dark", text: T("Dunkel") },
+        { wert: "light", text: T("Hell") },
+        { wert: "auto", text: T("Wie das Geraet") },
       ],
-      gewaehlt: D.einstellungen.thema || "auto",
+      gewaehlt: D.einstellungen.thema || "dark",
       beiWahl: (w) => {
         D.einstellungen.thema = w;
         themaSetzen();
@@ -2939,9 +2947,8 @@ function LOKAL() {
   /* ---------------------------------------------------------------- Thema */
 
   function themaSetzen() {
-    const t = D.einstellungen.thema || "auto";
-    if (t === "auto") document.documentElement.removeAttribute("data-theme");
-    else document.documentElement.setAttribute("data-theme", t);
+    const t = D.einstellungen.thema || "dark";
+    document.documentElement.setAttribute("data-theme", t);
   }
 
   /* ----------------------------------------------------------------- Lauf */
