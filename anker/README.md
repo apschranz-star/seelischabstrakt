@@ -1,8 +1,11 @@
 # Anker
 
-Ein Begleitbuch bei systemischem Lupus erythematodes und Zoeliakie. Tagebuch,
-Verlauf, Nachschlagewerk, Arztbericht. Laeuft im Browser, ohne Server, ohne
-Konto. Alle Eintraege bleiben auf dem Geraet.
+Ein Begleitbuch bei chronischen Erkrankungen: Zoeliakie, systemischer Lupus,
+Psoriasis, Hashimoto, rheumatoide Arthritis, Morbus Crohn und Colitis. Man
+waehlt eine oder mehrere, und die App setzt sich daraus zusammen. Tagebuch mit
+Schiebereglern, Verlauf, Rezepte des Monats, aktuelle Forschung, Arztmappe je
+Erkrankung. Laeuft im Browser, ohne Server, ohne Konto. Alle Eintraege bleiben
+auf dem Geraet.
 
 Im selben Ordner liegt **REPORT.md**, der ausfuehrliche Bericht zu Muedigkeit,
 Bewegung und Ernaehrung. Die App enthaelt dieselben Inhalte in kuerzerer Form.
@@ -113,11 +116,64 @@ aussagekraeftig. Wer die Sicherung weitergibt, gibt das mit weiter.
 
 | Bereich | Was er macht |
 |---|---|
-| **Heute** | Vier Skalen von 0 bis 10, Schlaf, Symptome, Gluten, Notiz. Was nicht angetippt wird, bleibt leer, und leer ist auch eine Antwort. |
-| **Verlauf** | Linien ueber 14, 30 oder 90 Tage, Kalenderansicht, Tabelle, Nachtragen. |
-| **Essen** | Was bei Zoeliakie weg muss, was in der Kueche wirklich zaehlt, Naehrstoffe, Rezepte. |
-| **Wissen** | Die Kapitel aus dem Bericht, dazu Warnzeichen und die Fragenliste fuer den Termin. |
-| **Mehr** | Medikamente, Laborwerte, Termine, Anlaufstellen, Arztbericht, Sicherung, Darstellung. |
+| **Heute** | Oben ein grosser Regler fuer das Befinden, 0 bis 10, nach rechts heisst besser. Darunter die Regler aller gewaehlten Erkrankungen, je Erkrankung eine Frage des Tages (Gluten, Sonne, Schilddruesentablette, Stuhlgang ...), Schlaf, Zeichen, Bewegung, Medikamente, Notiz, ein Rezeptvorschlag. Ein unberuehrter Regler bleibt leer, und leer ist auch eine Antwort. |
+| **Verlauf** | Bis zu drei Regler als Linien ueber 14, 30 oder 90 Tage, frei waehlbar. Kalender nach Befinden, Tabelle, Nachtragen eines beliebigen Tages. |
+| **Essen** | Rezepte des Monats, passend zu den Erkrankungen, mit Herz zum Merken. Gemerkte Rezepte. Die Regeln je Erkrankung. |
+| **Wissen** | Aktuelle Forschung aus PubMed je Erkrankung und fuer jedes Paar, Arbeiten zum Merken. Die Kapitel aus dem Bericht, Warnzeichen, Fragen fuer den Termin. |
+| **Mappe** | Meine Erkrankungen, Arztmappe je Erkrankung oder alles, Gemerktes, Medikamente, Laborwerte mit Verlaufslinie, Termine, Anlaufstellen, Sicherung, Darstellung. |
+
+### Erkrankungen als Bausteine
+
+Jede Erkrankung steht in `module.js` und bringt mit: Regler, Zeichen, eine Frage
+des Tages mit drei Antworten, Laborwerte, Essensregeln, Rezeptvorlieben, eine
+PubMed-Suche und Fragen fuer den Termin, alles auf Deutsch und Englisch. Zwei
+gewaehlte Erkrankungen ergeben eine App, die beide abbildet; was sie teilen,
+etwa die Gelenke bei Lupus und Arthritis, steht nur einmal da. Eine neue
+Erkrankung ist ein Eintrag mehr in `module.js`, sonst nichts.
+`werkzeug/pruefe-module.js` prueft, dass jeder Text in beiden Sprachen dasteht
+und jeder Verweis auf ein Zeichen oder einen Laborwert aufgeht.
+
+Wer Anker schon vorher benutzt hat, bekommt beim ersten Start Lupus und
+Zoeliakie gesetzt, denn dafuer war die App gebaut. Nichts geht verloren.
+
+### Aktuelle Forschung, einmal im Monat
+
+Die App selbst darf nichts aus dem Netz holen. Deshalb laeuft am Ersten jedes
+Monats `.github/workflows/anker-aktuell.yml`: es fragt PubMed ueber die
+offizielle Schnittstelle (E-utilities) nach Leitlinien, Meta-Analysen,
+Uebersichten und randomisierten Studien der letzten zwoelf Monate, schreibt
+`aktuell.js` und veroeffentlicht die App neu. Gespeichert werden Titel,
+Zeitschrift, Datum, Art und PubMed-Nummer, keine Zusammenfassungen. Von Hand:
+Actions, Refresh Anker research, Run workflow, oder `node werkzeug/aktualisieren.js`.
+
+### Rezepte: aus dem Netz und aus der eigenen Sammlung
+
+**Aus dem Netz.** Am Ersten jedes Monats sammelt `werkzeug/rezepte-holen.js`
+glutenfreie Rezepte von Seiten, die glutenfrei kochen (derzeit Meaningful Eats,
+Mama Knows Gluten Free, Dish by Dish, Minimalist Baker, Gluten Free Palate,
+Kochtrotz). Gelesen wird der RSS-Feed jeder Seite und auf jeder Rezeptseite das
+maschinenlesbare Rezept (schema.org/Recipe), robots.txt wird beachtet, zwischen
+zwei Anfragen an dieselbe Seite liegen zwei Sekunden. Gespeichert werden Name,
+Zutaten, Zeiten, Portionen, Autorin und Adresse in `rezepte-netz.js`. Die
+Zubereitung ist Text der Autorin und bleibt auf der Originalseite; die App
+verlinkt sie. Bilder werden nicht kopiert.
+
+Gluten, dreifach: die Quelle ist glutenfrei oder markiert das Rezept so; eine
+Zutat auf der Sperrliste (Weizen, Dinkel, Gerste, Roggen, Malz, Couscous ...)
+verwirft das Rezept; eine Zutat, die nur mit Zusatz sicher ist (Mehl, Hafer,
+Brot, Kekse, Sojasauce, Backpulver ...), muss den Zusatz tragen, sonst steht
+beim Rezept sichtbar "Bitte pruefen". Ein schwacher Zusatz wie "glutenfrei
+moeglich" oder "gluten-free as needed" zaehlt nicht. Deutsche
+Zusammensetzungen (Butterkekse, Hartweizengriess) werden erkannt. Eine Garantie
+ist das nicht, und die App sagt das bei jedem Rezept aus dem Netz.
+
+Gemerkt wird eine Kopie, damit ein Rezept nicht verschwindet, wenn es im
+naechsten Monat nicht mehr gesammelt wird. Eine neue Quelle ist eine Zeile in
+`QUELLEN` oben in `rezepte-holen.js`.
+
+**Aus der eigenen Sammlung.** `rezepte.js`, jedes Rezept glutenfrei, mit
+Zubereitung. Jeden Monat stehen sechs andere oben, vier davon passend zu den
+Erkrankungen.
 
 ### Anlaufstellen
 
@@ -183,6 +239,11 @@ aendern will, aendert die Datei und laedt neu.
 | `app.css` | Aussehen, Farben, hell und dunkel |
 | `app.js` | Mechanik: Speicher, Router, Seiten, Diagramme, Sicherung |
 | `inhalt-de.js` | **Alle Texte und Listen.** Hier stehen Symptome, Essensregeln, Rezepte, Laborwerte, Warnzeichen, Fragen und die Wissenskapitel. |
+| `module.js` | Die Erkrankungen als Bausteine, Deutsch und Englisch |
+| `rezepte.js` | Die eigene Rezeptsammlung fuer die monatliche Auswahl |
+| `rezepte-netz.js` | Glutenfreie Rezepte aus dem Netz. Wird erzeugt, nicht von Hand aendern. |
+| `uebersetzung.js` | Italienisch, Franzoesisch, Spanisch fuer module.js und rezepte.js |
+| `aktuell.js` | Die Forschungsuebersicht. Wird erzeugt, nicht von Hand aendern. |
 | `sw.js` | Offline-Ablage |
 | `inhalt-en.js` und drei weitere | Derselbe Inhalt auf Englisch, Italienisch, Franzoesisch, Spanisch |
 | `fonts/` | Die Schrift, selbst ausgeliefert. Nicht von Hand aendern, siehe unten. |
@@ -194,11 +255,17 @@ Der Inhalt liegt je Sprache in einer eigenen Datei. Eine Sprache wird erst
 angeboten, wenn zweierlei uebersetzt ist: der Inhalt und die Oberflaeche.
 Der Inhalt ist es in allen fuenf Sprachen. Die Oberflaeche, also rund
 zweihundertneunzig Knopf- und Meldungstexte aus `app.js`, ist es auf Englisch
-und auf Deutsch. Deshalb stehen in `OBERFLAECHE_FERTIG` heute `en` und `de`,
-und die App laeuft in beiden Sprachen durchgehend. Italienisch, Franzoesisch
-und Spanisch haben den Inhalt, aber noch keine `ui`-Tabelle; sie werden
-deshalb nicht angeboten. Was dafuer zu tun ist, steht in
-`HANDOVER-CHATGPT.md`.
+und auf Deutsch, und seit Oktober 2026 auch auf Italienisch, Franzoesisch und
+Spanisch. In `OBERFLAECHE_FERTIG` stehen alle fuenf. Die Bausteine aus
+`module.js` und `rezepte.js` sind fuer diese drei Sprachen in `uebersetzung.js`
+uebersetzt, mit dem deutschen Text als Schluessel; `werkzeug/pruefe-module.js`
+prueft, dass jeder Text da ist und jede Zahl darin stimmt.
+
+Italienisch, Franzoesisch und Spanisch sind sorgfaeltig uebersetzt, aber nicht
+von Muttersprachlerinnen und nicht von medizinischem Fachpersonal geprueft.
+Die App sagt das unter Mappe, Sprache. Eine weitere Sprache braucht dreierlei:
+den ganzen Inhalt als `inhalt-<code>.js`, die `ui`-Tabelle und die Eintraege in
+`uebersetzung.js`.
 
 Deutsch ist die Schluesselsprache: in `app.js` steht der deutsche Satz selbst
 als Schluessel, und `inhalt-en.js` traegt unter `ui` die Uebersetzung dazu.
@@ -274,9 +341,10 @@ Tabellenansicht, damit die Farbe die Linien nie allein auseinanderhalten muss.
 
 ### Icons
 
-`icon.svg` ist das Original. Die PNG-Dateien fuer iOS und den Manifest werden
-daraus erzeugt. Das Skript dafuer liegt nicht im Repository, die Geometrie
-steht im SVG.
+`icon.svg` ist das Original: ein Anker auf Nachtblau, der Bogen im Verlauf der
+Erkrankungsfarben. Die PNG-Dateien fuer iOS und den Manifest sind daraus mit
+Chromium gerendert, die maskierbare Fassung auf 76 Prozent verkleinert, damit
+sie in jede Maske passt.
 
 ---
 
@@ -285,6 +353,7 @@ steht im SVG.
 - Kein Server, kein Konto, keine Anmeldung.
 - `connect-src 'none'`: die Seite kann keine Verbindung nach draussen aufbauen,
   auch nicht aus Versehen und auch nicht, wenn spaeter jemand Code einfuegt.
+  Die Forschungsuebersicht aendert daran nichts: sie kommt als Datei mit der App.
 - Keine Schrift, kein Skript, kein Bild von einer fremden Adresse.
 - Keine Statistik, keine Zaehlpixel, keine Cookies.
 - Keine Schrift von Google. Die Dateien liegen im Ordner `fonts/`.

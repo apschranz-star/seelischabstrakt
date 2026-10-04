@@ -26,19 +26,54 @@
   const SCHLUESSEL = "anker-v1";
   const SICHERUNG_TAGE = 14;
 
+  /* Die Erkrankungen kommen aus module.js, die Rezepte aus rezepte.js, die
+     Forschungsuebersicht aus aktuell.js. Fehlt eine Datei, laeuft die App
+     trotzdem, nur ohne diesen Teil. */
+  const MODUL_LISTE = window.ANKER_MODULE || [];
+  const GRUND = window.ANKER_GRUND || { befinden: null, skalen: [] };
+  const REZEPTE = window.ANKER_REZEPTE || { bestand: [], neu: [] };
+  const NETZ = window.ANKER_NETZREZEPTE || { stand: null, rezepte: [] };
+
   const LEER = {
     version: 1,
-    profil: { name: "", geboren: "", diagnosen: [], notfall: "" },
+    profil: { name: "", geboren: "", diagnosen: [], notfall: "", module: [] },
     tage: {},
     medikamente: [],
     werte: [],
     termine: [],
     stellen: [],
     schuebe: [],
+    gemerkt: { rezepte: [], studien: [], netz: [] },
     einstellungen: { thema: "auto", letzteSicherung: null, start: heuteISO() },
   };
 
-  let D = laden();
+  let migriert = false;
+  let D = ordnen(laden());
+
+  /*
+   * Bringt einen geladenen Stand in die heutige Form. Wer Anker schon vor den
+   * Erkrankungs-Bausteinen benutzt hat, hatte Lupus und Zoeliakie, denn fuer
+   * genau diese beiden war die App gebaut. Diese Nutzerin bekommt beide
+   * gesetzt und sieht alles wie bisher, nur mehr davon. Wer ganz neu ist,
+   * waehlt beim ersten Start selbst.
+   */
+  function ordnen(d) {
+    /* Zuerst nachsehen, ob die Liste fehlt, dann erst mit den Vorgaben
+       auffuellen: die Vorgabe ist eine leere Liste, und mit ihr saehe jede
+       alte Sicherung aus wie ein neuer Anfang. */
+    const ohneListe = !d.profil || !Array.isArray(d.profil.module);
+    d.profil = Object.assign({}, LEER.profil, d.profil || {});
+    if (ohneListe) {
+      migriert = true;
+      const schonDa = Object.keys(d.tage || {}).length || (d.medikamente || []).length || (d.werte || []).length;
+      d.profil.module = schonDa ? ["sle", "zoeliakie"] : [];
+    }
+    const bekannt = MODUL_LISTE.map((m) => m.id);
+    d.profil.module = d.profil.module.filter((m) => bekannt.includes(m));
+    d.gemerkt = Object.assign({ rezepte: [], studien: [], netz: [] }, d.gemerkt || {});
+    d.einstellungen = Object.assign({}, LEER.einstellungen, d.einstellungen || {});
+    return d;
+  }
 
   function laden() {
     try {
@@ -99,10 +134,11 @@
    * Sprache hier, muss werkzeug/pruefe-texte.js fuer sie sauber durchlaufen,
    * sonst stehen deutsche Knoepfe ueber uebersetztem Text.
    *
-   * Italienisch, Franzoesisch und Spanisch haben den ganzen Inhalt, aber noch
-   * keine ui-Tabelle. Sie kommen dazu, sobald sie eine haben.
+   * Seit Oktober 2026 haben alle fuenf eine ui-Tabelle. Die italienische,
+   * franzoesische und spanische sind nicht von Muttersprachlerinnen geprueft;
+   * Mappe, Sprache sagt das in der App.
    */
-  const OBERFLAECHE_FERTIG = ["en", "de"];
+  const OBERFLAECHE_FERTIG = ["en", "de", "it", "fr", "es"];
 
   function sprachenDa() {
     return SPRACHEN.filter(
@@ -145,7 +181,7 @@
     ["verlauf", () => T("Verlauf")],
     ["essen", () => T("Essen")],
     ["wissen", () => T("Wissen")],
-    ["mehr", () => T("Mehr")],
+    ["mehr", () => T("Mappe")],
   ];
 
   function huelleUebersetzen() {
@@ -161,7 +197,7 @@
     if (beschreibung) {
       beschreibung.setAttribute(
         "content",
-        T("Persoenliches Begleitbuch bei SLE und Zoeliakie. Alle Eintraege bleiben auf diesem Geraet."),
+        T("Persoenliches Begleitbuch bei chronischen Erkrankungen. Alle Eintraege bleiben auf diesem Geraet."),
       );
     }
   }
@@ -268,7 +304,117 @@ function LOKAL() {
   function zeichenText(schluessel) {
     const i = zeichenListe().indexOf(schluessel);
     const eigen = I.symptome || [];
-    return i >= 0 && eigen[i] != null ? eigen[i] : schluessel;
+    if (i >= 0 && eigen[i] != null) return eigen[i];
+    /* Zeichen, die erst eine Erkrankung mitbringt, stehen in module.js. */
+    for (const m of MODUL_LISTE) {
+      const z = (m.eigeneZeichen || []).find((x) => x.schluessel === schluessel);
+      if (z) return MT(z);
+    }
+    return schluessel;
+  }
+
+  /* ---------------------------------------------------------- Erkrankungen */
+
+  /* Ein Text aus module.js oder rezepte.js: { de, en }. Fehlt die laufende
+     Sprache, greift Englisch, dann Deutsch. Leer bleibt nie etwas. */
+  /* Italienisch, Franzoesisch und Spanisch stehen nicht in den Bausteinen
+     selbst, sondern in uebersetzung.js, mit dem deutschen Text als
+     Schluessel. Fehlt dort etwas, greift Englisch. */
+  const UEBERSETZUNG = window.ANKER_UEBERSETZUNG || {};
+  function MT(o) {
+    if (o == null) return "";
+    if (typeof o === "string" || Array.isArray(o)) return o;
+    if (o[L] != null) return o[L];
+    const tafel = UEBERSETZUNG[L];
+    if (tafel && o.de != null) {
+      if (Array.isArray(o.de)) {
+        if (o.de.every((x) => tafel[x] != null)) return o.de.map((x) => tafel[x]);
+      } else if (tafel[o.de] != null) return tafel[o.de];
+    }
+    return o.en != null ? o.en : o.de;
+  }
+  function modulVon(mid) { return MODUL_LISTE.find((m) => m.id === mid); }
+  function aktiveModule() { return (D.profil.module || []).map(modulVon).filter(Boolean); }
+  function hat(mid) { return (D.profil.module || []).includes(mid); }
+  /* "sle|zoeliakie" heisst eine von beiden, "sle+zoeliakie" heisst beide. */
+  function gilt(regel) {
+    if (!regel) return true;
+    if (regel.includes("+")) return regel.split("+").every(hat);
+    return regel.split("|").some(hat);
+  }
+
+  function akzentSetzen() {
+    const m = aktiveModule();
+    const wurzel = document.documentElement;
+    wurzel.style.setProperty("--modul", m.length ? m[0].farbe : "#6b7cff");
+    wurzel.style.setProperty("--modul-2", m.length > 1 ? m[1].farbe : (m.length ? m[0].farbe : "#6b7cff"));
+  }
+
+  /* Regler, Fragen und Zeichen aller gewaehlten Erkrankungen. Was zwei
+     Erkrankungen teilen, etwa die Gelenke, steht nur einmal da. */
+  function skalenAktiv() {
+    const liste = (GRUND.skalen || []).map((s) => Object.assign({ farbe: null }, s));
+    aktiveModule().forEach((m) => (m.skalen || []).forEach((s) => {
+      if (!liste.some((x) => x.schluessel === s.schluessel)) liste.push(Object.assign({ farbe: m.farbe, modul: m.id }, s));
+    }));
+    return liste;
+  }
+  function checksAktiv() {
+    const liste = [];
+    aktiveModule().forEach((m) => (m.checks || []).forEach((c) => {
+      if (!liste.some((x) => x.schluessel === c.schluessel)) liste.push(Object.assign({ farbe: m.farbe, modul: m }, c));
+    }));
+    return liste;
+  }
+  function zeichenAktiv(schonGewaehlt) {
+    const liste = [];
+    aktiveModule().forEach((m) => (m.zeichen || []).forEach((z) => {
+      if (!liste.some((x) => x.wert === z)) liste.push({ wert: z, farbe: m.farbe });
+    }));
+    /* Ein Zeichen, das an diesem Tag schon angekreuzt ist, bleibt sichtbar,
+       auch wenn seine Erkrankung inzwischen abgewaehlt wurde. */
+    (schonGewaehlt || []).forEach((z) => { if (!liste.some((x) => x.wert === z)) liste.push({ wert: z, farbe: null }); });
+    return liste;
+  }
+
+  /* Alle Laborwerte: die uebersetzten aus inhalt-*.js und die, die eine
+     Erkrankung zusaetzlich mitbringt. */
+  function laborListe() {
+    const liste = (I.laborwerte || []).map((w) => ({
+      schluessel: w.schluessel, name: w.name, einheit: w.einheit, gruppe: w.gruppe, bedeutung: w.bedeutung,
+    }));
+    MODUL_LISTE.forEach((m) => (m.eigeneLabor || []).forEach((w) => {
+      if (liste.some((x) => x.schluessel === w.schluessel)) return;
+      liste.push({ schluessel: w.schluessel, name: MT(w.name), einheit: w.einheit, gruppe: MT(w.gruppe), bedeutung: MT(w.bedeutung) });
+    }));
+    return liste;
+  }
+  function laborAktiv() {
+    const gewollt = new Set();
+    aktiveModule().forEach((m) => (m.labor || []).forEach((k) => gewollt.add(k)));
+    D.werte.forEach((w) => gewollt.add(w.schluessel));
+    const alle = laborListe();
+    const liste = alle.filter((w) => gewollt.has(w.schluessel));
+    return liste.length ? liste : alle;
+  }
+
+  function modulChips(wirt, mods, href) {
+    const box = document.createElement("div");
+    box.className = "modul-chips";
+    mods.forEach((m) => {
+      const a = document.createElement(href ? "a" : "span");
+      if (href) a.href = href;
+      a.className = "modul-chip";
+      a.style.setProperty("--punkt", m.farbe);
+      a.textContent = MT(m.kurz);
+      box.appendChild(a);
+    });
+    wirt.appendChild(box);
+    return box;
+  }
+
+  function monatJahr(iso) {
+    return new Date((iso || heuteISO()).slice(0, 10) + "T12:00:00").toLocaleDateString(LOKAL(), { month: "long", year: "numeric" });
   }
 
   function tagLeer(e) {
@@ -294,7 +440,9 @@ function LOKAL() {
     verlauf: { titel: () => T("Verlauf"), bauen: seiteVerlauf },
     essen: { titel: () => T("Essen"), bauen: seiteEssen },
     wissen: { titel: () => T("Wissen"), bauen: seiteWissen },
-    mehr: { titel: () => T("Mehr"), bauen: seiteMehr },
+    mehr: { titel: () => T("Mappe"), bauen: seiteMehr },
+    profil: { titel: () => T("Meine Erkrankungen"), bauen: seiteProfil, eltern: "mehr" },
+    gemerkt: { titel: () => T("Gemerkt"), bauen: seiteGemerkt, eltern: "mehr" },
     medikamente: { titel: () => T("Medikamente"), bauen: seiteMedikamente, eltern: "mehr" },
     werte: { titel: () => T("Laborwerte"), bauen: seiteWerte, eltern: "mehr" },
     termine: { titel: () => T("Termine"), bauen: seiteTermine, eltern: "mehr" },
@@ -312,13 +460,18 @@ function LOKAL() {
   }
 
   function zeichnen() {
-    const name = route();
+    /* Beim ersten Start, oder nach "Alles loeschen", gibt es noch keine
+       Erkrankung. Dann ist die Wahl die einzige Seite, die Sinn ergibt. */
+    let name = route();
+    if (!aktiveModule().length && MODUL_LISTE.length && name !== "profil" && name !== "sicherung") name = "profil";
+    if (name !== "heute") nachtragTag = null;
     const seite = SEITEN[name];
     const ziel = $("#inhalt");
     ziel.innerHTML = "";
+    akzentSetzen();
     $("#kopf-titel").textContent = seite.titel();
     $("#kopf-datum").textContent =
-      name === "heute" ? langesDatum(heuteISO()) : (seite.eltern ? T("Mehr") : "Anker");
+      name === "heute" ? langesDatum(heuteISO()) : (seite.eltern ? T("Mappe") : "Anker");
     seite.bauen(ziel);
     const aktiv = seite.eltern || name;
     document.querySelectorAll(".leiste a").forEach((a) => {
@@ -339,37 +492,59 @@ function LOKAL() {
     return d;
   }
 
-  function skala(wirt, { name, schluessel, iso, links, rechts, hoch = "schlecht" }) {
-    const e = tag(iso);
+  /*
+   * Der Schieberegler, 0 bis 10, von links nach rechts.
+   *
+   * Ein Regler hat keinen leeren Zustand, ein Tagebuch braucht aber einen:
+   * nicht eingetragen ist etwas anderes als 5. Also steht der Regler zuerst
+   * gedimmt in der Mitte und zeigt einen Strich statt einer Zahl. Erst die
+   * erste Beruehrung setzt einen Wert, und "leeren" nimmt ihn wieder weg.
+   *
+   * Die Farbe folgt dem Wert: gruen heisst gut, rot heisst schlecht. Bei den
+   * Beschwerden ist 10 schlecht, beim Befinden ist 10 gut (gutHoch). Die
+   * Farbe sagt es nie allein, die Zahl und die Endbeschriftung stehen dabei.
+   */
+  function regler(wirt, { name, schluessel, iso, links, rechts, gutHoch = false, farbe = null, gross = false }) {
     const box = document.createElement("div");
-    box.className = "skala";
-    const wert = e[schluessel];
+    box.className = "regler" + (gross ? " gross" : "");
+    if (farbe) box.style.setProperty("--punkt", farbe);
     box.innerHTML =
-      `<div class="skala-kopf"><span class="skala-name">${esc(name)}</span>` +
-      `<span class="skala-wert" data-wert>${wert == null ? esc(T("nicht gesetzt")) : esc(TV("{n} von 10", { n: wert }))}</span></div>` +
-      `<div class="skala-reihe" role="group" aria-label="${esc(TV("{name}, 0 bis 10", { name: name }))}"></div>` +
-      `<div class="skala-enden"><span>${esc(links)}</span><span>${esc(rechts)}</span></div>`;
-    const reihe = box.querySelector(".skala-reihe");
-    for (let i = 0; i <= 10; i++) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.textContent = String(i);
-      b.setAttribute("aria-pressed", String(wert === i));
-      b.setAttribute("aria-label", TV("{name} {n} von 10", { name: name, n: i }));
-      b.addEventListener("click", () => {
-        const jetzt = tag(iso);
-        jetzt[schluessel] = jetzt[schluessel] === i ? null : i;
-        sichern();
-        reihe.querySelectorAll("button").forEach((x, j) =>
-          x.setAttribute("aria-pressed", String(jetzt[schluessel] === j)),
-        );
-        box.querySelector("[data-wert]").textContent =
-          jetzt[schluessel] == null ? T("nicht gesetzt") : TV("{n} von 10", { n: jetzt[schluessel] });
-      });
-      reihe.appendChild(b);
+      `<div class="regler-kopf"><span class="regler-name">${farbe ? '<i class="modul-punkt"></i>' : ""}${esc(name)}</span>` +
+      `<span class="regler-zahl" data-zahl></span></div>` +
+      `<input type="range" min="0" max="10" step="1" aria-label="${esc(name)}">` +
+      `<div class="regler-enden"><span>${esc(links)}</span>` +
+      `<button type="button" class="regler-weg" hidden>${esc(T("leeren"))}</button><span>${esc(rechts)}</span></div>`;
+    const ein = box.querySelector("input");
+    const zahl = box.querySelector("[data-zahl]");
+    const weg = box.querySelector(".regler-weg");
+    function zeigen(v) {
+      const gesetzt = v != null;
+      box.classList.toggle("ungesetzt", !gesetzt);
+      ein.value = String(gesetzt ? v : 5);
+      box.style.setProperty("--p", `${(gesetzt ? v : 5) * 10}%`);
+      const gut = gesetzt ? (gutHoch ? v : 10 - v) / 10 : 0.5;
+      box.style.setProperty("--ton", String(Math.round(6 + gut * 136)));
+      zahl.textContent = gesetzt ? String(v) : "\u2013";
+      ein.setAttribute("aria-valuetext", gesetzt ? TV("{n} von 10", { n: v }) : T("nicht gesetzt"));
+      weg.hidden = !gesetzt;
     }
+    zeigen(tag(iso)[schluessel] == null ? null : tag(iso)[schluessel]);
+    ein.addEventListener("input", () => {
+      const v = Number(ein.value);
+      const t = tag(iso);
+      if (t[schluessel] !== v && navigator.vibrate) navigator.vibrate(4);
+      t[schluessel] = v;
+      zeigen(v);
+    });
+    ein.addEventListener("change", sichern);
+    /* Ein Tippen genau auf die Mitte loest kein input aus. Ohne das hier
+       liesse sich eine 5 nie eintragen. */
+    ein.addEventListener("pointerup", () => {
+      const t = tag(iso);
+      if (t[schluessel] == null) { t[schluessel] = Number(ein.value); zeigen(t[schluessel]); sichern(); }
+    });
+    weg.addEventListener("click", () => { tag(iso)[schluessel] = null; zeigen(null); sichern(); });
     wirt.appendChild(box);
-    void hoch;
     return box;
   }
 
@@ -421,9 +596,30 @@ function LOKAL() {
 
   /* ---------------------------------------------------------------- Heute */
 
+  /* Ein anderer Tag als heute, zum Nachtragen. Gilt nur, solange die
+     Heute-Seite offen ist; jeder andere Bereich setzt ihn zurueck. */
+  let nachtragTag = null;
+
   function seiteHeute(ziel) {
-    const iso = heuteISO();
+    const iso = nachtragTag || heuteISO();
     const e = tag(iso);
+    const mods = aktiveModule();
+
+    if (nachtragTag) {
+      $("#kopf-titel").textContent = T("Nachtragen");
+      $("#kopf-datum").textContent = langesDatum(iso);
+      const kn = karte(`<div class="hinweis"><b>${esc(TV("Du traegst fuer {datum} nach.", { datum: langesDatum(iso) }))}</b></div>`);
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "knopf leer";
+      b.textContent = T("Zurueck zu heute");
+      b.addEventListener("click", () => { nachtragTag = null; zeichnen(); });
+      r.appendChild(b);
+      kn.appendChild(r);
+      ziel.appendChild(kn);
+    }
 
     if (speicherFehlt) {
       ziel.appendChild(
@@ -433,14 +629,46 @@ function LOKAL() {
 
     erinnerungSicherung(ziel);
 
-    /* Das Wichtigste zuerst, mit dem Daumen erreichbar. */
-    const k1 = karte(`<p class="kicker">${esc(T("Wie geht es dir"))}</p><h2 class="h2">${esc(T("Die vier Zahlen"))}</h2>
-      <p class="lead">${esc(T("Nur antippen. Was du nicht antippst, bleibt leer, und leer ist auch eine Antwort."))}</p>`);
-    skala(k1, { name: T("Muedigkeit"), schluessel: "muedigkeit", iso, links: T("wach"), rechts: T("erschoepft") });
-    skala(k1, { name: T("Schmerz"), schluessel: "schmerz", iso, links: T("keiner"), rechts: T("stark") });
-    skala(k1, { name: T("Gelenke"), schluessel: "gelenke", iso, links: T("frei"), rechts: T("steif, geschwollen") });
-    skala(k1, { name: T("Kopf klar"), schluessel: "nebel", iso, links: T("klar"), rechts: T("im Nebel") });
+    /* Das Wichtigste zuerst, gross und mit dem Daumen erreichbar: eine Zahl
+       fuer den ganzen Tag. Sie laeuft nach rechts, wenn es besser geht. */
+    if (GRUND.befinden) {
+      const kb = karte(`<p class="kicker">${esc(T("Ein Wert fuer den ganzen Tag"))}</p><h2 class="h2 gross">${esc(MT(GRUND.befinden.name))}</h2>`);
+      kb.classList.add("held");
+      regler(kb, {
+        name: T("Gesamt"), schluessel: "befinden", iso,
+        links: MT(GRUND.befinden.links), rechts: MT(GRUND.befinden.rechts), gutHoch: true, gross: true,
+      });
+      modulChips(kb, mods, "#/profil");
+      ziel.appendChild(kb);
+    }
+
+    /* Die Regler aller gewaehlten Erkrankungen, ohne Doppelte. */
+    const k1 = karte(`<p class="kicker">${esc(T("Wie geht es dir"))}</p><h2 class="h2">${esc(T("Dein Koerper heute"))}</h2>
+      <p class="lead">${esc(T("Schieben, wo es passt. Was du nicht beruehrst, bleibt leer, und leer ist auch eine Antwort."))}</p>`);
+    skalenAktiv().forEach((s) => regler(k1, {
+      name: MT(s.name), schluessel: s.schluessel, iso, links: MT(s.links), rechts: MT(s.rechts), farbe: s.farbe,
+    }));
     ziel.appendChild(k1);
+
+    /* Die eine Frage je Erkrankung: Gluten, Sonne, Tablette, Stuhlgang. */
+    checksAktiv().forEach((c) => {
+      const k = karte(`<p class="kicker"><i class="modul-punkt"></i>${esc(MT(c.modul.kurz))}</p><h2 class="h2">${esc(MT(c.frage))}</h2>`);
+      k.style.setProperty("--punkt", c.farbe);
+      const box = schalterListe(k, {
+        einzeln: true,
+        optionen: c.optionen.map((o) => ({ wert: o.wert, text: MT(o.text) })),
+        gewaehlt: e[c.schluessel],
+        beiWahl: (w) => {
+          const t = tag(iso);
+          t[c.schluessel] = t[c.schluessel] === w ? null : w;
+          sichern();
+          return t[c.schluessel];
+        },
+      });
+      box.classList.add("segment");
+      box.querySelectorAll("button").forEach((b, i) => { b.dataset.ton = c.optionen[i].ton; });
+      ziel.appendChild(k);
+    });
 
     /* Schlaf */
     const k2 = karte(`<p class="kicker">${esc(T("Nacht"))}</p><h2 class="h2">${esc(T("Schlaf"))}</h2>`);
@@ -455,14 +683,16 @@ function LOKAL() {
       beiAenderung: (v) => { tag(iso).aufgewacht = v || null; sichern(); },
     });
     k2.appendChild(zwei);
-    skala(k2, { name: T("Schlafqualitaet"), schluessel: "schlafQualitaet", iso, links: T("schlecht"), rechts: T("erholsam") });
+    regler(k2, { name: T("Schlafqualitaet"), schluessel: "schlafQualitaet", iso, links: T("schlecht"), rechts: T("erholsam"), gutHoch: true });
     ziel.appendChild(k2);
 
-    /* Symptome */
+    /* Zeichen aller gewaehlten Erkrankungen, jedes mit dem Punkt seiner
+       Erkrankung. */
     const k3 = karte(`<p class="kicker">${esc(T("Heute bemerkt"))}</p><h2 class="h2">${esc(T("Zeichen"))}</h2>
       <p class="lead">${esc(T("Mehrfach moeglich. Was hier steht, sind die Dinge, die beim naechsten Termin zaehlen, weil man sie zwei Monate spaeter nicht mehr erinnert."))}</p>`);
-    schalterListe(k3, {
-      optionen: zeichenListe().map((z) => ({ wert: z, text: zeichenText(z) })),
+    const zeichen = zeichenAktiv(e.symptome);
+    const zl = schalterListe(k3, {
+      optionen: zeichen.map((z) => ({ wert: z.wert, text: zeichenText(z.wert) })),
       gewaehlt: e.symptome || [],
       beiWahl: (w) => {
         const t = tag(iso);
@@ -473,27 +703,12 @@ function LOKAL() {
         return t.symptome;
       },
     });
-    ziel.appendChild(k3);
-
-    /* Essen und Gluten */
-    const k4 = karte(`<p class="kicker">${esc(T("Glutenfrei"))}</p><h2 class="h2">${esc(T("Der Tag beim Essen"))}</h2>
-      <p class="lead">${esc(T("Eine Spur reicht. Wenn spaeter Beschwerden kommen, hilft es sehr, hier den Tag zu finden, an dem etwas unsicher war."))}</p>`);
-    schalterListe(k4, {
-      einzeln: true,
-      optionen: [
-        { wert: "sicher", text: T("Alles sicher") },
-        { wert: "unsicher", text: T("Etwas war unsicher") },
-        { wert: "exposition", text: T("Gluten bekommen") },
-      ],
-      gewaehlt: e.gluten,
-      beiWahl: (w) => {
-        const t = tag(iso);
-        t.gluten = t.gluten === w ? null : w;
-        sichern();
-        return t.gluten;
-      },
+    zl.querySelectorAll("button").forEach((b, i) => {
+      if (!zeichen[i].farbe || aktiveModule().length < 2) return;
+      b.classList.add("mit-punkt");
+      b.style.setProperty("--punkt", zeichen[i].farbe);
     });
-    ziel.appendChild(k4);
+    ziel.appendChild(k3);
 
     /* Bewegung */
     const k5 = karte(`<p class="kicker">${esc(T("Bewegung"))}</p><h2 class="h2">${esc(T("Was ging heute"))}</h2>`);
@@ -509,8 +724,7 @@ function LOKAL() {
     });
     k5.appendChild(zwei2);
     const hinweis = document.createElement("p");
-    hinweis.className = "klein";
-    hinweis.style.marginTop = "12px";
+    hinweis.className = "klein klein-abstand";
     hinweis.textContent =
       T("Auch null Minuten sind ein Eintrag. Der Verlauf wird erst dann ehrlich, wenn die schlechten Tage genauso darin stehen wie die guten.");
     k5.appendChild(hinweis);
@@ -543,17 +757,37 @@ function LOKAL() {
     });
     ziel.appendChild(k7);
 
+    /* Ein Rezept aus der Auswahl des Monats, jeden Tag ein anderes. */
+    const auswahl = rezepteDesMonats();
+    if (auswahl.length) {
+      const r = auswahl[new Date().getDate() % auswahl.length];
+      const kr = karte(`<p class="kicker">${esc(T("Fuer heute vorgeschlagen"))}</p><h2 class="h2">${esc(r.name)}</h2>
+        <p class="lead">${esc(r.warum)}</p>`);
+      kr.classList.add("vorschlag");
+      rezeptMarken(kr, r);
+      const reihe = document.createElement("div");
+      reihe.className = "knopf-reihe";
+      const a = document.createElement("a");
+      a.className = "knopf leer";
+      a.href = "#/essen";
+      a.textContent = T("Rezepte des Monats");
+      reihe.appendChild(a);
+      kr.appendChild(reihe);
+      ziel.appendChild(kr);
+    }
+
     /* Gestern nachtragen */
     const gestern = verschoben(iso, -1);
-    if (tagLeer(D.tage[gestern])) {
+    if (!nachtragTag && tagLeer(D.tage[gestern])) {
       const k8 = karte(
         `<p class="kicker">${esc(T("Nachtragen"))}</p><h2 class="h2">${esc(T("Gestern ist leer"))}</h2>
-         <p class="lead">${esc(langesDatum(gestern))}. Wenn du magst, kurz nachtragen.</p>`,
+         <p class="lead">${esc(TV("{datum}. Wenn du magst, kurz nachtragen.", { datum: langesDatum(gestern) }))}</p>`,
       );
-      const b = document.createElement("a");
+      const b = document.createElement("button");
+      b.type = "button";
       b.className = "knopf leer";
-      b.href = "#/verlauf";
-      b.textContent = T("Im Verlauf nachtragen");
+      b.textContent = T("Gestern nachtragen");
+      b.addEventListener("click", () => { nachtragTag = gestern; zeichnen(); });
       const reihe = document.createElement("div");
       reihe.className = "knopf-reihe";
       reihe.appendChild(b);
@@ -616,20 +850,46 @@ function LOKAL() {
     });
     ziel.appendChild(kw);
 
-    /* Diagramm 1: die drei Skalen, eine Achse, gleiche Einheit */
-    const serien = [
-      { name: T("Muedigkeit"), kurz: T("Mued."), schluessel: "muedigkeit", farbe: "var(--serie-1)" },
-      { name: T("Schmerz"), kurz: T("Schmerz"), schluessel: "schmerz", farbe: "var(--serie-2)" },
-      { name: T("Kopf im Nebel"), kurz: T("Nebel"), schluessel: "nebel", farbe: "var(--serie-3)" },
-    ].filter((s) => reihe.some((d) => D.tage[d] && D.tage[d][s.schluessel] != null));
+    /* Diagramm 1: bis zu drei Regler, eine Achse, gleiche Einheit. Welche,
+       waehlt sie selbst; jede gewaehlte Erkrankung bringt ihre mit. Drei,
+       weil die drei Linienfarben gegen Farbsinnschwaechen geprueft sind und
+       eine vierte das nicht mehr waere. */
+    const moeglich = [];
+    if (GRUND.befinden) moeglich.push({ schluessel: "befinden", name: MT(GRUND.befinden.name) });
+    skalenAktiv().forEach((s) => moeglich.push({ schluessel: s.schluessel, name: MT(s.name) }));
+    const vorhanden = moeglich.filter((m) => reihe.some((d) => D.tage[d] && D.tage[d][m.schluessel] != null));
+    let gewaehlt = (D.einstellungen.verlaufSerien || []).filter((k) => vorhanden.some((m) => m.schluessel === k));
+    if (!gewaehlt.length) gewaehlt = vorhanden.slice(0, 3).map((m) => m.schluessel);
+    const farben = ["var(--serie-1)", "var(--serie-2)", "var(--serie-3)"];
+    const serien = gewaehlt.map((k, i) => {
+      const m = vorhanden.find((x) => x.schluessel === k);
+      return { name: m.name, kurz: m.name.length > 8 ? m.name.slice(0, 7) + "." : m.name, schluessel: k, farbe: farben[i] };
+    });
 
-    if (serien.length) {
+    if (vorhanden.length) {
       const k = karte(
         `<p class="kicker">${esc(T("Alle auf derselben Skala, 0 bis 10"))}</p>
-         <h2 class="h2">${esc(T("Muedigkeit, Schmerz, Nebel"))}</h2>`,
+         <h2 class="h2">${esc(T("Deine Regler im Verlauf"))}</h2>`,
       );
-      k.appendChild(linienDiagramm(reihe, serien, 0, 10));
-      k.appendChild(tabelleZu(reihe, serien));
+      if (vorhanden.length > 1) {
+        const wahl = schalterListe(k, {
+          optionen: vorhanden.map((m) => ({ wert: m.schluessel, text: m.name })),
+          gewaehlt: gewaehlt,
+          beiWahl: (w) => {
+            let neu = gewaehlt.includes(w) ? gewaehlt.filter((x) => x !== w) : gewaehlt.concat([w]);
+            if (neu.length > 3) { melden(T("Hoechstens drei Linien zugleich.")); neu = gewaehlt; }
+            D.einstellungen.verlaufSerien = neu;
+            sichern();
+            zeichnen();
+            return neu;
+          },
+        });
+        wahl.classList.add("klein-wahl");
+      }
+      if (serien.length) {
+        k.appendChild(linienDiagramm(reihe, serien, 0, 10));
+        k.appendChild(tabelleZu(reihe, serien));
+      }
       ziel.appendChild(k);
     }
 
@@ -645,17 +905,24 @@ function LOKAL() {
     }
 
     /* Kalender */
+    const mitBefinden = reihe.some((d) => D.tage[d] && D.tage[d].befinden != null);
     const kk = karte(
-      `<p class="kicker">${esc(T("Ein Feld je Tag, dunkler heisst muerber"))}</p><h2 class="h2">${esc(T("Muedigkeit im Ueberblick"))}</h2>`,
+      mitBefinden
+        ? `<p class="kicker">${esc(T("Ein Feld je Tag, dunkler heisst schlechter"))}</p><h2 class="h2">${esc(T("Befinden im Ueberblick"))}</h2>`
+        : `<p class="kicker">${esc(T("Ein Feld je Tag, dunkler heisst muerber"))}</p><h2 class="h2">${esc(T("Muedigkeit im Ueberblick"))}</h2>`,
     );
-    kk.appendChild(kalender(reihe));
+    kk.appendChild(kalender(reihe, mitBefinden));
     ziel.appendChild(kk);
 
     /* Einen Tag nachtragen */
     const kn = karte(`<p class="kicker">${esc(T("Nachtragen"))}</p><h2 class="h2">${esc(T("Einen anderen Tag"))}</h2>`);
     const wahl = feld(kn, {
       label: T("Datum"), typ: "date", wert: "",
-      beiAenderung: (v) => { if (v) location.hash = "#/heute"; },
+      beiAenderung: (v) => {
+        if (!v || v > heuteISO()) return;
+        nachtragTag = v === heuteISO() ? null : v;
+        location.hash = "#/heute";
+      },
     });
     wahl.max = heuteISO();
     const liste = document.createElement("ul");
@@ -674,6 +941,7 @@ function LOKAL() {
 
   function zusammenfassung(e) {
     const teile = [];
+    if (e.befinden != null) teile.push(TV("Befinden {n}", { n: e.befinden }));
     if (e.muedigkeit != null) teile.push(TV("Muedigkeit {n}", { n: e.muedigkeit }));
     if (e.schmerz != null) teile.push(TV("Schmerz {n}", { n: e.schmerz }));
     if (e.schlafStunden != null) teile.push(TV("{n} h Schlaf", { n: e.schlafStunden }));
@@ -726,6 +994,7 @@ function LOKAL() {
       s += `<text class="achse" x="${m.x.toFixed(1)}" y="${H - 8}" text-anchor="middle">${esc(kurzesDatum(m.d))}</text>`;
     });
 
+    const enden = [];
     serien.forEach((serie) => {
       const punkte = [];
       tage.forEach((d, i) => {
@@ -767,7 +1036,20 @@ function LOKAL() {
          liegt auf hellem Grund unter 3:1, also darf die Farbe die Linien nicht
          allein auseinanderhalten. */
       const letzter = punkte[punkte.length - 1];
-      s += `<text class="endlabel" x="${(x(letzter.i) + 8).toFixed(1)}" y="${(y(letzter.v) + 4).toFixed(1)}" fill="${serie.farbe}">${esc(serie.kurz || serie.name)}</text>`;
+      enden.push({ x: x(letzter.i) + 8, y: y(letzter.v) + 4, farbe: serie.farbe, text: serie.kurz || serie.name });
+    });
+
+    /* Enden zwei Linien beim selben Wert, liegen die Beschriftungen sonst
+       uebereinander und keine ist lesbar. Also auseinanderschieben, mit
+       mindestens 12 Einheiten Abstand. */
+    enden.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < enden.length; i++) {
+      if (enden[i].y - enden[i - 1].y < 12) enden[i].y = enden[i - 1].y + 12;
+    }
+    const ueber = enden.length ? enden[enden.length - 1].y - (H - 2) : 0;
+    if (ueber > 0) enden.forEach((e) => { e.y -= ueber; });
+    enden.forEach((e) => {
+      s += `<text class="endlabel" x="${e.x.toFixed(1)}" y="${e.y.toFixed(1)}" fill="${e.farbe}">${esc(e.text)}</text>`;
     });
 
     s += "</svg>";
@@ -808,7 +1090,7 @@ function LOKAL() {
     return w;
   }
 
-  function kalender(tage) {
+  function kalender(tage, mitBefinden) {
     const huelle = document.createElement("div");
     const wt = document.createElement("div");
     wt.className = "kalender-tage";
@@ -838,14 +1120,17 @@ function LOKAL() {
     }
     tage.forEach((d) => {
       const e = D.tage[d];
-      const v = e ? e.muedigkeit : null;
+      const roh = e ? (mitBefinden ? e.befinden : e.muedigkeit) : null;
+      /* Beim Befinden ist 10 gut, also dreht sich die Stufe um: dunkel heisst
+         auf beiden Karten dasselbe, naemlich ein schlechter Tag. */
+      const v = roh == null ? null : (mitBefinden ? 10 - roh : roh);
       const z = document.createElement("i");
       if (v != null) {
         const stufe = Math.min(4, Math.floor(v / 2.2));
         z.style.background = `var(${ramp[stufe]})`;
         z.style.borderColor = "transparent";
       }
-      z.title = `${kurzesDatum(d)}: ${v == null ? T("kein Eintrag") : T("Muedigkeit") + " " + v}`;
+      z.title = `${kurzesDatum(d)}: ${roh == null ? T("kein Eintrag") : (mitBefinden ? T("Befinden") : T("Muedigkeit")) + " " + roh}`;
       gitter.appendChild(z);
     });
     huelle.append(wt, gitter);
@@ -853,22 +1138,333 @@ function LOKAL() {
     const leg = document.createElement("p");
     leg.className = "klein";
     leg.style.marginTop = "10px";
-    leg.textContent = T("Hell heisst wach, dunkel heisst erschoepft. Ein leeres Feld ist ein Tag ohne Eintrag.");
+    leg.textContent = mitBefinden
+      ? T("Hell heisst ein guter Tag, dunkel ein schlechter. Ein leeres Feld ist ein Tag ohne Eintrag.")
+      : T("Hell heisst wach, dunkel heisst erschoepft. Ein leeres Feld ist ein Tag ohne Eintrag.");
     huelle.appendChild(leg);
     return huelle;
   }
 
   /* ---------------------------------------------------------------- Essen */
 
-  function seiteEssen(ziel) {
-    ziel.appendChild(
-      karte(
-        `<p class="kicker">${esc(T("Zwei Regeln zugleich"))}</p><h2 class="h2">${esc(T("Glutenfrei, und dazu entzuendungsarm"))}</h2>
-         <p class="lead">${esc(T("Die erste Regel ist streng und nicht verhandelbar: bei Zoeliakie ist die glutenfreie Ernaehrung die Behandlung, nicht eine Option. Die zweite ist weicher: es gibt Hinweise, dass ein mediterranes Muster bei Lupus guttut, aber keine Diaet, die Lupus heilt. Was hier steht, ist eine Merkhilfe, keine Verordnung."))}</p>`,
-      ),
-    );
+  /* Welche der Essensgruppen aus inhalt-*.js zu welcher Erkrankung gehoeren,
+     in derselben Reihenfolge wie dort. */
+  const ESSEN_FUER = ["zoeliakie", "zoeliakie", "sle", "sle", "sle|zoeliakie", "zoeliakie"];
 
-    I.essen.forEach((gruppe) => {
+  function tagName(t) {
+    switch (t) {
+      case "mediterran": return T("mediterran");
+      case "omega3": return T("Omega-3");
+      case "eisen": return T("Eisen");
+      case "kalzium": return T("Kalzium");
+      case "eiweiss": return T("Eiweiss");
+      case "ballaststoffe": return T("Ballaststoffe");
+      case "schonend": return T("schonend");
+      case "vegetarisch": return T("vegetarisch");
+      case "ohneMilch": return T("ohne Milch");
+      case "vorrat": return T("auf Vorrat");
+      default: return t;
+    }
+  }
+
+  /* Alle Rezepte in einer Form: die acht uebersetzten aus inhalt-*.js und die
+     neuen aus rezepte.js. Die id ist der Schluessel fuer "Gemerkt" und
+     aendert sich nie. */
+  function rezepteAlle() {
+    const liste = [];
+    (REZEPTE.bestand || []).forEach((b) => {
+      const r = (I.rezepte || [])[b.index];
+      if (!r) return;
+      liste.push({
+        id: "bestand-" + b.index, name: r.name, minuten: b.minuten, kraft: b.kraft, tags: b.tags,
+        aufwand: r.aufwand, warum: r.warum, zutaten: r.zutaten, schritte: r.schritte, hinweis: r.achtung || "",
+      });
+    });
+    (REZEPTE.neu || []).forEach((r) => liste.push({
+      id: r.id, name: MT(r.name), minuten: r.minuten, kraft: r.kraft, tags: r.tags,
+      aufwand: TP("{n} Minute", "{n} Minuten", r.minuten), warum: MT(r.warum),
+      zutaten: MT(r.zutaten) || [], schritte: MT(r.schritte) || [], hinweis: MT(r.hinweis),
+    }));
+    return liste;
+  }
+
+  function bevorzugteTags() {
+    const t = new Set();
+    aktiveModule().forEach((m) => ((m.rezepte && m.rezepte.bevorzugt) || []).forEach((x) => t.add(x)));
+    return t;
+  }
+
+  /*
+   * Die Auswahl des Monats. Sechs Rezepte, vier davon mit Merkmalen, die zu
+   * den gewaehlten Erkrankungen passen, zwei zur Abwechslung. Die Reihenfolge
+   * ist fest gemischt, und jeder Monat schneidet ein anderes Stueck heraus:
+   * so kommt jedes Rezept der Reihe nach dran, statt dass immer dieselben
+   * oben stehen. Kein Zufall beim Oeffnen: wer dreimal am Tag hineinschaut,
+   * sieht dreimal dasselbe.
+   */
+  function rezepteDesMonats() {
+    const alle = rezepteAlle();
+    if (!alle.length) return [];
+    const gut = bevorzugteTags();
+    const meiden = new Set();
+    aktiveModule().forEach((m) => ((m.rezepte && m.rezepte.meiden) || []).forEach((x) => meiden.add(x)));
+    const erlaubt = alle.filter((r) => !r.tags.some((t) => meiden.has(t)));
+    const samen = (D.profil.module || []).join("+");
+    const mischen = (liste) => liste
+      .map((r) => ({ r, k: streuwert(samen + ":" + r.id) }))
+      .sort((x, y) => x.k - y.k)
+      .map((x) => x.r);
+    const passend = mischen(erlaubt.filter((r) => r.tags.some((t) => gut.has(t))));
+    const andere = mischen(erlaubt.filter((r) => !r.tags.some((t) => gut.has(t))));
+    const jetzt = new Date();
+    const monat = jetzt.getFullYear() * 12 + jetzt.getMonth();
+    const stueck = (liste, n) => {
+      if (!liste.length) return [];
+      const aus = [];
+      for (let i = 0; i < Math.min(n, liste.length); i++) aus.push(liste[(monat * n + i) % liste.length]);
+      return aus;
+    };
+    let auswahl = stueck(passend, 4).concat(stueck(andere, 2));
+    if (auswahl.length < 6) {
+      erlaubt.forEach((r) => { if (auswahl.length < 6 && !auswahl.includes(r)) auswahl.push(r); });
+    }
+    return auswahl;
+  }
+
+  /* Ein fester Wert aus einem Text, damit dieselbe Eingabe dieselbe
+     Mischung ergibt. FNV-1a, mehr braucht es hier nicht. */
+  function streuwert(text) {
+    let h = 2166136261;
+    for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+
+  function rezeptMarken(wirt, r) {
+    const gut = bevorzugteTags();
+    const box = document.createElement("div");
+    box.className = "marken";
+    const zeit = document.createElement("span");
+    zeit.className = "marke";
+    zeit.textContent = r.aufwand;
+    box.appendChild(zeit);
+    if (r.kraft === "wenig") {
+      const k = document.createElement("span");
+      k.className = "marke";
+      k.textContent = T("wenig Kraft");
+      box.appendChild(k);
+    }
+    r.tags.forEach((t) => {
+      const m = document.createElement("span");
+      m.className = "marke" + (gut.has(t) ? " passt" : "");
+      m.textContent = tagName(t);
+      box.appendChild(m);
+    });
+    wirt.appendChild(box);
+  }
+
+  function gemerktRezept(rid) { return D.gemerkt.rezepte.includes(rid); }
+
+  function rezeptKarte(r) {
+    const det = document.createElement("details");
+    det.className = "rezept";
+    const sum = document.createElement("summary");
+    sum.innerHTML = `<span class="stelle-kopf"><b>${esc(r.name)}</b><small>${esc(r.aufwand)}</small></span>`;
+    const herz = document.createElement("button");
+    herz.type = "button";
+    herz.className = "herz";
+    const setzen = () => {
+      const an = gemerktRezept(r.id);
+      herz.setAttribute("aria-pressed", String(an));
+      herz.setAttribute("aria-label", an ? T("Nicht mehr merken") : T("Merken"));
+    };
+    setzen();
+    herz.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
+    herz.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const g = D.gemerkt.rezepte;
+      D.gemerkt.rezepte = g.includes(r.id) ? g.filter((x) => x !== r.id) : g.concat([r.id]);
+      sichern();
+      setzen();
+      melden(gemerktRezept(r.id) ? T("In der Mappe gemerkt.") : T("Nicht mehr gemerkt."));
+    });
+    sum.appendChild(herz);
+    det.appendChild(sum);
+    const box = document.createElement("div");
+    box.className = "details-inhalt";
+    rezeptMarken(box, r);
+    box.insertAdjacentHTML(
+      "beforeend",
+      `<p>${esc(r.warum)}</p>` +
+      `<h4>${esc(T("Zutaten"))}</h4><ul>${r.zutaten.map((z) => `<li>${esc(z)}</li>`).join("")}</ul>` +
+      `<h4>${esc(T("So geht es"))}</h4><ul>${r.schritte.map((z) => `<li>${esc(z)}</li>`).join("")}</ul>` +
+      (r.hinweis ? `<h4>${esc(T("Aufpassen"))}</h4><p>${esc(r.hinweis)}</p>` : ""),
+    );
+    det.appendChild(box);
+    return det;
+  }
+
+  /* ----------------------------------------------------- Rezepte aus dem Netz
+   *
+   * Gesammelt einmal im Monat von werkzeug/rezepte-holen.js, aus Seiten, die
+   * glutenfrei kochen. In der Datei stehen Name, Zutaten, Zeiten und die
+   * Adresse; die Zubereitung bleibt beim Original und wird verlinkt. Gemerkt
+   * wird eine Kopie, damit ein Rezept nicht verschwindet, wenn im naechsten
+   * Monat andere in der Datei stehen.
+   */
+  function netzRezepte() {
+    const gut = bevorzugteTags();
+    return (NETZ.rezepte || [])
+      .map((r) => ({
+        r,
+        wert: r.tags.filter((t) => gut.has(t)).length * 2 + (r.sprache === L ? 3 : 0) + (r.pruefen.length ? -1 : 0),
+      }))
+      .sort((a, b) => b.wert - a.wert || streuwert(a.r.id) - streuwert(b.r.id))
+      .map((x) => x.r);
+  }
+
+  function gemerktNetz(rid) { return D.gemerkt.netz.some((x) => x.id === rid); }
+
+  const DECKEL = {
+    omega3: ["#2a78d6", "#5fc4e8"], eisen: ["#b4462f", "#f08a5d"], kalzium: ["#7b6cff", "#c6b8ff"],
+    eiweiss: ["#d9822b", "#f6c177"], ballaststoffe: ["#2f9e5b", "#9be3a8"], mediterran: ["#1f8a8a", "#f2c14e"],
+  };
+
+  function netzKarte(r) {
+    const det = document.createElement("details");
+    det.className = "netz";
+    const [f1, f2] = DECKEL[r.tags.find((t) => DECKEL[t])] || ["#4b5563", "#9ca3af"];
+    const sum = document.createElement("summary");
+    const deckel = document.createElement("span");
+    deckel.className = "deckel";
+    deckel.style.setProperty("--d1", f1);
+    deckel.style.setProperty("--d2", f2);
+    deckel.innerHTML =
+      `<span class="deckel-quelle">${esc(r.quelle)}${r.sprache !== L ? ` · ${esc(r.sprache.toUpperCase())}` : ""}</span>` +
+      `<b class="deckel-name" lang="${esc(r.sprache)}">${esc(r.name)}</b>` +
+      `<span class="deckel-fuss">${r.minuten ? esc(TP("{n} Minute", "{n} Minuten", r.minuten)) : ""}${r.zutaten.length ? (r.minuten ? " · " : "") + esc(TP("{n} Zutat", "{n} Zutaten", r.zutaten.length)) : ""}</span>`;
+    sum.appendChild(deckel);
+    const herz = document.createElement("button");
+    herz.type = "button";
+    herz.className = "herz auf-deckel";
+    const setzen = () => {
+      const an = gemerktNetz(r.id);
+      herz.setAttribute("aria-pressed", String(an));
+      herz.setAttribute("aria-label", an ? T("Nicht mehr merken") : T("Merken"));
+    };
+    setzen();
+    herz.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
+    herz.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      D.gemerkt.netz = gemerktNetz(r.id)
+        ? D.gemerkt.netz.filter((x) => x.id !== r.id)
+        : D.gemerkt.netz.concat([Object.assign({ gemerkt: heuteISO() }, r)]);
+      sichern();
+      setzen();
+      melden(gemerktNetz(r.id) ? T("In der Mappe gemerkt.") : T("Nicht mehr gemerkt."));
+    });
+    sum.appendChild(herz);
+    det.appendChild(sum);
+
+    const box = document.createElement("div");
+    box.className = "details-inhalt";
+    const marken = { aufwand: r.minuten ? TP("{n} Minute", "{n} Minuten", r.minuten) : T("Zeit beim Original"), tags: r.tags, kraft: r.minuten && r.minuten <= 20 ? "wenig" : "mittel" };
+    rezeptMarken(box, marken);
+    const info = [];
+    if (r.portionen) info.push(TV("Portionen: {n}", { n: r.portionen }));
+    if (r.autor) info.push(TV("von {autor}", { autor: r.autor }));
+    if (info.length) box.insertAdjacentHTML("beforeend", `<p class="klein">${esc(info.join(" · "))}</p>`);
+    if (r.pruefen.length) {
+      box.insertAdjacentHTML("beforeend",
+        `<div class="hinweis pruefen"><b>${esc(T("Bitte pruefen, ob glutenfrei:"))}</b><ul>${r.pruefen.map((z) => `<li lang="${esc(r.sprache)}">${esc(z)}</li>`).join("")}</ul></div>`);
+    }
+    box.insertAdjacentHTML("beforeend",
+      `<h4>${esc(T("Zutaten"))}</h4><ul class="zutaten" lang="${esc(r.sprache)}">${r.zutaten.map((z) => `<li>${esc(z)}</li>`).join("")}</ul>`);
+    const reihe = document.createElement("div");
+    reihe.className = "knopf-reihe";
+    const a = document.createElement("a");
+    a.className = "knopf";
+    a.textContent = TV("Zur Zubereitung bei {quelle}", { quelle: r.quelle });
+    if (zielSetzen(a, r.url, ["https:"])) reihe.appendChild(a);
+    box.appendChild(reihe);
+    box.insertAdjacentHTML("beforeend",
+      `<p class="quelle">${esc(r.schritte ? TP("{n} Schritt beim Original.", "{n} Schritte beim Original.", r.schritte) + " " : "")}${esc(T("Glutenfrei laut Quelle und nach Pruefung der Zutatenliste. Beim Einkauf jede Packung trotzdem selbst pruefen."))}</p>`);
+    det.appendChild(box);
+    return det;
+  }
+
+  let essenAnsicht = "monat";
+
+  function seiteEssen(ziel) {
+    const mods = aktiveModule();
+    const kopf = karte(
+      `<p class="kicker">${esc(T("Fuer deine Erkrankungen"))}</p><h2 class="h2">${esc(T("Essen, das passt"))}</h2>
+       <p class="lead">${esc(T("Nur glutenfreie Rezepte, aus dem Netz und aus der eigenen Sammlung. Die Auswahl wechselt jeden Monat und richtet sich nach dem, was deine Erkrankungen brauchen. Eine Merkhilfe, keine Verordnung."))}</p>`,
+    );
+    modulChips(kopf, mods, "#/profil");
+    const tabs = schalterListe(kopf, {
+      einzeln: true,
+      optionen: [
+        { wert: "monat", text: T("Diesen Monat") },
+        { wert: "gemerkt", text: TV("Gemerkt ({n})", { n: D.gemerkt.rezepte.length + D.gemerkt.netz.length }) },
+        { wert: "regeln", text: T("Regeln") },
+      ],
+      gewaehlt: essenAnsicht,
+      beiWahl: (w) => { essenAnsicht = w; zeichnen(); return w; },
+    });
+    tabs.classList.add("segment", "reiter");
+    ziel.appendChild(kopf);
+
+    if (essenAnsicht === "monat") {
+      const netz = netzRezepte();
+      if (netz.length) {
+        const kn = karte(`<p class="kicker">${esc(TV("Stand {monat}", { monat: monatJahr(NETZ.stand) }))}</p><h2 class="h2">${esc(T("Aus dem Netz, glutenfrei"))}</h2>
+          <p class="lead">${esc(T("Jeden Monat neu gesammelt von Seiten, die glutenfrei kochen, sortiert nach deinen Erkrankungen. Hier stehen die Zutaten, die Zubereitung steht beim Original."))}</p>`);
+        kn.classList.add("netz-karte");
+        const gitter = document.createElement("div");
+        gitter.className = "netz-gitter";
+        netz.forEach((r) => gitter.appendChild(netzKarte(r)));
+        kn.appendChild(gitter);
+        ziel.appendChild(kn);
+      }
+      const auswahl = rezepteDesMonats();
+      const km = karte(`<p class="kicker">${esc(T("Aus der Anker-Sammlung"))}</p><h2 class="h2">${esc(T("Rezepte des Monats"))}</h2>
+        <p class="lead">${esc(T("Was zu deinen Erkrankungen passt, ist hervorgehoben. Mit dem Herz landet ein Rezept in der Mappe und bleibt dort, auch wenn der Monat wechselt."))}</p>`);
+      auswahl.forEach((r) => km.appendChild(rezeptKarte(r)));
+      ziel.appendChild(km);
+
+      const ka = karte(`<p class="kicker">${esc(TP("{n} Rezept", "{n} Rezepte", rezepteAlle().length))}</p><h2 class="h2">${esc(T("Alle Rezepte"))}</h2>`);
+      rezepteAlle().slice().sort((x, y) => x.minuten - y.minuten).forEach((r) => ka.appendChild(rezeptKarte(r)));
+      ziel.appendChild(ka);
+      return;
+    }
+
+    if (essenAnsicht === "gemerkt") {
+      ziel.appendChild(gemerkteRezepteKarte());
+      return;
+    }
+
+    /* Regeln: zuerst die der gewaehlten Erkrankungen, dann die ausfuehrlichen
+       Gruppen aus dem Bericht, soweit sie dazugehoeren. */
+    const art = { weg: "nein", vorsicht: "vielleicht", gut: "ja" };
+    mods.forEach((m) => {
+      if (!(m.essen || []).length) return;
+      const k = karte(`<p class="kicker"><i class="modul-punkt"></i>${esc(MT(m.kurz))}</p><h2 class="h2">${esc(T("Was beim Essen zaehlt"))}</h2>`);
+      k.style.setProperty("--punkt", m.farbe);
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      m.essen.forEach((p) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="punkt ${art[p.art] || "vielleicht"}"></span><div class="txt"><b>${esc(MT(p.was))}</b><small>${esc(MT(p.warum))}</small></div>`;
+        ul.appendChild(li);
+      });
+      k.appendChild(ul);
+      ziel.appendChild(k);
+    });
+
+    (I.essen || []).forEach((gruppe, i) => {
+      if (!gilt(ESSEN_FUER[i])) return;
       const k = karte(`<p class="kicker">${esc(gruppe.kicker)}</p><h2 class="h2">${esc(gruppe.titel)}</h2>` +
         (gruppe.lead ? `<p class="lead">${esc(gruppe.lead)}</p>` : ""));
       const ul = document.createElement("ul");
@@ -889,28 +1485,132 @@ function LOKAL() {
       }
       ziel.appendChild(k);
     });
-
-    /* Rezepte */
-    const kr = karte(
-      `<p class="kicker">${esc(T("Wenig Kraft, trotzdem Essen"))}</p><h2 class="h2">${esc(T("Rezepte"))}</h2>
-       <p class="lead">${esc(T("Sortiert nach Aufwand. Die ersten brauchen keine Kraft und keinen Topf, den man hinterher schrubben muss."))}</p>`,
-    );
-    I.rezepte.forEach((r) => {
-      const det = document.createElement("details");
-      det.innerHTML =
-        `<summary>${esc(r.name)} <span class="marke">${esc(r.aufwand)}</span></summary>` +
-        `<div class="details-inhalt">` +
-        `<p>${esc(r.warum)}</p>` +
-        `<h4>${esc(T("Zutaten"))}</h4><ul>${r.zutaten.map((z) => `<li>${esc(z)}</li>`).join("")}</ul>` +
-        `<h4>${esc(T("So geht es"))}</h4><ul>${r.schritte.map((z) => `<li>${esc(z)}</li>`).join("")}</ul>` +
-        (r.achtung ? `<h4>${esc(T("Aufpassen"))}</h4><p>${esc(r.achtung)}</p>` : "") +
-        `</div>`;
-      kr.appendChild(det);
-    });
-    ziel.appendChild(kr);
   }
 
   /* --------------------------------------------------------------- Wissen */
+
+  /* Welche Kapitel aus inhalt-*.js zu welcher Erkrankung gehoeren. Sie
+     stammen aus dem Bericht zu Lupus und Zoeliakie und reden auch so. */
+  const WISSEN_FUER = ["sle|zoeliakie", "sle", "sle", "sle", "zoeliakie", "sle+zoeliakie", "sle", "sle"];
+
+  function artName(a) {
+    switch (a) {
+      case "leitlinie": return T("Leitlinie");
+      case "metaanalyse": return T("Meta-Analyse");
+      case "uebersicht": return T("Uebersicht");
+      case "studie": return T("Studie");
+      default: return T("Artikel");
+    }
+  }
+
+  function gemerktStudie(pmid) { return D.gemerkt.studien.some((s) => s.pmid === pmid); }
+
+  /* Eine Arbeit aus der Uebersicht. Der Titel bleibt im Original, wie er in
+     PubMed steht: eine Uebersetzung hier waere ungeprueft. */
+  function studieZeile(st, modulId) {
+    const li = document.createElement("li");
+    li.className = "studie";
+    const txt = document.createElement("div");
+    txt.className = "txt";
+    txt.innerHTML =
+      `<span class="marke art-${esc(st.art)}">${esc(artName(st.art))}</span>` +
+      `<b lang="en">${esc(st.titel)}</b>` +
+      `<small>${esc(st.zeitschrift)}${st.datum ? " · " + esc(kurzesMonat(st.datum)) : ""}</small>`;
+    const reihe = document.createElement("div");
+    reihe.className = "studie-knoepfe";
+    const link = document.createElement("a");
+    link.className = "schalter";
+    link.textContent = T("In PubMed lesen");
+    const sicher = /^\d+$/.test(st.pmid) && zielSetzen(link, `https://pubmed.ncbi.nlm.nih.gov/${st.pmid}/`, ["https:"]);
+    if (sicher) reihe.appendChild(link);
+    const merk = document.createElement("button");
+    merk.type = "button";
+    merk.className = "schalter";
+    const setzen = () => {
+      const an = gemerktStudie(st.pmid);
+      merk.setAttribute("aria-pressed", String(an));
+      merk.textContent = an ? T("Gemerkt") : T("Fuer den Termin merken");
+    };
+    setzen();
+    merk.addEventListener("click", () => {
+      D.gemerkt.studien = gemerktStudie(st.pmid)
+        ? D.gemerkt.studien.filter((x) => x.pmid !== st.pmid)
+        : D.gemerkt.studien.concat([Object.assign({ modul: modulId, gemerkt: heuteISO() }, st)]);
+      sichern();
+      setzen();
+    });
+    reihe.appendChild(merk);
+    txt.appendChild(reihe);
+    li.appendChild(txt);
+    return li;
+  }
+
+  function kurzesMonat(iso) {
+    const d = new Date(String(iso).slice(0, 10) + "T12:00:00");
+    if (isNaN(d)) return String(iso);
+    return d.toLocaleDateString(LOKAL(), { month: "short", year: "numeric" });
+  }
+
+  let forschungWahl = null;
+
+  function forschung(ziel) {
+    const A = window.ANKER_AKTUELL;
+    const mods = aktiveModule();
+    if (!A || !A.forschung || !mods.length) return;
+
+    const k = karte(
+      `<p class="kicker">${esc(TV("Stand {monat}", { monat: monatJahr(A.stand) }))}</p>
+       <h2 class="h2">${esc(T("Aktuelle Forschung"))}</h2>
+       <p class="lead">${esc(T("Jeden Monat neu aus PubMed: Leitlinien, Uebersichten und Studien des letzten Jahres zu deinen Erkrankungen. Die Titel stehen im Original und sind nicht bewertet. Was davon fuer dich gilt, klaert die Sprechstunde."))}</p>`,
+    );
+    k.classList.add("forschung");
+
+    /* Die Wahl: je Erkrankung eine Liste, und bei zwei oder mehr dazu die
+       Arbeiten, die zwei davon zugleich betreffen. */
+    const optionen = mods.map((m) => ({ wert: m.id, text: MT(m.kurz) }));
+    const paare = [];
+    for (let i = 0; i < mods.length; i++) {
+      for (let j = i + 1; j < mods.length; j++) {
+        const sch = [mods[i].id, mods[j].id].sort().join("+");
+        if (A.paare && A.paare[sch] && A.paare[sch].length) paare.push({ sch, a: mods[i], b: mods[j] });
+      }
+    }
+    if (paare.length) optionen.push({ wert: "paare", text: T("Zusammen") });
+    if (!optionen.some((o) => o.wert === forschungWahl)) forschungWahl = optionen[0].wert;
+    const wahl = schalterListe(k, {
+      einzeln: true, optionen, gewaehlt: forschungWahl,
+      beiWahl: (w) => { forschungWahl = w; zeichnen(); return w; },
+    });
+    wahl.classList.add("segment");
+
+    const ul = document.createElement("ul");
+    ul.className = "liste";
+    if (forschungWahl === "paare") {
+      paare.forEach((p) => {
+        const kopf = document.createElement("li");
+        kopf.className = "zwischen";
+        kopf.textContent = `${MT(p.a.kurz)} + ${MT(p.b.kurz)}`;
+        ul.appendChild(kopf);
+        A.paare[p.sch].forEach((st) => ul.appendChild(studieZeile(st, p.sch)));
+      });
+    } else {
+      const f = A.forschung[forschungWahl] || { neu: [], alltag: [] };
+      (f.neu || []).forEach((st) => ul.appendChild(studieZeile(st, forschungWahl)));
+      if ((f.alltag || []).length) {
+        const kopf = document.createElement("li");
+        kopf.className = "zwischen";
+        kopf.textContent = T("Ernaehrung, Muedigkeit, Bewegung");
+        ul.appendChild(kopf);
+        f.alltag.forEach((st) => ul.appendChild(studieZeile(st, forschungWahl)));
+      }
+    }
+    k.appendChild(ul);
+    const q = document.createElement("p");
+    q.className = "quelle";
+    q.textContent = TV("Quelle: {quelle}. Gesucht nach Leitlinien, Meta-Analysen, systematischen Uebersichten und randomisierten Studien.", { quelle: A.quelle || "PubMed" });
+    k.appendChild(q);
+    ziel.appendChild(k);
+  }
 
   function seiteWissen(ziel) {
     const kn = karte(
@@ -926,16 +1626,19 @@ function LOKAL() {
     kn.appendChild(r);
     ziel.appendChild(kn);
 
-    I.wissen.forEach((kapitel) => {
+    forschung(ziel);
+
+    I.wissen.forEach((kapitel, i) => {
+      if (!gilt(WISSEN_FUER[i])) return;
       const k = karte(`<p class="kicker">${esc(kapitel.kicker)}</p><h2 class="h2">${esc(kapitel.titel)}</h2>`);
-      kapitel.abschnitte.forEach((a) => {
+      kapitel.abschnitte.forEach((ab) => {
         const det = document.createElement("details");
         det.innerHTML =
-          `<summary>${esc(a.frage)}</summary><div class="details-inhalt">` +
-          a.antwort.map((t) => `<p>${t}</p>`).join("") +
-          (a.liste ? `<ul>${a.liste.map((l) => `<li>${l}</li>`).join("")}</ul>` : "") +
-          (a.staerke ? `<p class="quelle"><b>${esc(T("Wie gut belegt:"))}</b> ${esc(a.staerke)}</p>` : "") +
-          (a.quellen ? `<p class="quelle">${a.quellen.map((q) => esc(q)).join("<br>")}</p>` : "") +
+          `<summary>${esc(ab.frage)}</summary><div class="details-inhalt">` +
+          ab.antwort.map((t) => `<p>${t}</p>`).join("") +
+          (ab.liste ? `<ul>${ab.liste.map((l) => `<li>${l}</li>`).join("")}</ul>` : "") +
+          (ab.staerke ? `<p class="quelle"><b>${esc(T("Wie gut belegt:"))}</b> ${esc(ab.staerke)}</p>` : "") +
+          (ab.quellen ? `<p class="quelle">${ab.quellen.map((q) => esc(q)).join("<br>")}</p>` : "") +
           `</div>`;
         k.appendChild(det);
       });
@@ -948,13 +1651,27 @@ function LOKAL() {
     );
     const ul = document.createElement("ul");
     ul.className = "liste";
-    I.fragen.forEach((f) => {
+    fragenAktiv().forEach((f) => {
       const li = document.createElement("li");
-      li.innerHTML = `<div class="txt"><b>${esc(f.frage)}</b><small>${esc(f.warum)}</small></div>`;
+      li.innerHTML = `<div class="txt"><b>${esc(f.frage)}</b>${f.warum ? `<small>${esc(f.warum)}</small>` : ""}</div>`;
       ul.appendChild(li);
     });
     kf.appendChild(ul);
     ziel.appendChild(kf);
+  }
+
+  /* Die Fragen der gewaehlten Erkrankungen, dann die ausfuehrlichen aus dem
+     Bericht, wenn Lupus oder Zoeliakie dabei ist. Doppelte fallen weg. */
+  function fragenAktiv(nurModul) {
+    const liste = [];
+    const ausBericht = !nurModul ? gilt("sle|zoeliakie") : (nurModul === "sle" || nurModul === "zoeliakie");
+    aktiveModule()
+      .filter((m) => (!nurModul || m.id === nurModul) && !(ausBericht && m.id === "sle"))
+      .forEach((m) => (m.fragen || []).forEach((f) => liste.push({ frage: MT(f), warum: MT(m.kurz) })));
+    if (ausBericht) {
+      (I.fragen || []).forEach((f) => { if (!liste.some((x) => x.frage === f.frage)) liste.push(f); });
+    }
+    return liste;
   }
 
   function seiteNotfall(ziel) {
@@ -1022,24 +1739,54 @@ function LOKAL() {
   /* ----------------------------------------------------------------- Mehr */
 
   function seiteMehr(ziel) {
+    const mods = aktiveModule();
+
+    /* Das Profil zuerst: es entscheidet, wie der Rest der App aussieht. */
+    const kp = karte(`<p class="kicker">${esc(T("Deine App richtet sich danach"))}</p><h2 class="h2">${esc(T("Meine Erkrankungen"))}</h2>`);
+    kp.classList.add("profil-karte");
+    modulChips(kp, mods, null);
+    const rp = document.createElement("div");
+    rp.className = "knopf-reihe";
+    const ap = document.createElement("a");
+    ap.className = "knopf leer";
+    ap.href = "#/profil";
+    ap.textContent = T("Erkrankungen aendern");
+    rp.appendChild(ap);
+    kp.appendChild(rp);
+    ziel.appendChild(kp);
+
+    /* Fuer den Termin: eine Mappe je Erkrankung, und eine fuer alles. */
+    const kt = karte(`<p class="kicker">${esc(T("Fuer den Arzttermin"))}</p><h2 class="h2">${esc(T("Arztmappe"))}</h2>
+      <p class="lead">${esc(T("Zwoelf Wochen zusammengefasst, je Erkrankung oder alles zusammen. Zum Zeigen am Telefon, zum Drucken oder als PDF."))}</p>`);
+    const rt = document.createElement("div");
+    rt.className = "mappen";
+    [{ id: "alle", name: T("Alles"), farbe: null }].concat(mods.map((m) => ({ id: m.id, name: MT(m.kurz), farbe: m.farbe }))).forEach((x) => {
+      const a = document.createElement("a");
+      a.className = "mappe";
+      a.href = "#/bericht";
+      if (x.farbe) a.style.setProperty("--punkt", x.farbe);
+      a.innerHTML = `<i class="modul-punkt"></i><b>${esc(x.name)}</b>`;
+      a.addEventListener("click", () => { berichtModul = x.id; });
+      rt.appendChild(a);
+    });
+    kt.appendChild(rt);
+    ziel.appendChild(kt);
+
     const eintraege = [
+      { href: "#/gemerkt", name: T("Gemerkt"), was: TP("{n} Rezept", "{n} Rezepte", D.gemerkt.rezepte.length + D.gemerkt.netz.length) + ", " + TP("{n} Arbeit", "{n} Arbeiten", D.gemerkt.studien.length) },
       { href: "#/medikamente", name: T("Medikamente"), was: TV("{n} eingetragen", { n: D.medikamente.length }) },
       { href: "#/werte", name: T("Laborwerte"), was: TP("{n} Messung", "{n} Messungen", D.werte.length) },
       { href: "#/termine", name: T("Termine"), was: naechsterTermin() },
       { href: "#/stellen", name: T("Anlaufstellen"), was: stellenText() },
-      { href: "#/bericht", name: T("Arztbericht"), was: T("Zusammenfassung zum Ausdrucken") },
       { href: "#/sicherung", name: T("Sicherung"), was: sicherungsText() },
     ];
     const k = karte("");
     const ul = document.createElement("ul");
-    ul.className = "liste";
+    ul.className = "liste nav-liste";
     eintraege.forEach((e) => {
       const li = document.createElement("li");
       const a = document.createElement("a");
       a.href = e.href;
-      a.style.textDecoration = "none";
-      a.style.color = "inherit";
-      a.style.flex = "1";
       a.innerHTML = `<div class="txt"><b>${esc(e.name)}</b><small>${esc(e.was)}</small></div>`;
       li.appendChild(a);
       ul.appendChild(li);
@@ -1066,12 +1813,17 @@ function LOKAL() {
           return w;
         },
       });
+      /* Ehrlich bleiben: Deutsch ist das Original, Englisch ist geprueft, die
+         drei anderen sind es noch nicht. */
+      if (!["de", "en"].includes(L)) {
+        ks.insertAdjacentHTML("beforeend", `<p class="klein klein-abstand">${esc(T("Diese Uebersetzung ist sorgfaeltig gemacht, aber noch nicht von Muttersprachlerinnen oder medizinischem Fachpersonal geprueft. Im Zweifel gilt die deutsche Fassung."))}</p>`);
+      }
       ziel.appendChild(ks);
     }
 
     /* Darstellung */
-    const kt = karte(`<p class="kicker">${esc(T("Darstellung"))}</p><h2 class="h2">${esc(T("Hell oder dunkel"))}</h2>`);
-    schalterListe(kt, {
+    const kd = karte(`<p class="kicker">${esc(T("Darstellung"))}</p><h2 class="h2">${esc(T("Hell oder dunkel"))}</h2>`);
+    schalterListe(kd, {
       einzeln: true,
       optionen: [
         { wert: "auto", text: T("Wie das Geraet") },
@@ -1086,15 +1838,107 @@ function LOKAL() {
         return w;
       },
     });
-    ziel.appendChild(kt);
+    ziel.appendChild(kd);
 
     ziel.appendChild(
       karte(
         `<p class="kicker">${esc(T("Was diese App ist"))}</p><h2 class="h2">${esc(T("Und was sie nicht ist"))}</h2>
          <p class="lead">${esc(T("Anker ist ein Tagebuch und eine Merkhilfe. Es stellt keine Diagnose, es rechnet nichts aus, was eine Aerztin ausrechnen muesste, und es gibt keine Empfehlung zu Medikamenten. Es hilft dabei, beim Termin die richtigen Dinge zu erzaehlen, und es macht sichtbar, was ueber Wochen passiert."))}</p>
-         <p class="lead">${esc(T("Alles, was du eintraegst, bleibt auf diesem Geraet. Es gibt keinen Server und kein Konto. Die Seite darf gar keine Verbindung nach draussen aufbauen, das ist im Kopf des Dokuments festgelegt. Der Preis dafuer: gesichert wird nur, was du selbst sicherst."))}</p>`,
+         <p class="lead">${esc(T("Alles, was du eintraegst, bleibt auf diesem Geraet. Es gibt keinen Server und kein Konto. Die Seite darf gar keine Verbindung nach draussen aufbauen, das ist im Kopf des Dokuments festgelegt. Der Preis dafuer: gesichert wird nur, was du selbst sicherst."))}</p>
+         <p class="lead">${esc(T("Die Forschungsuebersicht kommt nicht aus dem Netz in die App. Sie wird einmal im Monat auf GitHub aus PubMed zusammengestellt und als Datei mit der App ausgeliefert. Vom Telefon geht dabei nichts hinaus, auch nicht, welche Erkrankungen du gewaehlt hast."))}</p>`,
       ),
     );
+  }
+
+  /* -------------------------------------------------------------- Profil */
+
+  function seiteProfil(ziel) {
+    const erstes = !aktiveModule().length;
+    ziel.appendChild(karte(
+      erstes
+        ? `<p class="kicker">${esc(T("Willkommen bei Anker"))}</p><h2 class="h2 gross">${esc(T("Wofuer brauchst du Anker?"))}</h2>
+           <p class="lead">${esc(T("Waehle eine oder mehrere Erkrankungen. Jede bringt ihre eigenen Regler, Fragen, Laborwerte, Rezepte und Forschung mit, und die App setzt sich daraus zusammen. Aendern geht jederzeit unter Mappe."))}</p>`
+        : `<p class="kicker">${esc(T("Deine App richtet sich danach"))}</p><h2 class="h2">${esc(T("Meine Erkrankungen"))}</h2>
+           <p class="lead">${esc(T("Was du hier abwaehlst, verschwindet aus der Ansicht, nicht aus den Daten. Waehlst du es wieder, ist alles noch da."))}</p>`,
+    ));
+
+    const k = karte("");
+    const liste = document.createElement("div");
+    liste.className = "modul-wahl";
+    MODUL_LISTE.forEach((m) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "modul-option";
+      b.style.setProperty("--punkt", m.farbe);
+      b.setAttribute("aria-pressed", String(hat(m.id)));
+      b.innerHTML = `<span class="modul-haken" aria-hidden="true"></span><span class="modul-text"><b>${esc(MT(m.name))}</b><small>${esc(MT(m.beschreibung))}</small></span>`;
+      b.addEventListener("click", () => {
+        const jetzt = D.profil.module || [];
+        D.profil.module = jetzt.includes(m.id) ? jetzt.filter((x) => x !== m.id) : jetzt.concat([m.id]);
+        sichern();
+        b.setAttribute("aria-pressed", String(hat(m.id)));
+        akzentSetzen();
+        weiter.disabled = !aktiveModule().length;
+      });
+      liste.appendChild(b);
+    });
+    k.appendChild(liste);
+    const r = document.createElement("div");
+    r.className = "knopf-reihe";
+    const weiter = document.createElement("button");
+    weiter.type = "button";
+    weiter.className = "knopf voll";
+    weiter.textContent = erstes ? T("Los geht es") : T("Fertig");
+    weiter.disabled = !aktiveModule().length;
+    weiter.addEventListener("click", () => {
+      if (!aktiveModule().length) { melden(T("Bitte mindestens eine Erkrankung waehlen.")); return; }
+      location.hash = erstes ? "#/heute" : "#/mehr";
+      zeichnen();
+    });
+    r.appendChild(weiter);
+    k.appendChild(r);
+    ziel.appendChild(k);
+
+    ziel.appendChild(karte(`<p class="klein">${esc(T("Fehlt eine Erkrankung? Neue Bausteine kommen in die Datei module.js, mit eigenen Reglern, Zeichen, Laborwerten und Regeln. Die App setzt sich daraus von selbst zusammen."))}</p>`));
+    if (!erstes) zurueck(ziel, "#/mehr", T("Zurueck"));
+  }
+
+  /* ------------------------------------------------------------- Gemerkt */
+
+  /* Gemerkte Rezepte aus beiden Quellen. Die aus dem Netz sind Kopien und
+     bleiben, auch wenn sie im naechsten Monat nicht mehr gesammelt werden. */
+  function gemerkteRezepteKarte() {
+    const rez = rezepteAlle().filter((r) => gemerktRezept(r.id));
+    const netz = D.gemerkt.netz.slice().reverse();
+    const n = rez.length + netz.length;
+    const kr = karte(`<p class="kicker">${esc(TP("{n} Rezept", "{n} Rezepte", n))}</p><h2 class="h2">${esc(T("Gemerkte Rezepte"))}</h2>`);
+    if (!n) kr.insertAdjacentHTML("beforeend", `<div class="leer">${esc(T("Noch nichts gemerkt. Tippe bei einem Rezept auf das Herz."))}</div>`);
+    if (netz.length) {
+      const g = document.createElement("div");
+      g.className = "netz-gitter";
+      netz.forEach((r) => g.appendChild(netzKarte(r)));
+      kr.appendChild(g);
+    }
+    rez.forEach((r) => kr.appendChild(rezeptKarte(r)));
+    return kr;
+  }
+
+  function seiteGemerkt(ziel) {
+    ziel.appendChild(gemerkteRezepteKarte());
+
+    const st = D.gemerkt.studien.slice().reverse();
+    const ks = karte(`<p class="kicker">${esc(TP("{n} Arbeit", "{n} Arbeiten", st.length))}</p><h2 class="h2">${esc(T("Fuer den Termin gemerkt"))}</h2>
+      <p class="lead">${esc(T("Diese Arbeiten stehen auch in der Arztmappe. Am besten mit der Frage mitnehmen, ob sie fuer dich etwas aendern."))}</p>`);
+    if (!st.length) {
+      ks.insertAdjacentHTML("beforeend", `<div class="leer">${esc(T("Noch nichts gemerkt. Unter Wissen, Aktuelle Forschung, laesst sich jede Arbeit merken."))}</div>`);
+    } else {
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      st.forEach((s) => ul.appendChild(studieZeile(s, s.modul)));
+      ks.appendChild(ul);
+    }
+    ziel.appendChild(ks);
+    zurueck(ziel, "#/mehr", T("Zurueck"));
   }
 
   function stellenText() {
@@ -1184,7 +2028,11 @@ function LOKAL() {
       ),
     );
     const ku = karte("");
-    I.ueberwachung.forEach((u) => {
+    /* Augen unter Hydroxychloroquin gehoeren zu Lupus, der tTG-Verlauf zur
+       Zoeliakie. Gleiche Reihenfolge wie in inhalt-*.js. */
+    const UEBERWACHUNG_FUER = ["sle", "sle", null, "zoeliakie", "sle|zoeliakie"];
+    I.ueberwachung.forEach((u, i) => {
+      if (!gilt(UEBERWACHUNG_FUER[i])) return;
       const det = document.createElement("details");
       det.innerHTML =
         `<summary>${esc(u.titel)}</summary><div class="details-inhalt">` +
@@ -1200,15 +2048,16 @@ function LOKAL() {
   /* ---------------------------------------------------------------- Werte */
 
   function seiteWerte(ziel) {
+    const liste = laborAktiv();
     const k = karte(
       `<p class="kicker">${esc(T("Aus dem Labor"))}</p><h2 class="h2">${esc(T("Werte eintragen"))}</h2>
        <p class="lead">${esc(T("Nur abschreiben, was auf dem Befund steht. Die Bedeutung steht beim jeweiligen Wert, die Beurteilung macht die Aerztin."))}</p>`,
     );
-    const neu = { datum: heuteISO(), schluessel: I.laborwerte[0].schluessel, wert: "" };
+    const neu = { datum: heuteISO(), schluessel: liste[0].schluessel, wert: "" };
     feld(k, { label: T("Datum"), typ: "date", wert: neu.datum, beiAenderung: (v) => (neu.datum = v) });
     const sel = document.createElement("label");
     sel.className = "feld";
-    sel.innerHTML = `<span>${esc(T("Wert"))}</span><select>${I.laborwerte.map((w) => `<option value="${esc(w.schluessel)}">${esc(w.name)}${w.einheit ? " (" + esc(w.einheit) + ")" : ""}</option>`).join("")}</select>`;
+    sel.innerHTML = `<span>${esc(T("Wert"))}</span><select>${liste.map((w) => `<option value="${esc(w.schluessel)}">${esc(w.name)}${w.einheit ? " (" + esc(w.einheit) + ")" : ""}</option>`).join("")}</select>`;
     sel.querySelector("select").addEventListener("change", (ev) => (neu.schluessel = ev.target.value));
     k.appendChild(sel);
     feld(k, { label: T("Zahl"), typ: "number", schritt: "any", wert: "", beiAenderung: (v) => (neu.wert = v) });
@@ -1228,13 +2077,14 @@ function LOKAL() {
     k.appendChild(r);
     ziel.appendChild(k);
 
-    I.laborwerte.forEach((w) => {
+    liste.forEach((w) => {
       const meine = D.werte.filter((x) => x.schluessel === w.schluessel).sort((a, b2) => a.datum.localeCompare(b2.datum));
       const kk = karte(
         `<p class="kicker">${esc(w.gruppe)}</p><h2 class="h2">${esc(w.name)}</h2>` +
         `<p class="lead">${esc(w.bedeutung)}</p>`,
       );
       if (meine.length) {
+        if (meine.length > 1) kk.appendChild(minilinie(meine.map((m) => m.wert)));
         const ul = document.createElement("ul");
         ul.className = "liste";
         meine.slice().reverse().forEach((m) => {
@@ -1260,6 +2110,19 @@ function LOKAL() {
     zurueck(ziel, "#/mehr", T("Zurueck"));
   }
 
+  /* Eine kleine Linie ohne Achsen, nur die Richtung. Die Zahlen stehen
+     darunter, die Linie sagt nur: steigt, faellt, schwankt. */
+  function minilinie(werte) {
+    const B = 300, H = 46;
+    const min = Math.min(...werte), max = Math.max(...werte);
+    const y = (v) => (max === min ? H / 2 : H - 6 - ((v - min) / (max - min)) * (H - 12));
+    const x = (i) => 6 + (i / (werte.length - 1)) * (B - 12);
+    const d = werte.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+    const h = document.createElement("div");
+    h.className = "minilinie";
+    h.innerHTML = `<svg viewBox="0 0 ${B} ${H}" aria-hidden="true"><path d="${d}"/><circle cx="${x(werte.length - 1).toFixed(1)}" cy="${y(werte[werte.length - 1]).toFixed(1)}" r="3.5"/></svg>`;
+    return h;
+  }
 
   /* ---------------------------------------------------------- Anlaufstellen
    *
@@ -1752,84 +2615,145 @@ function LOKAL() {
 
   /* -------------------------------------------------------------- Bericht */
 
+  let berichtModul = "alle";
+
+  /*
+   * Die Arztmappe. Zwoelf Wochen, je Erkrankung oder alles zusammen. Je
+   * Erkrankung heisst: ihre Regler, ihre Frage des Tages, ihre Zeichen, ihre
+   * Laborwerte im Verlauf, ihre Fragen und die gemerkten Arbeiten dazu. Das
+   * Befinden, Schlaf, Medikamente und Notizen gehoeren zu jeder Mappe, weil
+   * sie in jede Sprechstunde gehoeren.
+   */
   function seiteBericht(ziel) {
     const bis = heuteISO();
     const von = verschoben(bis, -83);
     const tage = Object.keys(D.tage).filter((d) => d >= von && d <= bis && !tagLeer(D.tage[d])).sort();
+    const mods = aktiveModule();
+    if (berichtModul !== "alle" && !hat(berichtModul)) berichtModul = "alle";
+    const nur = berichtModul === "alle" ? null : modulVon(berichtModul);
+    const auswahl = nur ? [nur] : mods;
 
     const k = karte(
-      `<p class="kicker">${esc(T("Zwoelf Wochen"))}</p><h2 class="h2">${esc(T("Zusammenfassung fuer den Termin"))}</h2>
+      `<p class="kicker">${esc(T("Zwoelf Wochen"))}</p><h2 class="h2">${esc(nur ? TV("Arztmappe {name}", { name: MT(nur.kurz) }) : T("Zusammenfassung fuer den Termin"))}</h2>
        <p class="lead">${esc(
          TV("{von} bis {bis}, {n} Tage mit Eintrag. Ueber den Teilen-Knopf des Browsers drucken oder als PDF sichern.",
             { von: kurzesDatum(von), bis: kurzesDatum(bis), n: tage.length }),
        )}</p>`,
     );
+    if (mods.length > 1) {
+      const wahl = schalterListe(k, {
+        einzeln: true,
+        optionen: [{ wert: "alle", text: T("Alles") }].concat(mods.map((m) => ({ wert: m.id, text: MT(m.kurz) }))),
+        gewaehlt: berichtModul,
+        beiWahl: (w) => { berichtModul = w; zeichnen(); return w; },
+      });
+      wahl.classList.add("segment", "nicht-drucken");
+    }
     ziel.appendChild(k);
 
     if (!tage.length) {
       ziel.appendChild(karte(`<div class="leer">${esc(T("Fuer diesen Zeitraum gibt es noch keine Eintraege."))}</div>`));
-      zurueck(ziel, "#/mehr", T("Zurueck"));
-      return;
     }
 
-    const zahl = (s) => {
-      const v = tage.map((d) => D.tage[d][s]).filter((x) => x != null);
+    const zahl = (s2) => {
+      const v = tage.map((d) => D.tage[d][s2]).filter((x) => x != null);
       if (!v.length) return null;
       return {
-        schnitt: (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1),
+        schnitt: (v.reduce((a2, b2) => a2 + b2, 0) / v.length).toFixed(1),
         max: Math.max(...v), min: Math.min(...v), n: v.length,
       };
     };
 
-    const zeilen = [
-      [T("Muedigkeit"), zahl("muedigkeit")],
-      [T("Schmerz"), zahl("schmerz")],
-      [T("Gelenke"), zahl("gelenke")],
-      [T("Kopf im Nebel"), zahl("nebel")],
-      [T("Schlaf, Stunden"), zahl("schlafStunden")],
-    ].filter((z) => z[1]);
+    if (tage.length) {
+      const regler = [];
+      if (GRUND.befinden) regler.push([TV("{name} (10 ist gut)", { name: MT(GRUND.befinden.name) }), "befinden"]);
+      (GRUND.skalen || []).forEach((s2) => regler.push([MT(s2.name), s2.schluessel]));
+      auswahl.forEach((m) => (m.skalen || []).forEach((s2) => {
+        if (!regler.some((x) => x[1] === s2.schluessel)) regler.push([MT(s2.name), s2.schluessel]);
+      }));
+      regler.push([T("Schlafqualitaet"), "schlafQualitaet"], [T("Schlaf, Stunden"), "schlafStunden"]);
+      const zeilen = regler.map(([n, s2]) => [n, zahl(s2)]).filter((z) => z[1]);
+      if (zeilen.length) {
+        const kt = karte(`<p class="kicker">${esc(T("Zahlen"))}</p><h2 class="h2">${esc(T("Mittel, hoechster und tiefster Wert"))}</h2>`);
+        kt.insertAdjacentHTML(
+          "beforeend",
+          `<div class="tabelle-huelle"><table class="tabelle"><thead><tr><th>${esc(T("Was"))}</th><th>${esc(T("Mittel"))}</th><th>${esc(T("Min"))}</th><th>${esc(T("Max"))}</th><th>${esc(T("Tage"))}</th></tr></thead><tbody>` +
+          zeilen.map((z) => `<tr><td>${esc(z[0])}</td><td>${z[1].schnitt}</td><td>${z[1].min}</td><td>${z[1].max}</td><td>${z[1].n}</td></tr>`).join("") +
+          `</tbody></table></div>`,
+        );
+        ziel.appendChild(kt);
+      }
 
-    const kt = karte(`<p class="kicker">${esc(T("Zahlen"))}</p><h2 class="h2">${esc(T("Mittel, hoechster und tiefster Wert"))}</h2>`);
-    kt.insertAdjacentHTML(
-      "beforeend",
-      `<div class="tabelle-huelle"><table class="tabelle"><thead><tr><th>${esc(T("Was"))}</th><th>${esc(T("Mittel"))}</th><th>${esc(T("Min"))}</th><th>${esc(T("Max"))}</th><th>${esc(T("Tage"))}</th></tr></thead><tbody>` +
-      zeilen.map((z) => `<tr><td>${esc(z[0])}</td><td>${z[1].schnitt}</td><td>${z[1].min}</td><td>${z[1].max}</td><td>${z[1].n}</td></tr>`).join("") +
-      `</tbody></table></div>`,
-    );
-    ziel.appendChild(kt);
+      /* Die Frage des Tages je Erkrankung: wie oft welche Antwort, und die
+         schlechten Tage mit Datum, denn nach genau denen wird gefragt. */
+      auswahl.forEach((m) => (m.checks || []).forEach((c) => {
+        const mit = tage.filter((d) => D.tage[d][c.schluessel] != null);
+        if (!mit.length) return;
+        const kc = karte(`<p class="kicker"><i class="modul-punkt"></i>${esc(MT(m.kurz))}</p><h2 class="h2">${esc(MT(c.frage))}</h2>`);
+        kc.style.setProperty("--punkt", m.farbe);
+        const ul = document.createElement("ul");
+        ul.className = "liste";
+        c.optionen.forEach((o) => {
+          const n = mit.filter((d) => D.tage[d][c.schluessel] === o.wert).length;
+          const li = document.createElement("li");
+          li.innerHTML = `<span class="punkt ${o.ton === "gut" ? "ja" : o.ton === "mittel" ? "vielleicht" : "nein"}"></span><div class="txt"><b>${esc(MT(o.text))}</b><small>${esc(TV("an {n} von {gesamt} Tagen", { n: n, gesamt: mit.length }))}</small></div>`;
+          ul.appendChild(li);
+        });
+        const schlecht = mit.filter((d) => {
+          const o = c.optionen.find((x) => x.wert === D.tage[d][c.schluessel]);
+          return o && o.ton !== "gut";
+        });
+        if (schlecht.length) {
+          const li = document.createElement("li");
+          li.innerHTML = `<div class="txt"><b>${esc(T("Wann"))}</b><small>${esc(schlecht.map(kurzesDatum).join(", "))}</small></div>`;
+          ul.appendChild(li);
+        }
+        kc.appendChild(ul);
+        ziel.appendChild(kc);
+      }));
 
-    /* Symptome zaehlen */
-    const zaehler = {};
-    tage.forEach((d) => (D.tage[d].symptome || []).forEach((s) => (zaehler[s] = (zaehler[s] || 0) + 1)));
-    const sortiert = Object.keys(zaehler).sort((a, b) => zaehler[b] - zaehler[a]);
-    if (sortiert.length) {
-      const ks = karte(`<p class="kicker">${esc(T("Wie oft"))}</p><h2 class="h2">${esc(T("Zeichen im Zeitraum"))}</h2>`);
-      const ul = document.createElement("ul");
-      ul.className = "liste";
-      sortiert.forEach((s) => {
-        const li = document.createElement("li");
-        li.innerHTML =
-          `<div class="txt"><b>${esc(zeichenText(s))}</b><small>${esc(
-            TV("an {n} von {gesamt} Tagen", { n: zaehler[s], gesamt: tage.length }),
-          )}</small></div>`;
-        ul.appendChild(li);
-      });
-      ks.appendChild(ul);
-      ziel.appendChild(ks);
+      /* Zeichen zaehlen. In einer Mappe je Erkrankung nur deren Zeichen. */
+      const erlaubt = nur ? new Set(nur.zeichen || []) : null;
+      const zaehler = {};
+      tage.forEach((d) => (D.tage[d].symptome || []).forEach((s2) => {
+        if (erlaubt && !erlaubt.has(s2)) return;
+        zaehler[s2] = (zaehler[s2] || 0) + 1;
+      }));
+      const sortiert = Object.keys(zaehler).sort((x, y) => zaehler[y] - zaehler[x]);
+      if (sortiert.length) {
+        const ks = karte(`<p class="kicker">${esc(T("Wie oft"))}</p><h2 class="h2">${esc(T("Zeichen im Zeitraum"))}</h2>`);
+        const ul = document.createElement("ul");
+        ul.className = "liste";
+        sortiert.forEach((s2) => {
+          const li = document.createElement("li");
+          li.innerHTML =
+            `<div class="txt"><b>${esc(zeichenText(s2))}</b><small>${esc(
+              TV("an {n} von {gesamt} Tagen", { n: zaehler[s2], gesamt: tage.length }),
+            )}</small></div>`;
+          ul.appendChild(li);
+        });
+        ks.appendChild(ul);
+        ziel.appendChild(ks);
+      }
     }
 
-    const glutenTage = tage.filter((d) => D.tage[d].gluten === "exposition" || D.tage[d].gluten === "unsicher");
-    if (glutenTage.length) {
-      const kg = karte(`<p class="kicker">${esc(T("Zoeliakie"))}</p><h2 class="h2">${esc(T("Tage mit Gluten oder Unsicherheit"))}</h2>`);
-      const ul = document.createElement("ul");
-      ul.className = "liste";
-      glutenTage.forEach((d) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<div class="txt"><b>${esc(kurzesDatum(d))}</b><small>${D.tage[d].gluten === "exposition" ? T("Gluten bekommen") : T("etwas war unsicher")}${D.tage[d].notiz ? " · " + esc(D.tage[d].notiz) : ""}</small></div>`;
-        ul.appendChild(li);
-      });
-      kg.appendChild(ul);
-      ziel.appendChild(kg);
+    /* Laborwerte der Erkrankung: der letzte Wert, der davor, und wann. */
+    const gewollt = new Set();
+    auswahl.forEach((m) => (m.labor || []).forEach((x) => gewollt.add(x)));
+    const labor = laborListe().filter((w) => gewollt.has(w.schluessel) && D.werte.some((x) => x.schluessel === w.schluessel));
+    if (labor.length) {
+      const kl = karte(`<p class="kicker">${esc(T("Aus dem Labor"))}</p><h2 class="h2">${esc(T("Letzte Werte"))}</h2>`);
+      kl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="tabelle-huelle"><table class="tabelle"><thead><tr><th>${esc(T("Wert"))}</th><th>${esc(T("Zuletzt"))}</th><th>${esc(T("Davor"))}</th><th>${esc(T("Datum"))}</th></tr></thead><tbody>` +
+        labor.map((w) => {
+          const m = D.werte.filter((x) => x.schluessel === w.schluessel).sort((x, y) => x.datum.localeCompare(y.datum));
+          const l = m[m.length - 1], v = m[m.length - 2];
+          return `<tr><td>${esc(w.name)}${w.einheit ? " <small>" + esc(w.einheit) + "</small>" : ""}</td><td>${esc(String(l.wert))}</td><td>${v ? esc(String(v.wert)) : "&ndash;"}</td><td>${esc(kurzesDatum(l.datum))}</td></tr>`;
+        }).join("") +
+        `</tbody></table></div>`,
+      );
+      ziel.appendChild(kl);
     }
 
     if (D.medikamente.length) {
@@ -1857,6 +2781,35 @@ function LOKAL() {
       });
       kn.appendChild(ul);
       ziel.appendChild(kn);
+    }
+
+    const fragen = fragenAktiv(nur ? nur.id : null);
+    if (fragen.length) {
+      const kf = karte(`<p class="kicker">${esc(T("Fuer den naechsten Termin"))}</p><h2 class="h2">${esc(T("Fragen, die sich lohnen"))}</h2>`);
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      fragen.forEach((f) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="kaestchen" aria-hidden="true"></span><div class="txt"><b>${esc(f.frage)}</b></div>`;
+        ul.appendChild(li);
+      });
+      kf.appendChild(ul);
+      ziel.appendChild(kf);
+    }
+
+    const studien = D.gemerkt.studien.filter((s2) => !nur || String(s2.modul || "").split("+").includes(nur.id));
+    if (studien.length) {
+      const kw = karte(`<p class="kicker">${esc(T("Zum Nachfragen"))}</p><h2 class="h2">${esc(T("Gemerkte Forschung"))}</h2>
+        <p class="lead">${esc(T("Die Frage dazu: Aendert das etwas fuer mich?"))}</p>`);
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      studien.forEach((s2) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<div class="txt"><b lang="en">${esc(s2.titel)}</b><small>${esc(s2.zeitschrift)} · ${esc(kurzesMonat(s2.datum))} · PMID ${esc(s2.pmid)}</small></div>`;
+        ul.appendChild(li);
+      });
+      kw.appendChild(ul);
+      ziel.appendChild(kw);
     }
 
     const r = document.createElement("div");
@@ -1916,7 +2869,7 @@ function LOKAL() {
           const neu = JSON.parse(String(leser.result));
           if (!neu || typeof neu !== "object" || !neu.tage) throw new Error(T("Form passt nicht"));
           if (!confirm(T("Alles Aktuelle durch die Sicherung ersetzen?"))) return;
-          D = Object.assign(strukturKopie(LEER), neu);
+          D = ordnen(Object.assign(strukturKopie(LEER), neu));
           sichern();
           melden(T("Sicherung eingelesen."));
           zeichnen();
@@ -2008,6 +2961,9 @@ function LOKAL() {
 
   spracheSetzen(spracheWaehlen());
   themaSetzen();
+  /* Eine Umstellung beim Laden einmal festschreiben, damit sie nicht bei
+     jedem Start neu geschieht. */
+  if (migriert && aktiveModule().length) sichern();
   zeichnen();
 
   window.addEventListener("scroll", () => {

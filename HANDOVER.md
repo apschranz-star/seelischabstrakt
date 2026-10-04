@@ -10,7 +10,7 @@ Zugang: Alle Vorschauen auf GitHub Pages außer dem Kunst-Shop stehen hinter ein
     faridabenslimane.netlify.app     die Praxisseite von Farida Benslimane, Ordner /farida im Repo
     JING                             der Beauty-Shop, eigener Branch jing in diesem Repo,
                                      eigene Anleitung dort: HANDOVER.md, Start: LAUNCH.md
-    apschranz-star.github.io/seelischabstrakt/anker/   Anker, die App bei SLE und Zöliakie,
+    apschranz-star.github.io/seelischabstrakt/anker/   Anker, die App bei chronischen Erkrankungen (Zöliakie, SLE, Psoriasis und mehr),
                                      Ordner /anker, eigene Anleitung dort: README.md
 
 Alle bauen aus demselben Repository. Jede Änderung an einer Datei ist etwa eine Minute später live.
@@ -27,7 +27,7 @@ JING liegt nicht in einem Ordner, sondern im Branch jing dieses Repositorys, wei
 
 ## Anker
 
-Anker ist kein Auftritt, sondern eine App für den eigenen Gebrauch: ein Tagebuch bei systemischem Lupus und Zöliakie, dazu ein Nachschlagewerk und ein Arztbericht. Sie liegt im Ordner /anker, ist reines HTML, CSS und JavaScript ohne Bauschritt und wird von einem eigenen Workflow nach gh-pages unter /anker/ veröffentlicht, hinter demselben Zugangscode wie die übrigen Vorschauen.
+Anker ist kein Auftritt, sondern eine App für den eigenen Gebrauch: ein Tagebuch bei chronischen Erkrankungen, die man im Profil wählt (Zöliakie, systemischer Lupus, Psoriasis, Hashimoto, rheumatoide Arthritis, Crohn oder Colitis), dazu Rezepte des Monats, eine monatlich erneuerte Forschungsübersicht aus PubMed und eine Arztmappe je Erkrankung. Sie liegt im Ordner /anker, ist reines HTML, CSS und JavaScript ohne Bauschritt und wird von einem eigenen Workflow nach gh-pages unter /anker/ veröffentlicht, hinter demselben Zugangscode wie die übrigen Vorschauen.
 
 Auf dem iPhone wird sie in Safari geöffnet und über Teilen, Zum Home-Bildschirm abgelegt. Danach läuft sie im Vollbild und ohne Netz. Alle Einträge bleiben im Gerät, es gibt keinen Server und kein Konto; die Seite erklärt `connect-src 'none'` und kann gar nichts senden. Der Preis dafür steht in anker/README.md: gesichert wird nur, was man selbst sichert, und dafür gibt es in der App unter Mehr eine Sicherung als Datei.
 
