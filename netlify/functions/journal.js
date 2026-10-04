@@ -19,12 +19,16 @@ const LANGS = ["en", "de"];
 const MAXCHAPTERS = 6;
 
 const cors = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "content-type, x-desk-key",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Content-Type": "application/json; charset=utf-8",
 };
 const json = (status, body) => ({ statusCode: status, headers: cors, body: JSON.stringify(body) });
+const validDeskKey = (event) => {
+  const expected = process.env.DESK_KEY;
+  const supplied = event.headers["x-desk-key"] || event.headers["X-Desk-Key"] || "";
+  if (!expected || !supplied) return false;
+  const a = Buffer.from(String(supplied), "utf8"), b = Buffer.from(String(expected), "utf8");
+  return a.length === b.length && require("crypto").timingSafeEqual(a, b);
+};
 const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
 const slug = (s) => String(s || "").toLowerCase()
   .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
@@ -298,16 +302,16 @@ function validate(j) {
 }
 
 exports.handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: cors, body: "" };
+  if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: { "Cache-Control": "no-store" }, body: "" };
   try {
     if (event.httpMethod === "GET") {
+      if (!validDeskKey(event)) return json(401, { error: "Wrong or missing x-desk-key" });
       const { data } = await readJson(FILE);
       if (!data) return json(404, { error: `${FILE} not found` });
       return json(200, data);
     }
     if (event.httpMethod !== "POST") return json(405, { error: "Use GET or POST" });
-    const key = event.headers["x-desk-key"] || event.headers["X-Desk-Key"];
-    if (!process.env.DESK_KEY || key !== process.env.DESK_KEY) return json(401, { error: "Wrong or missing x-desk-key" });
+    if (!validDeskKey(event)) return json(401, { error: "Wrong or missing x-desk-key" });
     if (!process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO) return json(500, { error: "Server not configured: set GITHUB_TOKEN and GITHUB_REPO" });
 
     const body = JSON.parse(event.body || "{}");

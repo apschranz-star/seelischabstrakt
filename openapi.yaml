@@ -91,6 +91,8 @@ paths:
   /site:
     get:
       operationId: getSite
+      security:
+        - deskKey: []
       summary: Read all site settings (texts EN/DE, design, shop rules, shipping rates, legal data) as JSON
       responses:
         "200":
@@ -139,6 +141,8 @@ paths:
   /journal:
     get:
       operationId: getJournal
+      security:
+        - deskKey: []
       summary: Read the whole personal page (profile, story chapters, written texts, reader comments) of alexanderschranz.netlify.app
       responses:
         "200":
@@ -260,6 +264,8 @@ paths:
   /practice:
     get:
       operationId: getPractice
+      security:
+        - deskKey: []
       summary: Read the whole site of the medical practice (farida/content.json) of faridabenslimane.netlify.app
       responses:
         "200":
