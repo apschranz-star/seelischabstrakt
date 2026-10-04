@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Anker</title>
-<meta name="description" content="Persoenliches Begleitbuch bei SLE und Zoeliakie. Alle Eintraege bleiben auf diesem Geraet.">
+<meta name="description" content="Persoenliches Begleitbuch bei chronischen Erkrankungen. Alle Eintraege bleiben auf diesem Geraet.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="color-scheme" content="light dark">
 
@@ -27,8 +27,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Anker">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f6f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)">
 
 <!--
   Die Schrift liegt hier im Ordner, sie wird nicht von Google geladen. Der Grund
@@ -86,8 +86,8 @@
     <span>Wissen</span>
   </a>
   <a href="#/mehr" data-tab="mehr">
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="5.5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="18.5" cy="12" r="1.4"/></svg>
-    <span>Mehr</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 7.5A2 2 0 0 1 5.5 5.5h4l2 2.2h7a2 2 0 0 1 2 2v8.3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 10.5h17"/></svg>
+    <span>Mappe</span>
   </a>
 </nav>
 
@@ -113,12 +113,20 @@
 <!--
   Eine Datei je Sprache, Deutsch in inhalt-de.js. Eine Sprache dazunehmen
   heisst: Datei schreiben, hier eine Zeile, in sw.js eine Zeile. Sonst nichts.
+
+  module.js sind die Erkrankungen als Bausteine, rezepte.js die Sammlung fuer
+  die monatliche Auswahl, aktuell.js die Forschungsuebersicht, die einmal im
+  Monat auf GitHub entsteht. Alle drei kommen von dieser Adresse, wie jedes
+  andere Skript; connect-src bleibt 'none'.
 -->
 <script src="inhalt-de.js"></script>
 <script src="inhalt-en.js"></script>
 <script src="inhalt-it.js"></script>
 <script src="inhalt-fr.js"></script>
 <script src="inhalt-es.js"></script>
+<script src="module.js"></script>
+<script src="rezepte.js"></script>
+<script src="aktuell.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

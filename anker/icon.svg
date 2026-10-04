@@ -1,10 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Anker">
-  <rect width="512" height="512" rx="112" fill="#1d3a5f"/>
-  <g fill="none" stroke="#f4f1ea" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="256" cy="148" r="40"/>
-    <path d="M256 188v186"/>
-    <path d="M196 232h120"/>
-    <path d="M140 296c0 78 52 122 116 122s116-44 116-122"/>
-    <path d="M140 296l-34 22M372 296l34 22"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b1e2b"/>
+      <stop offset="1" stop-color="#0c0d12"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2fae7a"/>
+      <stop offset=".5" stop-color="#8a63ff"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <radialGradient id="s" cx=".5" cy=".18" r=".7">
+      <stop offset="0" stop-color="#8a63ff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#8a63ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="114" fill="url(#g)"/>
+  <rect width="512" height="512" rx="114" fill="url(#s)"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="140" r="34" stroke="#f5f3ee" stroke-width="24"/>
+    <path d="M256 174v214" stroke="#f5f3ee" stroke-width="24"/>
+    <path d="M206 222h100" stroke="#f5f3ee" stroke-width="24"/>
+    <path d="M148 300c8 74 54 112 108 112s100-38 108-112" stroke="url(#b)" stroke-width="26"/>
+    <path d="M124 318l24-18 22 24M388 318l-24-18-22 24" stroke="url(#b)" stroke-width="22"/>
   </g>
 </svg>
