@@ -92,72 +92,57 @@ html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;
 @media (prefers-color-scheme:dark){html[data-gated] body{background:#000;color:#f5f5f7}#sa-gate{border-color:#333}#sa-gate p,#sa-gate label{color:#a1a1a6}#sa-gate input{background:#111;color:#f5f5f7;border-color:#444}#sa-gate button{background:#f5f5f7;color:#000}#sa-gate .n{border-top-color:#222;color:#8e8e93}#sa-gate .n summary{color:#f5f5f7}}
 </style>
 <!-- gate:end -->
-<title>Schranz AI Solutions. KI, die liefert.</title>
-<meta name="description" content="Diagnose. Bauen. Messen. EU-konform und verlässlich. Eine KI-Agentur in Wien, die 100.000 Euro Pre-Seed für den ersten Aufbau sucht.">
+<title>Schranz AI. Eine neue Ära von Consulting.</title>
+<meta name="description" content="Freelance KI-Beratung und Umsetzung aus Wien. Diagnose, Bauen, Messen. Fixpreise, EU-konform, ein System, das läuft, statt Folien.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="canonical" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/">
 <link rel="alternate" hreflang="de" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/">
 <link rel="alternate" hreflang="en" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/en/">
 <link rel="alternate" hreflang="x-default" href="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Schranz AI Solutions. KI, die liefert.">
-<meta property="og:description" content="Diagnose. Bauen. Messen. EU-konform und verlässlich. Eine KI-Agentur in Wien, die 100.000 Euro Pre-Seed für den ersten Aufbau sucht.">
+<meta property="og:title" content="Schranz AI. Eine neue Ära von Consulting.">
+<meta property="og:description" content="Freelance KI-Beratung und Umsetzung aus Wien. Diagnose, Bauen, Messen. Fixpreise, EU-konform, ein System, das läuft, statt Folien.">
 <meta property="og:url" content="https://apschranz-star.github.io/seelischabstrakt/schranz-ai/">
 <meta property="og:locale" content="de_AT">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#050507">
 <link rel="icon" href="/seelischabstrakt/schranz-ai/icon.svg" type="image/svg+xml">
-<style>/* SCHRANZ AI SOLUTIONS. One stylesheet, inlined by build.mjs.
-   Type: the system stack, so the page reads like the platform it is opened on.
-   Colour: two neutrals per theme and one ink. Nothing else. */
+<link rel="preload" href="/seelischabstrakt/schranz-ai/fonts/bricolage-grotesque-latin-normal-300-800.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:300 800;font-display:swap;src:url("/seelischabstrakt/schranz-ai/fonts/bricolage-grotesque-latin-normal-300-800.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:300 800;font-display:swap;src:url("/seelischabstrakt/schranz-ai/fonts/bricolage-grotesque-latin-ext-normal-300-800.woff2") format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+/* SCHRANZ AI SOLUTIONS. One stylesheet, inlined by build.mjs.
+   The original stays underneath: the system type stack, the type scale, the
+   blue ink, the calm grid. On top of it a cinematic layer, dark first: an
+   aurora in the hero, glass, light that follows the pointer, rails of cards
+   that slide, points that light up as you pass them. Every movement is an
+   enhancement; with reduced motion or without JavaScript the page reads
+   completely and stands still. */
 
 :root {
-  --paper: #ffffff;
-  --paper-2: #f5f5f7;
-  --ink: #1d1d1f;
-  --ink-2: #515154;
-  --ink-3: #6e6e73;
-  --line: rgba(0, 0, 0, 0.1);
-  --line-2: rgba(0, 0, 0, 0.18);
-  --accent: #0066cc;
-  --accent-ink: #ffffff;
-  --nav: rgba(255, 255, 255, 0.72);
-  --shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur: 640ms;
-  --max: 1080px;
-  --gutter: clamp(20px, 5vw, 48px);
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #000000;
-    --paper-2: #101012;
-    --ink: #f5f5f7;
-    --ink-2: #a1a1a6;
-    --ink-3: #86868b;
-    --line: rgba(255, 255, 255, 0.12);
-    --line-2: rgba(255, 255, 255, 0.22);
-    --accent: #2997ff;
-    --accent-ink: #000000;
-    --nav: rgba(0, 0, 0, 0.72);
-    --shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
-  }
-}
-
-:root[data-theme="dark"] {
-  --paper: #000000;
-  --paper-2: #101012;
+  --paper: #050507;
+  --paper-2: #0c0c10;
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-2: rgba(255, 255, 255, 0.08);
   --ink: #f5f5f7;
   --ink-2: #a1a1a6;
-  --ink-3: #86868b;
-  --line: rgba(255, 255, 255, 0.12);
-  --line-2: rgba(255, 255, 255, 0.22);
+  --ink-3: #7c7c82;
+  --line: rgba(255, 255, 255, 0.10);
+  --line-2: rgba(255, 255, 255, 0.20);
   --accent: #2997ff;
-  --accent-ink: #000000;
-  --nav: rgba(0, 0, 0, 0.72);
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+  --accent-2: #7cc4ff;
+  --violet: #8b6cff;
+  --cyan: #3ee6ff;
+  --accent-ink: #00060f;
+  --neon: #c6ff3a;
+  --neon-ink: #0b0f00;
+  --neon-glow: rgba(198, 255, 58, 0.45);
+  --display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --glow: rgba(41, 151, 255, 0.45);
+  --nav: rgba(5, 5, 7, 0.62);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 820ms;
+  --max: 1180px;
+  --gutter: clamp(20px, 5vw, 48px);
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -165,18 +150,32 @@ html[data-gated] body{margin:0;min-height:100vh;display:flex;align-items:center;
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 64px;
+  scroll-padding-top: 84px;
+  background: var(--paper);
 }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
   font-size: 17px;
   line-height: 1.47;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* Film grain over everything, very faint. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
 img, svg { max-width: 100%; display: block; }
@@ -185,11 +184,12 @@ p { margin: 0; }
 h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.015em; text-wrap: balance; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+::selection { background: var(--accent); color: var(--accent-ink); }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .skip {
@@ -211,93 +211,154 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   padding-inline: var(--gutter);
 }
 
-/* Type scale. One set of steps, used everywhere. */
-.t-display { font-size: clamp(44px, 8.6vw, 96px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; }
-.t-h1 { font-size: clamp(34px, 5.4vw, 60px); line-height: 1.06; letter-spacing: -0.025em; font-weight: 600; }
-.t-h2 { font-size: clamp(26px, 3.6vw, 40px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 600; }
-.t-h3 { font-size: clamp(20px, 2.2vw, 24px); line-height: 1.25; letter-spacing: -0.01em; font-weight: 600; }
-.t-lead { font-size: clamp(20px, 2.4vw, 28px); line-height: 1.32; letter-spacing: -0.012em; font-weight: 400; color: var(--ink-2); }
-.t-body { font-size: 17px; line-height: 1.5; color: var(--ink-2); }
-.t-small { font-size: 14px; line-height: 1.45; color: var(--ink-3); }
+/* Type scale. The original steps, one size up at the top. */
+.t-display { font-family: var(--display); font-size: clamp(48px, 10.4vw, 132px); line-height: 0.95; letter-spacing: -0.05em; font-weight: 800; }
+.t-h1 { font-family: var(--display); font-size: clamp(36px, 6vw, 72px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800; }
+.t-h2 { font-family: var(--display); font-size: clamp(26px, 3.6vw, 42px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; }
+.t-h3 { font-size: clamp(20px, 2.2vw, 24px); line-height: 1.25; letter-spacing: -0.012em; font-weight: 600; }
+.t-lead { font-size: clamp(20px, 2.4vw, 28px); line-height: 1.32; letter-spacing: -0.014em; font-weight: 400; color: var(--ink-2); }
+.t-body { font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+.t-small { font-size: 14px; line-height: 1.5; color: var(--ink-3); }
 .t-kicker {
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
   line-height: 1.2;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.t-num {
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+.t-kicker::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--glow), 0 0 0 3px rgba(41, 151, 255, 0.14);
+  flex: none;
+}
+.case-head .t-kicker::before, .col .t-kicker::before, .kv .k::before { display: none; }
+.t-num { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: -0.035em; }
+
+/* Gradient ink for the words that carry the page. */
+.grad {
+  background: linear-gradient(100deg, var(--ink) 0%, var(--accent-2) 38%, var(--accent) 62%, var(--violet) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sheen 9s ease-in-out infinite alternate;
+}
+@keyframes sheen { to { background-position: 100% 0; } }
+
+/* ------------------------------------------------------------------ Header */
+
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 60;
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+  background: linear-gradient(90deg, var(--neon), var(--cyan), var(--accent));
+  box-shadow: 0 0 12px var(--neon-glow);
 }
 
-/* Header */
 .nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--nav);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
-  box-shadow: var(--shadow);
+  padding-top: 10px;
 }
-.nav .wrap {
+.nav > .wrap {
   display: flex;
   align-items: center;
   gap: 24px;
-  height: 52px;
+  height: 56px;
+  max-width: calc(var(--max) - 24px);
+  border-radius: 999px;
+  background: var(--nav);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  box-shadow: inset 0 0 0 1px var(--line), 0 10px 40px rgba(0, 0, 0, 0.35);
+  padding-inline: 22px 10px;
+  width: calc(100% - 24px);
 }
 .brand {
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   font-size: 13px;
   white-space: nowrap;
 }
+.brand-mark {
+  width: 22px; height: 22px; border-radius: 7px;
+  background: conic-gradient(from 200deg, var(--accent), var(--cyan), var(--violet), var(--accent));
+  box-shadow: 0 0 18px var(--glow);
+  position: relative;
+}
+.brand-mark::after {
+  content: ""; position: absolute; inset: 5px; border-radius: 3px; background: var(--paper);
+}
 .nav-links {
   display: none;
-  gap: 28px;
+  gap: 2px;
   margin-left: auto;
   font-size: 13px;
   color: var(--ink-2);
 }
-.nav-links a { transition: color 240ms var(--ease); padding-block: 4px; }
-.nav-links a:hover, .nav-links a[aria-current="true"] { color: var(--ink); }
-.nav-tools { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.nav-links a {
+  padding: 8px 12px;
+  border-radius: 999px;
+  transition: color 240ms var(--ease), background-color 240ms var(--ease);
+}
+.nav-links a:hover { color: var(--ink); background: var(--glass); }
+.nav-links a[aria-current="true"] { color: var(--ink); background: var(--glass-2); }
+.nav-tools { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.nav > .wrap { gap: 14px; }
 .nav-tools .btn { display: none; }
-.drawer .btn { margin-top: 16px; align-self: flex-start; animation: rise 480ms var(--ease) both; animation-delay: 280ms; }
-.nav-links + .nav-tools { margin-left: 0; }
 .lang {
   font-size: 13px;
   color: var(--ink-2);
-  padding: 6px 10px;
+  padding: 7px 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
   transition: border-color 240ms var(--ease), color 240ms var(--ease);
 }
 .lang:hover { color: var(--ink); border-color: var(--line-2); }
+
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
-  padding: 10px 20px;
+  min-height: 46px;
+  padding: 11px 22px;
   border-radius: 999px;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
-  transition: transform 320ms var(--ease), background-color 240ms var(--ease), color 240ms var(--ease), border-color 240ms var(--ease);
+  transition: transform 380ms var(--ease), background-color 240ms var(--ease), color 240ms var(--ease), border-color 240ms var(--ease), box-shadow 300ms var(--ease);
+  will-change: transform;
 }
 .btn:active { transform: scale(0.97); }
-.btn-solid { background: var(--accent); color: var(--accent-ink); }
-.btn-solid:hover { filter: brightness(1.08); }
-.btn-ink { background: var(--ink); color: var(--paper); }
-.btn-ink:hover { opacity: 0.88; }
-.btn-ghost { border: 1px solid var(--line-2); color: var(--ink); }
-.btn-ghost:hover { background: var(--paper-2); }
-.btn-sm { min-height: 32px; padding: 4px 14px; font-size: 13px; }
+.btn-solid {
+  background: var(--neon);
+  color: var(--neon-ink);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 8px 30px var(--neon-glow);
+}
+.btn-solid:hover { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 10px 44px var(--neon-glow); }
+.btn-ink { background: var(--ink); color: var(--paper); box-shadow: 0 8px 30px rgba(255, 255, 255, 0.12); }
+.btn-ink:hover { box-shadow: 0 10px 44px rgba(255, 255, 255, 0.22); }
+.btn-ghost { border: 1px solid var(--line-2); color: var(--ink); background: var(--glass); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.btn-ghost:hover { background: var(--glass-2); border-color: rgba(255, 255, 255, 0.32); }
+.btn-sm { min-height: 36px; padding: 6px 16px; font-size: 13px; }
+.btn .arrow { transition: transform 380ms var(--ease); }
+.btn:hover .arrow { transform: translateX(3px); }
+
 .menu-btn {
   display: inline-flex;
   width: 40px; height: 40px;
@@ -317,256 +378,807 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .nav[data-open] .menu-btn span::after { transform: translateY(-6px) rotate(-45deg); }
 .drawer {
   display: none;
-  border-top: 1px solid var(--line);
+  margin: 8px 12px 0;
+  border-radius: 24px;
+  background: rgba(10, 10, 14, 0.92);
+  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(22px);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
-.nav[data-open] .drawer { display: block; }
-.drawer .wrap { flex-direction: column; align-items: stretch; height: auto; padding-block: 8px 16px; gap: 0; }
+.nav[data-open] .drawer { display: block; animation: rise 420ms var(--ease) both; }
+.drawer .wrap { display: flex; flex-direction: column; align-items: stretch; height: auto; padding: 8px 22px 20px; gap: 0; }
 .drawer a {
   display: block;
-  padding: 14px 0;
+  padding: 15px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 17px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   animation: rise 480ms var(--ease) both;
-  animation-delay: calc(var(--i, 0) * 40ms);
+  animation-delay: calc(var(--i, 0) * 45ms);
 }
 .drawer a:last-of-type { border-bottom: 0; }
-.drawer a.btn { display: inline-flex; padding: 10px 20px; border-bottom: 0; }
+.drawer a.btn { display: inline-flex; padding: 11px 22px; border-bottom: 0; margin-top: 16px; align-self: flex-start; font-size: 15px; }
 
-@media (min-width: 880px) {
+/* The rider switch: clients or investors, two parts of one site. */
+.riders {
+  display: grid; grid-auto-flow: column; gap: 3px; padding: 3px;
+  border-radius: 999px; background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 13px; font-weight: 600;
+}
+.riders a {
+  padding: 7px 14px; border-radius: 999px; color: var(--ink-2); white-space: nowrap;
+  transition: color 240ms var(--ease), background-color 240ms var(--ease), box-shadow 240ms var(--ease);
+}
+.riders a:hover { color: var(--ink); }
+.riders a[aria-current="page"] { background: var(--neon); color: var(--neon-ink); box-shadow: 0 0 20px var(--neon-glow); }
+@media (max-width: 520px) {
+  .brand-word { display: none; }
+  .riders { font-size: 12.5px; }
+  .riders a { padding: 7px 11px; }
+}
+@media (min-width: 600px) { .nav-tools .btn { display: inline-flex; } }
+@media (min-width: 1180px) {
   .nav-links { display: flex; }
-  .nav-tools .btn { display: inline-flex; }
-  .menu-btn, .drawer { display: none !important; }
+  .nav-links + .nav-tools { margin-left: 0; }
 }
 
-/* Sections */
-section { padding-block: clamp(72px, 11vw, 140px); }
-section.tight { padding-block: clamp(56px, 8vw, 100px); }
-.alt { background: var(--paper-2); }
-.sec-head { max-width: 760px; display: grid; gap: 14px; margin-bottom: clamp(36px, 5vw, 64px); }
+/* The tab bar at the bottom, as in Anker. Phones and tablets only. */
+.tabbar {
+  position: fixed; z-index: 55;
+  left: max(12px, calc(50% - 21rem)); right: max(12px, calc(50% - 21rem));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px;
+  background: rgba(14, 14, 18, 0.82);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-radius: 26px;
+  box-shadow: inset 0 0 0 1px var(--line-2), 0 18px 50px -14px rgba(0, 0, 0, 0.75);
+}
+.tabbar a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  height: 56px; border-radius: 20px;
+  color: var(--ink-3); font-size: 10.5px; font-weight: 600; letter-spacing: 0.01em;
+  transition: background-color 200ms var(--ease), color 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.tabbar svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabbar a[aria-current="true"] { color: var(--neon-ink); background: var(--neon); box-shadow: 0 0 24px var(--neon-glow); }
+@media (max-width: 1179px) { body:has(.tabbar) { padding-bottom: 96px; } }
+@media (min-width: 1180px) { .tabbar { display: none; } }
+
+/* ------------------------------------------------------------------ Sections */
+
+section { position: relative; padding-block: clamp(88px, 12vw, 160px); }
+.alt { background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.018) 12%, rgba(255, 255, 255, 0.018) 88%, transparent); }
+.sec-head { max-width: 820px; display: grid; gap: 16px; margin-bottom: clamp(40px, 5.5vw, 72px); }
 .sec-head .t-lead { margin-top: 4px; }
-hr.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
 
-/* Hero */
-.hero { padding-block: clamp(80px, 14vw, 180px) clamp(64px, 9vw, 120px); }
-.hero .wrap { display: grid; gap: 28px; max-width: 980px; }
-.hero .t-display { max-width: 14ch; }
-.hero .t-lead { max-width: 30ch; }
+/* A heading that slides up out of a mask, line by line. */
+html.js .split .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+html.js .split .w > span {
+  display: inline-block;
+  transform: translateY(105%);
+  transition: transform 900ms var(--ease);
+  transition-delay: calc(var(--wi, 0) * 55ms + var(--d, 0ms));
+}
+html.js .split.in .w > span { transform: none; }
+
+/* ------------------------------------------------------------------ Hero */
+
+.hero {
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding-block: clamp(120px, 16vw, 200px) clamp(72px, 10vw, 120px);
+  margin-top: -66px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.aurora {
+  position: absolute;
+  inset: -20% -10% 0;
+  z-index: -2;
+  pointer-events: none;
+  transform: translate3d(0, var(--py, 0), 0);
+}
+.aurora i {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.aurora i:nth-child(1) { width: max(62vw, 520px); height: max(62vw, 520px); left: -12vw; top: 0; background: radial-gradient(circle, var(--accent) 0%, transparent 62%); }
+.aurora i:nth-child(2) { width: max(50vw, 440px); height: max(50vw, 440px); right: -10vw; top: 6vh; background: radial-gradient(circle, var(--violet) 0%, transparent 62%); animation-duration: 28s; animation-delay: -6s; }
+.aurora i:nth-child(3) { width: max(40vw, 340px); height: max(40vw, 340px); left: 30vw; top: 28vh; background: radial-gradient(circle, var(--cyan) 0%, transparent 60%); opacity: 0.32; animation-duration: 34s; animation-delay: -12s; }
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6vw, 4vh, 0) scale(1.12); }
+  100% { transform: translate3d(-4vw, -3vh, 0) scale(0.94); }
+}
+/* A floor of light lines, receding. */
+.floor {
+  position: absolute;
+  left: -20%; right: -20%; bottom: -8%;
+  height: 46%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(41, 151, 255, 0.22) 1px, transparent 1px) 0 0 / 100% 48px,
+    linear-gradient(to right, rgba(41, 151, 255, 0.18) 1px, transparent 1px) 0 0 / 64px 100%;
+  transform: perspective(520px) rotateX(64deg);
+  transform-origin: bottom;
+  -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 92%);
+  mask-image: linear-gradient(to top, #000 10%, transparent 92%);
+  animation: floor 3.2s linear infinite;
+}
+@keyframes floor { to { background-position: 0 48px, 0 0; } }
+.hero::after {
+  content: "";
+  position: absolute; inset: auto 0 0; height: 30%;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero .wrap { display: grid; gap: 26px; }
+.hero .domain {
+  display: inline-flex; align-items: center; gap: 10px;
+  justify-self: start;
+  padding: 7px 14px 7px 8px;
+  border-radius: 999px;
+  background: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--line);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.hero .domain b {
+  color: var(--neon-ink);
+  background: var(--neon);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero .t-display { max-width: 12ch; }
+.hero .tagline { font-family: var(--display); font-size: clamp(28px, 4.4vw, 56px); line-height: 1.05; letter-spacing: -0.04em; font-weight: 800; }
+.hero .t-lead { max-width: 34ch; }
 .hero .t-body { max-width: 52ch; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-.hero-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--ink-3); font-size: 14px; margin-top: 20px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--ink-3); font-size: 14px; margin-top: 18px; }
+.hero-meta a:hover { color: var(--ink); }
+.scroll-cue {
+  position: absolute;
+  left: 50%; bottom: 28px;
+  width: 26px; height: 42px;
+  margin-left: -13px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--line-2);
+}
+.scroll-cue::after {
+  content: "";
+  position: absolute; left: 50%; top: 8px;
+  width: 4px; height: 8px; margin-left: -2px; border-radius: 4px;
+  background: var(--ink);
+  animation: cue 1.8s var(--ease) infinite;
+}
+@keyframes cue { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
 
-/* Thesis: three lines that arrive one after the other */
-.thesis .wrap { display: grid; gap: 28px; }
-.thesis-lines { display: grid; gap: 0.1em; }
+/* The method as an orbit: three steps circling one core. Decoration only. */
+.orbit {
+  position: absolute;
+  right: max(-180px, calc((100vw - var(--max)) / 2 - 120px));
+  top: 50%;
+  width: min(640px, 52vw);
+  aspect-ratio: 1;
+  transform: translateY(-46%);
+  z-index: -1;
+  pointer-events: none;
+  display: none;
+}
+@media (min-width: 1100px) { .orbit { display: block; } }
+@media (max-width: 1099px) {
+  .orbit { display: block; width: 520px; right: -260px; top: 120px; transform: none; opacity: 0.35; }
+}
+.orbit .ring {
+  position: absolute;
+  inset: var(--in);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(124, 196, 255, 0.16);
+  animation: spin var(--t) linear infinite;
+}
+.orbit .ring::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 72%, rgba(41, 151, 255, 0.55) 92%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1px));
+}
+.orbit .r1 { --in: 0%; --t: 46s; }
+.orbit .r2 { --in: 14%; --t: 34s; animation-direction: reverse; }
+.orbit .r3 { --in: 28%; --t: 24s; }
+.orbit .pin { position: absolute; left: 50%; top: 0; width: 0; height: 0; }
+.orbit .r2 .pin { top: 100%; }
+.orbit .r3 .pin { top: 50%; left: 100%; }
+/* The pill turns against its ring, so the words stay upright. */
+.orbit .node {
+  position: absolute;
+  left: 0; top: 0;
+  translate: -50% -50%;
+  animation: spin var(--t) linear infinite reverse;
+  padding: 9px 16px 9px 12px;
+  border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  background: rgba(12, 14, 22, 0.72);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px var(--line-2), 0 10px 30px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+.orbit .r2 .node { animation-direction: normal; }
+.orbit .node i { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+.orbit .r2 .node i { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.orbit .r3 .node i { background: var(--violet); box-shadow: 0 0 12px var(--violet); }
+.orbit .core {
+  position: absolute;
+  inset: 41%;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: clamp(28px, 3vw, 44px); font-weight: 800; letter-spacing: -0.05em;
+  color: var(--ink);
+  background: radial-gradient(circle at 35% 30%, rgba(124, 196, 255, 0.55), rgba(41, 151, 255, 0.25) 40%, rgba(10, 12, 20, 0.9) 75%);
+  box-shadow: 0 0 80px rgba(41, 151, 255, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  animation: pulse 5s ease-in-out infinite;
+}
+@media (max-width: 1099px) { .orbit .pin { display: none; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 50% { box-shadow: 0 0 120px rgba(41, 151, 255, 0.65), inset 0 0 0 1px rgba(255, 255, 255, 0.24); } }
+
+/* ------------------------------------------------------------------ Marquee */
+
+.marquee {
+  position: relative;
+  padding-block: 22px;
+  border-block: 1px solid var(--line);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee ul { display: flex; flex: none; }
+.marquee li {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.marquee li::after {
+  content: "";
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--glow);
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ------------------------------------------------------------------ Thesis */
+
+.thesis .wrap { display: grid; gap: 32px; }
+.thesis-lines { display: grid; gap: 0.04em; font-family: var(--display); font-size: clamp(44px, 9vw, 120px); line-height: 0.98; letter-spacing: -0.055em; font-weight: 800; }
 .thesis-lines span {
   display: block;
-  color: var(--ink-3);
-  transition: color 700ms var(--ease);
+  color: rgba(255, 255, 255, 0.12);
+  transform: translateX(-0.4em);
+  opacity: 0.6;
+  transition: color 900ms var(--ease), transform 900ms var(--ease), opacity 900ms var(--ease), text-shadow 900ms var(--ease);
 }
-.thesis-lines span.on { color: var(--ink); }
-.thesis-lines span:last-child.on { color: var(--accent); }
+.thesis-lines span.on { color: var(--ink); transform: none; opacity: 1; }
+.thesis-lines span:last-child.on { color: var(--neon); text-shadow: 0 0 48px var(--neon-glow); }
 .thesis .t-lead { max-width: 40ch; }
 
-/* Stats */
-.stats { display: grid; gap: 1px; background: var(--line); border-radius: 20px; overflow: hidden; }
-.stat { background: var(--paper); padding: clamp(24px, 3vw, 40px); display: grid; gap: 14px; align-content: start; }
-.alt .stat { background: var(--paper-2); }
-.stat .value { font-size: clamp(48px, 7vw, 84px); line-height: 1; }
-.stat .value small { font-size: 0.42em; font-weight: 500; letter-spacing: 0; color: var(--ink-2); margin-left: 2px; }
+/* ------------------------------------------------------------------ Glass cards, pointer light */
+
+.glass {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 0 0 1px var(--line), 0 30px 80px -40px rgba(0, 0, 0, 0.8);
+  border-radius: 24px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(41, 151, 255, 0.18), transparent 60%);
+}
+.glass:hover::before { opacity: 1; }
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), rgba(124, 196, 255, 0.7), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.glass:hover::after { opacity: 1; }
+
+/* ------------------------------------------------------------------ Stats */
+
+.stats { display: grid; gap: 14px; }
+.stat { padding: clamp(26px, 3vw, 40px); display: grid; gap: 16px; align-content: start; min-height: 240px; }
+.stat .value { font-family: var(--display); font-weight: 800; font-size: clamp(56px, 8vw, 104px); line-height: 0.95; }
+.stat .value span { background: linear-gradient(180deg, var(--ink), rgba(245, 245, 247, 0.55)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat .value small { font-size: 0.4em; font-weight: 600; letter-spacing: 0; color: var(--accent); margin-left: 4px; }
 .stat p { max-width: 36ch; }
-@media (min-width: 720px) { .stats { grid-template-columns: repeat(3, 1fr); } }
-.claim { margin-top: clamp(28px, 4vw, 48px); max-width: 20ch; }
+@media (min-width: 760px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+.claim { margin-top: clamp(36px, 5vw, 64px); max-width: 20ch; font-family: var(--display); font-size: clamp(32px, 5vw, 60px); line-height: 1.02; letter-spacing: -0.045em; font-weight: 800; }
 .source { margin-top: 28px; max-width: 78ch; }
 
-/* Grid lists */
-.grid { display: grid; gap: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 56px); }
+/* ------------------------------------------------------------------ Rails: cards that slide */
+
+.rail-wrap { position: relative; }
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(86%, 420px);
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  padding: 6px var(--gutter) 28px;
+  margin-inline: calc(var(--gutter) * -1);
+  scrollbar-width: none;
+  cursor: grab;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail.dragging { cursor: grabbing; scroll-snap-type: none; }
+.rail.dragging * { pointer-events: none; user-select: none; }
+.rail > * { scroll-snap-align: start; min-width: 0; }
+.rail.wide { grid-auto-columns: min(92%, 760px); align-items: start; }
+.card > *, .case > *, .glass > * { min-width: 0; }
+@media (min-width: 1180px) {
+  .rail { margin-inline: calc((100vw - var(--max)) / -2 - var(--gutter)); padding-inline: calc((100vw - var(--max)) / 2 + var(--gutter)); scroll-padding-inline: calc((100vw - var(--max)) / 2 + var(--gutter)); }
+}
+html.js .rail > * {
+  opacity: 0.35;
+  transform: scale(0.96);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+html.js .rail > .seen { opacity: 1; transform: none; }
+.rail-bar { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+.rail-track { flex: 1; height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.rail-track i { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(var(--rp, 0.2)); background: linear-gradient(90deg, var(--accent), var(--cyan)); transition: transform 200ms linear; }
+.rail-btns { display: flex; gap: 8px; }
+.rail-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  transition: background-color 240ms var(--ease), opacity 240ms var(--ease), transform 300ms var(--ease);
+}
+.rail-btn:hover { background: var(--glass-2); }
+.rail-btn:active { transform: scale(0.94); }
+.rail-btn[disabled] { opacity: 0.3; cursor: default; }
+.rail-btn svg { width: 18px; height: 18px; }
+.rail-hint { font-size: 13px; color: var(--ink-3); }
+
+.card { padding: clamp(24px, 3vw, 34px); display: grid; gap: 14px; align-content: start; min-height: 100%; }
+.card .idx {
+  font-size: 13px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums;
+  width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+  background: rgba(41, 151, 255, 0.12); box-shadow: inset 0 0 0 1px rgba(41, 151, 255, 0.35);
+}
+.card p { max-width: 44ch; }
+.card .when { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+
+/* Grid lists (governance, value, returns): numbered points that light up. */
+.grid { display: grid; gap: 14px; }
 @media (min-width: 720px) { .grid.two { grid-template-columns: repeat(2, 1fr); } .grid.three { grid-template-columns: repeat(3, 1fr); } }
-.item { display: grid; gap: 10px; align-content: start; }
-.item .idx { font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.item { padding: clamp(24px, 3vw, 32px); display: grid; gap: 12px; align-content: start; }
+.item .pt {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.12em; font-variant-numeric: tabular-nums;
+}
+.item .pt::before {
+  content: "";
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--line-2);
+  transition: background-color 600ms var(--ease), box-shadow 600ms var(--ease);
+}
+.item.in .pt::before { background: var(--accent); box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.15), 0 0 16px var(--glow); }
 .item p { max-width: 44ch; }
 
-/* Method: sticky title, steps light up as they pass */
+/* ------------------------------------------------------------------ Method: a line of light down the steps */
+
 .method-layout { display: grid; gap: 40px; }
-@media (min-width: 880px) {
-  .method-layout { grid-template-columns: 1fr 1.4fr; gap: 80px; }
-  .method-sticky { position: sticky; top: 96px; align-self: start; }
+@media (min-width: 900px) {
+  .method-layout { grid-template-columns: 1fr 1.35fr; gap: 88px; }
+  .method-sticky { position: sticky; top: 112px; align-self: start; }
 }
-.steps { display: grid; }
+.steps { position: relative; display: grid; gap: 12px; padding-left: 34px; }
+.steps::before, .steps::after {
+  content: "";
+  position: absolute;
+  left: 11px; top: 14px; bottom: 14px;
+  width: 2px; border-radius: 2px;
+}
+.steps::before { background: var(--line); }
+.steps::after {
+  background: linear-gradient(180deg, var(--cyan), var(--accent), var(--violet));
+  transform-origin: top;
+  transform: scaleY(var(--sp, 0));
+  box-shadow: 0 0 14px var(--glow);
+}
 .step {
+  position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 8px 16px;
-  padding-block: 28px;
-  border-top: 1px solid var(--line);
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 24px 26px;
+  border-radius: 20px;
   color: var(--ink-3);
-  transition: color 600ms var(--ease);
+  transition: color 600ms var(--ease), background-color 600ms var(--ease), box-shadow 600ms var(--ease), transform 600ms var(--ease);
 }
-.step:last-child { border-bottom: 1px solid var(--line); }
-.step .n { font-size: 15px; font-variant-numeric: tabular-nums; padding-top: 4px; }
+.step::before {
+  content: "";
+  position: absolute;
+  left: -29px; top: 30px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--line-2);
+  transition: box-shadow 500ms var(--ease), background-color 500ms var(--ease);
+}
+.step.done::before { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.step .n { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; font-variant-numeric: tabular-nums; }
 .step h3 { transition: color 600ms var(--ease); color: var(--ink-3); }
-.step p { grid-column: 2; max-width: 46ch; color: var(--ink-3); transition: color 600ms var(--ease); }
+.step p { max-width: 46ch; color: var(--ink-3); transition: color 600ms var(--ease); }
+.step.on { background: var(--glass); box-shadow: inset 0 0 0 1px var(--line-2), 0 20px 60px -30px var(--glow); transform: translateX(6px); }
+.step.on::before { background: var(--cyan); box-shadow: 0 0 0 4px rgba(62, 230, 255, 0.2), 0 0 18px var(--cyan); }
 .step.on, .step.on h3 { color: var(--ink); }
 .step.on p { color: var(--ink-2); }
 .step.on .n { color: var(--accent); }
 
-/* Proof cases */
-.cases { display: grid; gap: 20px; }
-.case {
-  background: var(--paper);
-  border-radius: 24px;
-  padding: clamp(24px, 3.4vw, 44px);
-  display: grid;
-  gap: 28px;
-  box-shadow: 0 0 0 1px var(--line);
+/* ------------------------------------------------------------------ Proof cases */
+
+.case { padding: clamp(24px, 3.4vw, 44px); display: grid; gap: 28px; align-content: start; }
+.case-head { display: grid; gap: 10px; }
+.case-head .t-kicker b {
+  color: var(--accent-ink); background: var(--accent); font-weight: 700;
+  padding: 4px 10px; border-radius: 999px; letter-spacing: 0.08em;
+  box-shadow: 0 0 20px var(--glow);
 }
-.case-head { display: grid; gap: 8px; }
-.case-head .t-kicker { display: flex; gap: 12px; align-items: baseline; }
-.case-head .t-kicker b { color: var(--accent); font-weight: 600; }
 .case-head .meta { max-width: 70ch; }
-.figures { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
-.fig .t-num { font-size: clamp(26px, 3.6vw, 44px); line-height: 1; }
-.fig .t-small { margin-top: 6px; }
+.figures { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); }
+.fig { padding: 16px; border-radius: 16px; background: rgba(255, 255, 255, 0.035); box-shadow: inset 0 0 0 1px var(--line); }
+.fig { min-width: 0; }
+.fig .t-num { font-size: clamp(22px, 3.2vw, 40px); line-height: 1; color: var(--ink); overflow-wrap: anywhere; }
+.fig .t-small { margin-top: 8px; font-size: 13px; }
 .cols { display: grid; gap: 22px; }
-@media (min-width: 760px) { .cols { grid-template-columns: repeat(3, 1fr); gap: 32px; } }
+@media (min-width: 760px) { .rail.wide .cols { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
 .col { display: grid; gap: 8px; align-content: start; }
 .col p { font-size: 15px; }
 
-/* Numbers */
-.numbers-layout { display: grid; gap: 32px; }
-@media (min-width: 880px) { .numbers-layout { grid-template-columns: 1.2fr 1fr 1fr; gap: 48px; } }
+/* ------------------------------------------------------------------ Numbers */
+
+.numbers-layout { display: grid; gap: 14px; }
+@media (min-width: 900px) { .numbers-layout { grid-template-columns: 1.2fr 1fr 1fr; } }
+.panel { padding: clamp(24px, 3vw, 36px); display: grid; gap: 16px; align-content: start; }
 .pricelist { display: grid; }
 .pricelist li {
   display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
-  padding-block: 16px; border-top: 1px solid var(--line);
+  padding-block: 15px; border-top: 1px solid var(--line);
+  transition: padding 300ms var(--ease), color 300ms var(--ease);
 }
+.pricelist li:hover { color: var(--ink); padding-inline: 6px; }
 .pricelist li:last-child { border-bottom: 1px solid var(--line); }
-.pricelist .t-num { font-size: 17px; white-space: nowrap; text-align: right; }
-.big { font-size: clamp(48px, 7vw, 84px); line-height: 1; }
-.panel { display: grid; gap: 14px; align-content: start; }
+.pricelist .t-num { font-size: 17px; white-space: nowrap; text-align: right; color: var(--accent-2); }
+.big { font-family: var(--display); font-weight: 800; font-size: clamp(52px, 7vw, 92px); line-height: 0.95; background: linear-gradient(180deg, var(--ink), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-/* Timelines (fields, horizon, milestones) */
+/* ------------------------------------------------------------------ Timelines */
+
 .timeline { display: grid; }
 .trow {
   display: grid;
   grid-template-columns: 88px 1fr;
   gap: 8px 20px;
-  padding-block: 22px;
+  padding-block: 24px;
   border-top: 1px solid var(--line);
+  transition: background-color 400ms var(--ease);
 }
 .trow:last-child { border-bottom: 1px solid var(--line); }
-.trow .when { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 15px; padding-top: 3px; }
+.trow .when { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; font-size: 14px; letter-spacing: 0.04em; padding-top: 3px; }
 .trow h3 { font-size: 20px; }
 .trow p { grid-column: 2; max-width: 62ch; }
-@media (min-width: 720px) { .trow { grid-template-columns: 120px 1fr; } }
+@media (min-width: 720px) { .trow { grid-template-columns: 140px 1fr; } }
 
-/* Governance closing, value */
-.closing {
-  margin-top: clamp(36px, 5vw, 56px);
-  padding: clamp(24px, 3vw, 36px);
-  border-radius: 20px;
-  background: var(--paper);
-  box-shadow: 0 0 0 1px var(--line);
-  max-width: 78ch;
-}
-.alt .closing { background: var(--paper); }
-section:not(.alt) .closing { background: var(--paper-2); box-shadow: none; }
+/* Closing note under a list */
+.closing { margin-top: clamp(32px, 5vw, 56px); padding: clamp(24px, 3vw, 36px); max-width: 78ch; }
 
-/* Funds */
+/* ------------------------------------------------------------------ Funds */
+
 .bar {
   display: flex;
-  height: 56px;
-  border-radius: 14px;
+  height: 64px;
+  border-radius: 18px;
   overflow: hidden;
-  background: var(--paper-2);
+  background: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--line);
   gap: 3px;
+  padding: 3px;
 }
-.alt .bar { background: var(--paper); }
 .bar span {
   display: block;
   height: 100%;
-  flex: 0 0 var(--w);
-  background: var(--ink);
+  flex: var(--g) 1 0;
+  min-width: 6px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) calc(100% - var(--k) * 12%), var(--violet)), color-mix(in srgb, var(--accent) calc(80% - var(--k) * 10%), #000));
+  box-shadow: 0 0 24px rgba(41, 151, 255, 0.25);
   transform-origin: left;
   transform: scaleX(0);
-  transition: transform 1100ms var(--ease);
-  opacity: calc(1 - var(--k) * 0.12);
+  transition: transform 1200ms var(--ease);
+  transition-delay: calc(var(--k) * 110ms);
 }
 .bar.on span { transform: scaleX(1); }
-.bar span:nth-child(n) { transition-delay: calc(var(--k) * 90ms); }
-.funds-list { display: grid; gap: 1px; margin-top: 28px; }
+.funds-list { display: grid; margin-top: 28px; }
 .fund {
   display: grid;
   grid-template-columns: 110px 1fr;
   gap: 6px 20px;
-  padding-block: 20px;
+  padding-block: 22px;
   border-top: 1px solid var(--line);
 }
 .fund:last-child { border-bottom: 1px solid var(--line); }
-.fund .amt { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
-.fund .pct { color: var(--ink-3); font-size: 13px; display: block; font-weight: 500; }
+.fund .amt { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; color: var(--ink); }
+.fund .pct { color: var(--accent); font-size: 13px; display: block; font-weight: 600; }
 .fund p { grid-column: 2; max-width: 62ch; }
-@media (min-width: 720px) { .fund { grid-template-columns: 150px 1fr; } }
-.funds-two { display: grid; gap: 40px; margin-top: clamp(48px, 6vw, 80px); }
-@media (min-width: 880px) { .funds-two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+@media (min-width: 720px) { .fund { grid-template-columns: 160px 1fr; } }
+.funds-two { display: grid; gap: 14px; margin-top: clamp(48px, 6vw, 80px); }
+.funds-two > div { padding: clamp(24px, 3vw, 36px); }
+@media (min-width: 900px) { .funds-two { grid-template-columns: 1fr 1fr; } }
 .kv { display: grid; }
 .kv li { display: grid; gap: 4px; padding-block: 16px; border-top: 1px solid var(--line); }
 .kv li:last-child { border-bottom: 1px solid var(--line); }
-.kv .k { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); }
+.kv .k { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
 
-/* Ask */
+/* ------------------------------------------------------------------ Ask and contact */
+
 .ask-list { display: grid; gap: 0; counter-reset: ask; }
 .ask-list li {
-  display: grid; grid-template-columns: 48px 1fr; gap: 16px;
-  padding-block: 24px; border-top: 1px solid var(--line);
-  font-size: clamp(19px, 2.2vw, 24px); line-height: 1.3; letter-spacing: -0.01em;
+  display: grid; grid-template-columns: 56px 1fr; gap: 16px;
+  padding-block: 28px; border-top: 1px solid var(--line);
+  font-size: clamp(21px, 2.6vw, 30px); line-height: 1.25; letter-spacing: -0.02em; font-weight: 600;
 }
 .ask-list li:last-child { border-bottom: 1px solid var(--line); }
 .ask-list li::before {
   counter-increment: ask;
   content: "0" counter(ask);
-  color: var(--accent); font-size: 15px; font-weight: 600; padding-top: 5px;
-  font-variant-numeric: tabular-nums;
+  color: var(--neon); font-size: 14px; font-weight: 700; padding-top: 8px;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.1em;
 }
 .contact {
-  margin-top: clamp(48px, 6vw, 80px);
-  padding: clamp(28px, 4vw, 56px);
-  border-radius: 28px;
-  background: var(--ink);
-  color: var(--paper);
+  position: relative;
+  margin-top: clamp(56px, 7vw, 96px);
+  scroll-margin-top: 96px;
+  padding: clamp(32px, 5vw, 72px);
+  border-radius: 32px;
   display: grid;
-  gap: 20px;
+  gap: 22px;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(41, 151, 255, 0.35), transparent 50%), radial-gradient(120% 140% at 100% 100%, rgba(139, 108, 255, 0.35), transparent 50%), #07070b;
 }
+/* A border of light that travels around the card. */
+.contact::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  z-index: -2;
+  background: conic-gradient(from var(--a, 0deg), transparent 0 70%, var(--neon) 80%, var(--cyan) 88%, var(--accent) 94%, transparent 100%);
+  animation: orbit 6s linear infinite;
+}
+.contact::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  z-index: -1;
+  border-radius: 30.5px;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(41, 151, 255, 0.28), transparent 50%), radial-gradient(120% 140% at 100% 100%, rgba(139, 108, 255, 0.28), transparent 50%), #07070b;
+}
+@property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes orbit { to { --a: 360deg; } }
+#contact .contact { margin-top: 0; }
 .contact .t-h1 { max-width: 16ch; }
-.contact .t-lead { color: inherit; opacity: 0.72; max-width: 40ch; }
+.contact .t-lead { color: var(--ink-2); max-width: 40ch; }
 .contact-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-.contact .btn-ink { background: var(--paper); color: var(--ink); }
-.contact .btn-ghost { border-color: rgba(255, 255, 255, 0.35); color: inherit; }
-:root[data-theme="dark"] .contact .btn-ghost, .contact .btn-ghost { border-color: currentColor; opacity: 0.9; }
-.contact-lines { display: grid; gap: 6px; font-size: 15px; opacity: 0.8; margin-top: 8px; }
-.contact-lines a:hover { text-decoration: underline; }
+.contact-lines { display: grid; gap: 6px; font-size: 15px; color: var(--ink-2); margin-top: 8px; }
+.contact-lines a:hover { color: var(--ink); }
 
-/* Footer */
-footer { padding-block: 40px 56px; border-top: 1px solid var(--line); }
+/* ------------------------------------------------------------------ Segments, packages, industries */
+
+.seg {
+  display: inline-grid; grid-auto-flow: column; gap: 4px; padding: 5px;
+  border-radius: 22px; background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px var(--line);
+  max-width: 100%; overflow-x: auto; scrollbar-width: none; margin-bottom: 18px;
+}
+.seg::-webkit-scrollbar { display: none; }
+.seg-btn {
+  min-height: 46px; padding: 8px 18px; border-radius: 17px;
+  font-size: 15px; font-weight: 600; color: var(--ink-2); white-space: nowrap;
+  transition: background-color 240ms var(--ease), color 240ms var(--ease), box-shadow 240ms var(--ease);
+}
+.seg-btn:hover { color: var(--ink); }
+.seg-btn[aria-selected="true"] { background: var(--neon); color: var(--neon-ink); box-shadow: 0 0 22px var(--neon-glow); }
+@media (max-width: 560px) { .seg:not(.seg-wrap) { display: grid; grid-auto-columns: 1fr; width: 100%; } .seg-btn { padding: 8px 10px; font-size: 13.5px; } }
+
+html.js [data-seg-panel]:not(.active) { display: none; }
+html.js [data-seg-panel].active { animation: panel 520ms var(--ease) both; }
+@keyframes panel { from { opacity: 0; transform: translateY(12px) scale(0.99); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.pkgs, .inds { display: grid; gap: 14px; }
+
+.pkg { padding: clamp(26px, 4vw, 48px); display: grid; gap: 24px; }
+.pkg-head { display: grid; gap: 10px; }
+.pkg-head .t-kicker::before { background: var(--neon); box-shadow: 0 0 12px var(--neon-glow); }
+.pkg-price {
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(32px, 5vw, 60px); line-height: 1; letter-spacing: -0.045em; color: var(--neon);
+  text-shadow: 0 0 40px var(--neon-glow);
+}
+.pkg .t-lead { max-width: 48ch; color: var(--ink); }
+.pkg-track { display: flex; flex-wrap: wrap; gap: 8px; }
+.pkg-step {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px 8px 8px; border-radius: 999px;
+  font-size: 14px; font-weight: 600; color: var(--ink-3);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.pkg-step i { font-style: normal; font-size: 11px; font-weight: 700; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, 0.06); }
+.pkg-step.on { color: var(--ink); box-shadow: inset 0 0 0 1px rgba(198, 255, 58, 0.5), 0 0 22px -6px var(--neon-glow); background: rgba(198, 255, 58, 0.06); }
+.pkg-step.on i { background: var(--neon); color: var(--neon-ink); }
+.pkg-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; border-top: 1px solid var(--line); }
+.pkg-result { font-weight: 600; color: var(--ink); }
+.pkg-note { margin-top: 18px; }
+
+.ind { padding: clamp(26px, 4vw, 52px); display: grid; gap: 18px; min-height: 280px; align-content: end; }
+.ind-n { font-size: 13px; color: var(--neon); letter-spacing: 0.12em; }
+.ind .t-lead { max-width: 46ch; }
+.seg-wrap { display: flex; flex-wrap: wrap; gap: 8px; overflow: visible; padding: 0; background: none; box-shadow: none; }
+.seg-wrap .seg-btn { box-shadow: inset 0 0 0 1px var(--line-2); min-height: 42px; padding: 8px 16px; }
+.seg-wrap .seg-btn[aria-selected="true"] { box-shadow: 0 0 22px var(--neon-glow); }
+
+/* ------------------------------------------------------------------ Calculator */
+
+.calc { display: grid; gap: 14px; }
+@media (min-width: 900px) { .calc { grid-template-columns: 1.1fr 1fr; } }
+.calc-in { padding: clamp(22px, 3vw, 36px); display: grid; gap: 6px; }
+.regler { display: block; --p: 50%; }
+.regler + .regler { margin-top: 10px; }
+.regler-kopf { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.regler-name { font-size: 15px; font-weight: 600; color: var(--ink); }
+.regler-zahl {
+  font-family: var(--display); font-size: 28px; font-weight: 800; letter-spacing: -0.03em;
+  color: var(--neon); text-shadow: 0 0 18px var(--neon-glow); white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.regler input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 44px; margin: 2px 0 0; padding: 0;
+  background: transparent; cursor: pointer; touch-action: pan-y;
+}
+.regler input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px; border-radius: 999px;
+  background: linear-gradient(to right, rgba(198, 255, 58, 0.5), var(--neon)) 0 0 / var(--p) 100% no-repeat, rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 18px -2px var(--neon-glow);
+}
+.regler input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 30px; height: 30px; margin-top: -10px; border-radius: 50%;
+  background: #fff; border: 0;
+  box-shadow: 0 0 0 5px rgba(198, 255, 58, 0.3), 0 0 24px var(--neon), 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 120ms;
+}
+.regler input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.14); }
+.regler input[type="range"]::-moz-range-track { height: 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); }
+.regler input[type="range"]::-moz-range-progress { height: 10px; border-radius: 999px; background: var(--neon); }
+.regler input[type="range"]::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px rgba(198, 255, 58, 0.3), 0 0 24px var(--neon); }
+.regler input[type="range"]:focus-visible { outline: 2px solid var(--neon); outline-offset: 4px; border-radius: 12px; }
+
+.calc-out { padding: clamp(22px, 3vw, 36px); display: grid; gap: 14px; align-content: start; }
+.calc-row { display: grid; gap: 2px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.calc-num { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.05; letter-spacing: -0.04em; color: var(--ink); }
+.calc-row.hero-row .calc-num { font-size: clamp(40px, 6vw, 68px); color: var(--neon); text-shadow: 0 0 36px var(--neon-glow); }
+.calc-pay { display: grid; gap: 6px; padding: 16px; border-radius: 18px; background: rgba(198, 255, 58, 0.06); box-shadow: inset 0 0 0 1px rgba(198, 255, 58, 0.25); }
+.calc-pay-num { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.03em; color: var(--ink); }
+.calc-out .btn { justify-self: start; margin-top: 4px; }
+.calc-note { margin-top: 18px; max-width: 80ch; }
+
+/* ------------------------------------------------------------------ Teaser to the other rider */
+
+section.tight { padding-block: clamp(40px, 6vw, 80px); }
+.teaser {
+  display: grid; gap: 14px; padding: clamp(28px, 5vw, 64px);
+  background: radial-gradient(90% 120% at 100% 0%, rgba(198, 255, 58, 0.14), transparent 55%), linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+.teaser-title { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 7vw, 96px); line-height: 0.95; letter-spacing: -0.05em; }
+.teaser .t-body { max-width: 52ch; }
+.teaser-go { display: inline-flex; align-items: center; gap: 8px; justify-self: start; margin-top: 6px; padding: 12px 22px; border-radius: 999px; background: var(--neon); color: var(--neon-ink); font-weight: 700; box-shadow: 0 8px 30px var(--neon-glow); }
+.teaser:hover .arrow { transform: translateX(4px); }
+.teaser .arrow { transition: transform 380ms var(--ease); }
+
+.hero-scale { min-height: 78svh; }
+
+/* ------------------------------------------------------------------ Footer */
+
+footer { padding-block: 48px 64px; border-top: 1px solid var(--line); }
 footer .wrap { display: grid; gap: 20px; font-size: 13px; color: var(--ink-3); }
 footer .row { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; }
 footer a:hover { color: var(--ink); }
 footer .brand { color: var(--ink); }
+.footer-word {
+  font-family: var(--display);
+  white-space: nowrap;
+  font-size: clamp(48px, 12.5vw, 176px);
+  line-height: 0.85;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-2);
+  user-select: none;
+  margin-top: 12px;
+}
 
-/* Legal pages */
-.legal { padding-block: clamp(56px, 8vw, 100px); }
-.legal .wrap { display: grid; gap: 24px; max-width: 760px; }
+/* ------------------------------------------------------------------ Legal pages */
+
+.legal { padding-block: clamp(80px, 10vw, 120px); }
+.legal .wrap { display: grid; gap: 24px; max-width: 780px; }
 .legal p, .legal address { max-width: 70ch; font-style: normal; color: var(--ink-2); }
-.legal .placeholder { color: var(--ink-3); background: var(--paper-2); padding: 12px 16px; border-radius: 12px; font-size: 14px; }
+.legal a { color: var(--accent-2); }
+.legal .placeholder { color: var(--ink-3); background: var(--glass); padding: 12px 16px; border-radius: 12px; font-size: 14px; box-shadow: inset 0 0 0 1px var(--line); }
 
-/* Reveal on scroll. Resting state is visible: the class only moves things
-   that have not yet entered, and only once JavaScript has taken over. */
+/* ------------------------------------------------------------------ Reveal */
+
+/* Resting state is visible: the class only moves things that have not yet
+   entered, and only once JavaScript has taken over. */
 html.js .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), filter var(--dur) var(--ease);
   transition-delay: var(--d, 0ms);
 }
-html.js .reveal.in { opacity: 1; transform: none; }
+html.js .reveal.in { opacity: 1; transform: none; filter: none; }
 
 @keyframes rise {
   from { opacity: 0; transform: translateY(8px); }
@@ -575,69 +1187,88 @@ html.js .reveal.in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  html.js .reveal { opacity: 1; transform: none; transition: none; }
+  html.js .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+  html.js .split .w > span { transform: none; transition: none; }
+  html.js .rail > * { opacity: 1; transform: none; transition: none; }
+  .aurora i, .floor, .marquee-track, .grad, .contact::before, .scroll-cue::after, .orbit .ring, .orbit .node, .orbit .core { animation: none; }
   .bar span { transition: none; transform: none; }
-  .drawer a { animation: none; }
+  .drawer a, .nav[data-open] .drawer { animation: none; }
   .thesis-lines span, .step, .step h3, .step p { transition: none; }
+  .thesis-lines span { color: var(--ink); transform: none; opacity: 1; }
 }
 
 @media print {
+  :root { --paper: #fff; --ink: #000; --ink-2: #333; --ink-3: #555; --line: rgba(0,0,0,.15); }
+  body::after, .progress, .aurora, .floor, .orbit, .scroll-cue, .marquee, .rail-bar, .footer-word { display: none !important; }
   .nav, .skip, .hero-actions, .contact-actions, footer .row a[href^="#"] { display: none !important; }
+  .hero { min-height: 0; margin-top: 0; }
   section { padding-block: 24px; break-inside: avoid; }
-  .alt { background: none; }
-  .contact { background: none; color: inherit; box-shadow: 0 0 0 1px var(--line); }
-  html.js .reveal { opacity: 1; transform: none; }
+  .grad, .big, .stat .value span { color: #000; -webkit-text-fill-color: #000; background: none; }
+  .rail { display: grid; grid-auto-flow: row; overflow: visible; margin: 0; padding: 0; }
+  .glass, .contact { background: none; box-shadow: 0 0 0 1px var(--line); }
+  html.js .reveal, html.js .rail > *, html.js .split .w > span { opacity: 1; transform: none; filter: none; }
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
+<div class="progress" aria-hidden="true"></div>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="/seelischabstrakt/schranz-ai/" aria-label="SCHRANZ AI SOLUTIONS">SCHRANZ AI SOLUTIONS</a>
+    <a class="brand" href="/seelischabstrakt/schranz-ai/" aria-label="SCHRANZ AI SOLUTIONS"><span class="brand-mark" aria-hidden="true"></span><span class="brand-word">SCHRANZ AI</span></a>
+    <nav class="riders" aria-label="Welcher Teil der Seite">
+      <a href="/seelischabstrakt/schranz-ai/" aria-current="page">Für Kunden</a><a href="/seelischabstrakt/schranz-ai/mitmachen/">Mitmachen</a>
+    </nav>
     <nav class="nav-links" aria-label="Abschnitte">
-      <a href="#market" style="--i:0">Markt</a>
-      <a href="#method" style="--i:1">Methode</a>
-      <a href="#proof" style="--i:2">Belege</a>
-      <a href="#numbers" style="--i:3">Zahlen</a>
-      <a href="#funds" style="--i:4">Die Runde</a>
-      <a href="#ask" style="--i:5">Das Angebot</a>
+      <a href="#services" style="--i:0">Pakete</a>
+      <a href="#calc" style="--i:1">Rechner</a>
+      <a href="#method" style="--i:2">Methode</a>
+      <a href="#proof" style="--i:3">Belege</a>
+      <a href="#contact" style="--i:4">Kontakt</a>
     </nav>
     <div class="nav-tools">
-      <a class="lang" href="/seelischabstrakt/schranz-ai/en/" hreflang="en" lang="en" aria-label="Read this page in English">English</a>
-      <a class="btn btn-solid btn-sm" href="#ask">Gespräch anfragen</a>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menü"><span></span></button>
+      <a class="lang" href="/seelischabstrakt/schranz-ai/en/" hreflang="en" lang="en" aria-label="Read this page in English">EN</a>
+      <a class="btn btn-solid btn-sm" href="#contact" data-magnet>Erstgespräch</a>
     </div>
-  </div>
-  <div class="drawer" id="drawer">
-    <nav class="wrap" aria-label="Menü">
-      <a href="#market" style="--i:0">Markt</a>
-      <a href="#method" style="--i:1">Methode</a>
-      <a href="#proof" style="--i:2">Belege</a>
-      <a href="#numbers" style="--i:3">Zahlen</a>
-      <a href="#funds" style="--i:4">Die Runde</a>
-      <a href="#ask" style="--i:5">Das Angebot</a>
-      <a class="btn btn-solid" href="#ask">Gespräch anfragen</a>
-    </nav>
   </div>
 </header>
+<nav class="tabbar" aria-label="Abschnitte">
+  <a href="#services" data-tab="services"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Pakete</span></a>
+  <a href="#calc" data-tab="calc"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01"/></svg><span>Rechner</span></a>
+  <a href="#method" data-tab="method"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8M10 6h10M10 18h10M10 12h7"/></svg><span>Methode</span></a>
+  <a href="#proof" data-tab="proof"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span>Belege</span></a>
+  <a href="#contact" data-tab="contact"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg><span>Kontakt</span></a>
+</nav>
 <main id="main">
 <section class="hero" id="top">
-  <div class="wrap">
-    <p class="t-kicker" class="reveal" style="--d:0ms">Pre-Seed, Wien, 2026</p>
-    <h1 class="t-display" class="reveal" style="--d:70ms">KI, die liefert.</h1>
-    <p class="t-lead" class="reveal" style="--d:140ms">Diagnose. Bauen. Messen. EU-konform und verlässlich.</p>
-    <p class="t-body" class="reveal" style="--d:210ms">100.000 Euro Pre-Seed für den ersten Aufbau. Gebaut für Generationen.</p>
-    <div class="hero-actions" class="reveal" style="--d:280ms">
-      <a class="btn btn-ink" href="#market">Den Fall lesen</a>
-      <a class="btn btn-ghost" href="#ask">Zum Angebot</a>
-    </div>
-    <p class="hero-meta" class="reveal" style="--d:350ms"><span>Alexander Schranz</span><span>Wien</span><a href="mailto:a.p.schranz@icloud.com">a.p.schranz@icloud.com</a></p>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="orbit" aria-hidden="true">
+    <div class="ring r1"><span class="pin"><span class="node"><i></i>Diagnose</span></span></div><div class="ring r2"><span class="pin"><span class="node"><i></i>Bauen</span></span></div><div class="ring r3"><span class="pin"><span class="node"><i></i>Messen</span></span></div>
+    <div class="core">S</div>
   </div>
-</section>
-<section class="thesis alt">
   <div class="wrap">
-    <h2 class="t-h1 thesis-lines" aria-label="Alle reden davon. Niemand setzt um. Bis jetzt.">
+    <p class="domain" class="reveal" style="--d:0ms"><b>schranz.ai</b>Freelance KI-Beratung, Wien</p>
+    <h1 class="t-display split" data-split style="--d:120ms">Eine neue Ära von Consulting.</h1>
+    <p class="tagline" class="reveal" style="--d:210ms"><span class="grad">KI, die liefert.</span></p>
+    <p class="t-lead" class="reveal" style="--d:280ms">Ich finde, wo Ihr Unternehmen Zeit verliert, baue das System, das sie zurückholt, und messe es.</p>
+    <p class="t-body" class="reveal" style="--d:350ms">Fixpreise. EU-konform. Direkt mit mir, ohne Agentur-Overhead.</p>
+    <div class="hero-actions" class="reveal" style="--d:420ms">
+      <a class="btn btn-solid" href="#contact" data-magnet>Erstgespräch anfragen <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <a class="btn btn-ghost" href="#services" data-magnet>Pakete ansehen</a>
+    </div>
+    <p class="hero-meta" class="reveal" style="--d:420ms"><span>Alexander Schranz</span><span>Wien</span><a href="mailto:a.p.schranz@icloud.com">a.p.schranz@icloud.com</a></p>
+  </div>
+  <span class="scroll-cue" aria-hidden="true"></span>
+</section>
+<div class="marquee" role="presentation">
+  <div class="marquee-track">
+    <ul><li>Diagnose</li><li>Bauen</li><li>Messen</li><li>Fixpreise</li><li>EU-konform</li><li>DSGVO</li><li>AI Act</li><li>3 Systeme im Betrieb</li><li>Wien</li></ul>
+    <ul aria-hidden="true"><li>Diagnose</li><li>Bauen</li><li>Messen</li><li>Fixpreise</li><li>EU-konform</li><li>DSGVO</li><li>AI Act</li><li>3 Systeme im Betrieb</li><li>Wien</li></ul>
+  </div>
+</div>
+<section class="thesis">
+  <div class="wrap">
+    <h2 class="thesis-lines" aria-label="Alle reden davon. Niemand setzt um. Bis jetzt.">
       <span aria-hidden="true">Alle reden davon.</span>
       <span aria-hidden="true">Niemand setzt um.</span>
       <span aria-hidden="true">Bis jetzt.</span>
@@ -645,86 +1276,139 @@ html.js .reveal.in { opacity: 1; transform: none; }
     <p class="t-lead" class="reveal" style="--d:70ms">95 Prozent aller KI-Piloten liefern nichts Messbares. Diese Agentur gibt es, um zu den anderen 5 Prozent zu gehören.</p>
   </div>
 </section>
-<section id="market">
+<section id="services">
   <div class="wrap">
     <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Markt</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Der Markt in drei ehrlichen Zahlen</h2>
+      <p class="t-kicker" class="reveal" style="--d:0ms">Leistungen</p>
+      <h2 class="t-h1 split" data-split style="--d:70ms">Drei Pakete. Fixpreis. Ein System, das läuft.</h2>
+      <p class="t-lead" class="reveal" style="--d:140ms">Sie wählen den Einstieg. Jedes Paket deckt Schritte der Methode ab, was nichts bringt, wird nicht verrechnet.</p>
     </div>
-    <div class="stats">
-      <div class="stat" class="reveal" style="--d:0ms">
-        <p class="value t-num"><span data-count="95" data-sample="95">95</span><small>%</small></p>
-        <p class="t-body">der GenAI-Piloten in Unternehmen bringen keinen messbaren Ertrag, quer durch Branchen und Unternehmensgrößen.</p>
-      </div>
-      <div class="stat" class="reveal" style="--d:70ms">
-        <p class="value t-num"><span>$30-40</span><small>bn</small></p>
-        <p class="t-body">geben Konzerne jedes Jahr für generative KI aus: Lizenzen, Piloten, Beratung. Das Geld ist da, die Umsetzung nicht.</p>
-      </div>
-      <div class="stat" class="reveal" style="--d:140ms">
-        <p class="value t-num"><span data-count="3" data-sample="3">3</span></p>
-        <p class="t-body">Systeme, sauber gebaut und im Betrieb, nicht auf Folien.</p>
-      </div>
+    <div class="seg" role="tablist" aria-label="Paket wählen" class="reveal" style="--d:0ms">
+      <button class="seg-btn" type="button" role="tab" id="pkg-tab-0" aria-controls="pkg-0" aria-selected="false" data-seg="0">AI Opportunity Audit</button>
+      <button class="seg-btn" type="button" role="tab" id="pkg-tab-1" aria-controls="pkg-1" aria-selected="true" data-seg="1">Build Sprint</button>
+      <button class="seg-btn" type="button" role="tab" id="pkg-tab-2" aria-controls="pkg-2" aria-selected="false" data-seg="2">Retainer</button>
     </div>
-    <p class="claim t-h2" class="reveal" style="--d:0ms">Diese Lücke schließe ich.</p>
-    <p class="source t-small" class="reveal" style="--d:70ms">Quelle für beide Marktzahlen: MIT Media Lab, The GenAI Divide: State of AI in Business 2025. Datenbasis: rund 300 analysierte KI-Einführungen in Unternehmen, Befragungen von über 150 Führungskräften, 52 Tiefeninterviews. Kernbefund der Studie: Die Ursache ist nicht die Technik, sondern die fehlende Einbindung in echte Arbeitsabläufe.</p>
+    <div class="pkgs">
+      <article class="pkg glass" role="tabpanel" id="pkg-0" aria-labelledby="pkg-tab-0" data-seg-panel="0" data-light>
+        <div class="pkg-head">
+          <p class="t-kicker">01</p>
+          <h3 class="t-h2">AI Opportunity Audit</h3>
+          <p class="pkg-price t-num">6.500 bis 9.500 Euro</p>
+        </div>
+        <p class="t-lead">Ich nehme Ihre Prozesse je Abteilung auf und belege jede Schwachstelle mit echten Daten. Sie bekommen eine Liste, was sich zu automatisieren lohnt, und was nicht.</p>
+        <div class="pkg-track" aria-label="Schritte der Methode">
+          <span class="pkg-step on"><i>01</i>Analysieren</span><span class="pkg-step on"><i>02</i>Diagnose</span><span class="pkg-step"><i>03</i>Zuerst bauen</span><span class="pkg-step"><i>04</i>Testen und messen</span><span class="pkg-step"><i>05</i>Absichern und übergeben</span>
+        </div>
+        <div class="pkg-foot">
+          <p class="pkg-result">Ergebnis: eine Diagnose mit Zahlen</p>
+          <a class="btn btn-solid" href="#contact" data-magnet>Zu diesem Paket anfragen <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+      <article class="pkg glass" role="tabpanel" id="pkg-1" aria-labelledby="pkg-tab-1" data-seg-panel="1" data-light>
+        <div class="pkg-head">
+          <p class="t-kicker">02</p>
+          <h3 class="t-h2">Build Sprint</h3>
+          <p class="pkg-price t-num">18.000 bis 28.000 Euro</p>
+        </div>
+        <p class="t-lead">Ich baue das System, das die größte Lücke schließt, teste es gegen Abnahmekriterien und messe die Arbeitszeit vorher und nachher.</p>
+        <div class="pkg-track" aria-label="Schritte der Methode">
+          <span class="pkg-step"><i>01</i>Analysieren</span><span class="pkg-step"><i>02</i>Diagnose</span><span class="pkg-step on"><i>03</i>Zuerst bauen</span><span class="pkg-step on"><i>04</i>Testen und messen</span><span class="pkg-step"><i>05</i>Absichern und übergeben</span>
+        </div>
+        <div class="pkg-foot">
+          <p class="pkg-result">Ergebnis: ein laufendes System, gemessen</p>
+          <a class="btn btn-solid" href="#contact" data-magnet>Zu diesem Paket anfragen <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+      <article class="pkg glass" role="tabpanel" id="pkg-2" aria-labelledby="pkg-tab-2" data-seg-panel="2" data-light>
+        <div class="pkg-head">
+          <p class="t-kicker">03</p>
+          <h3 class="t-h2">Retainer</h3>
+          <p class="pkg-price t-num">3.500 bis 6.000 Euro im Monat</p>
+        </div>
+        <p class="t-lead">Ich halte das System rechtssicher, entwickle es weiter und schule Ihr Team. Dokumentation und Übergabe ohne Abhängigkeit.</p>
+        <div class="pkg-track" aria-label="Schritte der Methode">
+          <span class="pkg-step"><i>01</i>Analysieren</span><span class="pkg-step"><i>02</i>Diagnose</span><span class="pkg-step"><i>03</i>Zuerst bauen</span><span class="pkg-step"><i>04</i>Testen und messen</span><span class="pkg-step on"><i>05</i>Absichern und übergeben</span>
+        </div>
+        <div class="pkg-foot">
+          <p class="pkg-result">Ergebnis: Betrieb und Weiterentwicklung</p>
+          <a class="btn btn-solid" href="#contact" data-magnet>Zu diesem Paket anfragen <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+    </div>
+    <p class="t-small pkg-note" class="reveal" style="--d:0ms">Fixpreise, keine Tagessatz-Lotterie.</p>
   </div>
 </section>
-<section class="alt">
+<section id="calc" class="alt">
   <div class="wrap">
     <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Der Unterschied</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">2026 hat alle zu KI-Nutzern gemacht.</h2>
+      <p class="t-kicker" class="reveal" style="--d:0ms">Rechner</p>
+      <h2 class="t-h1 split" data-split style="--d:70ms">Was kostet Sie Handarbeit?</h2>
+      <p class="t-lead" class="reveal" style="--d:140ms">Schieben Sie die Regler auf Ihre Lage. Gerechnet wird in Ihrem Browser, nichts wird gesendet oder gespeichert.</p>
     </div>
-    <ul class="grid two">
-      <li class="item" class="reveal" style="--d:0ms">
-        <h3 class="t-h3">KI nutzen ist nicht KI bauen</h3>
-        <p class="t-body">Prompten liefert Antworten. Für den Betrieb braucht es Spezifikationen, Datenmodelle, Tests und Governance.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:70ms">
-        <h3 class="t-h3">Fast niemand hat bauen gelernt</h3>
-        <p class="t-body">Zwischen der beeindruckenden Demo und dem System, das am Montag läuft, sterben 95 Prozent der Projekte.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:140ms">
-        <h3 class="t-h3">Ich habe es gelernt</h3>
-        <p class="t-body">Drei Systeme laufen im Betrieb. Gebaut 2026, nebenher, während ich eine volle Vertriebsquote erfüllt habe.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:210ms">
-        <h3 class="t-h3">Weniger reden, mehr machen</h3>
-        <p class="t-body">Jeder Auftrag beginnt mit einer Diagnose und endet mit einem System, das läuft. Was dazwischen nichts bringt, verrechne ich nicht.</p>
-      </li>
-    </ul>
+    <div class="calc" data-lang="de" data-price-low="18000" data-price-high="28000" data-weeks="46">
+      <div class="reveal calc-in glass" style="--d:0ms">
+        <label class="regler" data-key="hours">
+          <span class="regler-kopf"><span class="regler-name">Stunden pro Woche wiederkehrende Arbeit, je Person</span><output class="regler-zahl" data-unit=" h">6 h</output></span>
+          <input type="range" min="1" max="40" step="1" value="6" name="hours">
+        </label>
+        <label class="regler" data-key="people">
+          <span class="regler-kopf"><span class="regler-name">Personen, die das tun</span><output class="regler-zahl" data-unit="">3</output></span>
+          <input type="range" min="1" max="30" step="1" value="3" name="people">
+        </label>
+        <label class="regler" data-key="rate">
+          <span class="regler-kopf"><span class="regler-name">Interne Kosten je Stunde</span><output class="regler-zahl" data-unit=" €">45 €</output></span>
+          <input type="range" min="20" max="150" step="5" value="45" name="rate">
+        </label>
+        <label class="regler" data-key="share">
+          <span class="regler-kopf"><span class="regler-name">Anteil, den ein System übernehmen könnte</span><output class="regler-zahl" data-unit=" %">50 %</output></span>
+          <input type="range" min="10" max="90" step="5" value="50" name="share">
+        </label>
+      </div>
+      <div class="reveal calc-out glass" style="--d:70ms" data-light aria-live="polite">
+        <div class="calc-row"><p class="calc-num t-num" data-out="hours">&ndash;</p><p class="t-small">Stunden Handarbeit im Jahr</p></div>
+        <div class="calc-row"><p class="calc-num t-num" data-out="cost">&ndash;</p><p class="t-small">kostet diese Arbeit im Jahr</p></div>
+        <div class="calc-row hero-row"><p class="calc-num t-num" data-out="save">&ndash;</p><p class="t-small">mögliche Einsparung im Jahr</p></div>
+        <div class="calc-pay">
+          <p class="t-small">Ein Build Sprint zu 18.000 bis 28.000 Euro hätte sich bezahlt gemacht nach</p>
+          <p class="calc-pay-num t-num" data-out="payback" data-months="Monaten" data-none="Schieben Sie die Regler, dann steht hier die Amortisation.">&ndash;</p>
+        </div>
+        <noscript><p class="t-small">Der Rechner braucht JavaScript. Ohne: Stunden pro Woche mal Personen mal 46 Wochen mal Kosten je Stunde.</p></noscript>
+        <a class="btn btn-solid" href="#contact" data-magnet>Mit echten Zahlen prüfen lassen <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+    <p class="t-small calc-note" class="reveal" style="--d:0ms">Ihre Annahmen, keine Zusage. Gerechnet mit 46 Arbeitswochen im Jahr. Was wirklich drin ist, zeigt das Audit mit gemessenen Zahlen.</p>
   </div>
 </section>
 <section id="method">
   <div class="wrap method-layout">
     <div class="method-sticky sec-head" style="margin-bottom:0">
       <p class="t-kicker" class="reveal" style="--d:0ms">Vorgehen</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Die Methode</h2>
+      <h2 class="t-h1 split" data-split style="--d:70ms">Die Methode</h2>
       <p class="t-lead" class="reveal" style="--d:140ms">Diagnose vor Werkzeugen, System vor Folien.</p>
     </div>
     <ol class="steps">
       <li class="step">
-        <span class="n t-num">01</span>
+        <span class="n">01</span>
         <h3 class="t-h3">Analysieren</h3>
         <p class="t-body">Die Prozesse je Abteilung aufnehmen: wie das Unternehmen wirklich arbeitet.</p>
       </li>
       <li class="step">
-        <span class="n t-num">02</span>
+        <span class="n">02</span>
         <h3 class="t-h3">Diagnose</h3>
         <p class="t-body">Die Schwachstellen einzeln durchgehen und jede mit echten Daten belegen: wie und warum ein Prozess besser werden soll.</p>
       </li>
       <li class="step">
-        <span class="n t-num">03</span>
+        <span class="n">03</span>
         <h3 class="t-h3">Zuerst bauen</h3>
         <p class="t-body">Ein System, das läuft, in Tagen. Kein Konzeptpapier in Monaten.</p>
       </li>
       <li class="step">
-        <span class="n t-num">04</span>
+        <span class="n">04</span>
         <h3 class="t-h3">Testen und messen</h3>
         <p class="t-body">Abnahmekriterien, automatisierte Tests, und die Arbeitszeit vorher und nachher gemessen.</p>
       </li>
       <li class="step">
-        <span class="n t-num">05</span>
+        <span class="n">05</span>
         <h3 class="t-h3">Absichern und übergeben</h3>
         <p class="t-body">DSGVO, Lizenzen und der EU AI Act stecken im Datenmodell. Dazu Dokumentation, Schulung und eine Übergabe, die nicht abhängig macht.</p>
       </li>
@@ -735,328 +1419,202 @@ html.js .reveal.in { opacity: 1; transform: none; }
   <div class="wrap">
     <div class="sec-head">
       <p class="t-kicker" class="reveal" style="--d:0ms">Belege</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Drei Systeme im Betrieb</h2>
+      <h2 class="t-h1 split" data-split style="--d:70ms">Drei Systeme im Betrieb</h2>
+      
     </div>
-    <div class="cases">
-      <article class="case" class="reveal" style="--d:0ms">
-        <div class="case-head">
-          <p class="t-kicker"><b>01</b></p>
-          <h3 class="t-h2">Lead-Intelligence-System</h3>
-          <p class="t-small meta">Vertrieb, Energiebranche, 2026</p>
-        </div>
-        <div class="figures">
-          <div class="fig"><p class="t-num">27,000</p><p class="t-small">Zeilen Python</p></div>
-          <div class="fig"><p class="t-num">2,299</p><p class="t-small">Unternehmen erfasst</p></div>
-          <div class="fig"><p class="t-num">400+</p><p class="t-small">automatisierte Tests</p></div>
-        </div>
-        <div class="cols">
-          <div class="col"><p class="t-kicker">Ausgangslage</p><p class="t-body">Recherche und Listenaufbau per Hand, manueller CRM-Abgleich gegen 22.000 Datensätze, doppelte Ansprache als Kundenrisiko.</p></div>
-          <div class="col"><p class="t-kicker">Gebaut</p><p class="t-body">27.000 Zeilen Python: Scoring, mehrstufige Dublettenbereinigung, zweistufiger HubSpot-Export mit Sperre. In 9 Wochen, rund 400 Stunden Agenten-Orchestrierung.</p></div>
-          <div class="col"><p class="t-kicker">Gemessen</p><p class="t-body">2.299 Unternehmen erfasst, 720 geprüft und uploadfertig. Was je 50 Leads Stunden Handarbeit gekostet hat, ist jetzt ein geprüfter Lauf von Minuten. Über 400 automatisierte Tests, jede Kennzahl mit definierter Grundgesamtheit.</p></div>
-        </div>
-      </article>
-      <article class="case" class="reveal" style="--d:70ms">
-        <div class="case-head">
-          <p class="t-kicker"><b>02</b></p>
-          <h3 class="t-h2">Plattform für Energiegemeinschaften</h3>
-          <p class="t-small meta">Betrieb, 104 echte Bestandskunden, 2026</p>
-        </div>
-        <div class="figures">
-          <div class="fig"><p class="t-num">104</p><p class="t-small">Gemeinschaften eingebunden</p></div>
-          <div class="fig"><p class="t-num">1</p><p class="t-small">Arbeitstag</p></div>
-          <div class="fig"><p class="t-num">53</p><p class="t-small">Prüfungen grün</p></div>
-        </div>
-        <div class="cols">
-          <div class="col"><p class="t-kicker">Ausgangslage</p><p class="t-body">104 betreute Energiegemeinschaften in einer Excel-Liste. Keine Karte, kein Mitgliederprozess, DSGVO nirgends systematisch.</p></div>
-          <div class="col"><p class="t-kicker">Gebaut</p><p class="t-body">Register, Österreich-Karte auf amtlichen offenen Daten, Geokodierung, Mitgliederpipeline, direkter xlsx-Import. DSGVO-Pflichtfelder auf Schema-Ebene.</p></div>
-          <div class="col"><p class="t-kicker">Gemessen</p><p class="t-body">Von der rohen Excel-Liste zur laufenden Plattform mit Karte innerhalb eines Arbeitstags. 104 Gemeinschaften eingebunden, 67 automatisch verortet, 53 Prüfungen grün.</p></div>
-        </div>
-      </article>
-      <article class="case" class="reveal" style="--d:140ms">
-        <div class="case-head">
-          <p class="t-kicker"><b>03</b></p>
-          <h3 class="t-h2">SDR Workmod Hub</h3>
-          <p class="t-small meta">Vertriebs-Betriebssystem auf Notion, seit Juni 2026 allein gebaut und betrieben. Damit habe ich mir den Zugang zur Führungsebene selbst erarbeitet, unter anderem bei Tesla, voestalpine BOHLER, XXXLutz, KTM, Manner und GLOCK (in der Rolle erarbeitet).</p>
-        </div>
-        <div class="figures">
-          <div class="fig"><p class="t-num">2,570</p><p class="t-small">Anrufe</p></div>
-          <div class="fig"><p class="t-num">66</p><p class="t-small">vereinbarte Termine</p></div>
-          <div class="fig"><p class="t-num">21</p><p class="t-small">qualifizierte Termine im Juli</p></div>
-        </div>
-        <div class="cols">
-          <div class="col"><p class="t-kicker">Ausgangslage</p><p class="t-body">Vertriebswissen nur in Köpfen: kein Einarbeitungspfad, Compliance als persönliche Disziplin, Entscheidungen verstreut über Chats, keine Nachvollziehbarkeit.</p></div>
-          <div class="col"><p class="t-kicker">Gebaut</p><p class="t-body">Ein Ablauf in fünf Schritten mit einer Schranke vor jedem Entwurf: Erst wird geprüft, wer das ist, in welcher Rolle und über welchen Kanal er angesprochen werden darf, belegt über Firmenbuch und Impressum, geprüft gegen das österreichische TKG, das deutsche UWG, das BGH-Urteil 2025 und Art. 21 DSGVO, dazu ein Blick auf die öffentliche Vergabe. Dazu ein Entscheidungsprotokoll, in dem nur ergänzt und nie gelöscht wird, ein Einarbeitungspfad mit Kontrollpunkten und eine Vorlagenbibliothek je Branche.</p></div>
-          <div class="col"><p class="t-kicker">Gemessen</p><p class="t-body">13. April bis 31. Juli: 2.570 Anrufe, 66 vereinbarte Termine, etwa 4,2 pro Woche, allein im Juli 21 qualifizierte Termine und 1 Abschluss. Einarbeitung neuer SDRs ohne Begleitung möglich, jede Prozessentscheidung seit Juni nachvollziehbar.</p></div>
-        </div>
-      </article>
+    <div class="rail-wrap">
+      <ul class="rail wide" tabindex="0" aria-label="Drei Systeme im Betrieb">
+        <li class="case glass" data-light>
+          <div class="case-head">
+            <p class="t-kicker"><b>01</b></p>
+            <h3 class="t-h2">Lead-Intelligence-System</h3>
+            <p class="t-small meta">Vertrieb, Energiebranche, 2026</p>
+          </div>
+          <div class="figures">
+            <div class="fig"><p class="t-num">27,000</p><p class="t-small">Zeilen Python</p></div>
+            <div class="fig"><p class="t-num">2,299</p><p class="t-small">Unternehmen erfasst</p></div>
+            <div class="fig"><p class="t-num">400+</p><p class="t-small">automatisierte Tests</p></div>
+          </div>
+          <div class="cols">
+            <div class="col"><p class="t-kicker">Ausgangslage</p><p class="t-body">Recherche und Listenaufbau per Hand, manueller CRM-Abgleich gegen 22.000 Datensätze, doppelte Ansprache als Kundenrisiko.</p></div>
+            <div class="col"><p class="t-kicker">Gebaut</p><p class="t-body">27.000 Zeilen Python: Scoring, mehrstufige Dublettenbereinigung, zweistufiger HubSpot-Export mit Sperre. In 9 Wochen, rund 400 Stunden Agenten-Orchestrierung.</p></div>
+            <div class="col"><p class="t-kicker">Gemessen</p><p class="t-body">2.299 Unternehmen erfasst, 720 geprüft und uploadfertig. Was je 50 Leads Stunden Handarbeit gekostet hat, ist jetzt ein geprüfter Lauf von Minuten. Über 400 automatisierte Tests, jede Kennzahl mit definierter Grundgesamtheit.</p></div>
+          </div>
+        </li>
+        <li class="case glass" data-light>
+          <div class="case-head">
+            <p class="t-kicker"><b>02</b></p>
+            <h3 class="t-h2">Plattform für Energiegemeinschaften</h3>
+            <p class="t-small meta">Betrieb, 104 echte Bestandskunden, 2026</p>
+          </div>
+          <div class="figures">
+            <div class="fig"><p class="t-num">104</p><p class="t-small">Gemeinschaften eingebunden</p></div>
+            <div class="fig"><p class="t-num">1</p><p class="t-small">Arbeitstag</p></div>
+            <div class="fig"><p class="t-num">53</p><p class="t-small">Prüfungen grün</p></div>
+          </div>
+          <div class="cols">
+            <div class="col"><p class="t-kicker">Ausgangslage</p><p class="t-body">104 betreute Energiegemeinschaften in einer Excel-Liste. Keine Karte, kein Mitgliederprozess, DSGVO nirgends systematisch.</p></div>
+            <div class="col"><p class="t-kicker">Gebaut</p><p class="t-body">Register, Österreich-Karte auf amtlichen offenen Daten, Geokodierung, Mitgliederpipeline, direkter xlsx-Import. DSGVO-Pflichtfelder auf Schema-Ebene.</p></div>
+            <div class="col"><p class="t-kicker">Gemessen</p><p class="t-body">Von der rohen Excel-Liste zur laufenden Plattform mit Karte innerhalb eines Arbeitstags. 104 Gemeinschaften eingebunden, 67 automatisch verortet, 53 Prüfungen grün.</p></div>
+          </div>
+        </li>
+        <li class="case glass" data-light>
+          <div class="case-head">
+            <p class="t-kicker"><b>03</b></p>
+            <h3 class="t-h2">SDR Workmod Hub</h3>
+            <p class="t-small meta">Vertriebs-Betriebssystem auf Notion, seit Juni 2026 allein gebaut und betrieben. Damit habe ich mir den Zugang zur Führungsebene selbst erarbeitet, unter anderem bei Tesla, voestalpine BOHLER, XXXLutz, KTM, Manner und GLOCK (in der Rolle erarbeitet).</p>
+          </div>
+          <div class="figures">
+            <div class="fig"><p class="t-num">2,570</p><p class="t-small">Anrufe</p></div>
+            <div class="fig"><p class="t-num">66</p><p class="t-small">vereinbarte Termine</p></div>
+            <div class="fig"><p class="t-num">21</p><p class="t-small">qualifizierte Termine im Juli</p></div>
+          </div>
+          <div class="cols">
+            <div class="col"><p class="t-kicker">Ausgangslage</p><p class="t-body">Vertriebswissen nur in Köpfen: kein Einarbeitungspfad, Compliance als persönliche Disziplin, Entscheidungen verstreut über Chats, keine Nachvollziehbarkeit.</p></div>
+            <div class="col"><p class="t-kicker">Gebaut</p><p class="t-body">Ein Ablauf in fünf Schritten mit einer Schranke vor jedem Entwurf: Erst wird geprüft, wer das ist, in welcher Rolle und über welchen Kanal er angesprochen werden darf, belegt über Firmenbuch und Impressum, geprüft gegen das österreichische TKG, das deutsche UWG, das BGH-Urteil 2025 und Art. 21 DSGVO, dazu ein Blick auf die öffentliche Vergabe. Dazu ein Entscheidungsprotokoll, in dem nur ergänzt und nie gelöscht wird, ein Einarbeitungspfad mit Kontrollpunkten und eine Vorlagenbibliothek je Branche.</p></div>
+            <div class="col"><p class="t-kicker">Gemessen</p><p class="t-body">13. April bis 31. Juli: 2.570 Anrufe, 66 vereinbarte Termine, etwa 4,2 pro Woche, allein im Juli 21 qualifizierte Termine und 1 Abschluss. Einarbeitung neuer SDRs ohne Begleitung möglich, jede Prozessentscheidung seit Juni nachvollziehbar.</p></div>
+          </div>
+        </li>
+      </ul>
+      <div class="rail-bar">
+        <span class="rail-hint">Wischen oder ziehen</span>
+        <span class="rail-track" aria-hidden="true"><i></i></span>
+        <span class="rail-btns">
+          <button class="rail-btn" type="button" data-dir="-1" aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="rail-btn" type="button" data-dir="1" aria-label="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+        </span>
+      </div>
     </div>
   </div>
 </section>
-<section id="numbers">
+<section id="fields">
   <div class="wrap">
     <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Zahlen</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Die Rechnung</h2>
-      <p class="t-lead" class="reveal" style="--d:140ms">Profitabel ohne Sie. Schnell mit Ihnen.</p>
+      <p class="t-kicker" class="reveal" style="--d:0ms">Branchen</p>
+      <h2 class="t-h1 split" data-split style="--d:70ms">Die Methode ist branchenunabhängig</h2>
+      <p class="t-lead" class="reveal" style="--d:140ms">Jede Branche hat Listen, Prozesse und Compliance. Drei kenne ich von innen.</p>
     </div>
-    <div class="numbers-layout">
-      <div class="panel" class="reveal" style="--d:0ms">
-        <h3 class="t-h3">Preise, die gelten</h3>
-        <ul class="pricelist">
-          <li><span>AI Opportunity Audit</span><span class="t-num">6.500 bis 9.500 Euro</span></li>
-          <li><span>Build Sprint</span><span class="t-num">18.000 bis 28.000 Euro</span></li>
-          <li><span>Retainer</span><span class="t-num">3.500 bis 6.000 Euro im Monat</span></li>
-        </ul>
-        <p class="t-small">Fixpreise, keine Tagessatz-Lotterie.</p>
-      </div>
-      <div class="panel" class="reveal" style="--d:70ms">
-        <h3 class="t-h3">Jahr 1, konservativ</h3>
-        <p class="big t-num"><span data-count="190000" data-sample="190.000">190.000</span></p>
-        <p class="t-small">Euro Umsatz, Jahr 1</p>
-        <p class="t-body">7 Audits, 5 Sprints, 2 Retainer ergeben rund 190.000 Euro Umsatz bei minimalen Fixkosten. Die Agentur trägt sich ab den ersten Kunden.</p>
-      </div>
-      <div class="panel" class="reveal" style="--d:140ms">
-        <h3 class="t-h3">Warum dann Kapital</h3>
-        <p class="t-body">Ohne diese Runde wachse ich nur so schnell, wie meine Zeit reicht. Mit ihr laufen drei Dinge parallel: eine zweite Branche, das erste Produktmodul, die erste Anstellung. Kapital kauft Geschwindigkeit, nicht Überleben.</p>
-      </div>
+    <div class="seg seg-wrap" role="tablist" aria-label="Branchen" class="reveal" style="--d:0ms">
+      <button class="seg-btn" type="button" role="tab" id="ind-tab-0" aria-controls="ind-0" aria-selected="true" data-seg="0">Energie</button>
+      <button class="seg-btn" type="button" role="tab" id="ind-tab-1" aria-controls="ind-1" aria-selected="false" data-seg="1">Bau</button>
+      <button class="seg-btn" type="button" role="tab" id="ind-tab-2" aria-controls="ind-2" aria-selected="false" data-seg="2">E-Commerce</button>
+      <button class="seg-btn" type="button" role="tab" id="ind-tab-3" aria-controls="ind-3" aria-selected="false" data-seg="3">Marketing und Agenturen</button>
+      <button class="seg-btn" type="button" role="tab" id="ind-tab-4" aria-controls="ind-4" aria-selected="false" data-seg="4">Freie Berufe und Dienstleister</button>
+    </div>
+    <div class="inds">
+      <article class="ind glass" role="tabpanel" id="ind-0" aria-labelledby="ind-tab-0" data-seg-panel="0" data-light>
+        <span class="ind-n t-num">01</span>
+        <h3 class="t-h1">Energie</h3>
+        <p class="t-lead">Hier fange ich an. Netzwerk, Fachwissen, zwei ausgelieferte Systeme. Energiegemeinschaften wachsen und ertrinken in der Verwaltung.</p>
+      </article>
+      <article class="ind glass" role="tabpanel" id="ind-1" aria-labelledby="ind-tab-1" data-seg-panel="1" data-light>
+        <span class="ind-n t-num">02</span>
+        <h3 class="t-h1">Bau</h3>
+        <p class="t-lead">Selbst erlebt: Bahninfrastruktur und eine Lehre im Handwerk. Materialfluss, Subunternehmer, Dokumentationspflichten. Wenig digitalisiert, viele offene Baustellen.</p>
+      </article>
+      <article class="ind glass" role="tabpanel" id="ind-2" aria-labelledby="ind-tab-2" data-seg-panel="2" data-light>
+        <span class="ind-n t-num">03</span>
+        <h3 class="t-h1">E-Commerce</h3>
+        <p class="t-lead">Selbst betrieben: Vendor Central, Shopify, SAGE. Ein eigenes KI-Werkzeug für Garantiefälle gebaut und genutzt.</p>
+      </article>
+      <article class="ind glass" role="tabpanel" id="ind-3" aria-labelledby="ind-tab-3" data-seg-panel="3" data-light>
+        <span class="ind-n t-num">04</span>
+        <h3 class="t-h1">Marketing und Agenturen</h3>
+        <p class="t-lead">Immer dieselben Datenprozesse, Reporting, Listenpflege. Wer die gesparte Zeit gemessen sieht, zahlt dafür.</p>
+      </article>
+      <article class="ind glass" role="tabpanel" id="ind-4" aria-labelledby="ind-tab-4" data-seg-panel="4" data-light>
+        <span class="ind-n t-num">05</span>
+        <h3 class="t-h1">Freie Berufe und Dienstleister</h3>
+        <p class="t-lead">Steuerberater, Hausverwaltungen, Kanzleien: dokumentgetrieben, ideal für geprüfte Automatisierung.</p>
+      </article>
     </div>
   </div>
 </section>
 <section class="alt">
   <div class="wrap">
     <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Branchen</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Die Methode ist branchenunabhängig</h2>
-      <p class="t-lead" class="reveal" style="--d:140ms">Jede Branche hat Listen, Prozesse und Compliance. Drei kenne ich von innen.</p>
+      <p class="t-kicker" class="reveal" style="--d:0ms">Der Unterschied</p>
+      <h2 class="t-h1 split" data-split style="--d:70ms">2026 hat alle zu KI-Nutzern gemacht.</h2>
+      
     </div>
-    <ol class="timeline">
-      <li class="trow" class="reveal" style="--d:0ms">
-        <span class="when">jetzt</span>
-        <h3>Energie</h3>
-        <p class="t-body">Hier fange ich an. Netzwerk, Fachwissen, zwei ausgelieferte Systeme. Energiegemeinschaften wachsen und ertrinken in der Verwaltung.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:70ms">
-        <span class="when">2027</span>
-        <h3>Bau</h3>
-        <p class="t-body">Selbst erlebt: Bahninfrastruktur und eine Lehre im Handwerk. Materialfluss, Subunternehmer, Dokumentationspflichten. Wenig digitalisiert, viele offene Baustellen.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:140ms">
-        <span class="when">2027</span>
-        <h3>E-Commerce</h3>
-        <p class="t-body">Selbst betrieben: Vendor Central, Shopify, SAGE. Ein eigenes KI-Werkzeug für Garantiefälle gebaut und genutzt.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:210ms">
-        <span class="when">2028</span>
-        <h3>Marketing und Agenturen</h3>
-        <p class="t-body">Immer dieselben Datenprozesse, Reporting, Listenpflege. Wer die gesparte Zeit gemessen sieht, zahlt dafür.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:280ms">
-        <span class="when">2028</span>
-        <h3>Freie Berufe und Dienstleister</h3>
-        <p class="t-body">Steuerberater, Hausverwaltungen, Kanzleien: dokumentgetrieben, ideal für geprüfte Automatisierung.</p>
-      </li>
-    </ol>
+    <div class="rail-wrap">
+      <ul class="rail" tabindex="0" aria-label="2026 hat alle zu KI-Nutzern gemacht.">
+        <li class="card glass" data-light>
+          <span class="idx">01</span>
+          <h3 class="t-h3">KI nutzen ist nicht KI bauen</h3>
+          <p class="t-body">Prompten liefert Antworten. Für den Betrieb braucht es Spezifikationen, Datenmodelle, Tests und Governance.</p>
+        </li>
+        <li class="card glass" data-light>
+          <span class="idx">02</span>
+          <h3 class="t-h3">Fast niemand hat bauen gelernt</h3>
+          <p class="t-body">Zwischen der beeindruckenden Demo und dem System, das am Montag läuft, sterben 95 Prozent der Projekte.</p>
+        </li>
+        <li class="card glass" data-light>
+          <span class="idx">03</span>
+          <h3 class="t-h3">Ich habe es gelernt</h3>
+          <p class="t-body">Drei Systeme laufen im Betrieb. Gebaut 2026, nebenher, während ich eine volle Vertriebsquote erfüllt habe.</p>
+        </li>
+        <li class="card glass" data-light>
+          <span class="idx">04</span>
+          <h3 class="t-h3">Weniger reden, mehr machen</h3>
+          <p class="t-body">Jeder Auftrag beginnt mit einer Diagnose und endet mit einem System, das läuft. Was dazwischen nichts bringt, verrechne ich nicht.</p>
+        </li>
+      </ul>
+      <div class="rail-bar">
+        <span class="rail-hint">Wischen oder ziehen</span>
+        <span class="rail-track" aria-hidden="true"><i></i></span>
+        <span class="rail-btns">
+          <button class="rail-btn" type="button" data-dir="-1" aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="rail-btn" type="button" data-dir="1" aria-label="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+        </span>
+      </div>
+    </div>
   </div>
 </section>
 <section>
   <div class="wrap">
     <div class="sec-head">
       <p class="t-kicker" class="reveal" style="--d:0ms">Governance</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Rechtssicher gebaut, von der DSGVO bis zum AI Act</h2>
+      <h2 class="t-h1 split" data-split style="--d:70ms">Rechtssicher gebaut, von der DSGVO bis zum AI Act</h2>
       
     </div>
     <ul class="grid three">
-      <li class="item" class="reveal" style="--d:0ms">
+      <li class="reveal item glass" style="--d:0ms" data-light>
+        <span class="pt">01</span>
         <h3 class="t-h3">Datenschutz von Anfang an</h3>
         <p class="t-body">Rechtsgrundlagen und Informationspflichten (Art. 13 und 14) als Pflichtfelder im Datenmodell, Löschkonzepte, Auskunftsfähigkeit je Datensatz.</p>
       </li>
-      <li class="item" class="reveal" style="--d:70ms">
+      <li class="reveal item glass" style="--d:70ms" data-light>
+        <span class="pt">02</span>
         <h3 class="t-h3">Rechtmäßige Ansprache</h3>
         <p class="t-body">Erst der Kanal, dann die Kampagne: österreichisches TKG, deutsches UWG. Die Compliance bestimmt den Prozess, nicht umgekehrt.</p>
       </li>
-      <li class="item" class="reveal" style="--d:140ms">
+      <li class="reveal item glass" style="--d:140ms" data-light>
+        <span class="pt">03</span>
         <h3 class="t-h3">Lizenzgeprüfte Daten</h3>
         <p class="t-body">Jede Quelle vor der Nutzung geprüft: ODbL gegen CC-BY, Namensnennung, Share-alike. Keine stillen Lizenzrisiken im Produkt.</p>
       </li>
-      <li class="item" class="reveal" style="--d:210ms">
+      <li class="reveal item glass" style="--d:210ms" data-light>
+        <span class="pt">04</span>
         <h3 class="t-h3">EU AI Act</h3>
         <p class="t-body">Transparenz- und Dokumentationspflichten von Anfang an mitgeführt, nicht nachgerüstet.</p>
       </li>
-      <li class="item" class="reveal" style="--d:280ms">
+      <li class="reveal item glass" style="--d:280ms" data-light>
+        <span class="pt">05</span>
         <h3 class="t-h3">Prüfpfade</h3>
         <p class="t-body">Jede Änderung ist protokolliert, jede Zahl nachrechenbar. Prüfbarkeit ist eingebaut, nicht angeklebt.</p>
       </li>
     </ul>
-    <p class="closing t-body" class="reveal" style="--d:0ms">Gebaut für einen vorsichtigen Markt: läuft lokal, ohne Cloud-Zwang, offene Datenquellen, deutschsprachige Dokumentation, Übergabe ohne Abhängigkeit, und vom Pilot bis zum Vollbetrieb ohne Architekturwechsel.</p>
+    <p class="reveal closing glass t-body" style="--d:0ms">Gebaut für einen vorsichtigen Markt: läuft lokal, ohne Cloud-Zwang, offene Datenquellen, deutschsprachige Dokumentation, Übergabe ohne Abhängigkeit, und vom Pilot bis zum Vollbetrieb ohne Architekturwechsel.</p>
   </div>
 </section>
-<section class="alt">
+<section id="contact">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Wert</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Langfristige Wertschöpfung</h2>
-      <p class="t-lead" class="reveal" style="--d:140ms">Kein Exit. Werte, die sich summieren.</p>
-    </div>
-    <ul class="grid three">
-      <li class="item" class="reveal" style="--d:0ms">
-        <h3 class="t-h3">Beratung</h3>
-        <p class="t-body">Cashflow ab dem ersten Monat, und ich sehe die Muster: Jeder Sprint zeigt, was eine Branche immer wieder braucht.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:70ms">
-        <h3 class="t-h3">Produktmodule</h3>
-        <p class="t-body">Aus den Mustern wird wiederkehrender Umsatz: die Compliance-Schranke für Outbound, die Gemeinschaftsplattform, die Prüfwerkzeuge.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:140ms">
-        <h3 class="t-h3">Wissensbasis</h3>
-        <p class="t-body">Playbooks, Compliance-Bausteine je Rechtsraum, Kataloge von Datenquellen. Jede gelöste Branche macht die nächste billiger.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:210ms">
-        <h3 class="t-h3">Marke im konservativen Markt</h3>
-        <p class="t-body">Referenzen mit gemessenen Zahlen und prüfbarer Arbeit erlauben Preise, die halten.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:280ms">
-        <h3 class="t-h3">Ausschüttungen und Optionen</h3>
-        <p class="t-body">Gewinne werden ausgeschüttet. Wird ein Produktmodul ausgegründet, bleibt das als Chance für die Investoren.</p>
-      </li>
-    </ul>
-    
-  </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Horizont</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Langfristig statt Exit</h2>
-      <p class="t-lead" class="reveal" style="--d:140ms">Der Aufbau zielt auf einen globalen Markt.</p>
-    </div>
-    <ol class="timeline">
-      <li class="trow" class="reveal" style="--d:0ms">
-        <span class="when">2026 Q4</span>
-        
-        <p class="t-body">Gründung in Wien. Drei Pilotkunden in der Energie. Marke, Website, Zertifikate.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:70ms">
-        <span class="when">2027</span>
-        
-        <p class="t-body">Über 10 Kunden, die Branchen Bau und E-Commerce jeweils mit Referenzfall. Erstes Produktmodul: eine Compliance- und Wissensschicht für Outbound-Teams (Compliance-Schranke, Entscheidungsprotokoll, Einarbeitung als Code) auf dem bestehenden CRM. Erste Anstellung.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:140ms">
-        <span class="when">2028</span>
-        
-        <p class="t-body">DACH steht, der EU-Ausbau läuft remote. Eine Produktlinie neben der Beratung. Team von 4 bis 6.</p>
-      </li>
-      <li class="trow" class="reveal" style="--d:210ms">
-        <span class="when">2029+</span>
-        
-        <p class="t-body">Global und remote: Die Methode funktioniert überall, wo es Prozesse, Listen und Compliance auf EU-Niveau gibt. Studiomodell, kein Verkauf, Ausschüttungen aus dem Gewinn.</p>
-      </li>
-    </ol>
-  </div>
-</section>
-<section id="funds" class="alt">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Mittelverwendung</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Die Runde</h2>
-      <p class="t-lead" class="reveal" style="--d:140ms">100.000 Euro für den ersten Aufbau, zwölf Monate.</p>
-    </div>
-    <div class="bar" role="img" aria-label="Mein Auskommen, 12 Monate 40%, Aus Beratung wird Produkt 25%, Vertrieb, Marke, Website 13%, KI-Rechenleistung und Werkzeuge 10%, Recht, Versicherung, DSGVO 7%, Reserve 5%">
-      <span style="--w:40%;--k:0"></span><span style="--w:25%;--k:1"></span><span style="--w:13%;--k:2"></span><span style="--w:10%;--k:3"></span><span style="--w:7.000000000000001%;--k:4"></span><span style="--w:5%;--k:5"></span>
-    </div>
-    <ol class="funds-list">
-      <li class="fund" class="reveal" style="--d:0ms">
-        <span class="amt t-num">40.000 Euro<span class="pct">40 %</span></span>
-        <h3 class="t-h3">Mein Auskommen, 12 Monate</h3>
-        <p class="t-body">Ich arbeite Vollzeit an Kundenprojekten statt in Überbrückungsjobs. Etwa 3.300 Euro im Monat, Mindestentnahme.</p>
-      </li>
-      <li class="fund" class="reveal" style="--d:70ms">
-        <span class="amt t-num">25.000 Euro<span class="pct">25 %</span></span>
-        <h3 class="t-h3">Aus Beratung wird Produkt</h3>
-        <p class="t-body">Aus den Beratungsmustern entsteht das erste verkaufbare Modul: eine Compliance-Schranke für Outbound-Teams. Rund 4 Monate Bauzeit, zugekaufte Spezialarbeit eingerechnet.</p>
-      </li>
-      <li class="fund" class="reveal" style="--d:140ms">
-        <span class="amt t-num">13.000 Euro<span class="pct">13 %</span></span>
-        <h3 class="t-h3">Vertrieb, Marke, Website</h3>
-        <p class="t-body">Website, Marke, Fachveranstaltungen und Verbandszugang in Energie und Bau, erste Kampagnen. Der Kanal, der die 10 Kunden bringt.</p>
-      </li>
-      <li class="fund" class="reveal" style="--d:210ms">
-        <span class="amt t-num">10.000 Euro<span class="pct">10 %</span></span>
-        <h3 class="t-h3">KI-Rechenleistung und Werkzeuge</h3>
-        <p class="t-body">Modellnutzung für Agenten-Orchestrierung, Entwicklungsumgebung, Hosting der Kundensysteme.</p>
-      </li>
-      <li class="fund" class="reveal" style="--d:280ms">
-        <span class="amt t-num">7.000 Euro<span class="pct">7 %</span></span>
-        <h3 class="t-h3">Recht, Versicherung, DSGVO</h3>
-        <p class="t-body">Gründung, AGB und Verträge, Berufshaftpflicht, DSGVO-Rahmen, Steuerberatung. Pflicht in einem regulierten Markt.</p>
-      </li>
-      <li class="fund" class="reveal" style="--d:350ms">
-        <span class="amt t-num">5.000 Euro<span class="pct">5 %</span></span>
-        <h3 class="t-h3">Reserve</h3>
-        <p class="t-body">Puffer für Zahlungsziele und Unvorhergesehenes.</p>
-      </li>
-    </ol>
-    <div class="funds-two">
-      <div class="reveal" style="--d:0ms">
-        <h3 class="t-h2" style="margin-bottom:20px">Wie das Geld zurückkommt</h3>
-        <ul class="kv">
-          <li><span class="k">Woraus</span><p class="t-body">Aus dem Beratungsumsatz ab dem ersten Monat, nicht aus einer künftigen Bewertung. Jahr 1 konservativ rund 190.000 Euro bei minimalen Fixkosten.</p></li>
-          <li><span class="k">Wann</span><p class="t-body">Rückzahlung ab Monat 7, quartalsweise, aus dem laufenden Cashflow.</p></li>
-          <li><span class="k">Wie viel</span><p class="t-body">10 Prozent des Umsatzes, bis 200.000 Euro zurückgeflossen sind, also das Doppelte von 100.000. Planmäßig in rund 30 Monaten zurückgezahlt.</p></li>
-          <li><span class="k">Alternative</span><p class="t-body">Statt Umsatzbeteiligung: 10 Prozent Eigenkapital mit Gewinnausschüttung ab Jahr 2, dazu ein Wandlungsrecht, falls ein Produktmodul ausgegründet wird.</p></li>
-        </ul>
-      </div>
-      <div class="reveal" style="--d:70ms">
-        <h3 class="t-h2" style="margin-bottom:20px">Meilensteine, an denen Sie mich messen</h3>
-        <ol class="timeline">
-          <li class="trow"><span class="when">M 3</span><p class="t-body">Drei zahlende Kunden, erster gemessener Vorher-nachher-Fall.</p></li>
-          <li class="trow"><span class="when">M 6</span><p class="t-body">Zweite Branche live mit Referenzfall.</p></li>
-          <li class="trow"><span class="when">M 9</span><p class="t-body">Erstes Produktmodul mit wiederkehrendem Umsatz.</p></li>
-          <li class="trow"><span class="when">M 12</span><p class="t-body">Über 10 Kunden, drei Branchen, Team von 2 bis 3, profitabel.</p></li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Rendite</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Rendite ohne Exit-Märchen</h2>
-      
-    </div>
-    <ul class="grid three">
-      <li class="item" class="reveal" style="--d:0ms">
-        <h3 class="t-h3">Kein Exit als Strategie</h3>
-        <p class="t-body">Dieses Unternehmen ist auf Dauer angelegt. Wer eine 10x-Exit-Geschichte braucht, ist hier falsch, und das sage ich lieber jetzt als in drei Jahren.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:70ms">
-        <h3 class="t-h3">Drei Wege zur Rendite</h3>
-        <p class="t-body">A: Umsatzbeteiligung bis zu einer vereinbarten Obergrenze, bezahlt aus echtem Cashflow. B: Eigenkapital mit Gewinnausschüttung ab Jahr 2. C: Wandlungsrecht, falls ein Produktmodul ausgegründet wird.</p>
-      </li>
-      <li class="item" class="reveal" style="--d:140ms">
-        <h3 class="t-h3">Warum das fair ist</h3>
-        <p class="t-body">Beratung bringt Geld ab dem ersten Monat. Sie finanzieren keinen Verlust, sondern Geschwindigkeit in einem Geschäft, das sich schon trägt.</p>
-      </li>
-    </ul>
-    
-  </div>
-</section>
-<section id="ask">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker" class="reveal" style="--d:0ms">Das Angebot</p>
-      <h2 class="t-h1" class="reveal" style="--d:70ms">Drei Dinge, um die ich bitte</h2>
-    </div>
-    <ol class="ask-list">
-      <li class="reveal" style="--d:0ms"><span>100.000 Euro Pre-Seed zu den Bedingungen im Abschnitt Rendite.</span></li>
-      <li class="reveal" style="--d:70ms"><span>Kontakte: Entscheider in KMU aus Energie, Bau und E-Commerce im DACH-Raum.</span></li>
-      <li class="reveal" style="--d:140ms"><span>Ein Sparring im Quartal. Mehr Governance braucht ein profitables Ein-Personen-Unternehmen nicht.</span></li>
-    </ol>
     <div class="contact" class="reveal" style="--d:0ms">
-      <h3 class="t-h1">Reden wir.</h3>
-      <p class="t-lead">Ein Gespräch, dreißig Minuten, und Sie wissen, ob das Ihr Deal ist.</p>
+      <h3 class="t-h1">Erstgespräch.</h3>
+      <p class="t-lead">Dreißig Minuten, und Sie wissen, ob sich ein Audit für Sie lohnt.</p>
       <div class="contact-actions">
-        <a class="btn btn-ink" href="mailto:a.p.schranz@icloud.com">E-Mail schreiben</a>
+        <a class="btn btn-solid" href="mailto:a.p.schranz@icloud.com" data-magnet>E-Mail schreiben <span class="arrow" aria-hidden="true">&rarr;</span></a>
         <a class="btn btn-ghost" href="tel:+436763447611">Anrufen</a>
         <button class="btn btn-ghost" type="button" data-copy="a.p.schranz@icloud.com" data-copied="Kopiert">Adresse kopieren</button>
       </div>
@@ -1069,6 +1627,16 @@ html.js .reveal.in { opacity: 1; transform: none; }
     </div>
   </div>
 </section>
+<section class="tight">
+  <div class="wrap">
+    <a class="teaser glass" href="/seelischabstrakt/schranz-ai/mitmachen/" data-light class="reveal" style="--d:0ms">
+      <span class="t-kicker">Für Investoren und Partner</span>
+      <span class="teaser-title">Wachsen Sie mit.</span>
+      <span class="t-body">Die Beratung trägt sich. Mit Kapital, Kontakten und Sparring wächst sie schneller: eine zweite Branche, das erste Produktmodul, die erste Anstellung.</span>
+      <span class="teaser-go">Mitmachen <span class="arrow" aria-hidden="true">&rarr;</span></span>
+    </a>
+  </div>
+</section>
 </main>
 <footer>
   <div class="wrap">
@@ -1076,13 +1644,16 @@ html.js .reveal.in { opacity: 1; transform: none; }
       <span class="brand">SCHRANZ AI SOLUTIONS</span>
       <span>Alexander Schranz, Wien</span>
     </div>
-    <p>Diese Seite ist das Pitchdeck vom September 2026 als Website. Zahlen mit Stand von damals.</p>
+    <p>Preise und Zahlen aus dem Pitchdeck vom September 2026.</p>
     <div class="row">
+      <a href="/seelischabstrakt/schranz-ai/">Für Kunden</a>
+      <a href="/seelischabstrakt/schranz-ai/mitmachen/">Mitmachen</a>
       <a href="/seelischabstrakt/schranz-ai/impressum/">Impressum</a>
       <a href="/seelischabstrakt/schranz-ai/datenschutz/">Datenschutz</a>
-      <a href="/seelischabstrakt/schranz-ai/SCHRANZ_AI_Pitchdeck_EN.pptx" download>Deck als PowerPoint, Englisch</a>
+      
       <a href="#top">Nach oben</a>
     </div>
+    <p class="footer-word" aria-hidden="true">SCHRANZ AI</p>
   </div>
 </footer>
 <script>/* SCHRANZ AI SOLUTIONS. Inlined by build.mjs. No dependencies.
@@ -1100,8 +1671,28 @@ html.js .reveal.in { opacity: 1; transform: none; }
      im lokalen Speicher, der nie wieder gelesen wurde; ein Wert, den niemand
      braucht, gehoert nicht auf das Geraet des Besuchers. */
 
+  /* Headings that slide up word by word. Each word gets a mask and an inner
+     span; the heading itself keeps its text for screen readers. */
+  doc.querySelectorAll("[data-split]").forEach(function (el) {
+    var words = el.textContent.trim().split(/\s+/);
+    el.setAttribute("aria-label", el.textContent.trim());
+    el.innerHTML = "";
+    words.forEach(function (w, i) {
+      var outer = doc.createElement("span");
+      outer.className = "w";
+      outer.setAttribute("aria-hidden", "true");
+      var inner = doc.createElement("span");
+      inner.textContent = w;
+      inner.style.setProperty("--wi", i);
+      outer.appendChild(inner);
+      el.appendChild(outer);
+      if (i < words.length - 1) el.appendChild(doc.createTextNode(" "));
+    });
+    el.classList.add("reveal-split");
+  });
+
   /* Reveal: elements enter once, staggered by their --d custom property. */
-  var reveals = doc.querySelectorAll(".reveal");
+  var reveals = doc.querySelectorAll(".reveal, .split");
   if ("IntersectionObserver" in window && !reduce) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -1197,6 +1788,15 @@ html.js .reveal.in { opacity: 1; transform: none; }
         if (d < bestD) { bestD = d; best = s; }
       });
       steps.forEach(function (s) { s.classList.toggle("on", s === best && bestD < window.innerHeight * 0.6); });
+      /* The line of light fills down to the live step; steps above it are done. */
+      var list = steps[0].parentNode;
+      var lr = list.getBoundingClientRect();
+      var fill = Math.max(0, Math.min(1, (mid - lr.top) / lr.height));
+      list.style.setProperty("--sp", fill.toFixed(3));
+      steps.forEach(function (s) {
+        var r = s.getBoundingClientRect();
+        s.classList.toggle("done", r.top + 30 < mid);
+      });
     };
     var ticking = false;
     var onScroll = function () {
@@ -1209,9 +1809,9 @@ html.js .reveal.in { opacity: 1; transform: none; }
     pick();
   }
 
-  /* Header: the current section in the menu, and the mobile drawer. */
+  /* Header and tab bar: the current section lights up in both. */
   var nav = doc.querySelector(".nav");
-  var links = Array.prototype.slice.call(doc.querySelectorAll(".nav-links a[href^='#']"));
+  var links = Array.prototype.slice.call(doc.querySelectorAll(".nav-links a[href^='#'], .tabbar a[href^='#']"));
   var sections = links.map(function (a) { return doc.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
   if (sections.length && "IntersectionObserver" in window) {
     var current = null;
@@ -1237,6 +1837,187 @@ html.js .reveal.in { opacity: 1; transform: none; }
     doc.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && nav.hasAttribute("data-open")) { setOpen(false); menuBtn.focus(); }
     });
+  }
+
+  /* Scroll progress along the top, and a slow drift of the hero light. */
+  var prog = doc.querySelector(".progress");
+  var aurora = doc.querySelector(".aurora");
+  var pt = false;
+  var onProgress = function () {
+    if (pt) return;
+    pt = true;
+    requestAnimationFrame(function () {
+      var h = doc.documentElement.scrollHeight - window.innerHeight;
+      var y = window.scrollY || window.pageYOffset;
+      if (prog) prog.style.setProperty("--p", h > 0 ? (y / h).toFixed(4) : 0);
+      if (aurora && !reduce && y < window.innerHeight * 1.2) aurora.style.setProperty("--py", (y * 0.35).toFixed(1) + "px");
+      pt = false;
+    });
+  };
+  window.addEventListener("scroll", onProgress, { passive: true });
+  onProgress();
+
+  /* Light that follows the pointer across glass cards. */
+  if (window.matchMedia && window.matchMedia("(hover: hover)").matches) {
+    doc.querySelectorAll("[data-light]").forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        el.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+    /* Buttons that lean a little towards the pointer. */
+    if (!reduce) {
+      doc.querySelectorAll("[data-magnet]").forEach(function (el) {
+        el.addEventListener("pointermove", function (e) {
+          var r = el.getBoundingClientRect();
+          var x = (e.clientX - r.left - r.width / 2) * 0.18;
+          var y = (e.clientY - r.top - r.height / 2) * 0.28;
+          el.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+        });
+        el.addEventListener("pointerleave", function () { el.style.transform = ""; });
+      });
+    }
+  }
+
+  /* Rails: cards that slide. Buttons step one card, the line shows how far,
+     a mouse can drag, and a card that has come into view stays lit. */
+  doc.querySelectorAll(".rail-wrap").forEach(function (wrap) {
+    var rail = wrap.querySelector(".rail");
+    var bar = wrap.querySelector(".rail-track i");
+    var prev = wrap.querySelector('[data-dir="-1"]');
+    var next = wrap.querySelector('[data-dir="1"]');
+    var cards = Array.prototype.slice.call(rail.children);
+    var stepW = function () { return cards[0] ? cards[0].getBoundingClientRect().width + 16 : rail.clientWidth; };
+    var update = function () {
+      var max = rail.scrollWidth - rail.clientWidth;
+      var p = max > 0 ? rail.scrollLeft / max : 1;
+      var view = rail.clientWidth / rail.scrollWidth;
+      if (bar) bar.style.setProperty("--rp", Math.min(1, view + p * (1 - view)).toFixed(3));
+      if (prev) prev.disabled = rail.scrollLeft < 4;
+      if (next) next.disabled = rail.scrollLeft > max - 4;
+      var rr = rail.getBoundingClientRect();
+      cards.forEach(function (c) {
+        var r = c.getBoundingClientRect();
+        if (r.left < rr.right - r.width * 0.35 && r.right > rr.left + r.width * 0.35) c.classList.add("seen");
+      });
+    };
+    [prev, next].forEach(function (b) {
+      if (!b) return;
+      b.addEventListener("click", function () {
+        rail.scrollBy({ left: stepW() * Number(b.getAttribute("data-dir")), behavior: reduce ? "auto" : "smooth" });
+      });
+    });
+    rail.addEventListener("scroll", function () { requestAnimationFrame(update); }, { passive: true });
+    window.addEventListener("resize", update);
+    rail.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { rail.scrollBy({ left: stepW(), behavior: "smooth" }); e.preventDefault(); }
+      if (e.key === "ArrowLeft") { rail.scrollBy({ left: -stepW(), behavior: "smooth" }); e.preventDefault(); }
+    });
+    /* Drag with a mouse. Touch already scrolls natively. */
+    var down = false, startX = 0, startL = 0, moved = false;
+    rail.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      down = true; moved = false; startX = e.clientX; startL = rail.scrollLeft;
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4 && !moved) { moved = true; rail.classList.add("dragging"); }
+      if (moved) rail.scrollLeft = startL - dx;
+    });
+    window.addEventListener("pointerup", function () {
+      if (!down) return;
+      down = false;
+      if (moved) {
+        rail.classList.remove("dragging");
+        /* Let snapping settle on the nearest card. */
+        var w = stepW();
+        rail.scrollTo({ left: Math.round(rail.scrollLeft / w) * w, behavior: reduce ? "auto" : "smooth" });
+      }
+    });
+    if ("IntersectionObserver" in window) {
+      var rio = new IntersectionObserver(function (entries) {
+        if (entries.some(function (en) { return en.isIntersecting; })) { update(); }
+      }, { threshold: 0.2 });
+      rio.observe(rail);
+    }
+    update();
+  });
+
+  /* Segments: one choice out of a few, one panel at a time. Without
+     JavaScript every panel stands open below the buttons. */
+  doc.querySelectorAll(".seg").forEach(function (seg) {
+    var btns = Array.prototype.slice.call(seg.querySelectorAll("[data-seg]"));
+    var box = seg.nextElementSibling;
+    if (!box) return;
+    var panels = Array.prototype.slice.call(box.querySelectorAll("[data-seg-panel]"));
+    var show = function (k, focus) {
+      btns.forEach(function (b) {
+        var on = b.getAttribute("data-seg") === k;
+        b.setAttribute("aria-selected", on ? "true" : "false");
+        b.tabIndex = on ? 0 : -1;
+        if (on && focus) b.focus();
+      });
+      panels.forEach(function (p) { p.classList.toggle("active", p.getAttribute("data-seg-panel") === k); });
+    };
+    btns.forEach(function (b, i) {
+      b.addEventListener("click", function () { show(b.getAttribute("data-seg"), false); });
+      b.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var n = btns[(i + d + btns.length) % btns.length];
+        show(n.getAttribute("data-seg"), true);
+      });
+    });
+    var start = btns.filter(function (b) { return b.getAttribute("aria-selected") === "true"; })[0] || btns[0];
+    if (start) show(start.getAttribute("data-seg"), false);
+  });
+
+  /* The calculator. Everything stays on this page: no request, no storage. */
+  var calc = doc.querySelector(".calc");
+  if (calc) {
+    var de = calc.getAttribute("data-lang") === "de";
+    var nf = function (n) {
+      try { return new Intl.NumberFormat(de ? "de-DE" : "en-GB", { maximumFractionDigits: 0 }).format(n); }
+      catch (e) { return String(Math.round(n)); }
+    };
+    var euro = function (n) { return de ? nf(n) + " €" : "€" + nf(n); };
+    var weeks = Number(calc.getAttribute("data-weeks")) || 46;
+    var low = Number(calc.getAttribute("data-price-low"));
+    var high = Number(calc.getAttribute("data-price-high"));
+    var inputs = {};
+    calc.querySelectorAll(".regler").forEach(function (r) {
+      var inp = r.querySelector("input");
+      var out = r.querySelector("output");
+      inputs[r.getAttribute("data-key")] = inp;
+      var paint = function () {
+        var p = (inp.value - inp.min) / (inp.max - inp.min) * 100;
+        r.style.setProperty("--p", p + "%");
+        out.textContent = (r.getAttribute("data-key") === "rate" ? (de ? inp.value + " €" : "€" + inp.value) : inp.value + out.getAttribute("data-unit"));
+      };
+      inp.addEventListener("input", function () { paint(); run(); });
+      paint();
+    });
+    var o = function (k) { return calc.querySelector('[data-out="' + k + '"]'); };
+    var run = function () {
+      var h = Number(inputs.hours.value) * Number(inputs.people.value) * weeks;
+      var cost = h * Number(inputs.rate.value);
+      var save = cost * Number(inputs.share.value) / 100;
+      o("hours").textContent = nf(h) + " h";
+      o("cost").textContent = euro(cost);
+      o("save").textContent = euro(save);
+      var pay = o("payback");
+      if (save > 0) {
+        var a = Math.max(1, Math.ceil(low / (save / 12)));
+        var b = Math.max(1, Math.ceil(high / (save / 12)));
+        pay.textContent = (a === b ? a : a + (de ? " bis " : " to ") + b) + " " + pay.getAttribute("data-months");
+      } else {
+        pay.textContent = pay.getAttribute("data-none");
+      }
+    };
+    run();
   }
 
   /* Copy the email address. */
