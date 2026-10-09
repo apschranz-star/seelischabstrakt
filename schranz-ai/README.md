@@ -4,10 +4,21 @@ German at `/`, English at `/en/`. Built from one file, `content.json`, by `build
 
     content.json     every text in both languages, every number from the deck
     styles.css       the look, inlined into each page at build time
-    site.js          the motion: reveals, counters, the funds bar, the live method step, the menu
+    site.js          the motion: reveals, word-by-word headings, counters, the funds bar, the method line, card rails, pointer light, scroll progress, the menu
     build.mjs        turns content.json into dist/ (DE, EN, imprint, privacy, 404, sitemap, robots)
     netlify.toml     Netlify settings if the site gets its own domain
     SCHRANZ_AI_Pitchdeck_EN.pptx   the original deck, offered as a download in the footer
+
+## The look
+
+Dark first and cinematic, on top of the original: same system type, same type
+scale, same blue, same sections. Added: an aurora and a receding light floor in
+the hero, an orbit of the three method steps (Diagnose, Bauen, Messen) on wide
+screens, a ticker of points under the hero, glass cards with light that follows
+the pointer, rails of cards that slide sideways (difference, proof, fields) with
+buttons, drag and a progress line, a line of light down the method steps, and a
+contact card with a travelling border. Everything moving respects reduced motion,
+and the page reads completely without JavaScript.
 
 ## Change something
 

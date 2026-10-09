@@ -68,8 +68,43 @@ function t(node, lang, path = "") {
 const langPath = (lang, sub = "") => `${BASE}/${lang === DEFAULT_LANG ? "" : "en/"}${sub}`;
 const abs = (p) => `${URL_ROOT}${p.startsWith(BASE) ? p.slice(BASE.length) : p}`;
 
-/** A reveal wrapper with a stagger delay in the group. */
-const rv = (i = 0) => ` class="reveal" style="--d:${Math.min(i, 6) * 70}ms"`;
+/** A reveal wrapper with a stagger delay in the group. extra adds classes. */
+const rv = (i = 0, extra = "") => ` class="reveal${extra ? " " + extra : ""}" style="--d:${Math.min(i, 6) * 70}ms"`;
+
+/** A heading whose words slide up out of a mask. site.js splits the words;
+    without JavaScript it is a plain heading. */
+const sp = (i = 0) => ` class="t-h1 split" data-split style="--d:${Math.min(i, 6) * 70}ms"`;
+
+/** Section head: kicker, a heading that slides in, an optional lead. */
+function secHead(lang, sec, path) {
+  return `<div class="sec-head">
+      <p class="t-kicker"${rv(0)}>${t(sec.kicker, lang, path + ".kicker")}</p>
+      <h2${sp(1)}>${t(sec.title, lang, path + ".title")}</h2>
+      ${sec.sub ? `<p class="t-lead"${rv(2)}>${t(sec.sub, lang, path + ".sub")}</p>` : ""}
+    </div>`;
+}
+
+const ARROW_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+const ARROW_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>';
+
+/** A rail: cards in a row that slide sideways, with a progress line and
+    buttons. Without JavaScript it is a row you can swipe. */
+function rail(lang, cards, { wide = false, label = "" } = {}) {
+  const r = content.rail;
+  return `<div class="rail-wrap">
+      <ul class="rail${wide ? " wide" : ""}" tabindex="0" aria-label="${esc(label)}">
+        ${cards.join("\n        ")}
+      </ul>
+      <div class="rail-bar">
+        <span class="rail-hint">${t(r.hint, lang)}</span>
+        <span class="rail-track" aria-hidden="true"><i></i></span>
+        <span class="rail-btns">
+          <button class="rail-btn" type="button" data-dir="-1" aria-label="${t(r.prev, lang)}">${ARROW_L}</button>
+          <button class="rail-btn" type="button" data-dir="1" aria-label="${t(r.next, lang)}">${ARROW_R}</button>
+        </span>
+      </div>
+    </div>`;
+}
 
 /* ---------- shared pieces ---------- */
 
@@ -92,8 +127,7 @@ ${GATE ? '<meta name="robots" content="noindex,nofollow">' : noindex ? '<meta na
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${abs(path)}">
 <meta property="og:locale" content="${lang === "de" ? "de_AT" : "en_GB"}">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#050507">
 <link rel="icon" href="${BASE}/icon.svg" type="image/svg+xml">
 <style>${css}</style>
 </head>
@@ -108,15 +142,16 @@ function header(lang, { home = false } = {}) {
   const link = (item, i) =>
     `<a href="${home ? "" : homeHref}#${item.id}" style="--i:${i}">${t(item.label, lang, `nav.${item.id}`)}</a>`;
   return `<a class="skip" href="#main">${t(n.skip, lang)}</a>
+<div class="progress" aria-hidden="true"></div>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="${homeHref}" aria-label="${esc(content.site.name)}">${esc(content.site.name)}</a>
+    <a class="brand" href="${homeHref}" aria-label="${esc(content.site.name)}"><span class="brand-mark" aria-hidden="true"></span>${esc(content.site.short)}</a>
     <nav class="nav-links" aria-label="${lang === "de" ? "Abschnitte" : "Sections"}">
       ${n.items.map(link).join("\n      ")}
     </nav>
     <div class="nav-tools">
       <a class="lang" href="${otherHref}" hreflang="${other}" lang="${other}" aria-label="${t(n.langSwitchAria, lang)}">${t(n.langSwitch, lang)}</a>
-      <a class="btn btn-solid btn-sm" href="${home ? "" : homeHref}#ask">${t(n.cta, lang)}</a>
+      <a class="btn btn-solid btn-sm" href="${home ? "" : homeHref}#ask" data-magnet>${t(n.cta, lang)}</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="${t(n.menu, lang)}"><span></span></button>
     </div>
   </div>
@@ -145,6 +180,7 @@ function footer(lang) {
       <a href="${BASE}/${esc(content.site.deckFile)}" download>${t(content.site.deckLabel, lang)}</a>
       <a href="#top">${t(f.top, lang)}</a>
     </div>
+    <p class="footer-word" aria-hidden="true">${esc(content.site.short)}</p>
   </div>
 </footer>
 <script>${js}</script>
@@ -158,25 +194,45 @@ function hero(lang) {
   const h = content.hero;
   const p = content.person;
   return `<section class="hero" id="top">
-  <div class="wrap">
-    <p class="t-kicker"${rv(0)}>${t(h.kicker, lang)}</p>
-    <h1 class="t-display"${rv(1)}>${t(h.title, lang)}</h1>
-    <p class="t-lead"${rv(2)}>${t(h.lead, lang)}</p>
-    <p class="t-body"${rv(3)}>${t(h.sub, lang)}</p>
-    <div class="hero-actions"${rv(4)}>
-      <a class="btn btn-ink" href="#market">${t(h.primary, lang)}</a>
-      <a class="btn btn-ghost" href="#ask">${t(h.secondary, lang)}</a>
-    </div>
-    <p class="hero-meta"${rv(5)}><span>${esc(p.name)}</span><span>${t(p.city, lang)}</span><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></p>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="floor" aria-hidden="true"></div>
+  <div class="orbit" aria-hidden="true">
+    ${content.marquee.items.slice(0, 3).map((it, i) => `<div class="ring r${i + 1}"><span class="pin"><span class="node"><i></i>${t(it, lang)}</span></span></div>`).join("")}
+    <div class="core">S</div>
   </div>
+  <div class="wrap">
+    <p class="domain"${rv(0)}><b>${esc(h.domain)}</b>${t(h.kicker, lang)}</p>
+    <h1 class="t-display split" data-split style="--d:120ms">${t(h.title, lang)}</h1>
+    <p class="tagline"${rv(3)}><span class="grad">${t(h.tagline, lang)}</span></p>
+    <p class="t-lead"${rv(4)}>${t(h.lead, lang)}</p>
+    <p class="t-body"${rv(5)}>${t(h.sub, lang)}</p>
+    <div class="hero-actions"${rv(6)}>
+      <a class="btn btn-solid" href="#market" data-magnet>${t(h.primary, lang)} <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <a class="btn btn-ghost" href="#ask" data-magnet>${t(h.secondary, lang)}</a>
+    </div>
+    <p class="hero-meta"${rv(6)}><span>${esc(p.name)}</span><span>${t(p.city, lang)}</span><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></p>
+  </div>
+  <span class="scroll-cue" aria-hidden="true"></span>
 </section>`;
+}
+
+function marquee(lang) {
+  const items = content.marquee.items.map((it, i) => `<li>${t(it, lang, `marquee[${i}]`)}</li>`).join("");
+  /* Two copies side by side so the loop has no seam; the second is hidden
+     from screen readers. */
+  return `<div class="marquee" role="presentation">
+  <div class="marquee-track">
+    <ul>${items}</ul>
+    <ul aria-hidden="true">${items}</ul>
+  </div>
+</div>`;
 }
 
 function thesis(lang) {
   const th = content.thesis;
-  return `<section class="thesis alt">
+  return `<section class="thesis">
   <div class="wrap">
-    <h2 class="t-h1 thesis-lines" aria-label="${th.lines.map((l) => t(l, lang)).join(" ")}">
+    <h2 class="thesis-lines" aria-label="${th.lines.map((l) => t(l, lang)).join(" ")}">
       ${th.lines.map((l) => `<span aria-hidden="true">${t(l, lang)}</span>`).join("\n      ")}
     </h2>
     <p class="t-lead"${rv(1)}>${t(th.text, lang)}</p>
@@ -188,21 +244,18 @@ function market(lang) {
   const m = content.market;
   const stat = (s, i) => {
     const countAttr = s.count != null ? ` data-count="${s.count}" data-sample="${esc(s.value)}"` : "";
-    return `<div class="stat"${rv(i)}>
+    return `<div${rv(i, "stat glass")} data-light>
         <p class="value t-num"><span${countAttr}>${esc(s.value)}</span>${s.unit ? `<small>${esc(s.unit)}</small>` : ""}</p>
         <p class="t-body">${t(s.text, lang, `market.stats[${i}]`)}</p>
       </div>`;
   };
   return `<section id="market">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(m.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(m.title, lang)}</h2>
-    </div>
+    ${secHead(lang, m, "market")}
     <div class="stats">
       ${m.stats.map(stat).join("\n      ")}
     </div>
-    <p class="claim t-h2"${rv(0)}>${t(m.claim, lang)}</p>
+    <p class="claim split" data-split>${t(m.claim, lang)}</p>
     <p class="source t-small"${rv(1)}>${t(m.source, lang)}</p>
   </div>
 </section>`;
@@ -210,22 +263,17 @@ function market(lang) {
 
 function difference(lang) {
   const d = content.difference;
+  const cards = d.items.map(
+    (it, i) => `<li class="card glass" data-light>
+          <span class="idx">${String(i + 1).padStart(2, "0")}</span>
+          <h3 class="t-h3">${t(it.title, lang, `difference[${i}]`)}</h3>
+          <p class="t-body">${t(it.text, lang, `difference[${i}]`)}</p>
+        </li>`,
+  );
   return `<section class="alt">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(d.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(d.title, lang)}</h2>
-    </div>
-    <ul class="grid two">
-      ${d.items
-        .map(
-          (it, i) => `<li class="item"${rv(i)}>
-        <h3 class="t-h3">${t(it.title, lang, `difference[${i}]`)}</h3>
-        <p class="t-body">${t(it.text, lang, `difference[${i}]`)}</p>
-      </li>`,
-        )
-        .join("\n      ")}
-    </ul>
+    ${secHead(lang, d, "difference")}
+    ${rail(lang, cards, { label: t(d.title, lang) })}
   </div>
 </section>`;
 }
@@ -236,14 +284,14 @@ function method(lang) {
   <div class="wrap method-layout">
     <div class="method-sticky sec-head" style="margin-bottom:0">
       <p class="t-kicker"${rv(0)}>${t(m.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(m.title, lang)}</h2>
+      <h2${sp(1)}>${t(m.title, lang)}</h2>
       <p class="t-lead"${rv(2)}>${t(m.sub, lang)}</p>
     </div>
     <ol class="steps">
       ${m.steps
         .map(
           (s, i) => `<li class="step">
-        <span class="n t-num">${String(i + 1).padStart(2, "0")}</span>
+        <span class="n">${String(i + 1).padStart(2, "0")}</span>
         <h3 class="t-h3">${t(s.title, lang, `method[${i}]`)}</h3>
         <p class="t-body">${t(s.text, lang, `method[${i}]`)}</p>
       </li>`,
@@ -257,34 +305,29 @@ function method(lang) {
 function proof(lang) {
   const p = content.proof;
   const L = p.labels;
-  const one = (c, i) => `<article class="case"${rv(i)}>
-        <div class="case-head">
-          <p class="t-kicker"><b>${esc(c.number)}</b></p>
-          <h3 class="t-h2">${t(c.title, lang, `proof[${i}].title`)}</h3>
-          <p class="t-small meta">${t(c.meta, lang, `proof[${i}].meta`)}</p>
-        </div>
-        <div class="figures">
-          ${c.figures
-            .map(
-              (f) => `<div class="fig"><p class="t-num">${esc(f.value)}</p><p class="t-small">${t(f.label, lang, `proof[${i}].figures`)}</p></div>`,
-            )
-            .join("\n          ")}
-        </div>
-        <div class="cols">
-          <div class="col"><p class="t-kicker">${t(L.start, lang)}</p><p class="t-body">${t(c.start, lang, `proof[${i}].start`)}</p></div>
-          <div class="col"><p class="t-kicker">${t(L.built, lang)}</p><p class="t-body">${t(c.built, lang, `proof[${i}].built`)}</p></div>
-          <div class="col"><p class="t-kicker">${t(L.measured, lang)}</p><p class="t-body">${t(c.measured, lang, `proof[${i}].measured`)}</p></div>
-        </div>
-      </article>`;
+  const one = (c, i) => `<li class="case glass" data-light>
+          <div class="case-head">
+            <p class="t-kicker"><b>${esc(c.number)}</b></p>
+            <h3 class="t-h2">${t(c.title, lang, `proof[${i}].title`)}</h3>
+            <p class="t-small meta">${t(c.meta, lang, `proof[${i}].meta`)}</p>
+          </div>
+          <div class="figures">
+            ${c.figures
+              .map(
+                (f) => `<div class="fig"><p class="t-num">${esc(f.value)}</p><p class="t-small">${t(f.label, lang, `proof[${i}].figures`)}</p></div>`,
+              )
+              .join("\n            ")}
+          </div>
+          <div class="cols">
+            <div class="col"><p class="t-kicker">${t(L.start, lang)}</p><p class="t-body">${t(c.start, lang, `proof[${i}].start`)}</p></div>
+            <div class="col"><p class="t-kicker">${t(L.built, lang)}</p><p class="t-body">${t(c.built, lang, `proof[${i}].built`)}</p></div>
+            <div class="col"><p class="t-kicker">${t(L.measured, lang)}</p><p class="t-body">${t(c.measured, lang, `proof[${i}].measured`)}</p></div>
+          </div>
+        </li>`;
   return `<section id="proof" class="alt">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(p.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(p.title, lang)}</h2>
-    </div>
-    <div class="cases">
-      ${p.cases.map(one).join("\n      ")}
-    </div>
+    ${secHead(lang, p, "proof")}
+    ${rail(lang, p.cases.map(one), { wide: true, label: t(p.title, lang) })}
   </div>
 </section>`;
 }
@@ -294,26 +337,22 @@ function numbers(lang) {
   const price = (it) => (lang === "de" ? esc(it.priceDe) : esc(it.price));
   return `<section id="numbers">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(n.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(n.title, lang)}</h2>
-      <p class="t-lead"${rv(2)}>${t(n.sub, lang)}</p>
-    </div>
+    ${secHead(lang, n, "numbers")}
     <div class="numbers-layout">
-      <div class="panel"${rv(0)}>
+      <div${rv(0, "panel glass")} data-light>
         <h3 class="t-h3">${t(n.prices.title, lang)}</h3>
         <ul class="pricelist">
           ${n.prices.items.map((it) => `<li><span>${t(it.name, lang)}</span><span class="t-num">${price(it)}</span></li>`).join("\n          ")}
         </ul>
         <p class="t-small">${t(n.prices.note, lang)}</p>
       </div>
-      <div class="panel"${rv(1)}>
+      <div${rv(1, "panel glass")} data-light>
         <h3 class="t-h3">${t(n.year1.title, lang)}</h3>
         <p class="big t-num"><span data-count="190000" data-sample="${esc(lang === "de" ? n.year1.figureDe : n.year1.figure)}">${esc(lang === "de" ? n.year1.figureDe : n.year1.figure)}</span></p>
         <p class="t-small">${t(n.year1.figureLabel, lang)}</p>
         <p class="t-body">${t(n.year1.text, lang)}</p>
       </div>
-      <div class="panel"${rv(2)}>
+      <div${rv(2, "panel glass")} data-light>
         <h3 class="t-h3">${t(n.why.title, lang)}</h3>
         <p class="t-body">${t(n.why.text, lang)}</p>
       </div>
@@ -322,14 +361,27 @@ function numbers(lang) {
 </section>`;
 }
 
+/* The fields slide sideways as cards, each with its moment and its name. */
+function fieldsRail(lang, sec, { alt = false } = {}) {
+  const cards = sec.items.map(
+    (it, i) => `<li class="card glass" data-light>
+          <span class="when">${typeof it.when === "string" ? esc(it.when) : t(it.when, lang, `fields[${i}].when`)}</span>
+          <h3 class="t-h2">${t(it.name, lang, `fields[${i}].name`)}</h3>
+          <p class="t-body">${t(it.text, lang, `fields[${i}].text`)}</p>
+        </li>`,
+  );
+  return `<section${alt ? ' class="alt"' : ""}>
+  <div class="wrap">
+    ${secHead(lang, sec, "fields")}
+    ${rail(lang, cards, { label: t(sec.title, lang) })}
+  </div>
+</section>`;
+}
+
 function timelineSection(lang, sec, { id = "", alt = false, withName = false }) {
   return `<section${id ? ` id="${id}"` : ""}${alt ? ' class="alt"' : ""}>
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(sec.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(sec.title, lang)}</h2>
-      ${sec.sub ? `<p class="t-lead"${rv(2)}>${t(sec.sub, lang)}</p>` : ""}
-    </div>
+    ${secHead(lang, sec, "timeline")}
     <ol class="timeline">
       ${sec.items
         .map(
@@ -348,22 +400,19 @@ function timelineSection(lang, sec, { id = "", alt = false, withName = false }) 
 function listSection(lang, sec, { id = "", alt = false, columns = "three", closing = null }) {
   return `<section${id ? ` id="${id}"` : ""}${alt ? ' class="alt"' : ""}>
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(sec.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(sec.title, lang)}</h2>
-      ${sec.sub ? `<p class="t-lead"${rv(2)}>${t(sec.sub, lang)}</p>` : ""}
-    </div>
+    ${secHead(lang, sec, "list")}
     <ul class="grid ${columns}">
       ${sec.items
         .map(
-          (it, i) => `<li class="item"${rv(i)}>
+          (it, i) => `<li${rv(i, "item glass")} data-light>
+        <span class="pt">${String(i + 1).padStart(2, "0")}</span>
         <h3 class="t-h3">${t(it.title, lang)}</h3>
         <p class="t-body">${t(it.text, lang)}</p>
       </li>`,
         )
         .join("\n      ")}
     </ul>
-    ${closing ? `<p class="closing t-body"${rv(0)}>${t(closing, lang)}</p>` : ""}
+    ${closing ? `<p${rv(0, "closing glass t-body")}>${t(closing, lang)}</p>` : ""}
   </div>
 </section>`;
 }
@@ -376,13 +425,9 @@ function funds(lang) {
   const amt = (it) => (lang === "de" ? esc(it.labelDe) : esc(it.label));
   return `<section id="funds" class="alt">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(f.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(f.title, lang)}</h2>
-      <p class="t-lead"${rv(2)}>${t(f.sub, lang)}</p>
-    </div>
+    ${secHead(lang, f, "funds")}
     <div class="bar" role="img" aria-label="${f.items.map((it) => `${t(it.title, lang)} ${pct(it)}%`).join(", ")}">
-      ${f.items.map((it, k) => `<span style="--w:${(it.amount / f.total) * 100}%;--k:${k}"></span>`).join("")}
+      ${f.items.map((it, k) => `<span style="--g:${it.amount};--k:${k}"></span>`).join("")}
     </div>
     <ol class="funds-list">
       ${f.items
@@ -396,13 +441,13 @@ function funds(lang) {
         .join("\n      ")}
     </ol>
     <div class="funds-two">
-      <div${rv(0)}>
+      <div${rv(0, "glass")} data-light>
         <h3 class="t-h2" style="margin-bottom:20px">${t(f.payback.title, lang)}</h3>
         <ul class="kv">
           ${f.payback.items.map((it) => `<li><span class="k">${t(it.label, lang)}</span><p class="t-body">${t(it.text, lang)}</p></li>`).join("\n          ")}
         </ul>
       </div>
-      <div${rv(1)}>
+      <div${rv(1, "glass")} data-light>
         <h3 class="t-h2" style="margin-bottom:20px">${t(f.milestones.title, lang)}</h3>
         <ol class="timeline">
           ${f.milestones.items.map((it) => `<li class="trow"><span class="when">${esc(it.when)}</span><p class="t-body">${t(it.text, lang)}</p></li>`).join("\n          ")}
@@ -418,10 +463,7 @@ function ask(lang) {
   const p = content.person;
   return `<section id="ask">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="t-kicker"${rv(0)}>${t(a.kicker, lang)}</p>
-      <h2 class="t-h1"${rv(1)}>${t(a.title, lang)}</h2>
-    </div>
+    ${secHead(lang, a, "ask")}
     <ol class="ask-list">
       ${a.items.map((it, i) => `<li${rv(i)}><span>${t(it, lang, `ask[${i}]`)}</span></li>`).join("\n      ")}
     </ol>
@@ -429,7 +471,7 @@ function ask(lang) {
       <h3 class="t-h1">${t(a.contactTitle, lang)}</h3>
       <p class="t-lead">${t(a.contactText, lang)}</p>
       <div class="contact-actions">
-        <a class="btn btn-ink" href="mailto:${esc(p.email)}">${t(a.email, lang)}</a>
+        <a class="btn btn-ink" href="mailto:${esc(p.email)}" data-magnet>${t(a.email, lang)} <span class="arrow" aria-hidden="true">&rarr;</span></a>
         <a class="btn btn-ghost" href="tel:${esc(p.phoneHref)}">${t(a.call, lang)}</a>
         <button class="btn btn-ghost" type="button" data-copy="${esc(p.email)}" data-copied="${t(a.copied, lang)}">${t(a.copy, lang)}</button>
       </div>
@@ -452,13 +494,14 @@ function homePage(lang) {
     header(lang, { home: true }),
     `<main id="main">`,
     hero(lang),
+    marquee(lang),
     thesis(lang),
     market(lang),
     difference(lang),
     method(lang),
     proof(lang),
     numbers(lang),
-    timelineSection(lang, content.fields, { alt: true, withName: true }),
+    fieldsRail(lang, content.fields, { alt: true }),
     listSection(lang, content.governance, { columns: "three", closing: content.governance.closing }),
     listSection(lang, content.value, { alt: true, columns: "three" }),
     timelineSection(lang, content.horizon, {}),
@@ -557,7 +600,7 @@ if (!GATE) {
 }
 write(
   "icon.svg",
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1d1d1f"/><text x="32" y="41" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif" font-weight="700" font-size="26" fill="#fff">S</text></svg>\n`,
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ee6ff"/><stop offset=".5" stop-color="#2997ff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="#050507"/><rect x="6" y="6" width="52" height="52" rx="13" fill="url(#g)"/><text x="32" y="43" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif" font-weight="800" font-size="30" fill="#050507">S</text></svg>\n`,
 );
 writeFileSync(join(dist, ".nojekyll"), "");
 if (existsSync(join(here, content.site.deckFile))) {

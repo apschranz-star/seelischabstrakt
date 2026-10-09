@@ -5,8 +5,8 @@
     "short": "SCHRANZ AI",
     "url": "https://apschranz-star.github.io/seelischabstrakt/schranz-ai",
     "title": {
-      "en": "Schranz AI Solutions. AI that delivers.",
-      "de": "Schranz AI Solutions. KI, die liefert."
+      "en": "Schranz AI. A new era of consulting.",
+      "de": "Schranz AI. Eine neue Ära von Consulting."
     },
     "description": {
       "en": "Diagnose. Build. Measure. EU-compliant and reliable. An AI agency in Vienna raising a pre-seed of EUR 100,000 for the first buildup.",
@@ -106,8 +106,8 @@
       "de": "Pre-Seed, Wien, 2026"
     },
     "title": {
-      "en": "AI that delivers.",
-      "de": "KI, die liefert."
+      "en": "A new era of consulting.",
+      "de": "Eine neue Ära von Consulting."
     },
     "lead": {
       "en": "Diagnose. Build. Measure. EU-compliant and reliable.",
@@ -124,7 +124,12 @@
     "secondary": {
       "en": "Go to the ask",
       "de": "Zum Angebot"
-    }
+    },
+    "tagline": {
+      "en": "AI that delivers.",
+      "de": "KI, die liefert."
+    },
+    "domain": "schranz.ai"
   },
   "thesis": {
     "lines": [
@@ -1183,6 +1188,60 @@
         "en": "Controller",
         "de": "Verantwortlicher"
       }
+    }
+  },
+  "marquee": {
+    "items": [
+      {
+        "en": "Diagnose",
+        "de": "Diagnose"
+      },
+      {
+        "en": "Build",
+        "de": "Bauen"
+      },
+      {
+        "en": "Measure",
+        "de": "Messen"
+      },
+      {
+        "en": "EU-compliant",
+        "de": "EU-konform"
+      },
+      {
+        "en": "GDPR",
+        "de": "DSGVO"
+      },
+      {
+        "en": "AI Act",
+        "de": "AI Act"
+      },
+      {
+        "en": "3 systems in production",
+        "de": "3 Systeme im Betrieb"
+      },
+      {
+        "en": "Vienna",
+        "de": "Wien"
+      },
+      {
+        "en": "Built for generations",
+        "de": "Gebaut für Generationen"
+      }
+    ]
+  },
+  "rail": {
+    "prev": {
+      "en": "Previous",
+      "de": "Zurück"
+    },
+    "next": {
+      "en": "Next",
+      "de": "Weiter"
+    },
+    "hint": {
+      "en": "Swipe or drag",
+      "de": "Wischen oder ziehen"
     }
   }
 }
