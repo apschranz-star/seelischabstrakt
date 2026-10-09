@@ -4,8 +4,54 @@
  * Zubereitung steht auf der jeweiligen Originalseite, hier nur die Zutaten.
  */
 window.ANKER_NETZREZEPTE = {
- "stand": "2026-10-04",
+ "stand": "2026-10-09",
  "rezepte": [
+  {
+   "id": "netz-meaningfuleats-com-gluten-free-black-bottom-cupcakes",
+   "name": "Gluten-Free Black Bottom Cupcakes",
+   "quelle": "Meaningful Eats",
+   "url": "https://meaningfuleats.com/gluten-free-black-bottom-cupcakes/",
+   "autor": "",
+   "sprache": "en",
+   "minuten": 38,
+   "vorbereitung": 20,
+   "kochen": 18,
+   "portionen": "12 cupcakes",
+   "zutaten": [
+    "8 oz (226g) cream cheese, (cold)",
+    "⅓ cup (66g) granulated sugar",
+    "1 large egg, (at room temperature)",
+    "pinch of kosher salt",
+    "½ cup (90g) mini chocolate chips",
+    "1⅓ cups (200g) gluten-free measure-for-measure flour",
+    "1 cup (200g) granulated sugar",
+    "1 teaspoon baking soda",
+    "⅓ cup (27g) unsweetened cocoa powder (not Dutch-processed)",
+    "¼ teaspoon instant espresso powder, (optional)",
+    "½ teaspoon kosher salt",
+    "⅓ cup (80ml) neutral oil",
+    "1 tablespoon white distilled vinegar",
+    "1 teaspoon vanilla extract",
+    "1 cup (240ml) hot water"
+   ],
+   "schritte": 7,
+   "kategorie": "Dessert",
+   "tags": [
+    "kalzium",
+    "vegetarisch"
+   ],
+   "pruefen": [],
+   "packung": [
+    "8 oz (226g) cream cheese, (cold)",
+    "½ cup (90g) mini chocolate chips",
+    "1⅓ cups (200g) gluten-free measure-for-measure flour",
+    "⅓ cup (27g) unsweetened cocoa powder (not Dutch-processed)",
+    "¼ teaspoon instant espresso powder, (optional)",
+    "1 teaspoon vanilla extract"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-07"
+  },
   {
    "id": "netz-meaningfuleats-com-gluten-free-apple-dutch-baby",
    "name": "Gluten-Free Apple Dutch Baby",
@@ -34,6 +80,11 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [],
+   "packung": [
+    "¾ cup (112g) gluten-free measure-for-measure flour",
+    "Maple syrup and powdered sugar (to serve)"
+   ],
+   "geprueft": true,
    "datum": "2026-09-30"
   },
   {
@@ -70,9 +121,18 @@ window.ANKER_NETZREZEPTE = {
     "eiweiss",
     "vegetarisch"
    ],
-   "pruefen": [
-    "2 teaspoons baking powder"
+   "pruefen": [],
+   "packung": [
+    "2 cups (300g) gluten-free measure-for-measure flour",
+    "1 cup (110g) vanilla protein powder",
+    "2 teaspoons baking powder",
+    "1 teaspoon pumpkin pie spice",
+    "1½ cups (360g) plain Greek yogurt",
+    "¼ cup maple syrup",
+    "1 teaspoon vanilla extract",
+    "1 cup (170g) semi-sweet chocolate chips"
    ],
+   "geprueft": true,
    "datum": "2026-09-16"
   },
   {
@@ -113,9 +173,17 @@ window.ANKER_NETZREZEPTE = {
    "tags": [
     "vegetarisch"
    ],
-   "pruefen": [
-    "1 tablespoon baking powder"
+   "pruefen": [],
+   "packung": [
+    "1½ cups (225g) gluten-free measure-for-measure flour",
+    "1 tablespoon baking powder",
+    "⅔ cup (160g) sour cream",
+    "1 teaspoon vanilla extract",
+    "¼ cup (60ml) milk of choice",
+    "1 teaspoon vanilla extract",
+    "1½ cups (180g) powdered sugar, (sifted)"
    ],
+   "geprueft": true,
    "datum": "2026-09-10"
   },
   {
@@ -160,9 +228,18 @@ window.ANKER_NETZREZEPTE = {
    "tags": [
     "vegetarisch"
    ],
-   "pruefen": [
-    "¼ teaspoon baking powder"
+   "pruefen": [],
+   "packung": [
+    "1¼ cups (187g) gluten-free measure-for-measure flour",
+    "1⅓ cups (200g) gluten-free measure-for-measure flour",
+    "¼ teaspoon baking powder",
+    "⅓ cup (80ml) milk of choice",
+    "1 teaspoon vanilla extract",
+    "1 cup (120g) powdered sugar",
+    "1 tablespoon milk of choice",
+    "1 teaspoon vanilla extract"
    ],
+   "geprueft": true,
    "datum": "2026-09-02"
   },
   {
@@ -194,9 +271,14 @@ window.ANKER_NETZREZEPTE = {
    "tags": [
     "vegetarisch"
    ],
-   "pruefen": [
-    "2 teaspoons baking powder"
+   "pruefen": [],
+   "packung": [
+    "1½ cups (225g) gluten-free measure-for-measure flour",
+    "2 teaspoons baking powder",
+    "½ cup (120ml) milk of choice",
+    "½ cup (60g) powdered sugar"
    ],
+   "geprueft": true,
    "datum": "2026-08-26"
   },
   {
@@ -230,6 +312,13 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [],
+   "packung": [
+    "¾ cup (113g) gluten-free measure-for-measure flour",
+    "Lingonberry or blueberry jam",
+    "Plain yogurt",
+    "Whipped cream"
+   ],
+   "geprueft": true,
    "datum": "2026-08-19"
   },
   {
@@ -265,39 +354,54 @@ window.ANKER_NETZREZEPTE = {
     "kalzium",
     "vegetarisch"
    ],
-   "pruefen": [
-    "1 ½ teaspoons baking powder"
+   "pruefen": [],
+   "packung": [
+    "1 ½ cups (225g) gluten-free measure-for-measure flour",
+    "½ cup (50g) almond flour",
+    "1 ½ teaspoons baking powder",
+    "1 teaspoon vanilla extract",
+    "1 cup (240g) whole milk yogurt",
+    "¾ cup (135g) mini chocolate chips"
    ],
+   "geprueft": true,
    "datum": "2026-08-12"
   },
   {
-   "id": "netz-meaningfuleats-com-gluten-free-overnight-yeast-waffles",
-   "name": "Gluten-Free Overnight Yeast Waffles",
-   "quelle": "Meaningful Eats",
-   "url": "https://meaningfuleats.com/gluten-free-overnight-yeast-waffles/",
+   "id": "netz-mamaknowsglutenfree-com-gluten-free-corn-muffins",
+   "name": "Gluten-Free Corn Muffins",
+   "quelle": "Mama Knows Gluten Free",
+   "url": "https://www.mamaknowsglutenfree.com/gluten-free-corn-muffins/",
    "autor": "",
    "sprache": "en",
-   "minuten": 525,
-   "vorbereitung": 15,
-   "kochen": 30,
-   "portionen": "12 waffles",
+   "minuten": 22,
+   "vorbereitung": 8,
+   "kochen": 14,
+   "portionen": "12 servings",
    "zutaten": [
-    "3½ cups milk of choice",
-    "½ cup (113g) butter, (melted)",
-    "4 large eggs",
-    "1 teaspoon vanilla extract",
-    "3¾ cups (562g) gluten-free measure-for-measure flour",
-    "2 tablespoons granulated sugar",
-    "1 tablespoon instant yeast",
-    "1 teaspoon kosher salt"
+    "1 cup 1:1 GF flour blend",
+    "1 cup yellow cornmeal",
+    "1 tbsp baking powder",
+    "¾ tsp fine sea salt",
+    "½ cup butter (melted and slightly cooled)",
+    "1 large egg (room temperature)",
+    "1 cup buttermilk (room temperature)",
+    "¼ cup honey",
+    "1 ½ tbsp butter (softened)",
+    "1 tbsp honey"
    ],
    "schritte": 7,
-   "kategorie": "Breakfast",
+   "kategorie": "Baking",
    "tags": [
     "vegetarisch"
    ],
    "pruefen": [],
-   "datum": "2026-08-05"
+   "packung": [
+    "1 cup 1:1 GF flour blend",
+    "1 cup yellow cornmeal",
+    "1 tbsp baking powder"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-07"
   },
   {
    "id": "netz-mamaknowsglutenfree-com-dairy-free-ricotta",
@@ -328,6 +432,11 @@ window.ANKER_NETZREZEPTE = {
     "ohneMilch"
    ],
    "pruefen": [],
+   "packung": [
+    "2 tbsp lemon juice (fresh lemon gives the brightest flavor, though bottled works in a pinch)",
+    "1 tbsp nutritional yeast"
+   ],
+   "geprueft": true,
    "datum": "2026-10-03"
   },
   {
@@ -361,9 +470,13 @@ window.ANKER_NETZREZEPTE = {
    "tags": [
     "vegetarisch"
    ],
-   "pruefen": [
-    "1¼ tsp baking powder"
+   "pruefen": [],
+   "packung": [
+    "1½ cups gluten-free all-purpose flour blend (with xanthan gum )",
+    "1¼ tsp baking powder",
+    "1 tsp vanilla extract"
    ],
+   "geprueft": true,
    "datum": "2026-09-30"
   },
   {
@@ -394,9 +507,15 @@ window.ANKER_NETZREZEPTE = {
     "eisen",
     "eiweiss"
    ],
-   "pruefen": [
-    "2 tsp baking powder"
+   "pruefen": [],
+   "packung": [
+    "1¼ cups blanched superfine almond flour (not almond meal)",
+    "1 cup gluten-free cornmeal (fine or medium grind)",
+    "2 tsp baking powder",
+    "¼ cup butter (melted and slightly cooled, coconut oil or dairy-free butter also works)",
+    "2 tbsp honey (maple syrup works as a 1:1 swap)"
    ],
+   "geprueft": true,
    "datum": "2026-09-26"
   },
   {
@@ -425,6 +544,11 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [],
+   "packung": [
+    "2 cups gluten-free all-purpose flour",
+    "2 tsp xanthan gum (reduce to 1 tsp if your blend already contains it)"
+   ],
+   "geprueft": true,
    "datum": "2024-10-04"
   },
   {
@@ -453,9 +577,13 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch",
     "ohneMilch"
    ],
-   "pruefen": [
+   "pruefen": [],
+   "packung": [
+    "2 tbsp semi-sweet chocolate chips",
+    "2 tbsp unsweetened cocoa powder",
     "¼ tsp baking powder"
    ],
+   "geprueft": true,
    "datum": "2026-09-19"
   },
   {
@@ -491,6 +619,10 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [],
+   "packung": [
+    "3 cups gluten-free vegetable broth"
+   ],
+   "geprueft": true,
    "datum": "2026-09-16"
   },
   {
@@ -525,48 +657,16 @@ window.ANKER_NETZREZEPTE = {
     "mediterran"
    ],
    "pruefen": [],
+   "packung": [
+    "1 lb Italian sausage",
+    "1½ cups marinara sauce",
+    "1 tsp Italian herbs",
+    "½ tsp garlic powder",
+    "¼ tsp red pepper flakes",
+    "½ cup sliced pepperoni (chopped or mini )"
+   ],
+   "geprueft": true,
    "datum": "2026-09-12"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-almond-flour-pumpkin-cookies",
-   "name": "Almond Flour Pumpkin Cookies",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/almond-flour-pumpkin-cookies/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 25,
-   "vorbereitung": 10,
-   "kochen": 15,
-   "portionen": "15 servings",
-   "zutaten": [
-    "1¼ cups fine almond flour (packed)",
-    "¼ cup coconut flour",
-    "¼ tsp baking soda",
-    "1 tsp cinnamon",
-    "½ tsp nutmeg",
-    "½ tsp ginger",
-    "¼ tsp cloves",
-    "¼ tsp fine sea salt",
-    "¼ cup unsalted butter (melted and room temperature)",
-    "½ cup pumpkin puree",
-    "¼ cup brown sugar",
-    "2 tbsp maple syrup",
-    "1 large egg (room temperature)",
-    "1½ tsp vanilla extract",
-    "5 tbsp unsalted butter (browned and room temp, until mostly solid)",
-    "4 oz cream cheese (room temperature)",
-    "2 cups powdered sugar",
-    "1 tsp vanilla",
-    "⅛ tsp salt"
-   ],
-   "schritte": 8,
-   "kategorie": "Baking",
-   "tags": [
-    "kalzium",
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "datum": "2026-09-09"
   },
   {
    "id": "netz-dishbydish-net-almond-flour-pumpkin-bread",
@@ -601,9 +701,15 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch",
     "ohneMilch"
    ],
-   "pruefen": [
-    "2 teaspoons baking powder"
+   "pruefen": [],
+   "packung": [
+    "1 teaspoon vanilla extract",
+    "2 1/2 cups blanched almond flour",
+    "1/2 cup gluten-free oat flour",
+    "2 teaspoons baking powder",
+    "1/2 cup dairy-free chocolate chips + more for topping (optional)"
    ],
+   "geprueft": true,
    "datum": "2026-09-23"
   },
   {
@@ -642,6 +748,13 @@ window.ANKER_NETZREZEPTE = {
     "mediterran"
    ],
    "pruefen": [],
+   "packung": [
+    "2 tablespoons dairy-free butter",
+    "2 tablespoons gluten-free all-purpose flour",
+    "1 cup dairy-free heavy cream",
+    "4 cups gluten-free chicken broth"
+   ],
+   "geprueft": true,
    "datum": "2026-09-21"
   },
   {
@@ -680,6 +793,14 @@ window.ANKER_NETZREZEPTE = {
     "mediterran"
    ],
    "pruefen": [],
+   "packung": [
+    "1 teaspoon Italian seasoning",
+    "½ cup sun-dried tomatoes, sliced",
+    "1½ cups dairy-free heavy cream",
+    "¼ cup dairy-free parmesan cheese",
+    "¼ teaspoon dried red pepper flakes"
+   ],
+   "geprueft": true,
    "datum": "2026-09-15"
   },
   {
@@ -718,9 +839,16 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch",
     "ohneMilch"
    ],
-   "pruefen": [
-    "1 ½ teaspoons baking powder"
+   "pruefen": [],
+   "packung": [
+    "2 ½ cups blanched almond flour",
+    "¼ cup unsalted dairy-free butter, melted",
+    "1 ½ teaspoons baking powder",
+    "1 teaspoon vanilla extract",
+    "1 cup blanched almond flour",
+    "2 tablespoons unsalted dairy-free butter, cold"
    ],
+   "geprueft": true,
    "datum": "2026-09-14"
   },
   {
@@ -753,6 +881,10 @@ window.ANKER_NETZREZEPTE = {
     "ohneMilch"
    ],
    "pruefen": [],
+   "packung": [
+    "½ cup gluten-free soy sauce (gluten-free tamari sauce)"
+   ],
+   "geprueft": true,
    "datum": "2026-09-09"
   },
   {
@@ -787,9 +919,15 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch",
     "ohneMilch"
    ],
-   "pruefen": [
-    "1 teaspoon baking powder"
+   "pruefen": [],
+   "packung": [
+    "2 1/2 cups blanched almond flour",
+    "1/2 cup unsalted dairy-free butter (1 stick)",
+    "1 teaspoon vanilla extract",
+    "1 teaspoon baking powder",
+    "1/2 cup dairy-free chocolate chips + more for topping"
    ],
+   "geprueft": true,
    "datum": "2026-09-07"
   },
   {
@@ -823,51 +961,17 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch",
     "ohneMilch"
    ],
-   "pruefen": [
+   "pruefen": [],
+   "packung": [
+    "1/3 cup softened dairy-free butter",
+    "1/2 cup dairy-free yogurt (plain, unsweetened // we like a thicker one like Culina // Greek yogurt would also work if not dairy-free)",
+    "1/2 tsp almond extract (or vanilla extract if you're not a fan of almond extract)",
+    "1 ½ cup MB 1:1 Gluten-Free Flour Blend",
+    "3/4 cup almond flour (we like Wellbee’s)",
     "2 tsp baking powder"
    ],
+   "geprueft": true,
    "datum": "2026-09-08"
-  },
-  {
-   "id": "netz-minimalistbaker-com-eggplant-bolognese",
-   "name": "Easy Eggplant Bolognese (1 Pot!)",
-   "quelle": "Minimalist Baker",
-   "url": "https://minimalistbaker.com/eggplant-bolognese/",
-   "autor": "Minimalist Baker",
-   "sprache": "en",
-   "minuten": 45,
-   "vorbereitung": 15,
-   "kochen": 30,
-   "portionen": "4",
-   "zutaten": [
-    "1/4 cup olive oil",
-    "1 cup finely chopped yellow onion",
-    "1/2 cup finely diced carrots",
-    "4 cups diced eggplant (1/4 inch cubes // 1 medium eggplant yields ~4 cups or 345 g)",
-    "4 cloves garlic",
-    "1/2 tsp red pepper flakes",
-    "2 Tbsp tomato paste",
-    "1/2 cup dry red or white wine",
-    "1 (28-oz) can crushed tomatoes (optionally with basil)",
-    "1 cup dairy-free milk",
-    "1-2 tsp dried Italian seasoning (or dried basil + oregano)",
-    "1/2 tsp sea salt (plus more to taste)",
-    "1-2 tsp maple syrup",
-    "Freshly chopped basil",
-    "Vegan parmesan cheese (dairy would also work)",
-    "Pasta (we like pappardelle or rigatoni // gluten-free as needed)"
-   ],
-   "schritte": 9,
-   "kategorie": "Entrée",
-   "tags": [
-    "kalzium",
-    "vegetarisch",
-    "mediterran"
-   ],
-   "pruefen": [
-    "Pasta (we like pappardelle or rigatoni // gluten-free as needed)"
-   ],
-   "datum": "2026-08-18"
   },
   {
    "id": "netz-glutenfreepalate-com-lemon-curd",
@@ -893,6 +997,10 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [],
+   "packung": [
+    "1/2 cup lemon juice (fresh squeezed or bottled)"
+   ],
+   "geprueft": true,
    "datum": "2026-04-29"
   },
   {
@@ -923,6 +1031,13 @@ window.ANKER_NETZREZEPTE = {
     "vegetarisch"
    ],
    "pruefen": [],
+   "packung": [
+    "40 g Quittengelee (60 g Ninja Deluxe)",
+    "200 g griechischer Joghurt oder Saure Sahne (300 g Ninja Deluxe)",
+    "30 g Zucker/Zuckeralternative (45 g Ninja Deluxe)",
+    "1/3 TL Guarkernmehl (1/2 TL Ninja Deluxe)"
+   ],
+   "geprueft": true,
    "datum": "2025-10-10"
   },
   {
@@ -961,83 +1076,18 @@ window.ANKER_NETZREZEPTE = {
     "ohneMilch"
    ],
    "pruefen": [],
+   "packung": [
+    "100 ml Milch oder Pflanzendrink (z. B. Mandeldrink)",
+    "12 Reispapierblätter (Ø 22 cm; Tipp: elastische, reißfeste Qualität – z. B. Reishunger Bio)",
+    "400 g Hackfleisch deiner Wahl",
+    "1 EL Senf",
+    "2 EL Ketchup",
+    "1 Pckg. Pad-Thai-Gewürzpaste (optional)",
+    "5 Gewürzgurken (fein gewürfelt)",
+    "Sriracha-Soße (optional)"
+   ],
+   "geprueft": true,
    "datum": "2025-09-11"
-  },
-  {
-   "id": "netz-kochtrotz-de-rezepte-kirsch-streuselkuchen-ohne-butter",
-   "name": "Kirsch-Streuselkuchen – mit Quarkstreuseln & Keksteig ohne Butter",
-   "quelle": "Kochtrotz",
-   "url": "https://www.kochtrotz.de/rezepte/kirsch-streuselkuchen-ohne-butter/",
-   "autor": "Steffi von KochTrotz",
-   "sprache": "de",
-   "minuten": 15,
-   "vorbereitung": 15,
-   "kochen": null,
-   "portionen": "9 Stücke",
-   "zutaten": [
-    "250 g Butterkekse (350 g)",
-    "170 g Magerquark (240 g)",
-    "50 g Zucker oder kristalline Süße nach Wahl (70 g)",
-    "1 TL Vanilleextrakt oder Vanillezucker (1,5 TL)",
-    "1 TL Weinsteinbackpulver ((1,5 TL)",
-    "750 g frische Süßkirschen (1 kg)",
-    "50 g Zucker oder kristalline Süße (70 g)",
-    "50 g Vanillepuddingpulver (75 g)",
-    "80 ml Milch (100 ml)",
-    "1-2 EL Optional: 1–2 EL Zitronensaft (2-3)"
-   ],
-   "schritte": 10,
-   "kategorie": "Kuchen",
-   "tags": [
-    "kalzium",
-    "eiweiss",
-    "vegetarisch"
-   ],
-   "pruefen": [
-    "250 g Butterkekse (350 g)",
-    "1 TL Weinsteinbackpulver ((1,5 TL)"
-   ],
-   "datum": "2025-07-12"
-  },
-  {
-   "id": "netz-kochtrotz-de-rezepte-couscous-salat-rezept",
-   "name": "Mein schneller Couscous-Salat – glutenfrei, vegan & perfekt zum Grillen",
-   "quelle": "Kochtrotz",
-   "url": "https://www.kochtrotz.de/rezepte/couscous-salat-rezept/",
-   "autor": "Steffi von KochTrotz",
-   "sprache": "de",
-   "minuten": 13,
-   "vorbereitung": 10,
-   "kochen": 3,
-   "portionen": "2 Portionen",
-   "zutaten": [
-    "125 g Couscous (glutenfrei möglich)",
-    "300 ml Gemüsebrühe",
-    "50 g Rosinen",
-    "1 mittelgroße Karotte",
-    "1 rote Spitzpaprika",
-    "50 g gestiftelte Mandeln",
-    "4 EL Olivenöl",
-    "2 EL weißer Balsamico (oder Verjus für histaminarm)",
-    "1 EL Honig (Ahornsirup/Reissirup für vegane Variante)",
-    "1,5 TL Ras el Hanout",
-    "½ TL Ceylon-Zimt",
-    "Salz",
-    "Pfeffer nach Geschmack (optional)"
-   ],
-   "schritte": 6,
-   "kategorie": "Beilage",
-   "tags": [
-    "ballaststoffe",
-    "vegetarisch",
-    "ohneMilch",
-    "mediterran"
-   ],
-   "pruefen": [
-    "125 g Couscous (glutenfrei möglich)",
-    "300 ml Gemüsebrühe"
-   ],
-   "datum": "2025-05-04"
   },
   {
    "id": "netz-kochtrotz-de-rezepte-erdbeer-rhabarber-marmelade-flohmelade",
@@ -1070,49 +1120,11 @@ window.ANKER_NETZREZEPTE = {
     "ohneMilch"
    ],
    "pruefen": [],
+   "packung": [
+    "500 g Früchte deiner Wahl (auch TK-Früchte)"
+   ],
+   "geprueft": true,
    "datum": "2025-04-23"
-  },
-  {
-   "id": "netz-kochtrotz-de-rezepte-karotten-pistazien-muffins-ohne-meh",
-   "name": "Karotten-Pistazien-Muffins mit Cheesecake-Füllung (ohne Mehl) – das gesunde Flexi-Rezept",
-   "quelle": "Kochtrotz",
-   "url": "https://www.kochtrotz.de/rezepte/karotten-pistazien-muffins-ohne-meh/",
-   "autor": "Steffi von KochTrotz",
-   "sprache": "de",
-   "minuten": 10,
-   "vorbereitung": 5,
-   "kochen": 5,
-   "portionen": "4 Stück",
-   "zutaten": [
-    "4 EL Hirseflocken",
-    "3 EL Pflanzenmilch (nach Wahl)",
-    "1 mittelgroße Karotte (ca. 60 g)",
-    "2 EL gemahlene Mandeln oder Mandelmehl",
-    "1 Ei Gr. M/L",
-    "1 EL EL geschmolzenes Kokosöl",
-    "1,5 EL Kokosblütenzucker (oder andere Zucker-Alternative)",
-    "¼ TL Ceylon-Zimt",
-    "1 MSP gemahlener Kardamom (optional)",
-    "½ TL Weinstein-Backpulver",
-    "1 Pr. Prise Salz",
-    "2 EÖ grob gehackte Pistazien (ungesalzen)",
-    "1,5 EL griechischer Joghurt (Fettstufe nach Wahl)",
-    "2 EL Frischkäse",
-    "1 TL Honig",
-    "1 TL Zitronensaft (optional)",
-    "Gehackte Pistazien als Topping",
-    "Spritzbeutel"
-   ],
-   "schritte": 7,
-   "kategorie": "Dessert",
-   "tags": [
-    "kalzium",
-    "vegetarisch"
-   ],
-   "pruefen": [
-    "½ TL Weinstein-Backpulver"
-   ],
-   "datum": "2025-04-15"
   }
  ]
 };
