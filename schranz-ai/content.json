@@ -5,17 +5,25 @@
     "short": "SCHRANZ AI",
     "url": "https://apschranz-star.github.io/seelischabstrakt/schranz-ai",
     "title": {
-      "en": "Schranz AI Solutions. AI that delivers.",
-      "de": "Schranz AI Solutions. KI, die liefert."
+      "en": "Schranz AI. A new era of consulting.",
+      "de": "Schranz AI. Eine neue Ära von Consulting."
     },
     "description": {
-      "en": "Diagnose. Build. Measure. EU-compliant and reliable. An AI agency in Vienna raising a pre-seed of EUR 100,000 for the first buildup.",
-      "de": "Diagnose. Bauen. Messen. EU-konform und verlässlich. Eine KI-Agentur in Wien, die 100.000 Euro Pre-Seed für den ersten Aufbau sucht."
+      "en": "Freelance AI consulting and delivery from Vienna. Diagnose, build, measure. Fixed prices, EU-compliant, a system that runs instead of slides.",
+      "de": "Freelance KI-Beratung und Umsetzung aus Wien. Diagnose, Bauen, Messen. Fixpreise, EU-konform, ein System, das läuft, statt Folien."
     },
     "deckFile": "SCHRANZ_AI_Pitchdeck_EN.pptx",
     "deckLabel": {
       "en": "Deck as PowerPoint, English",
       "de": "Deck als PowerPoint, Englisch"
+    },
+    "scaleTitle": {
+      "en": "Help us scale. Schranz AI",
+      "de": "Wachsen Sie mit. Schranz AI"
+    },
+    "scaleDescription": {
+      "en": "The raise behind Schranz AI: pre-seed EUR 100,000 for the first buildup, returns without an exit story.",
+      "de": "Die Runde hinter Schranz AI: 100.000 Euro Pre-Seed für den ersten Aufbau, Rendite ohne Exit-Märchen."
     }
   },
   "person": {
@@ -76,8 +84,8 @@
       }
     ],
     "cta": {
-      "en": "Talk to me",
-      "de": "Gespräch anfragen"
+      "en": "First call",
+      "de": "Erstgespräch"
     },
     "menu": {
       "en": "Menu",
@@ -98,33 +106,126 @@
     "skip": {
       "en": "Skip to content",
       "de": "Zum Inhalt springen"
+    },
+    "clientItems": [
+      {
+        "id": "services",
+        "label": {
+          "en": "Packages",
+          "de": "Pakete"
+        },
+        "icon": "box"
+      },
+      {
+        "id": "calc",
+        "label": {
+          "en": "Calculator",
+          "de": "Rechner"
+        },
+        "icon": "calc"
+      },
+      {
+        "id": "method",
+        "label": {
+          "en": "Method",
+          "de": "Methode"
+        },
+        "icon": "steps"
+      },
+      {
+        "id": "proof",
+        "label": {
+          "en": "Proof",
+          "de": "Belege"
+        },
+        "icon": "check"
+      },
+      {
+        "id": "contact",
+        "label": {
+          "en": "Contact",
+          "de": "Kontakt"
+        },
+        "icon": "mail"
+      }
+    ],
+    "scaleItems": [
+      {
+        "id": "market",
+        "label": {
+          "en": "Market",
+          "de": "Markt"
+        },
+        "icon": "chart"
+      },
+      {
+        "id": "numbers",
+        "label": {
+          "en": "Numbers",
+          "de": "Zahlen"
+        },
+        "icon": "calc"
+      },
+      {
+        "id": "funds",
+        "label": {
+          "en": "The raise",
+          "de": "Die Runde"
+        },
+        "icon": "pie"
+      },
+      {
+        "id": "returns",
+        "label": {
+          "en": "Returns",
+          "de": "Rendite"
+        },
+        "icon": "up"
+      },
+      {
+        "id": "ask",
+        "label": {
+          "en": "The ask",
+          "de": "Angebot"
+        },
+        "icon": "mail"
+      }
+    ],
+    "scaleCta": {
+      "en": "Talk to me",
+      "de": "Gespräch anfragen"
     }
   },
   "hero": {
     "kicker": {
-      "en": "Pre-seed, Vienna, 2026",
-      "de": "Pre-Seed, Wien, 2026"
+      "en": "Freelance AI consulting, Vienna",
+      "de": "Freelance KI-Beratung, Wien"
     },
     "title": {
+      "en": "A new era of consulting.",
+      "de": "Eine neue Ära von Consulting."
+    },
+    "lead": {
+      "en": "I find where your company loses time, build the system that wins it back, and measure it.",
+      "de": "Ich finde, wo Ihr Unternehmen Zeit verliert, baue das System, das sie zurückholt, und messe es."
+    },
+    "sub": {
+      "en": "Fixed prices. EU-compliant. Directly with me, no agency overhead.",
+      "de": "Fixpreise. EU-konform. Direkt mit mir, ohne Agentur-Overhead."
+    },
+    "primary": {
+      "en": "Book a first call",
+      "de": "Erstgespräch anfragen"
+    },
+    "secondary": {
+      "en": "See the packages",
+      "de": "Pakete ansehen"
+    },
+    "tagline": {
       "en": "AI that delivers.",
       "de": "KI, die liefert."
     },
-    "lead": {
-      "en": "Diagnose. Build. Measure. EU-compliant and reliable.",
-      "de": "Diagnose. Bauen. Messen. EU-konform und verlässlich."
-    },
-    "sub": {
-      "en": "Pre-seed EUR 100,000 for the first buildup. Built for generations.",
-      "de": "100.000 Euro Pre-Seed für den ersten Aufbau. Gebaut für Generationen."
-    },
-    "primary": {
-      "en": "Read the case",
-      "de": "Den Fall lesen"
-    },
-    "secondary": {
-      "en": "Go to the ask",
-      "de": "Zum Angebot"
-    }
+    "domain": "schranz.ai"
   },
   "thesis": {
     "lines": [
@@ -1096,8 +1197,8 @@
       "de": "Nach oben"
     },
     "note": {
-      "en": "This page is the pitch deck of September 2026 as a website. Figures are as of that date.",
-      "de": "Diese Seite ist das Pitchdeck vom September 2026 als Website. Zahlen mit Stand von damals."
+      "en": "Prices and figures from the pitch deck of September 2026.",
+      "de": "Preise und Zahlen aus dem Pitchdeck vom September 2026."
     }
   },
   "legal": {
@@ -1131,8 +1232,8 @@
       },
       "paragraphs": [
         {
-          "en": "This page is a pitch deck. It sets no cookies, it measures nothing, it shows no advertising and it embeds no social network. The controller of the processing is the person named below. Postal address and phone number are in the imprint.",
-          "de": "Diese Seite ist ein Pitchdeck. Sie setzt keine Cookies, sie misst nichts, sie zeigt keine Werbung und bindet kein soziales Netzwerk ein. Verantwortlich für die Verarbeitung ist die unten genannte Person. Anschrift und Telefonnummer stehen im Impressum."
+          "en": "This page presents freelance services and the plan behind them. It sets no cookies, measures nothing, shows no ads and embeds no social network. The controller is the person named below. Address and phone number are in the imprint.",
+          "de": "Diese Seite stellt freiberufliche Leistungen und das Vorhaben dahinter vor. Sie setzt keine Cookies, sie misst nichts, sie zeigt keine Werbung und bindet kein soziales Netzwerk ein. Verantwortlich für die Verarbeitung ist die unten genannte Person. Anschrift und Telefonnummer stehen im Impressum."
         },
         {
           "en": "The preview is hosted on GitHub Pages (GitHub Inc., USA). If the page is later published under its own address, it is hosted on Netlify (Netlify, Inc., USA). On every request the host logs server data, among them your IP address. The purpose is to deliver the page and to detect faults. Legal basis is the legitimate interest in a secure operation (Art. 6 para. 1 lit. f GDPR). The host processes these data on our behalf. The contract for that under Art. 28 GDPR is not in place yet; both providers offer one in their terms, and it has to be accepted before a public launch. How long the host keeps these logs is set by the host, and its own privacy statement applies to that.",
@@ -1143,8 +1244,8 @@
           "de": "GitHub und Netlify sind Unternehmen in den USA. Diese Serverdaten können deshalb in ein Drittland gelangen. Die Grundlage dieses Transfers wird vor der Veröffentlichung geprüft und hier eingetragen: [Grundlage des Drittlandtransfers]."
         },
         {
-          "en": "The page uses only the system fonts of your device. No font file is loaded, neither from Google nor from anywhere else. No request and no IP address goes to a third party for fonts.",
-          "de": "Die Seite benutzt ausschließlich die Systemschriften deines Geräts. Es wird keine Schriftdatei nachgeladen, weder von Google noch von sonst jemandem. Dabei geht keine Anfrage und keine IP-Adresse an einen Dritten."
+          "en": "Headings use the font Bricolage Grotesque, the rest uses the system fonts of your device. The font file lies at the same address as the page and is loaded from there, not from Google or anyone else. No request and no IP address goes to a third party. The calculator runs entirely in your browser: what you set there is neither sent nor stored.",
+          "de": "Überschriften verwenden die Schrift Bricolage Grotesque, der Rest die Systemschriften deines Geräts. Die Schriftdatei liegt auf derselben Adresse wie die Seite und wird von dort geladen, nicht von Google oder sonst jemandem. Dabei geht keine Anfrage und keine IP-Adresse an einen Dritten. Der Rechner läuft vollständig in deinem Browser: Was du dort einstellst, wird weder gesendet noch gespeichert."
         },
         {
           "en": "The page keeps one value in your browser storage: sa-access remembers the access code you entered, so you do not have to type it again on every visit. The value stays on your device and is never sent to a server. The language you read in is not stored, it is part of the page address.",
@@ -1175,14 +1276,270 @@
           "de": "Du musst keine Daten angeben. Die Serverdaten fallen bei jedem Aufruf technisch an. Eine E-Mail ist freiwillig. Es gibt keine automatisierte Entscheidungsfindung und kein Profiling."
         },
         {
-          "en": "This text describes the state of 18 September 2026. It is a draft and is reviewed by a lawyer before a public launch. Values in square brackets are placeholders.",
-          "de": "Dieser Text beschreibt den Stand vom 18. September 2026. Er ist ein Entwurf und wird vor einem öffentlichen Start anwaltlich geprüft. Werte in eckigen Klammern sind Platzhalter."
+          "en": "This text describes the state of 9 October 2026. It is a draft and is reviewed by a lawyer before a public launch. Values in square brackets are placeholders.",
+          "de": "Dieser Text beschreibt den Stand vom 9. Oktober 2026. Er ist ein Entwurf und wird vor einem öffentlichen Start anwaltlich geprüft. Werte in eckigen Klammern sind Platzhalter."
         }
       ],
       "controller": {
         "en": "Controller",
         "de": "Verantwortlicher"
       }
+    }
+  },
+  "marquee": {
+    "items": [
+      {
+        "en": "Diagnose",
+        "de": "Diagnose"
+      },
+      {
+        "en": "Build",
+        "de": "Bauen"
+      },
+      {
+        "en": "Measure",
+        "de": "Messen"
+      },
+      {
+        "en": "Fixed prices",
+        "de": "Fixpreise"
+      },
+      {
+        "en": "EU-compliant",
+        "de": "EU-konform"
+      },
+      {
+        "en": "GDPR",
+        "de": "DSGVO"
+      },
+      {
+        "en": "AI Act",
+        "de": "AI Act"
+      },
+      {
+        "en": "3 systems in production",
+        "de": "3 Systeme im Betrieb"
+      },
+      {
+        "en": "Vienna",
+        "de": "Wien"
+      }
+    ]
+  },
+  "rail": {
+    "prev": {
+      "en": "Previous",
+      "de": "Zurück"
+    },
+    "next": {
+      "en": "Next",
+      "de": "Weiter"
+    },
+    "hint": {
+      "en": "Swipe or drag",
+      "de": "Wischen oder ziehen"
+    }
+  },
+  "riders": {
+    "clients": {
+      "en": "For clients",
+      "de": "Für Kunden"
+    },
+    "scale": {
+      "en": "Get involved",
+      "de": "Mitmachen"
+    },
+    "aria": {
+      "en": "Which part of the site",
+      "de": "Welcher Teil der Seite"
+    }
+  },
+  "services": {
+    "kicker": {
+      "en": "Services",
+      "de": "Leistungen"
+    },
+    "title": {
+      "en": "Three packages. Fixed price. A system that runs.",
+      "de": "Drei Pakete. Fixpreis. Ein System, das läuft."
+    },
+    "sub": {
+      "en": "Pick the entry point. Each package covers steps of the method, nothing is billed that brings nothing.",
+      "de": "Sie wählen den Einstieg. Jedes Paket deckt Schritte der Methode ab, was nichts bringt, wird nicht verrechnet."
+    },
+    "pick": {
+      "en": "Pick a package",
+      "de": "Paket wählen"
+    },
+    "stepsLabel": {
+      "en": "Steps of the method",
+      "de": "Schritte der Methode"
+    },
+    "cta": {
+      "en": "Ask about this package",
+      "de": "Zu diesem Paket anfragen"
+    },
+    "items": [
+      {
+        "price": 0,
+        "steps": [
+          0,
+          1
+        ],
+        "text": {
+          "en": "I map your processes per department and back every weak spot with real data. You get a list of what is worth automating, and what is not.",
+          "de": "Ich nehme Ihre Prozesse je Abteilung auf und belege jede Schwachstelle mit echten Daten. Sie bekommen eine Liste, was sich zu automatisieren lohnt, und was nicht."
+        },
+        "result": {
+          "en": "Outcome: a diagnosis with numbers",
+          "de": "Ergebnis: eine Diagnose mit Zahlen"
+        }
+      },
+      {
+        "price": 1,
+        "steps": [
+          2,
+          3
+        ],
+        "text": {
+          "en": "I build the system that closes the biggest gap, test it against acceptance criteria and measure working time before and after.",
+          "de": "Ich baue das System, das die größte Lücke schließt, teste es gegen Abnahmekriterien und messe die Arbeitszeit vorher und nachher."
+        },
+        "result": {
+          "en": "Outcome: a running system, measured",
+          "de": "Ergebnis: ein laufendes System, gemessen"
+        }
+      },
+      {
+        "price": 2,
+        "steps": [
+          4
+        ],
+        "text": {
+          "en": "I keep the system compliant, develop it further and train your team. Documentation and handover without lock-in.",
+          "de": "Ich halte das System rechtssicher, entwickle es weiter und schule Ihr Team. Dokumentation und Übergabe ohne Abhängigkeit."
+        },
+        "result": {
+          "en": "Outcome: operation and further development",
+          "de": "Ergebnis: Betrieb und Weiterentwicklung"
+        }
+      }
+    ]
+  },
+  "calc": {
+    "kicker": {
+      "en": "Calculator",
+      "de": "Rechner"
+    },
+    "title": {
+      "en": "What does manual work cost you?",
+      "de": "Was kostet Sie Handarbeit?"
+    },
+    "sub": {
+      "en": "Move the sliders to your situation. The maths runs in your browser, nothing is sent or stored.",
+      "de": "Schieben Sie die Regler auf Ihre Lage. Gerechnet wird in Ihrem Browser, nichts wird gesendet oder gespeichert."
+    },
+    "hours": {
+      "en": "Hours per week of repetitive work, per person",
+      "de": "Stunden pro Woche wiederkehrende Arbeit, je Person"
+    },
+    "people": {
+      "en": "People doing it",
+      "de": "Personen, die das tun"
+    },
+    "rate": {
+      "en": "Internal cost per hour",
+      "de": "Interne Kosten je Stunde"
+    },
+    "share": {
+      "en": "Share a system could take over",
+      "de": "Anteil, den ein System übernehmen könnte"
+    },
+    "outHours": {
+      "en": "hours of manual work per year",
+      "de": "Stunden Handarbeit im Jahr"
+    },
+    "outCost": {
+      "en": "cost of that work per year",
+      "de": "kostet diese Arbeit im Jahr"
+    },
+    "outSave": {
+      "en": "possible saving per year",
+      "de": "mögliche Einsparung im Jahr"
+    },
+    "outPayback": {
+      "en": "A Build Sprint at EUR 18,000-28,000 would pay for itself after",
+      "de": "Ein Build Sprint zu 18.000 bis 28.000 Euro hätte sich bezahlt gemacht nach"
+    },
+    "months": {
+      "en": "months",
+      "de": "Monaten"
+    },
+    "none": {
+      "en": "Move the sliders, then the payback appears here.",
+      "de": "Schieben Sie die Regler, dann steht hier die Amortisation."
+    },
+    "note": {
+      "en": "Your assumptions, not a promise. Calculated with 46 working weeks a year. What is really in it, the audit shows with measured numbers.",
+      "de": "Ihre Annahmen, keine Zusage. Gerechnet mit 46 Arbeitswochen im Jahr. Was wirklich drin ist, zeigt das Audit mit gemessenen Zahlen."
+    },
+    "noscript": {
+      "en": "The calculator needs JavaScript. Without it: hours per week times people times 46 weeks times cost per hour.",
+      "de": "Der Rechner braucht JavaScript. Ohne: Stunden pro Woche mal Personen mal 46 Wochen mal Kosten je Stunde."
+    },
+    "cta": {
+      "en": "Check it with real numbers",
+      "de": "Mit echten Zahlen prüfen lassen"
+    }
+  },
+  "clientContact": {
+    "title": {
+      "en": "First call.",
+      "de": "Erstgespräch."
+    },
+    "text": {
+      "en": "Thirty minutes, and you know whether an audit is worth it for you.",
+      "de": "Dreißig Minuten, und Sie wissen, ob sich ein Audit für Sie lohnt."
+    }
+  },
+  "scaleTeaser": {
+    "kicker": {
+      "en": "For investors and partners",
+      "de": "Für Investoren und Partner"
+    },
+    "title": {
+      "en": "Help us scale.",
+      "de": "Wachsen Sie mit."
+    },
+    "text": {
+      "en": "The consulting carries itself. With capital, contacts and sparring it grows faster: a second industry, the first product module, the first hire.",
+      "de": "Die Beratung trägt sich. Mit Kapital, Kontakten und Sparring wächst sie schneller: eine zweite Branche, das erste Produktmodul, die erste Anstellung."
+    },
+    "btn": {
+      "en": "Get involved",
+      "de": "Mitmachen"
+    }
+  },
+  "scaleHero": {
+    "kicker": {
+      "en": "Get involved, pre-seed 2026",
+      "de": "Mitmachen, Pre-Seed 2026"
+    },
+    "title": {
+      "en": "Help us scale.",
+      "de": "Wachsen Sie mit."
+    },
+    "lead": {
+      "en": "Pre-seed EUR 100,000 for the first buildup. Built for generations.",
+      "de": "100.000 Euro Pre-Seed für den ersten Aufbau. Gebaut für Generationen."
+    },
+    "primary": {
+      "en": "See the round",
+      "de": "Zur Runde"
+    },
+    "secondary": {
+      "en": "Go to the ask",
+      "de": "Zum Angebot"
     }
   }
 }

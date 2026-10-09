@@ -1,13 +1,39 @@
-# SCHRANZ AI SOLUTIONS, the pitch deck as a website
+# SCHRANZ AI SOLUTIONS, freelance AI consulting, and the raise behind it
+
+Two riders, one site, switched at the top like tabs:
+
+    Für Kunden / For clients     /            /en/          packages, calculator, method, proof, industries, first call
+    Mitmachen / Get involved     /mitmachen/  /en/scale/    market, numbers, value, horizon, the raise, returns, the ask
 
 German at `/`, English at `/en/`. Built from one file, `content.json`, by `build.mjs`. No dependencies, no framework, no tracking.
 
     content.json     every text in both languages, every number from the deck
     styles.css       the look, inlined into each page at build time
-    site.js          the motion: reveals, counters, the funds bar, the live method step, the menu
+    site.js          the motion: reveals, word-by-word headings, counters, the funds bar, the method line, card rails, pointer light, scroll progress, the menu
     build.mjs        turns content.json into dist/ (DE, EN, imprint, privacy, 404, sitemap, robots)
     netlify.toml     Netlify settings if the site gets its own domain
     SCHRANZ_AI_Pitchdeck_EN.pptx   the original deck, offered as a download in the footer
+
+## The look
+
+Since October 2026 in the direction of Anker: headings in Bricolage Grotesque
+(self-hosted, copied from `../anker/fonts` at build time), neon lime for
+everything you can press or move, a segmented rider switch in the header and a
+tab bar at the bottom on phones and tablets. Interactive parts: a package
+switch (Audit, Build Sprint, Retainer) that lights the steps of the method each
+package covers, a calculator with four sliders (hours per week, people, cost
+per hour, share a system could take over; 46 working weeks a year; payback
+against the Build Sprint price from the deck), and an industry switch. The
+calculator runs in the browser and sends or stores nothing.
+
+Dark first and cinematic, on top of the original: same system type, same type
+scale, same blue, same sections. Added: an aurora and a receding light floor in
+the hero, an orbit of the three method steps (Diagnose, Bauen, Messen) on wide
+screens, a ticker of points under the hero, glass cards with light that follows
+the pointer, rails of cards that slide sideways (difference, proof, fields) with
+buttons, drag and a progress line, a line of light down the method steps, and a
+contact card with a travelling border. Everything moving respects reduced motion,
+and the page reads completely without JavaScript.
 
 ## Change something
 
