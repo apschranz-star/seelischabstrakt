@@ -1,4 +1,9 @@
-# SCHRANZ AI SOLUTIONS, the pitch deck as a website
+# SCHRANZ AI SOLUTIONS, freelance AI consulting, and the raise behind it
+
+Two riders, one site, switched at the top like tabs:
+
+    Für Kunden / For clients     /            /en/          packages, calculator, method, proof, industries, first call
+    Mitmachen / Get involved     /mitmachen/  /en/scale/    market, numbers, value, horizon, the raise, returns, the ask
 
 German at `/`, English at `/en/`. Built from one file, `content.json`, by `build.mjs`. No dependencies, no framework, no tracking.
 
@@ -10,6 +15,16 @@ German at `/`, English at `/en/`. Built from one file, `content.json`, by `build
     SCHRANZ_AI_Pitchdeck_EN.pptx   the original deck, offered as a download in the footer
 
 ## The look
+
+Since October 2026 in the direction of Anker: headings in Bricolage Grotesque
+(self-hosted, copied from `../anker/fonts` at build time), neon lime for
+everything you can press or move, a segmented rider switch in the header and a
+tab bar at the bottom on phones and tablets. Interactive parts: a package
+switch (Audit, Build Sprint, Retainer) that lights the steps of the method each
+package covers, a calculator with four sliders (hours per week, people, cost
+per hour, share a system could take over; 46 working weeks a year; payback
+against the Build Sprint price from the deck), and an industry switch. The
+calculator runs in the browser and sends or stores nothing.
 
 Dark first and cinematic, on top of the original: same system type, same type
 scale, same blue, same sections. Added: an aurora and a receding light floor in

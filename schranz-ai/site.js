@@ -151,9 +151,9 @@
     pick();
   }
 
-  /* Header: the current section in the menu, and the mobile drawer. */
+  /* Header and tab bar: the current section lights up in both. */
   var nav = doc.querySelector(".nav");
-  var links = Array.prototype.slice.call(doc.querySelectorAll(".nav-links a[href^='#']"));
+  var links = Array.prototype.slice.call(doc.querySelectorAll(".nav-links a[href^='#'], .tabbar a[href^='#']"));
   var sections = links.map(function (a) { return doc.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
   if (sections.length && "IntersectionObserver" in window) {
     var current = null;
@@ -286,6 +286,81 @@
     }
     update();
   });
+
+  /* Segments: one choice out of a few, one panel at a time. Without
+     JavaScript every panel stands open below the buttons. */
+  doc.querySelectorAll(".seg").forEach(function (seg) {
+    var btns = Array.prototype.slice.call(seg.querySelectorAll("[data-seg]"));
+    var box = seg.nextElementSibling;
+    if (!box) return;
+    var panels = Array.prototype.slice.call(box.querySelectorAll("[data-seg-panel]"));
+    var show = function (k, focus) {
+      btns.forEach(function (b) {
+        var on = b.getAttribute("data-seg") === k;
+        b.setAttribute("aria-selected", on ? "true" : "false");
+        b.tabIndex = on ? 0 : -1;
+        if (on && focus) b.focus();
+      });
+      panels.forEach(function (p) { p.classList.toggle("active", p.getAttribute("data-seg-panel") === k); });
+    };
+    btns.forEach(function (b, i) {
+      b.addEventListener("click", function () { show(b.getAttribute("data-seg"), false); });
+      b.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var n = btns[(i + d + btns.length) % btns.length];
+        show(n.getAttribute("data-seg"), true);
+      });
+    });
+    var start = btns.filter(function (b) { return b.getAttribute("aria-selected") === "true"; })[0] || btns[0];
+    if (start) show(start.getAttribute("data-seg"), false);
+  });
+
+  /* The calculator. Everything stays on this page: no request, no storage. */
+  var calc = doc.querySelector(".calc");
+  if (calc) {
+    var de = calc.getAttribute("data-lang") === "de";
+    var nf = function (n) {
+      try { return new Intl.NumberFormat(de ? "de-DE" : "en-GB", { maximumFractionDigits: 0 }).format(n); }
+      catch (e) { return String(Math.round(n)); }
+    };
+    var euro = function (n) { return de ? nf(n) + " €" : "€" + nf(n); };
+    var weeks = Number(calc.getAttribute("data-weeks")) || 46;
+    var low = Number(calc.getAttribute("data-price-low"));
+    var high = Number(calc.getAttribute("data-price-high"));
+    var inputs = {};
+    calc.querySelectorAll(".regler").forEach(function (r) {
+      var inp = r.querySelector("input");
+      var out = r.querySelector("output");
+      inputs[r.getAttribute("data-key")] = inp;
+      var paint = function () {
+        var p = (inp.value - inp.min) / (inp.max - inp.min) * 100;
+        r.style.setProperty("--p", p + "%");
+        out.textContent = (r.getAttribute("data-key") === "rate" ? (de ? inp.value + " €" : "€" + inp.value) : inp.value + out.getAttribute("data-unit"));
+      };
+      inp.addEventListener("input", function () { paint(); run(); });
+      paint();
+    });
+    var o = function (k) { return calc.querySelector('[data-out="' + k + '"]'); };
+    var run = function () {
+      var h = Number(inputs.hours.value) * Number(inputs.people.value) * weeks;
+      var cost = h * Number(inputs.rate.value);
+      var save = cost * Number(inputs.share.value) / 100;
+      o("hours").textContent = nf(h) + " h";
+      o("cost").textContent = euro(cost);
+      o("save").textContent = euro(save);
+      var pay = o("payback");
+      if (save > 0) {
+        var a = Math.max(1, Math.ceil(low / (save / 12)));
+        var b = Math.max(1, Math.ceil(high / (save / 12)));
+        pay.textContent = (a === b ? a : a + (de ? " bis " : " to ") + b) + " " + pay.getAttribute("data-months");
+      } else {
+        pay.textContent = pay.getAttribute("data-none");
+      }
+    };
+    run();
+  }
 
   /* Copy the email address. */
   var copy = doc.querySelector("[data-copy]");
