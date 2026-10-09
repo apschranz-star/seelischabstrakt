@@ -23,13 +23,13 @@
  * gehoeren der Seite, und die App laedt nichts von fremden Adressen.
  *
  * GLUTEN
- * Glutenfrei heisst hier dreierlei: die Quelle ist eine glutenfreie Seite oder
- * markiert das Rezept ausdruecklich (suitableForDiet GlutenFreeDiet, Kategorie
- * glutenfrei), keine Zutat steht auf der Sperrliste, und Zutaten, die nur mit
- * dem Zusatz glutenfrei sicher sind (Mehl, Hafer, Brot, Nudeln ...), tragen
- * diesen Zusatz. Fehlt er, kommt das Rezept mit einem sichtbaren Hinweis in die
- * App, welche Zutat zu pruefen ist. Eine Garantie ist das nicht; die App sagt
- * das bei jedem Rezept aus dem Netz.
+ * Zweifach: die Quelle ist eine glutenfreie Seite oder markiert das Rezept
+ * ausdruecklich (suitableForDiet GlutenFreeDiet, Kategorie glutenfrei), und
+ * jede einzelne Zutatenzeile besteht glutenpruefung.js: gesperrt, nur mit
+ * Zusatz, Packungsware oder auf der Positivliste. Eine Zeile, die die Pruefung
+ * nicht kennt, verwirft das ganze Rezept. Packungsware steht beim Rezept als
+ * Einkaufsliste: nur mit Aufschrift glutenfrei kaufen. Eine Laboranalyse ist
+ * das nicht; die App sagt das bei jedem Rezept aus dem Netz.
  */
 const fs = require("fs");
 const path = require("path");
@@ -173,46 +173,10 @@ function schritteZaehlen(ins) {
 
 /* --------------------------------------------------------------- Gluten */
 
-/* Zutaten, die nie glutenfrei sind. */
-const GESPERRT = [
-  /\b(wheat|barley|rye|spelt|farro|kamut|bulgur|couscous|semolina|seitan|triticale|einkorn|emmer)\b/i,
-  /\bmalt(ed)?\b/i, /\bbrewer'?s yeast\b/i, /\b(beer|ale|lager)\b/i,
-  /* Deutsch setzt Woerter zusammen: Hartweizengriess, Vollkorndinkel,
-     Gerstenmalz. Deshalb ohne Wortgrenze vorne. */
-  /(weizen|dinkel|roggen|gerste|gerstenmalz|malzextrakt|gr(ü|ue)nkern|bulgur|couscous|seitan|einkorn|\bemmer\b|\bbier\b|\bmalz\b)/i,
-];
-/* Zutaten, die es glutenfrei gibt, aber nur mit diesem Zusatz. Bruehen und
-   Bruehwuerfel gehoeren dazu: viele enthalten Weizen oder Gerstenmalz. Auch
-   Backpulver, in Oesterreich und Deutschland teils mit Weizenstaerke. */
-const NUR_MIT_ZUSATZ = [
-  /\b(flour|bread|breadcrumbs?|panko|pasta|noodles?|spaghetti|macaroni|tortillas?|crackers?|oats?|oatmeal|granola|soy sauce|baking powder|cookies?|pretzels?|cereal|graham|stock|broth|bouillon|worcestershire|miso)\b/i,
-  /* Ebenso: Butterkekse, Semmelbroesel, Vollkornnudeln, Haferdrink. */
-  /(mehl|brot|br(ö|oe)sel|nudeln|spaghetti|pasta|tortilla|hafer|sojasauce|sojaso(ss|ß)e|backpulver|keks|zwieback|br(ü|ue)he|bouillon|\bfond\b|suppenw(ü|ue)rfel|worcester|miso|bl(ä|ae)tterteig|m(ü|ue)rbeteig|lasagne|gnocchi|schupfnudel|knödel|knoedel|panier)/i,
-];
-const ZUSATZ = /gluten[\s-]?free|\bgf\b|glutenfrei|certified|zertifiziert|tamari|rice flour|reismehl|almond flour|mandelmehl|coconut flour|kokosmehl|buckwheat|buchweizen|cassava|maniok|tapioca|tapioka|chickpea flour|kichererbsenmehl|corn ?(flour|starch|meal)|maismehl|maisst(ä|ae)rke|potato starch|kartoffelst(ä|ae)rke|arrowroot|sorghum|millet|hirse|teff|quinoa|amaranth|rice noodles|reisnudeln|rice paper|reispapier|oat[\s-]?free|nut flour|cashew/i;
-/* Kokosmilch, Buchweizen und Co. sind keine Getreidefallen. */
-const HARMLOS = /buckwheat|buchweizen|coconut|kokos|cream of tartar|weinstein(?!-?backpulver)|rice malt|eggplant|johannisbrotkern|guarkern|flohsamen|locust bean|psyllium/i;
-
-/* "Couscous (glutenfrei moeglich)" heisst: normaler Couscous, ausser man
-   kauft den anderen. Ein glutenfrei mit so einem Zusatz ist kein Freibrief,
-   sondern ein Fall fuer den Hinweis. */
-const WEICH = /(gluten[\s-]?free|glutenfrei)\w*\s*(m(ö|oe)glich|as needed|if needed|if necessary|if desired|optional|bei bedarf|nach wahl|wenn n(ö|oe)tig)|(as needed|if needed|if necessary|optional|bei bedarf|nach wahl)\W+(\w+\W+){0,3}(gluten[\s-]?free|glutenfrei)/i;
-
-function glutenPruefen(zutaten) {
-  const hinweise = [];
-  for (const z of zutaten) {
-    if (HARMLOS.test(z) && !/(wheat|weizen)/i.test(z)) continue;
-    const gf = /gluten[\s-]?free|glutenfrei/i.test(z);
-    const weich = WEICH.test(z);
-    if (GESPERRT.some((re) => re.test(z))) {
-      if (!gf) return { ok: false, grund: z };
-      if (weich) hinweise.push(z);
-      continue;
-    }
-    if (NUR_MIT_ZUSATZ.some((re) => re.test(z)) && (!ZUSATZ.test(z) || weich)) hinweise.push(z);
-  }
-  return { ok: true, hinweise };
-}
+/* Die Pruefung steht in glutenpruefung.js, damit pruefe-module.js dieselbe
+   Pruefung noch einmal ueber die fertige Datei laufen lassen kann. Jede
+   Zutatenzeile muss bestaetigt sein, sonst kommt das Rezept nicht hinein. */
+const { glutenPruefen } = require("./glutenpruefung.js");
 
 /* ------------------------------------------------------------- Merkmale */
 
@@ -266,7 +230,7 @@ function merkmale(zutaten, kategorien) {
         const markiert = q.alles || /GlutenFreeDiet/i.test(diaet) || e.kategorien.some((k) => KATEGORIE_GF.test(k));
         if (!markiert) continue;
         const g = glutenPruefen(zutaten);
-        if (!g.ok) { verworfen++; console.log(`  verworfen (${g.grund}): ${klar(r.name)}`); continue; }
+        if (!g.ok) { verworfen++; console.log(`  verworfen (${g.grund}): ${klar(r.name)} :: ${g.zeile}`); continue; }
         const url = /^https:\/\//.test(r.url || "") ? r.url : e.link;
         const autor = klar([].concat(r.author || []).map((a) => (typeof a === "string" ? a : a && a.name)).filter(Boolean)[0] || "");
         const gesamt = minuten(r.totalTime) || ((minuten(r.prepTime) || 0) + (minuten(r.cookTime) || 0)) || null;
@@ -288,7 +252,11 @@ function merkmale(zutaten, kategorien) {
           schritte: schritteZaehlen(r.recipeInstructions),
           kategorie: klar([].concat(r.recipeCategory || [])[0] || "").slice(0, 40),
           tags: merkmale(zutaten, e.kategorien),
-          pruefen: g.hinweise.slice(0, 5),
+          /* Nichts mehr "bitte pruefen": was nicht bestaetigt ist, ist nicht
+             hier. Packung ist die Einkaufsliste mit Aufschrift glutenfrei. */
+          pruefen: [],
+          packung: g.packung.slice(0, 12),
+          geprueft: true,
           datum: (r.datePublished || e.datum ? new Date(r.datePublished || e.datum).toISOString().slice(0, 10) : ""),
         });
         n++;
