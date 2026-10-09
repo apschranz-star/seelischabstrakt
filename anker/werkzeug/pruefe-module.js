@@ -28,6 +28,7 @@ const de = laden("inhalt-de.js").INHALT.de;
 const { ANKER_MODULE: MODULE, ANKER_GRUND: GRUND } = laden("module.js");
 const { ANKER_REZEPTE: REZ } = laden("rezepte.js");
 
+const { glutenPruefen } = require("./glutenpruefung.js");
 const fehler = [];
 const zwei = (o, wo) => {
   if (!o || typeof o !== "object") return fehler.push(`${wo}: kein Text`);
@@ -176,6 +177,13 @@ if (netz) {
     if (!r.name || !Array.isArray(r.zutaten) || r.zutaten.length < 2) fehler.push(`${w}: Name oder Zutaten fehlen`);
     if (!Array.isArray(r.tags) || r.tags.some((t) => !TAGS.includes(t))) fehler.push(`${w}: unbekanntes Merkmal`);
     if (!Array.isArray(r.pruefen)) fehler.push(`${w}: pruefen fehlt`);
+    /* Zweite Sicherung: jedes Rezept noch einmal durch dieselbe strenge
+       Glutenpruefung. Wer die Datei von Hand aendert oder die Pruefung
+       verschaerft, merkt es hier. */
+    const g = glutenPruefen(r.zutaten || []);
+    if (!g.ok) fehler.push(`${w}: besteht die Glutenpruefung nicht (${g.grund}: ${String(g.zeile).slice(0, 60)})`);
+    if (r.pruefen && r.pruefen.length) fehler.push(`${w}: hat offene Pruefhinweise, die strenge Pruefung laesst keine zu`);
+    if (!Array.isArray(r.packung)) fehler.push(`${w}: packung fehlt`);
   });
 }
 

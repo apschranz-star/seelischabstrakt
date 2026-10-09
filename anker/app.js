@@ -103,6 +103,7 @@
     try {
       localStorage.setItem(SCHLUESSEL, JSON.stringify(D));
       speicherFehlt = false;
+      fortschrittZeichnen();
     } catch (e) {
       speicherFehlt = true;
       melden(T("Konnte nicht speichern. Ist der Speicher voll oder gesperrt?"));
@@ -186,7 +187,9 @@
    */
   const LEISTE = [
     ["heute", () => T("Heute")],
-    ["verlauf", () => T("Verlauf")],
+    ["verlauf", () => T("Journal")],
+    /* In der Leiste ist der Platz knapp; "Appointments" passt nicht. */
+    ["termine", () => (L === "de" ? T("Termine") : T("Termine (Leiste)"))],
     ["essen", () => T("Essen")],
     ["wissen", () => T("Wissen")],
     ["mehr", () => T("Mappe")],
@@ -445,7 +448,7 @@ function LOKAL() {
    */
   const SEITEN = {
     heute: { titel: () => T("Heute"), bauen: seiteHeute },
-    verlauf: { titel: () => T("Verlauf"), bauen: seiteVerlauf },
+    verlauf: { titel: () => T("Journal"), bauen: seiteVerlauf },
     essen: { titel: () => T("Essen"), bauen: seiteEssen },
     wissen: { titel: () => T("Wissen"), bauen: seiteWissen },
     mehr: { titel: () => T("Mappe"), bauen: seiteMehr },
@@ -453,7 +456,7 @@ function LOKAL() {
     gemerkt: { titel: () => T("Gemerkt"), bauen: seiteGemerkt, eltern: "mehr" },
     medikamente: { titel: () => T("Medikamente"), bauen: seiteMedikamente, eltern: "mehr" },
     werte: { titel: () => T("Laborwerte"), bauen: seiteWerte, eltern: "mehr" },
-    termine: { titel: () => T("Termine"), bauen: seiteTermine, eltern: "mehr" },
+    termine: { titel: () => T("Termine"), bauen: seiteTermine },
     stellen: { titel: () => T("Anlaufstellen"), bauen: seiteStellen, eltern: "mehr" },
     suchen: { titel: () => T("Eine Stelle finden"), bauen: seiteSuchen, eltern: "stellen" },
     erstgespraech: { titel: () => T("Beim ersten Mal"), bauen: seiteErstgespraech, eltern: "stellen" },
@@ -467,7 +470,10 @@ function LOKAL() {
     return SEITEN[h] ? h : "heute";
   }
 
-  function zeichnen() {
+  function zeichnen(wie) {
+    /* Umschalten innerhalb einer Seite (Monat, Zeitraum, Filter) baut die
+       Seite neu, soll aber nicht nach oben springen. */
+    const halten = wie && wie.halten ? window.scrollY : null;
     /* Beim ersten Start, oder nach "Alles loeschen", gibt es noch keine
        Erkrankung. Dann ist die Wahl die einzige Seite, die Sinn ergibt. */
     let name = route();
@@ -486,10 +492,10 @@ function LOKAL() {
       if (a.dataset.tab === aktiv) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
-    window.scrollTo(0, 0);
+    window.scrollTo(0, halten == null ? 0 : halten);
   }
 
-  window.addEventListener("hashchange", zeichnen);
+  window.addEventListener("hashchange", () => zeichnen());
 
   /* ------------------------------------------------------------- Bausteine */
 
@@ -636,6 +642,7 @@ function LOKAL() {
     }
 
     erinnerungSicherung(ziel);
+    wochenStreifen(ziel, iso);
     if (!nachtragTag) demnaechst(ziel);
 
     /* Das Wichtigste zuerst, gross und mit dem Daumen erreichbar: eine Zahl
@@ -659,9 +666,15 @@ function LOKAL() {
     }));
     ziel.appendChild(k1);
 
-    /* Die eine Frage je Erkrankung: Gluten, Sonne, Tablette, Stuhlgang. */
+    /* Die eine Frage je Erkrankung: Gluten, Sonne, Tablette, Stuhlgang. Alle
+       in einer Karte, je eine Zeile, damit der Tag nicht in Karten zerfaellt. */
+    const fragenKarte = checksAktiv().length
+      ? karte(`<p class="kicker">${esc(T("Kurz gefragt"))}</p><h2 class="h2">${esc(TP("{n} Frage fuer heute", "{n} Fragen fuer heute", checksAktiv().length))}</h2>`)
+      : null;
     checksAktiv().forEach((c) => {
-      const k = karte(`<p class="kicker"><i class="modul-punkt"></i>${esc(MT(c.modul.kurz))}</p><h2 class="h2">${esc(MT(c.frage))}</h2>`);
+      const k = document.createElement("div");
+      k.className = "frage-zeile";
+      k.innerHTML = `<p class="frage-titel"><i class="modul-punkt"></i>${esc(MT(c.frage))}<small>${esc(MT(c.modul.kurz))}</small></p>`;
       k.style.setProperty("--punkt", c.farbe);
       const box = schalterListe(k, {
         einzeln: true,
@@ -676,8 +689,9 @@ function LOKAL() {
       });
       box.classList.add("segment");
       box.querySelectorAll("button").forEach((b, i) => { b.dataset.ton = c.optionen[i].ton; });
-      ziel.appendChild(k);
+      fragenKarte.appendChild(k);
     });
+    if (fragenKarte) ziel.appendChild(fragenKarte);
 
     /* Schlaf */
     const k2 = karte(`<p class="kicker">${esc(T("Nacht"))}</p><h2 class="h2">${esc(T("Schlaf"))}</h2>`);
@@ -758,12 +772,14 @@ function LOKAL() {
     }
 
     /* Notiz */
-    const k7 = karte(`<p class="kicker">${esc(T("In eigenen Worten"))}</p><h2 class="h2">${esc(T("Notiz"))}</h2>`);
-    feld(k7, {
-      label: T("Was sonst noch war"), mehrzeilig: true, wert: e.notiz,
-      platzhalter: T("Ein Satz reicht."),
-      beiAenderung: (v) => { tag(iso).notiz = v || null; sichern(); },
+    const k7 = karte(`<p class="kicker">${esc(T("In eigenen Worten"))}</p><h2 class="h2">${esc(T("Journal"))}</h2>`);
+    k7.classList.add("journal-karte");
+    const ta = feld(k7, {
+      label: T("Was heute war"), mehrzeilig: true, wert: e.notiz,
+      platzhalter: T("Ein Satz reicht. Was anders war, was geholfen hat, was dich beschaeftigt."),
+      beiAenderung: (v) => { tag(iso).notiz = v || null; sichern(); fortschrittZeichnen(); },
     });
+    ta.classList.add("journal-feld");
     ziel.appendChild(k7);
 
     /* Der Stand der letzten zwei Wochen, kurz. Das Ganze steht im Verlauf. */
@@ -806,6 +822,57 @@ function LOKAL() {
       k8.appendChild(reihe);
       ziel.appendChild(k8);
     }
+  }
+
+  /* Die Woche als Streifen: sieben Tage, jeder in der Farbe seines
+     Befindens, darunter wie viel vom gewaehlten Tag schon eingetragen ist.
+     Antippen springt zum Tag. */
+  function wochenStreifen(ziel, iso) {
+    const k = karte("");
+    k.classList.add("woche-karte");
+    const tageListe = tageMitEintrag();
+    const s = serien(tageListe);
+    k.insertAdjacentHTML("beforeend",
+      `<div class="woche-kopf"><p class="kicker">${esc(T("Diese Woche"))}</p><p class="woche-serie">${s.aktuell ? esc(TP("{n} Tag in Folge", "{n} Tage in Folge", s.aktuell)) : esc(T("Heute beginnt eine Serie"))}</p></div>`);
+    const reihe = document.createElement("div");
+    reihe.className = "woche";
+    for (let i = 6; i >= 0; i--) {
+      const d = verschoben(heuteISO(), -i);
+      const e = D.tage[d];
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "woche-tag";
+      if (d === iso) b.setAttribute("aria-current", "date");
+      if (e && typeof e.befinden === "number") { b.classList.add("farbe"); b.style.setProperty("--c", befindenFarbe(e.befinden)); }
+      else if (e && !tagLeer(e)) b.classList.add("hat");
+      const dt = new Date(d + "T12:00:00");
+      b.innerHTML = `<small>${esc(dt.toLocaleDateString(LOKAL(), { weekday: "short" }).slice(0, 2))}</small><b>${dt.getDate()}</b><i>${e && typeof e.befinden === "number" ? e.befinden : ""}</i>`;
+      b.setAttribute("aria-label", langesDatum(d));
+      b.addEventListener("click", () => { nachtragTag = d === heuteISO() ? null : d; zeichnen(); });
+      reihe.appendChild(b);
+    }
+    k.appendChild(reihe);
+    const f = document.createElement("div");
+    f.className = "fortschritt";
+    k.appendChild(f);
+    ziel.appendChild(k);
+    fortschrittZeichnen();
+  }
+
+  /* Was zum Tag gehoert und was davon schon dasteht. */
+  function fortschrittZeichnen() {
+    const f = $(".fortschritt");
+    if (!f) return;
+    const iso = nachtragTag || heuteISO();
+    const e = D.tage[iso] || {};
+    const felder = [];
+    if (GRUND.befinden) felder.push(e.befinden != null);
+    skalenAktiv().forEach((x) => felder.push(e[x.schluessel] != null));
+    checksAktiv().forEach((c) => felder.push(e[c.schluessel] != null));
+    felder.push(e.schlafStunden != null || e.schlafQualitaet != null);
+    felder.push(!!e.notiz);
+    const n = felder.filter(Boolean).length;
+    f.innerHTML = `<span class="fortschritt-text">${esc(TV("{n} von {gesamt} erfasst", { n, gesamt: felder.length }))}</span><span class="fortschritt-balken">${felder.map((x) => `<i class="${x ? "an" : ""}"></i>`).join("")}</span>`;
   }
 
   function erinnerungSicherung(ziel) {
@@ -996,13 +1063,13 @@ function LOKAL() {
       if (z.stufe) marken.push(`<span class="stufe" data-ton="${z.stufe.ton}">${esc(z.stufe.text)}</span>`);
       if (z.richtung) marken.push(`<span class="stufe" data-ton="${richtungTon(z.richtung)}">${esc(richtungText(z.richtung))}</span>`);
       li.innerHTML =
-        `<div class="txt"><b>${esc(z.name)}</b><small>${esc(TV("Mittel {m} von 10", { m: z.mittel.toFixed(1) }))}${z.davor != null ? " · " + esc(TV("davor {m}", { m: z.davor.toFixed(1) })) : ""}</small></div>` +
+        `<div class="txt"><b>${esc(z.name)}</b><small>${esc(TV("Mittel {m} von 10", { m: zahl1(z.mittel) }))}${z.davor != null ? " · " + esc(TV("davor {m}", { m: zahl1(z.davor) })) : ""}</small></div>` +
         `<div class="stufen">${marken.join("")}</div>`;
       ul.appendChild(li);
     });
     if (s.schlaf) {
       const li = document.createElement("li");
-      li.innerHTML = `<div class="txt"><b>${esc(T("Schlaf, Stunden"))}</b><small>${esc(TV("Mittel {m}", { m: s.schlaf.wert.toFixed(1) }))}</small></div>`;
+      li.innerHTML = `<div class="txt"><b>${esc(T("Schlaf, Stunden"))}</b><small>${esc(TV("Mittel {m}", { m: zahl1(s.schlaf.wert) }))}</small></div>`;
       ul.appendChild(li);
     }
     kb.appendChild(ul);
@@ -1159,125 +1226,499 @@ function LOKAL() {
 
   /* -------------------------------------------------------------- Verlauf */
 
+  /* -------------------------------------------------------------- Journal
+   *
+   * Frueher "Verlauf". Ein Tagebuch, das man lesen kann: oben die Bilanz
+   * (wie viele Tage, welche Serie, wie es im Mittel ging), dann ein
+   * Monatskalender, in dem jeder Tag die Farbe seines Befindens traegt, darunter
+   * der gewaehlte Tag als Eintrag, die Statistik und alle Eintraege als Liste.
+   * Die Route bleibt #/verlauf, damit alte Lesezeichen gehen.
+   */
+  let kalMonat = null;       /* "YYYY-MM" */
+  let journalTag = null;     /* "YYYY-MM-DD" */
+  let journalAnzahl = 14;
+
+  function befindenFarbe(v) {
+    /* Dieselbe Skala wie der Regler: 0 rot, 10 gruen. */
+    return `hsl(${Math.round(6 + v * 13.6)} 78% 52%)`;
+  }
+
+  function tageMitEintrag() {
+    return Object.keys(D.tage).filter((d) => !tagLeer(D.tage[d])).sort();
+  }
+
+  function serien(tage) {
+    const set = new Set(tage);
+    let laengste = 0, lauf = 0, vorher = null;
+    tage.forEach((d) => {
+      lauf = vorher && tageZwischen(vorher, d) === 1 ? lauf + 1 : 1;
+      if (lauf > laengste) laengste = lauf;
+      vorher = d;
+    });
+    /* Die laufende Serie zaehlt ab heute, oder ab gestern, solange heute
+       noch nichts eingetragen ist. */
+    let d = set.has(heuteISO()) ? heuteISO() : verschoben(heuteISO(), -1);
+    let aktuell = 0;
+    while (set.has(d)) { aktuell++; d = verschoben(d, -1); }
+    return { aktuell, laengste };
+  }
+
+  function zahlenVon(tage, schluessel) {
+    return tage.map((d) => D.tage[d] && D.tage[d][schluessel]).filter((v) => typeof v === "number");
+  }
+  function mittel(v) { return v.reduce((a, b) => a + b, 0) / v.length; }
+  function median(v) { const s = v.slice().sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+  function streuung(v) { if (v.length < 2) return 0; const m = mittel(v); return Math.sqrt(v.reduce((a, b) => a + (b - m) * (b - m), 0) / (v.length - 1)); }
+  const zahl1 = (n) => n.toLocaleString(LOKAL(), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const zahl2 = (n) => n.toLocaleString(LOKAL(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  /* Trend: Steigung einer Ausgleichsgeraden, umgerechnet auf eine Woche. */
+  function trendJeWoche(tage, schluessel) {
+    const p = tage.map((d) => ({ x: tageZwischen(tage[0], d), y: D.tage[d] && D.tage[d][schluessel] }))
+      .filter((q) => typeof q.y === "number");
+    if (p.length < 8) return null;
+    const mx = mittel(p.map((q) => q.x)), my = mittel(p.map((q) => q.y));
+    let z = 0, n = 0;
+    p.forEach((q) => { z += (q.x - mx) * (q.y - my); n += (q.x - mx) * (q.x - mx); });
+    return n ? (z / n) * 7 : null;
+  }
+
+  /* Pearson-Korrelation zweier Felder ueber die Tage, an denen beide da sind. */
+  function korrelation(tage, a, b) {
+    const p = tage.map((d) => D.tage[d]).filter((e) => e && typeof e[a] === "number" && typeof e[b] === "number");
+    if (p.length < 14) return null;
+    const ma = mittel(p.map((e) => e[a])), mb = mittel(p.map((e) => e[b]));
+    let z = 0, va = 0, vb = 0;
+    p.forEach((e) => { z += (e[a] - ma) * (e[b] - mb); va += (e[a] - ma) ** 2; vb += (e[b] - mb) ** 2; });
+    if (!va || !vb) return null;
+    return { r: z / Math.sqrt(va * vb), n: p.length };
+  }
+
   function seiteVerlauf(ziel) {
-    const tage = Object.keys(D.tage).filter((d) => !tagLeer(D.tage[d])).sort();
+    const tage = tageMitEintrag();
     if (!tage.length) {
       ziel.appendChild(
-        karte(`<div class="leer">${esc(T("Noch nichts eingetragen."))}<br>${esc(T("Der Verlauf entsteht von selbst, sobald es ein paar Tage gibt."))}</div>`),
+        karte(`<div class="leer">${esc(T("Noch nichts eingetragen."))}<br>${esc(T("Das Journal entsteht von selbst, sobald es ein paar Tage gibt."))}</div>`),
       );
       return;
     }
+    if (!kalMonat) kalMonat = heuteISO().slice(0, 7);
 
+    journalBilanz(ziel, tage);
+    monatsKalender(ziel);
+    if (journalTag) tagEintrag(ziel, journalTag);
     standKarten(ziel);
+    statistik(ziel, tage);
+    diagramme(ziel);
+    journalListe(ziel, tage);
+    farbenSetzen(ziel);
+  }
 
+  /* Die Seite erlaubt keine style-Attribute im HTML (Content-Security-Policy).
+     Farben und Breiten stehen deshalb als data-c und data-w im Markup und
+     werden hier ueber das CSSOM gesetzt, das die Regel erlaubt. */
+  function farbenSetzen(wurzel) {
+    wurzel.querySelectorAll("[data-c]").forEach((el) => el.style.setProperty("--c", el.dataset.c));
+    wurzel.querySelectorAll("[data-w]").forEach((el) => el.style.setProperty("--w", el.dataset.w));
+  }
+
+  function journalBilanz(ziel, tage) {
+    const s = serien(tage);
+    const bis = heuteISO();
+    const von30 = verschoben(bis, -29);
+    const letzte30 = tage.filter((d) => d >= von30);
+    const davor30 = tage.filter((d) => d < von30 && d >= verschoben(von30, -30));
+    const b = zahlenVon(letzte30, "befinden");
+    const bv = zahlenVon(davor30, "befinden");
+    const k = karte(`<p class="kicker">${esc(T("Deine Bilanz"))}</p><h2 class="h2">${esc(TP("{n} Tag im Journal", "{n} Tage im Journal", tage.length))}</h2>`);
+    k.classList.add("held");
+    const kach = document.createElement("div");
+    kach.className = "kacheln";
+    let trend = "";
+    if (b.length >= 3 && bv.length >= 3) {
+      const diff = mittel(b) - mittel(bv);
+      trend = Math.abs(diff) < 0.5 ? T("wie davor") : (diff > 0 ? "▲ " : "▼ ") + zahl1(Math.abs(diff));
+    }
+    kach.innerHTML =
+      `<div class="kachel"><b>${s.aktuell}</b><span>${esc(TP("Tag in Folge", "Tage in Folge", s.aktuell))}</span></div>` +
+      `<div class="kachel"><b>${s.laengste}</b><span>${esc(T("laengste Serie"))}</span></div>` +
+      `<div class="kachel"><b>${Math.round((letzte30.length / 30) * 100)}<small>%</small></b><span>${esc(T("der letzten 30 Tage erfasst"))}</span></div>` +
+      `<div class="kachel"${b.length ? ` data-c="${befindenFarbe(mittel(b))}"` : ""}><b class="ton">${b.length ? zahl1(mittel(b)) : "&ndash;"}</b><span>${esc(T("Befinden, Mittel 30 Tage"))}${trend ? `<br><em>${esc(trend)}</em>` : ""}</span></div>`;
+    k.appendChild(kach);
+    /* Die letzten 30 Tage als Streifen: jeder Tag ein Balken in seiner Farbe. */
+    const streifen = document.createElement("div");
+    streifen.className = "streifen";
+    streifen.setAttribute("role", "img");
+    streifen.setAttribute("aria-label", T("Befinden der letzten 30 Tage, ein Balken je Tag"));
+    for (let d = von30; d <= bis; d = verschoben(d, 1)) {
+      const e = D.tage[d];
+      const i = document.createElement("i");
+      if (e && typeof e.befinden === "number") {
+        i.style.setProperty("--h", (8 + e.befinden * 9.2) + "%");
+        i.style.setProperty("--c", befindenFarbe(e.befinden));
+      } else if (e && !tagLeer(e)) {
+        i.className = "ohne";
+      } else {
+        i.className = "nichts";
+      }
+      streifen.appendChild(i);
+    }
+    k.appendChild(streifen);
+    ziel.appendChild(k);
+  }
+
+  function monatsKalender(ziel) {
+    const [jj, mm] = kalMonat.split("-").map(Number);
+    const erster = `${kalMonat}-01`;
+    const tageImMonat = new Date(jj, mm, 0).getDate();
+    const titel = new Date(erster + "T12:00:00").toLocaleDateString(LOKAL(), { month: "long", year: "numeric" });
+    const k = karte("");
+    k.classList.add("kal-karte");
+    const kopf = document.createElement("div");
+    kopf.className = "kal-kopf";
+    const zurueckB = document.createElement("button");
+    zurueckB.type = "button";
+    zurueckB.className = "kal-pfeil";
+    zurueckB.setAttribute("aria-label", T("Voriger Monat"));
+    zurueckB.textContent = "‹";
+    const vorB = document.createElement("button");
+    vorB.type = "button";
+    vorB.className = "kal-pfeil";
+    vorB.setAttribute("aria-label", T("Naechster Monat"));
+    vorB.textContent = "›";
+    const schieben = (n) => {
+      const d = new Date(jj, mm - 1 + n, 1);
+      kalMonat = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      zeichnen({ halten: true });
+    };
+    zurueckB.addEventListener("click", () => schieben(-1));
+    vorB.addEventListener("click", () => schieben(1));
+    if (kalMonat >= heuteISO().slice(0, 7)) vorB.disabled = true;
+    const h = document.createElement("h2");
+    h.className = "h2";
+    h.textContent = titel;
+    kopf.append(zurueckB, h, vorB);
+    k.appendChild(kopf);
+
+    const wt = document.createElement("div");
+    wt.className = "kal-wt";
+    const montag = new Date("2026-01-05T12:00:00");
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(montag);
+      d.setDate(d.getDate() + i);
+      const s = document.createElement("span");
+      s.textContent = d.toLocaleDateString(LOKAL(), { weekday: "short" }).slice(0, 2);
+      wt.appendChild(s);
+    }
+    k.appendChild(wt);
+
+    const gitter = document.createElement("div");
+    gitter.className = "kal-gitter";
+    const versatz = (new Date(erster + "T12:00:00").getDay() + 6) % 7;
+    for (let i = 0; i < versatz; i++) gitter.appendChild(document.createElement("span"));
+    const termineTage = new Set(D.termine.filter((t) => t.status !== "abgesagt").map((t) => t.datum));
+    const warnZeichen = new Set();
+    aktiveModule().forEach((m) => (m.warnzeichen || []).forEach((w) => warnZeichen.add(w.zeichen)));
+    let summe = 0, anzahl = 0, eintraege = 0;
+    for (let t = 1; t <= tageImMonat; t++) {
+      const iso = `${kalMonat}-${String(t).padStart(2, "0")}`;
+      const e = D.tage[iso];
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "kal-tag";
+      const zukunft = iso > heuteISO();
+      if (zukunft) b.classList.add("zukunft");
+      if (iso === heuteISO()) b.classList.add("heute");
+      if (iso === journalTag) b.setAttribute("aria-pressed", "true");
+      const hat = e && !tagLeer(e);
+      if (hat) { b.classList.add("hat"); eintraege++; }
+      if (hat && typeof e.befinden === "number") {
+        b.style.setProperty("--c", befindenFarbe(e.befinden));
+        b.classList.add("farbe");
+        summe += e.befinden; anzahl++;
+      }
+      let punkte = "";
+      if (termineTage.has(iso)) punkte += `<i class="p-termin"></i>`;
+      if (hat && (e.symptome || []).some((z) => warnZeichen.has(z))) punkte += `<i class="p-warn"></i>`;
+      if (hat && e.notiz) punkte += `<i class="p-notiz"></i>`;
+      b.innerHTML = `<span>${t}</span>${hat && typeof e.befinden === "number" ? `<b>${e.befinden}</b>` : ""}<em>${punkte}</em>`;
+      b.setAttribute("aria-label", langesDatum(iso) + ": " + (hat ? zusammenfassung(e) : T("kein Eintrag")));
+      if (!zukunft || termineTage.has(iso)) {
+        b.addEventListener("click", () => {
+          journalTag = journalTag === iso ? null : iso;
+          zeichnen({ halten: true });
+          if (journalTag) requestAnimationFrame(() => { const z = $(".tag-eintrag"); if (z) z.scrollIntoView({ behavior: "smooth", block: "start" }); });
+        });
+      } else {
+        b.disabled = true;
+      }
+      gitter.appendChild(b);
+    }
+    k.appendChild(gitter);
+    const fuss = document.createElement("div");
+    fuss.className = "kal-fuss";
+    fuss.innerHTML =
+      `<span>${esc(TP("{n} Eintrag", "{n} Eintraege", eintraege))}${anzahl ? " · " + esc(TV("Befinden im Mittel {m}", { m: zahl1(summe / anzahl) })) : ""}</span>` +
+      `<span class="kal-legende"><i class="p-termin"></i>${esc(T("Termin"))} <i class="p-warn"></i>${esc(T("Warnzeichen"))} <i class="p-notiz"></i>${esc(T("Notiz"))}</span>`;
+    k.appendChild(fuss);
+    ziel.appendChild(k);
+  }
+
+  /* Ein Tag als Journaleintrag. */
+  function tagEintrag(ziel, iso) {
+    const e = D.tage[iso] || {};
+    const hat = !tagLeer(e);
+    const k = karte(`<p class="kicker">${esc(new Date(iso + "T12:00:00").toLocaleDateString(LOKAL(), { weekday: "long" }))}</p><h2 class="h2">${esc(langesDatum(iso))}</h2>`);
+    k.classList.add("tag-eintrag");
+    if (!hat) {
+      k.insertAdjacentHTML("beforeend", `<p class="lead">${esc(T("An diesem Tag steht nichts im Journal."))}</p>`);
+    } else {
+      if (typeof e.befinden === "number") {
+        k.insertAdjacentHTML("beforeend", `<div class="eintrag-befinden" data-c="${befindenFarbe(e.befinden)}"><b>${e.befinden}</b><span>${esc(MT(GRUND.befinden.name))}</span></div>`);
+      }
+      const balken = skalenAktiv().filter((s) => typeof e[s.schluessel] === "number");
+      if (typeof e.schlafQualitaet === "number") balken.push({ schluessel: "schlafQualitaet", name: T("Schlafqualitaet"), gutHoch: true });
+      if (balken.length) {
+        const ul = document.createElement("ul");
+        ul.className = "balken";
+        balken.forEach((s) => {
+          const v = e[s.schluessel];
+          const gut = s.gutHoch ? v : 10 - v;
+          ul.insertAdjacentHTML("beforeend", `<li><span>${esc(typeof s.name === "string" ? s.name : MT(s.name))}</span><i data-w="${v * 10}%" data-c="${befindenFarbe(gut)}"></i><b>${v}</b></li>`);
+        });
+        k.appendChild(ul);
+      }
+      const chips = [];
+      checksAktiv().forEach((c) => {
+        const o = c.optionen.find((x) => x.wert === e[c.schluessel]);
+        if (o) chips.push(`<span class="chip ton-${o.ton}">${esc(MT(c.frage))}: ${esc(MT(o.text))}</span>`);
+      });
+      (e.symptome || []).forEach((z) => chips.push(`<span class="chip">${esc(zeichenText(z))}</span>`));
+      if (chips.length) k.insertAdjacentHTML("beforeend", `<div class="chips">${chips.join("")}</div>`);
+      const fakten = [];
+      if (e.schlafStunden != null) fakten.push(TV("{n} h Schlaf", { n: e.schlafStunden }));
+      if (e.aufgewacht) fakten.push(TV("aufgewacht {zeit}", { zeit: e.aufgewacht }));
+      if (e.bewegungMin != null) fakten.push(TV("{n} Minuten Bewegung", { n: e.bewegungMin }) + (e.bewegungArt ? ` (${e.bewegungArt})` : ""));
+      const meds = (e.medsGenommen || []).map((m) => (D.medikamente.find((x) => x.id === m) || {}).name).filter(Boolean);
+      if (meds.length) fakten.push(T("Genommen") + ": " + meds.join(", "));
+      if (fakten.length) k.insertAdjacentHTML("beforeend", `<p class="klein eintrag-fakten">${esc(fakten.join(" · "))}</p>`);
+      if (e.notiz) k.insertAdjacentHTML("beforeend", `<blockquote class="eintrag-notiz">${esc(e.notiz)}</blockquote>`);
+    }
+    const termine = D.termine.filter((t) => t.datum === iso);
+    if (termine.length) {
+      const ul = document.createElement("ul");
+      ul.className = "termin-liste";
+      termine.forEach((t) => ul.appendChild(terminZeile(t)));
+      k.appendChild(ul);
+    }
+    if (iso <= heuteISO()) {
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = hat ? "knopf leer" : "knopf";
+      b.textContent = hat ? T("Bearbeiten") : T("Nachtragen");
+      b.addEventListener("click", () => { nachtragTag = iso === heuteISO() ? null : iso; location.hash = "#/heute"; });
+      r.appendChild(b);
+      k.appendChild(r);
+    }
+    ziel.appendChild(k);
+  }
+
+  /* Was die Zahlen sagen, nuechtern: Mittel, Median, Spanne, Streuung,
+     Trend je Woche, Zusammenhaenge mit Staerke und Fallzahl, Wochentage,
+     haeufigste Zeichen. Nur, wo die Fallzahl es traegt. */
+  function statistik(ziel, alleTage) {
+    const spanne = D.einstellungen.statSpanne || 30;
+    const bis = heuteISO();
+    const tage = spanne === "alle" ? alleTage : alleTage.filter((d) => d >= verschoben(bis, -(spanne - 1)));
+    const k = karte(`<p class="kicker">${esc(T("Statistik"))}</p><h2 class="h2">${esc(T("Was die Zahlen sagen"))}</h2>`);
+    const w = schalterListe(k, {
+      einzeln: true,
+      optionen: [{ wert: 30, text: T("30 Tage") }, { wert: 90, text: T("90 Tage") }, { wert: "alle", text: T("Alles") }],
+      gewaehlt: spanne,
+      beiWahl: (v) => { D.einstellungen.statSpanne = v; sichern(); zeichnen({ halten: true }); return v; },
+    });
+    w.classList.add("segment");
+
+    const regler = [];
+    if (GRUND.befinden) regler.push({ schluessel: "befinden", name: MT(GRUND.befinden.name), gutHoch: true });
+    skalenAktiv().forEach((s) => regler.push({ schluessel: s.schluessel, name: MT(s.name), gutHoch: false }));
+    regler.push({ schluessel: "schlafQualitaet", name: T("Schlafqualitaet"), gutHoch: true });
+    regler.push({ schluessel: "schlafStunden", name: T("Schlaf, Stunden"), gutHoch: true, einheit: "h" });
+    const zeilen = regler.map((r) => ({ ...r, v: zahlenVon(tage, r.schluessel) })).filter((r) => r.v.length >= 3);
+    if (!zeilen.length) {
+      k.insertAdjacentHTML("beforeend", `<p class="lead">${esc(T("Fuer eine Statistik braucht es mindestens drei Eintraege je Regler."))}</p>`);
+      ziel.appendChild(k);
+      return;
+    }
+    k.insertAdjacentHTML("beforeend",
+      `<div class="tabelle-huelle"><table class="tabelle stat"><thead><tr><th>${esc(T("Was"))}</th><th>n</th><th>${esc(T("Mittel"))}</th><th>${esc(T("Median"))}</th><th>${esc(T("Spanne"))}</th><th>${esc(T("Trend je Woche"))}</th></tr></thead><tbody>` +
+      zeilen.map((r) => {
+        const tr = trendJeWoche(tage, r.schluessel);
+        let trend = "&ndash;";
+        if (tr != null) {
+          const besser = r.gutHoch ? tr > 0 : tr < 0;
+          trend = Math.abs(tr) < 0.1 ? esc(T("flach")) : `<span class="${besser ? "gut" : "schlecht"}">${tr > 0 ? "+" : "−"}${zahl1(Math.abs(tr))}</span>`;
+        }
+        return `<tr><td>${esc(r.name)}</td><td>${r.v.length}</td><td><b>${zahl1(mittel(r.v))}</b> <small>± ${zahl1(streuung(r.v))}</small></td><td>${zahl1(median(r.v))}</td><td>${r.v.length ? Math.min(...r.v) + "–" + Math.max(...r.v) : ""}</td><td>${trend}</td></tr>`;
+      }).join("") +
+      `</tbody></table></div>`);
+
+    /* Zusammenhaenge. Paare, die aus Sicht der Sprechstunde Sinn ergeben. */
+    const paare = [
+      ["schlafStunden", "befinden"], ["schlafQualitaet", "befinden"], ["schlafQualitaet", "muedigkeit"],
+      ["bewegungMin", "befinden"], ["schmerz", "befinden"], ["muedigkeit", "befinden"],
+    ];
+    skalenAktiv().filter((s) => s.modul).forEach((s) => paare.push([s.schluessel, "befinden"]));
+    const name = (s) => ({
+      befinden: MT(GRUND.befinden.name), schlafStunden: T("Schlaf, Stunden"), schlafQualitaet: T("Schlafqualitaet"),
+      bewegungMin: T("Bewegung, Minuten"),
+    }[s] || (skalenAktiv().find((x) => x.schluessel === s) ? MT(skalenAktiv().find((x) => x.schluessel === s).name) : s));
+    const zus = [];
+    const gesehen = new Set();
+    paare.forEach(([a, b]) => {
+      const key = [a, b].sort().join("|");
+      if (gesehen.has(key) || a === b) return;
+      gesehen.add(key);
+      const c = korrelation(tage, a, b);
+      if (!c || Math.abs(c.r) < 0.1) return;
+      const st = Math.abs(c.r) >= 0.5 ? T("starker") : Math.abs(c.r) >= 0.3 ? T("mittlerer") : T("schwacher");
+      const ri = c.r > 0 ? T("gleichlaeufig") : T("gegenlaeufig");
+      zus.push({ text: TV("{a} und {b}: {staerke} Zusammenhang, {richtung}", { a: name(a), b: name(b), staerke: st, richtung: ri }), r: c.r, n: c.n });
+    });
+    zus.sort((x, y) => Math.abs(y.r) - Math.abs(x.r));
+    if (zus.length) {
+      k.insertAdjacentHTML("beforeend",
+        `<h3 class="h3 stat-titel">${esc(T("Zusammenhaenge"))}</h3><ul class="liste">` +
+        zus.slice(0, 5).map((z) => `<li><div class="txt"><b>${esc(z.text)}</b><small>r = ${zahl2(z.r)} · n = ${z.n}</small></div></li>`).join("") +
+        `</ul><p class="klein">${esc(T("Gleichlaeufig heisst: steigt das eine, steigt meist auch das andere. Ein Zusammenhang ist keine Ursache. Gezeigt ab 14 gemeinsamen Tagen; Einordnung nach Cohen: ab 0,1 schwach, ab 0,3 mittel, ab 0,5 stark."))}</p>`);
+    }
+
+    /* Wochentage */
+    const proTag = [0, 1, 2, 3, 4, 5, 6].map(() => []);
+    tage.forEach((d) => { const v = D.tage[d].befinden; if (typeof v === "number") proTag[(new Date(d + "T12:00:00").getDay() + 6) % 7].push(v); });
+    const mitTagen = proTag.map((v, i) => ({ i, v })).filter((x) => x.v.length >= 2);
+    if (mitTagen.length >= 5) {
+      const m = mitTagen.map((x) => ({ i: x.i, m: mittel(x.v) })).sort((a, b) => b.m - a.m);
+      if (m[0].m - m[m.length - 1].m >= 1) {
+        const tagName = (i) => new Date(new Date("2026-01-05T12:00:00").getTime() + i * 86400000).toLocaleDateString(LOKAL(), { weekday: "long" });
+        k.insertAdjacentHTML("beforeend", `<h3 class="h3 stat-titel">${esc(T("Wochentage"))}</h3><p class="lead">${esc(TV("Am besten ging es dir im Mittel am {gut} ({mg}), am schlechtesten am {schlecht} ({ms}).", { gut: tagName(m[0].i), mg: zahl1(m[0].m), schlecht: tagName(m[m.length - 1].i), ms: zahl1(m[m.length - 1].m) }))}</p>`);
+      }
+    }
+
+    /* Haeufigste Zeichen */
+    const zaehler = {};
+    tage.forEach((d) => (D.tage[d].symptome || []).forEach((z) => { zaehler[z] = (zaehler[z] || 0) + 1; }));
+    const top = Object.keys(zaehler).sort((a, b) => zaehler[b] - zaehler[a]).slice(0, 6);
+    if (top.length) {
+      k.insertAdjacentHTML("beforeend",
+        `<h3 class="h3 stat-titel">${esc(T("Haeufigste Zeichen"))}</h3><ul class="balken">` +
+        top.map((z) => `<li><span>${esc(zeichenText(z))}</span><i data-w="${Math.round((zaehler[z] / tage.length) * 100)}%" data-c="var(--neon)"></i><b>${Math.round((zaehler[z] / tage.length) * 100)}%</b></li>`).join("") +
+        `</ul><p class="klein">${esc(TV("Anteil der {n} Tage mit Eintrag.", { n: tage.length }))}</p>`);
+    }
+    ziel.appendChild(k);
+  }
+
+  /* Die Linien wie bisher, mit Spanne und Auswahl. */
+  function diagramme(ziel) {
     const spanne = D.einstellungen.spanne || 30;
     const bis = heuteISO();
     const von = verschoben(bis, -(spanne - 1));
     const reihe = [];
     for (let d = von; tageZwischen(d, bis) >= 0; d = verschoben(d, 1)) reihe.push(d);
-
-    /* Spanne waehlen */
-    const kw = karte(`<p class="kicker">${esc(T("Zeitraum"))}</p><h2 class="h2">${esc(TV("Letzte {n} Tage", { n: spanne }))}</h2>`);
-    schalterListe(kw, {
-      einzeln: true,
-      optionen: [{ wert: 14, text: T("14 Tage") }, { wert: 30, text: T("30 Tage") }, { wert: 90, text: T("90 Tage") }],
-      gewaehlt: spanne,
-      beiWahl: (w) => {
-        D.einstellungen.spanne = w;
-        sichern();
-        zeichnen();
-        return w;
-      },
-    });
-    ziel.appendChild(kw);
-
-    /* Diagramm 1: bis zu drei Regler, eine Achse, gleiche Einheit. Welche,
-       waehlt sie selbst; jede gewaehlte Erkrankung bringt ihre mit. Drei,
-       weil die drei Linienfarben gegen Farbsinnschwaechen geprueft sind und
-       eine vierte das nicht mehr waere. */
     const moeglich = [];
     if (GRUND.befinden) moeglich.push({ schluessel: "befinden", name: MT(GRUND.befinden.name) });
     skalenAktiv().forEach((s) => moeglich.push({ schluessel: s.schluessel, name: MT(s.name) }));
     const vorhanden = moeglich.filter((m) => reihe.some((d) => D.tage[d] && D.tage[d][m.schluessel] != null));
+    if (!vorhanden.length) return;
     let gewaehlt = (D.einstellungen.verlaufSerien || []).filter((k) => vorhanden.some((m) => m.schluessel === k));
     if (!gewaehlt.length) gewaehlt = vorhanden.slice(0, 3).map((m) => m.schluessel);
     const farben = ["var(--serie-1)", "var(--serie-2)", "var(--serie-3)"];
-    const serien = gewaehlt.map((k, i) => {
+    const serienListe = gewaehlt.map((k, i) => {
       const m = vorhanden.find((x) => x.schluessel === k);
       return { name: m.name, kurz: m.name.length > 8 ? m.name.slice(0, 7) + "." : m.name, schluessel: k, farbe: farben[i] };
     });
-
-    if (vorhanden.length) {
-      const k = karte(
-        `<p class="kicker">${esc(T("Alle auf derselben Skala, 0 bis 10"))}</p>
-         <h2 class="h2">${esc(T("Deine Regler im Verlauf"))}</h2>`,
-      );
-      if (vorhanden.length > 1) {
-        const wahl = schalterListe(k, {
-          optionen: vorhanden.map((m) => ({ wert: m.schluessel, text: m.name })),
-          gewaehlt: gewaehlt,
-          beiWahl: (w) => {
-            let neu = gewaehlt.includes(w) ? gewaehlt.filter((x) => x !== w) : gewaehlt.concat([w]);
-            if (neu.length > 3) { melden(T("Hoechstens drei Linien zugleich.")); neu = gewaehlt; }
-            D.einstellungen.verlaufSerien = neu;
-            sichern();
-            zeichnen();
-            return neu;
-          },
-        });
-        wahl.classList.add("klein-wahl");
-      }
-      if (serien.length) {
-        k.appendChild(linienDiagramm(reihe, serien, 0, 10));
-        k.appendChild(tabelleZu(reihe, serien));
-      }
-      ziel.appendChild(k);
-    }
-
-    /* Diagramm 2: Schlafstunden, eigene Einheit, eigenes Bild */
-    if (reihe.some((d) => D.tage[d] && D.tage[d].schlafStunden != null)) {
-      const werte = reihe.map((d) => (D.tage[d] ? D.tage[d].schlafStunden : null)).filter((v) => v != null);
-      const max = Math.max(10, Math.ceil(Math.max(...werte)));
-      const k = karte(`<p class="kicker">${esc(T("Stunden je Nacht"))}</p><h2 class="h2">${esc(T("Schlaf"))}</h2>`);
-      k.appendChild(
-        linienDiagramm(reihe, [{ name: T("Schlaf"), schluessel: "schlafStunden", farbe: "var(--serie-1)" }], 0, max),
-      );
-      ziel.appendChild(k);
-    }
-
-    /* Kalender */
-    const mitBefinden = reihe.some((d) => D.tage[d] && D.tage[d].befinden != null);
-    const kk = karte(
-      mitBefinden
-        ? `<p class="kicker">${esc(T("Ein Feld je Tag, dunkler heisst schlechter"))}</p><h2 class="h2">${esc(T("Befinden im Ueberblick"))}</h2>`
-        : `<p class="kicker">${esc(T("Ein Feld je Tag, dunkler heisst muerber"))}</p><h2 class="h2">${esc(T("Muedigkeit im Ueberblick"))}</h2>`,
-    );
-    kk.appendChild(kalender(reihe, mitBefinden));
-    ziel.appendChild(kk);
-
-    /* Einen Tag nachtragen */
-    const kn = karte(`<p class="kicker">${esc(T("Nachtragen"))}</p><h2 class="h2">${esc(T("Einen anderen Tag"))}</h2>`);
-    const wahl = feld(kn, {
-      label: T("Datum"), typ: "date", wert: "",
-      beiAenderung: (v) => {
-        if (!v || v > heuteISO()) return;
-        nachtragTag = v === heuteISO() ? null : v;
-        location.hash = "#/heute";
-      },
+    const k = karte(`<p class="kicker">${esc(T("Alle auf derselben Skala, 0 bis 10"))}</p><h2 class="h2">${esc(T("Deine Regler im Verlauf"))}</h2>`);
+    const sw = schalterListe(k, {
+      einzeln: true,
+      optionen: [{ wert: 14, text: T("14 Tage") }, { wert: 30, text: T("30 Tage") }, { wert: 90, text: T("90 Tage") }],
+      gewaehlt: spanne,
+      beiWahl: (w) => { D.einstellungen.spanne = w; sichern(); zeichnen({ halten: true }); return w; },
     });
-    wahl.max = heuteISO();
-    const liste = document.createElement("ul");
-    liste.className = "liste";
-    tage.slice(-10).reverse().forEach((d) => {
+    sw.classList.add("segment");
+    if (vorhanden.length > 1) {
+      const wahl = schalterListe(k, {
+        optionen: vorhanden.map((m) => ({ wert: m.schluessel, text: m.name })),
+        gewaehlt: gewaehlt,
+        beiWahl: (w) => {
+          let neu = gewaehlt.includes(w) ? gewaehlt.filter((x) => x !== w) : gewaehlt.concat([w]);
+          if (neu.length > 3) { melden(T("Hoechstens drei Linien zugleich.")); neu = gewaehlt; }
+          D.einstellungen.verlaufSerien = neu;
+          sichern();
+          zeichnen({ halten: true });
+          return neu;
+        },
+      });
+      wahl.classList.add("klein-wahl");
+    }
+    if (serienListe.length) {
+      k.appendChild(linienDiagramm(reihe, serienListe, 0, 10));
+      k.appendChild(tabelleZu(reihe, serienListe));
+    }
+    ziel.appendChild(k);
+  }
+
+  /* Alle Eintraege, neueste zuerst, nach Monat gegliedert. */
+  function journalListe(ziel, tage) {
+    const k = karte(`<p class="kicker">${esc(T("Eintraege"))}</p><h2 class="h2">${esc(T("Dein Journal"))}</h2>`);
+    const liste = tage.slice().reverse();
+    let monat = "";
+    const box = document.createElement("div");
+    box.className = "journal";
+    liste.slice(0, journalAnzahl).forEach((d) => {
+      const m = d.slice(0, 7);
+      if (m !== monat) {
+        monat = m;
+        box.insertAdjacentHTML("beforeend", `<p class="journal-monat">${esc(new Date(d + "T12:00:00").toLocaleDateString(LOKAL(), { month: "long", year: "numeric" }))}</p>`);
+      }
       const e = D.tage[d];
-      const li = document.createElement("li");
-      li.innerHTML =
-        `<div class="txt"><b>${esc(kurzesDatum(d))} &middot; ${esc(new Date(d + "T12:00:00").toLocaleDateString(LOKAL(), { weekday: "short" }))}</b>` +
-        `<small>${esc(zusammenfassung(e))}</small></div>`;
-      liste.appendChild(li);
+      const tag = new Date(d + "T12:00:00");
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "journal-eintrag";
+      const zeichen = (e.symptome || []).slice(0, 3).map((z) => `<span class="chip klein">${esc(zeichenText(z))}</span>`).join("");
+      const werte = [];
+      ["muedigkeit", "schmerz"].forEach((s) => { if (typeof e[s] === "number") werte.push(`${esc(MT((GRUND.skalen || []).find((x) => x.schluessel === s).name))} ${e[s]}`); });
+      if (e.schlafStunden != null) werte.push(esc(TV("{n} h Schlaf", { n: e.schlafStunden })));
+      b.innerHTML =
+        `<span class="je-datum"><b>${tag.getDate()}</b><small>${esc(tag.toLocaleDateString(LOKAL(), { weekday: "short" }))}</small></span>` +
+        `<span class="je-text"><span class="je-werte">${werte.join(" · ") || esc(zusammenfassung(e))}</span>` +
+        (zeichen ? `<span class="chips">${zeichen}</span>` : "") +
+        (e.notiz ? `<span class="je-notiz">${esc(e.notiz)}</span>` : "") +
+        `</span>` +
+        (typeof e.befinden === "number" ? `<span class="je-befinden" data-c="${befindenFarbe(e.befinden)}">${e.befinden}</span>` : `<span class="je-befinden leer">&ndash;</span>`);
+      b.addEventListener("click", () => {
+        journalTag = d;
+        kalMonat = d.slice(0, 7);
+        zeichnen({ halten: true });
+        requestAnimationFrame(() => { const z = $(".tag-eintrag"); if (z) z.scrollIntoView({ behavior: "smooth", block: "start" }); });
+      });
+      box.appendChild(b);
     });
-    kn.appendChild(liste);
-    ziel.appendChild(kn);
+    k.appendChild(box);
+    if (liste.length > journalAnzahl) {
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "knopf leer";
+      b.textContent = TV("Weitere {n} anzeigen", { n: Math.min(30, liste.length - journalAnzahl) });
+      b.addEventListener("click", () => { journalAnzahl += 30; zeichnen({ halten: true }); });
+      r.appendChild(b);
+      k.appendChild(r);
+    }
+    ziel.appendChild(k);
   }
 
   function zusammenfassung(e) {
@@ -1429,61 +1870,6 @@ function LOKAL() {
     w.style.marginTop = "6px";
     w.appendChild(det);
     return w;
-  }
-
-  function kalender(tage, mitBefinden) {
-    const huelle = document.createElement("div");
-    const wt = document.createElement("div");
-    wt.className = "kalender-tage";
-    /*
-     * Die Kuerzel kommen vom Browser, damit sie in jeder Sprache stimmen. Der
-     * 5. Januar 2026 ist ein Montag. Zwei Buchstaben, weil sieben Spalten auf
-     * ein Telefon muessen; in den fuenf Sprachen hier bleiben sie dabei
-     * unterscheidbar, und das Datum steht ohnehin in der Tabelle darunter.
-     */
-    const montag = new Date("2026-01-05T12:00:00");
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(montag);
-      d.setDate(d.getDate() + i);
-      const s = document.createElement("span");
-      s.textContent = d.toLocaleDateString(LOKAL(), { weekday: "short" }).slice(0, 2);
-      wt.appendChild(s);
-    }
-    const gitter = document.createElement("div");
-    gitter.className = "kalender";
-
-    const ramp = ["--ramp-100", "--ramp-250", "--ramp-400", "--ramp-550", "--ramp-700"];
-    const ersterWochentag = (new Date(tage[0] + "T12:00:00").getDay() + 6) % 7;
-    for (let i = 0; i < ersterWochentag; i++) {
-      const l = document.createElement("i");
-      l.style.visibility = "hidden";
-      gitter.appendChild(l);
-    }
-    tage.forEach((d) => {
-      const e = D.tage[d];
-      const roh = e ? (mitBefinden ? e.befinden : e.muedigkeit) : null;
-      /* Beim Befinden ist 10 gut, also dreht sich die Stufe um: dunkel heisst
-         auf beiden Karten dasselbe, naemlich ein schlechter Tag. */
-      const v = roh == null ? null : (mitBefinden ? 10 - roh : roh);
-      const z = document.createElement("i");
-      if (v != null) {
-        const stufe = Math.min(4, Math.floor(v / 2.2));
-        z.style.background = `var(${ramp[stufe]})`;
-        z.style.borderColor = "transparent";
-      }
-      z.title = `${kurzesDatum(d)}: ${roh == null ? T("kein Eintrag") : (mitBefinden ? T("Befinden") : T("Muedigkeit")) + " " + roh}`;
-      gitter.appendChild(z);
-    });
-    huelle.append(wt, gitter);
-
-    const leg = document.createElement("p");
-    leg.className = "klein";
-    leg.style.marginTop = "10px";
-    leg.textContent = mitBefinden
-      ? T("Hell heisst ein guter Tag, dunkel ein schlechter. Ein leeres Feld ist ein Tag ohne Eintrag.")
-      : T("Hell heisst wach, dunkel heisst erschoepft. Ein leeres Feld ist ein Tag ohne Eintrag.");
-    huelle.appendChild(leg);
-    return huelle;
   }
 
   /* ---------------------------------------------------------------- Essen */
@@ -1684,7 +2070,10 @@ function LOKAL() {
    */
   function netzRezepte() {
     const gut = bevorzugteTags();
+    /* Nur, was die strenge Pruefung bestanden hat. Alte Eintraege mit
+       offenen Pruefhinweisen erscheinen nicht mehr in der Auswahl. */
     return (NETZ.rezepte || [])
+      .filter((r) => r.geprueft && !(r.pruefen || []).length)
       .map((r) => ({
         r,
         wert: r.tags.filter((t) => gut.has(t)).length * 2 + (r.sprache === L ? 3 : 0) + (r.pruefen.length ? -1 : 0) - rezeptAchtung(r.zutaten).length * 3,
@@ -1745,8 +2134,15 @@ function LOKAL() {
     if (r.portionen) info.push(TV("Portionen: {n}", { n: r.portionen }));
     if (r.autor) info.push(TV("von {autor}", { autor: r.autor }));
     if (info.length) box.insertAdjacentHTML("beforeend", `<p class="klein">${esc(info.join(" · "))}</p>`);
+    if (r.geprueft) {
+      box.insertAdjacentHTML("beforeend", `<p class="geprueft">${esc(T("Geprueft glutenfrei"))}</p>`);
+    }
     achtungZeigen(box, rezeptAchtung(r.zutaten));
-    if (r.pruefen.length) {
+    if ((r.packung || []).length) {
+      box.insertAdjacentHTML("beforeend",
+        `<div class="hinweis packung"><b>${esc(T("Mit Aufschrift glutenfrei kaufen:"))}</b><ul>${r.packung.map((z) => `<li lang="${esc(r.sprache)}">${esc(z)}</li>`).join("")}</ul></div>`);
+    }
+    if ((r.pruefen || []).length) {
       box.insertAdjacentHTML("beforeend",
         `<div class="hinweis pruefen"><b>${esc(T("Bitte pruefen, ob glutenfrei:"))}</b><ul>${r.pruefen.map((z) => `<li lang="${esc(r.sprache)}">${esc(z)}</li>`).join("")}</ul></div>`);
     }
@@ -1760,7 +2156,7 @@ function LOKAL() {
     if (zielSetzen(a, r.url, ["https:"])) reihe.appendChild(a);
     box.appendChild(reihe);
     box.insertAdjacentHTML("beforeend",
-      `<p class="quelle">${esc(r.schritte ? TP("{n} Schritt beim Original.", "{n} Schritte beim Original.", r.schritte) + " " : "")}${esc(T("Glutenfrei laut Quelle und nach Pruefung der Zutatenliste. Beim Einkauf jede Packung trotzdem selbst pruefen."))}</p>`);
+      `<p class="quelle">${esc(r.schritte ? TP("{n} Schritt beim Original.", "{n} Schritte beim Original.", r.schritte) + " " : "")}${esc(r.geprueft ? T("Jede Zutat einzeln geprueft: von Natur aus glutenfrei, oder Packungsware, die mit der Aufschrift glutenfrei gekauft wird. In der EU heisst das hoechstens 20 mg Gluten je kg. Eine Laboranalyse ist das nicht.") : T("Glutenfrei laut Quelle und nach Pruefung der Zutatenliste. Beim Einkauf jede Packung trotzdem selbst pruefen."))}</p>`);
     det.appendChild(box);
     return det;
   }
@@ -2937,51 +3333,159 @@ function LOKAL() {
 
   /* --------------------------------------------------------------- Termine */
 
-  function seiteTermine(ziel) {
-    const k = karte(`<p class="kicker">${esc(T("Was ansteht"))}</p><h2 class="h2">${esc(T("Termine"))}</h2>`);
-    const kommend = D.termine.slice().sort((a, b) => a.datum.localeCompare(b.datum));
-    if (!kommend.length) {
-      k.insertAdjacentHTML("beforeend", `<div class="leer">${esc(T("Noch nichts eingetragen."))}</div>`);
-    } else {
-      const ul = document.createElement("ul");
-      ul.className = "liste";
-      kommend.forEach((t) => {
-        const vorbei = t.datum < heuteISO();
-        const li = document.createElement("li");
-        li.innerHTML =
-          `<div class="txt"><b>${esc(t.was)}${vorbei ? " " : ""}</b><small>${esc(langesDatum(t.datum))}${t.uhr ? " · " + esc(t.uhr) : ""}${t.wer ? " · " + esc(t.wer) : ""}${t.notiz ? "<br>" + esc(t.notiz) : ""}</small></div>`;
-        if (vorbei) li.classList.add("vorbei");
-        if (!vorbei) {
-          const kal = document.createElement("button");
-          kal.className = "schalter";
-          kal.textContent = T("In den Kalender");
-          kal.addEventListener("click", () => terminKalender(t));
-          li.appendChild(kal);
-        }
-        const del = document.createElement("button");
-        del.className = "schalter";
-        del.textContent = T("Weg");
-        del.addEventListener("click", () => {
-          D.termine = D.termine.filter((x) => x.id !== t.id);
-          sichern();
-          zeichnen();
-        });
-        li.appendChild(del);
-        ul.appendChild(li);
-      });
-      k.appendChild(ul);
-    }
-    ziel.appendChild(k);
+  /* -------------------------------------------------------------- Termine
+   *
+   * Arzttermine als eigener Bereich: was ansteht, mit Countdown, Fragen zum
+   * Mitnehmen und Kalendererinnerung; was war, mit Ergebnis, naechsten
+   * Schritten und Verordnung. So wird aus der Terminliste ein Verlauf der
+   * Behandlung, den man beim naechsten Termin vorlegen kann.
+   *
+   * Felder je Termin: datum, uhr, was, fach, wer, ort, modul, notiz (was
+   * mitnehmen, was fragen), status (geplant, erledigt, abgesagt), ergebnis,
+   * naechste, verordnung. Alte Termine haben nur datum, was, wer, notiz und
+   * gelten als geplant.
+   */
+  const FAECHER = [
+    "Hausarzt", "Rheumatologie", "Gastroenterologie", "Dermatologie", "Endokrinologie",
+    "Nephrologie", "Augenheilkunde", "Gynaekologie", "Labor", "Diaetologie", "Physiotherapie", "Psychotherapie", "Sonstiges",
+  ];
+  let terminOffen = null;
+  let terminFilter = "alle";
 
+  function terminStatus(t) {
+    if (t.status === "abgesagt") return "abgesagt";
+    if (t.status === "erledigt") return "erledigt";
+    return t.datum < heuteISO() ? "offen" : "geplant";
+  }
+
+  function terminZeit(t) {
+    return langesDatum(t.datum) + (t.uhr ? " · " + t.uhr : "");
+  }
+
+  function countdown(datum) {
+    const n = tageZwischen(heuteISO(), datum);
+    if (n === 0) return T("heute");
+    if (n === 1) return T("morgen");
+    return TP("in {n} Tag", "in {n} Tagen", n);
+  }
+
+  function seiteTermine(ziel) {
+    const heute = heuteISO();
+    const alle = D.termine.slice().sort((a, b) => (a.datum + (a.uhr || "")).localeCompare(b.datum + (b.uhr || "")));
+    const kommend = alle.filter((t) => t.datum >= heute && terminStatus(t) === "geplant");
+    const offen = alle.filter((t) => terminStatus(t) === "offen").reverse();
+    const vergangen = alle.filter((t) => t.datum < heute || terminStatus(t) !== "geplant").reverse();
+    const jahr = heute.slice(0, 4);
+
+    /* Bilanz oben, wie im Journal. */
+    const kb = karte(`<p class="kicker">${esc(T("Deine Termine"))}</p><h2 class="h2">${esc(T("Behandlung im Blick"))}</h2>`);
+    const kacheln = document.createElement("div");
+    kacheln.className = "kacheln";
+    const kachel = (zahl, text) => `<div class="kachel"><b>${esc(String(zahl))}</b><span>${esc(text)}</span></div>`;
+    kacheln.innerHTML =
+      kachel(kommend.length, T("geplant")) +
+      kachel(alle.filter((t) => t.datum.startsWith(jahr) && terminStatus(t) === "erledigt").length, TV("erledigt {jahr}", { jahr })) +
+      kachel(new Set(alle.filter((t) => t.fach).map((t) => t.fach)).size, T("Fachrichtungen")) +
+      kachel(offen.length, T("ohne Ergebnis"));
+    kb.appendChild(kacheln);
+    ziel.appendChild(kb);
+
+    /* Der naechste Termin, gross. */
+    if (kommend.length) {
+      const t = kommend[0];
+      const kn = karte(
+        `<p class="kicker">${esc(T("Naechster Termin"))}</p>
+         <p class="countdown">${esc(countdown(t.datum))}</p>
+         <h2 class="h2">${esc(t.was)}</h2>
+         <p class="lead">${esc(terminZeit(t))}${t.fach ? " · " + esc(fachText(t.fach)) : ""}${t.wer ? " · " + esc(t.wer) : ""}${t.ort ? "<br>" + esc(t.ort) : ""}</p>`,
+      );
+      kn.classList.add("held");
+      if (t.notiz) kn.insertAdjacentHTML("beforeend", `<div class="hinweis"><b>${esc(T("Mitnehmen, fragen"))}</b> ${esc(t.notiz)}</div>`);
+      const fragen = fragenAktiv(t.modul || null).slice(0, 5);
+      if (fragen.length) {
+        const det = document.createElement("details");
+        det.innerHTML = `<summary>${esc(TP("{n} Frage, die sich lohnt", "{n} Fragen, die sich lohnen", fragen.length))}</summary><div class="details-inhalt"><ul class="liste">${fragen.map((f) => `<li><span class="kaestchen" aria-hidden="true"></span><div class="txt"><b>${esc(f.frage)}</b></div></li>`).join("")}</ul></div>`;
+        kn.appendChild(det);
+      }
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      const kal = document.createElement("button");
+      kal.type = "button";
+      kal.className = "knopf";
+      kal.textContent = T("In den Kalender");
+      kal.addEventListener("click", () => terminKalender(t));
+      const mappe = document.createElement("a");
+      mappe.className = "knopf leer";
+      mappe.href = "#/bericht";
+      mappe.textContent = T("Arztmappe vorbereiten");
+      r.append(kal, mappe);
+      kn.appendChild(r);
+      ziel.appendChild(kn);
+    }
+
+    /* Was beim letzten Termin herausgekommen ist, gehoert aufgeschrieben,
+       solange man es noch weiss. */
+    offen.slice(0, 3).forEach((t) => {
+      const ko = karte(
+        `<p class="kicker">${esc(T("Nach dem Termin"))}</p><h2 class="h2">${esc(TV("Was kam bei {was} heraus?", { was: t.was }))}</h2>
+         <p class="lead">${esc(terminZeit(t))}</p>`,
+      );
+      ko.classList.add("nachher");
+      ergebnisFelder(ko, t);
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      const ok = document.createElement("button");
+      ok.type = "button";
+      ok.className = "knopf";
+      ok.textContent = T("Als erledigt festhalten");
+      ok.addEventListener("click", () => { t.status = "erledigt"; sichern(); melden(T("Festgehalten.")); zeichnen({ halten: true }); });
+      const weg = document.createElement("button");
+      weg.type = "button";
+      weg.className = "knopf leer";
+      weg.textContent = T("Fand nicht statt");
+      weg.addEventListener("click", () => { t.status = "abgesagt"; sichern(); zeichnen({ halten: true }); });
+      r.append(ok, weg);
+      ko.appendChild(r);
+      ziel.appendChild(ko);
+    });
+
+    /* Alle kommenden */
+    if (kommend.length > 1) {
+      const kk = karte(`<p class="kicker">${esc(T("Was ansteht"))}</p><h2 class="h2">${esc(T("Kommende Termine"))}</h2>`);
+      const ul = document.createElement("ul");
+      ul.className = "termin-liste";
+      kommend.slice(1).forEach((t) => ul.appendChild(terminZeile(t)));
+      kk.appendChild(ul);
+      ziel.appendChild(kk);
+    }
+
+    /* Neuer Termin */
     const kn = karte(`<p class="kicker">${esc(T("Hinzufuegen"))}</p><h2 class="h2">${esc(T("Neuer Termin"))}</h2>`);
-    const neu = { datum: heuteISO(), uhr: "", was: "", wer: "", notiz: "" };
+    const neu = { datum: heute, uhr: "", was: "", fach: "", wer: "", ort: "", modul: "", notiz: "" };
     const zt = document.createElement("div");
     zt.className = "zwei";
     feld(zt, { label: T("Datum"), typ: "date", wert: neu.datum, beiAenderung: (v) => (neu.datum = v) });
     feld(zt, { label: T("Uhrzeit"), typ: "time", wert: "", beiAenderung: (v) => (neu.uhr = v) });
     kn.appendChild(zt);
     feld(kn, { label: T("Was"), wert: "", platzhalter: T("Rheumatologie, Kontrolle"), beiAenderung: (v) => (neu.was = v) });
-    feld(kn, { label: T("Bei wem"), wert: "", platzhalter: "", beiAenderung: (v) => (neu.wer = v) });
+    kn.appendChild(fachWahl(neu.fach, (v) => (neu.fach = v)));
+    const zw = document.createElement("div");
+    zw.className = "zwei";
+    feld(zw, { label: T("Bei wem"), wert: "", beiAenderung: (v) => (neu.wer = v) });
+    feld(zw, { label: T("Wo"), wert: "", beiAenderung: (v) => (neu.ort = v) });
+    kn.appendChild(zw);
+    if (aktiveModule().length > 1) {
+      const p = document.createElement("p");
+      p.className = "feld-titel";
+      p.textContent = T("Wegen");
+      kn.appendChild(p);
+      schalterListe(kn, {
+        einzeln: true,
+        optionen: aktiveModule().map((m) => ({ wert: m.id, text: MT(m.kurz) })),
+        gewaehlt: "",
+        beiWahl: (w) => { neu.modul = neu.modul === w ? "" : w; return neu.modul; },
+      });
+    }
     feld(kn, { label: T("Mitnehmen, fragen"), mehrzeilig: true, wert: "", beiAenderung: (v) => (neu.notiz = v) });
     const r = document.createElement("div");
     r.className = "knopf-reihe";
@@ -2991,22 +3495,147 @@ function LOKAL() {
     b.addEventListener("click", () => {
       if (!neu.was) { melden(T("Der Anlass fehlt.")); return; }
       if (!neu.datum) { melden(T("Das Datum fehlt.")); return; }
-      const t = Object.assign({ id: id() }, neu);
+      const t = Object.assign({ id: id(), status: "geplant" }, neu);
+      if (!t.modul && aktiveModule().length === 1) t.modul = aktiveModule()[0].id;
       D.termine.push(t);
       sichern();
-      zeichnen();
+      zeichnen({ halten: true });
       if (t.datum >= heuteISO() && confirm(T("Eingetragen. Auch in den Kalender des Telefons, mit Erinnerung?"))) terminKalender(t);
     });
     r.appendChild(b);
     kn.appendChild(r);
     ziel.appendChild(kn);
 
+    /* Verlauf der Behandlung */
+    if (vergangen.length) {
+      const faecher = [...new Set(vergangen.map((t) => t.fach).filter(Boolean))];
+      const kv = karte(`<p class="kicker">${esc(T("Was war"))}</p><h2 class="h2">${esc(T("Verlauf der Behandlung"))}</h2>`);
+      if (faecher.length > 1) {
+        const w = schalterListe(kv, {
+          einzeln: true,
+          optionen: [{ wert: "alle", text: T("Alle") }].concat(faecher.map((f) => ({ wert: f, text: fachText(f) }))),
+          gewaehlt: terminFilter,
+          beiWahl: (v) => { terminFilter = v; zeichnen({ halten: true }); return v; },
+        });
+        w.classList.add("klein-wahl");
+      }
+      const ul = document.createElement("ul");
+      ul.className = "termin-liste zeitstrahl";
+      vergangen
+        .filter((t) => terminFilter === "alle" || t.fach === terminFilter)
+        .forEach((t) => ul.appendChild(terminZeile(t)));
+      kv.appendChild(ul);
+      ziel.appendChild(kv);
+    }
+
     ziel.appendChild(
       karte(
         `<div class="hinweis"><b>${esc(T("Erinnern macht der Kalender."))}</b> ${esc(T("Eine Webseite ohne Server darf auf dem iPhone keine Benachrichtigung schicken, und einen Server hat Anker absichtlich nicht. Der Knopf In den Kalender gibt den Termin samt Erinnerung an den Kalender des Telefons weiter: am Vortag und zwei Stunden vorher, ohne Uhrzeit am Vorabend um 18 Uhr."))}</div>`,
       ),
     );
-    zurueck(ziel, "#/mehr", T("Zurueck"));
+  }
+
+  /* Ausgeschrieben, damit die Sprachpruefung jeden Text findet. */
+  function fachText(f) {
+    const tafel = {
+      Hausarzt: T("Hausarzt"), Rheumatologie: T("Rheumatologie"), Gastroenterologie: T("Gastroenterologie"),
+      Dermatologie: T("Dermatologie"), Endokrinologie: T("Endokrinologie"), Nephrologie: T("Nephrologie"),
+      Augenheilkunde: T("Augenheilkunde"), Gynaekologie: T("Gynaekologie"), Labor: T("Labor"),
+      Diaetologie: T("Diaetologie"), Physiotherapie: T("Physiotherapie"), Psychotherapie: T("Psychotherapie"),
+      Sonstiges: T("Sonstiges"),
+    };
+    return tafel[f] || f;
+  }
+
+  function fachWahl(wert, beiAenderung) {
+    const l = document.createElement("label");
+    l.className = "feld";
+    const s = document.createElement("span");
+    s.textContent = T("Fachrichtung");
+    const sel = document.createElement("select");
+    sel.innerHTML = `<option value="">${esc(T("bitte waehlen"))}</option>` +
+      FAECHER.map((f) => `<option value="${esc(f)}"${f === wert ? " selected" : ""}>${esc(fachText(f))}</option>`).join("");
+    sel.addEventListener("change", () => beiAenderung(sel.value));
+    l.append(s, sel);
+    return l;
+  }
+
+  function ergebnisFelder(wirt, t) {
+    feld(wirt, { label: T("Ergebnis, Befund"), mehrzeilig: true, wert: t.ergebnis || "", platzhalter: T("Was gesagt, gemessen, entschieden wurde"), beiAenderung: (v) => { t.ergebnis = v || null; sichern(); } });
+    feld(wirt, { label: T("Naechste Schritte"), mehrzeilig: true, wert: t.naechste || "", platzhalter: T("Kontrolle in drei Monaten, Blutabnahme vorher"), beiAenderung: (v) => { t.naechste = v || null; sichern(); } });
+    feld(wirt, { label: T("Neu verordnet, geaendert"), wert: t.verordnung || "", platzhalter: T("Medikament, Dosis, ab wann"), beiAenderung: (v) => { t.verordnung = v || null; sichern(); } });
+  }
+
+  /* Eine Zeile im Terminverlauf. Antippen klappt sie auf: dann laesst sich
+     alles aendern, auch nachtraeglich. */
+  function terminZeile(t) {
+    const li = document.createElement("li");
+    const st = terminStatus(t);
+    li.className = "termin st-" + st;
+    const tag = new Date(t.datum + "T12:00:00");
+    const modul = t.modul ? modulVon(t.modul) : null;
+    li.innerHTML =
+      `<button type="button" class="termin-kopf" aria-expanded="${terminOffen === t.id}">` +
+      `<span class="termin-datum"><b>${tag.getDate()}</b><small>${esc(tag.toLocaleDateString(LOKAL(), { month: "short" }))}</small></span>` +
+      `<span class="termin-text"><b>${esc(t.was)}</b><small>${esc([t.uhr, t.fach ? fachText(t.fach) : "", t.wer].filter(Boolean).join(" · "))}</small>` +
+      (t.ergebnis ? `<small class="termin-ergebnis">${esc(t.ergebnis)}</small>` : "") +
+      `</span>` +
+      `<span class="termin-status">${esc({ geplant: countdown(t.datum), offen: T("Ergebnis fehlt"), erledigt: T("erledigt"), abgesagt: T("abgesagt") }[st])}</span>` +
+      `</button>`;
+    if (modul) li.style.setProperty("--punkt", modul.farbe);
+    const kopf = li.querySelector(".termin-kopf");
+    kopf.addEventListener("click", () => { terminOffen = terminOffen === t.id ? null : t.id; zeichnen({ halten: true }); });
+    if (terminOffen === t.id) {
+      const box = document.createElement("div");
+      box.className = "termin-mehr";
+      const z = document.createElement("div");
+      z.className = "zwei";
+      feld(z, { label: T("Datum"), typ: "date", wert: t.datum, beiAenderung: (v) => { if (v) { t.datum = v; sichern(); } } });
+      feld(z, { label: T("Uhrzeit"), typ: "time", wert: t.uhr || "", beiAenderung: (v) => { t.uhr = v || null; sichern(); } });
+      box.appendChild(z);
+      feld(box, { label: T("Was"), wert: t.was, beiAenderung: (v) => { if (v) { t.was = v; sichern(); } } });
+      box.appendChild(fachWahl(t.fach || "", (v) => { t.fach = v || null; sichern(); }));
+      const z2 = document.createElement("div");
+      z2.className = "zwei";
+      feld(z2, { label: T("Bei wem"), wert: t.wer || "", beiAenderung: (v) => { t.wer = v || null; sichern(); } });
+      feld(z2, { label: T("Wo"), wert: t.ort || "", beiAenderung: (v) => { t.ort = v || null; sichern(); } });
+      box.appendChild(z2);
+      feld(box, { label: T("Mitnehmen, fragen"), mehrzeilig: true, wert: t.notiz || "", beiAenderung: (v) => { t.notiz = v || null; sichern(); } });
+      if (st !== "geplant") ergebnisFelder(box, t);
+      const r = document.createElement("div");
+      r.className = "knopf-reihe";
+      if (st === "geplant") {
+        const kal = document.createElement("button");
+        kal.type = "button";
+        kal.className = "knopf";
+        kal.textContent = T("In den Kalender");
+        kal.addEventListener("click", () => terminKalender(t));
+        r.appendChild(kal);
+      }
+      if (st === "offen" || st === "abgesagt") {
+        const ok = document.createElement("button");
+        ok.type = "button";
+        ok.className = "knopf";
+        ok.textContent = T("Als erledigt festhalten");
+        ok.addEventListener("click", () => { t.status = "erledigt"; sichern(); zeichnen({ halten: true }); });
+        r.appendChild(ok);
+      }
+      const weg = document.createElement("button");
+      weg.type = "button";
+      weg.className = "knopf leer";
+      weg.textContent = T("Loeschen");
+      weg.addEventListener("click", () => {
+        if (!confirm(TV("{name} aus der Liste nehmen?", { name: t.was }))) return;
+        D.termine = D.termine.filter((x) => x.id !== t.id);
+        terminOffen = null;
+        sichern();
+        zeichnen({ halten: true });
+      });
+      r.appendChild(weg);
+      box.appendChild(r);
+      li.appendChild(box);
+    }
+    return li;
   }
 
   /* -------------------------------------------------------------- Bericht */
@@ -3151,6 +3780,28 @@ function LOKAL() {
         `</tbody></table></div>`,
       );
       ziel.appendChild(kl);
+    }
+
+    /* Termine im Zeitraum, mit dem, was herauskam. */
+    const termineZeit = D.termine
+      .filter((t) => t.datum >= von && t.datum <= bis && t.status !== "abgesagt" && (!nur || !t.modul || t.modul === nur.id))
+      .sort((x, y) => y.datum.localeCompare(x.datum));
+    if (termineZeit.length) {
+      const kt = karte(`<p class="kicker">${esc(T("Im Zeitraum"))}</p><h2 class="h2">${esc(T("Termine und Ergebnisse"))}</h2>`);
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      termineZeit.forEach((t) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          `<div class="txt"><b>${esc(kurzesDatum(t.datum))} · ${esc(t.was)}</b><small>${esc([t.fach ? fachText(t.fach) : "", t.wer].filter(Boolean).join(" · "))}</small>` +
+          (t.ergebnis ? `<small>${esc(T("Ergebnis"))}: ${esc(t.ergebnis)}</small>` : "") +
+          (t.naechste ? `<small>${esc(T("Naechste Schritte"))}: ${esc(t.naechste)}</small>` : "") +
+          (t.verordnung ? `<small>${esc(T("Verordnung"))}: ${esc(t.verordnung)}</small>` : "") +
+          `</div>`;
+        ul.appendChild(li);
+      });
+      kt.appendChild(ul);
+      ziel.appendChild(kt);
     }
 
     if (D.medikamente.length) {

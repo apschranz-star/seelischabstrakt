@@ -85,6 +85,19 @@ Server, und die Sicherheitsregel im Kopf der Seite verbietet das auch technisch
 
 ---
 
+## Updates und gespeicherte Tage
+
+Die Eintraege liegen im Browser unter dem Schluessel `anker-v1` auf der Adresse
+der Seite, der Zugangscode unter `sa-access`. Ein Update aendert weder die
+Adresse noch die Schluessel; neue Felder kommen beim ersten Start dazu, nichts
+wird geloescht (getestet mit einem alten Datenstand: kein neues Einloggen,
+keine verlorenen Tage). Verloren gehen Daten nur, wenn der Browser sie loescht:
+Websitedaten geloescht, privates Fenster, anderes Geraet oder anderer Browser,
+oder Safari raeumt Websitedaten, die laenger nicht genutzt wurden. Zum
+Home-Bildschirm hinzugefuegte Web-Apps nimmt WebKit davon aus. Deshalb: zum
+Home-Bildschirm hinzufuegen und regelmaessig sichern. Die App bittet den
+Browser zusaetzlich um dauerhaften Speicher (`navigator.storage.persist`).
+
 ## Sicherung, und warum sie nicht optional ist
 
 Alles steht im lokalen Speicher dieses einen Browsers auf diesem einen Geraet.
@@ -117,9 +130,11 @@ aussagekraeftig. Wer die Sicherung weitergibt, gibt das mit weiter.
 | Bereich | Was er macht |
 |---|---|
 | **Heute** | Oben ein grosser Regler fuer das Befinden, 0 bis 10, nach rechts heisst besser. Darunter die Regler aller gewaehlten Erkrankungen, je Erkrankung eine Frage des Tages (Gluten, Sonne, Schilddruesentablette, Stuhlgang ...), Schlaf, Zeichen, Bewegung, Medikamente, Notiz, ein Rezeptvorschlag. Ein unberuehrter Regler bleibt leer, und leer ist auch eine Antwort. Oben die Termine der naechsten sieben Tage, unten der Stand in einem Satz. |
-| **Verlauf** | Oben der Stand der letzten 14 Tage (siehe unten). Bis zu drei Regler als Linien ueber 14, 30 oder 90 Tage, frei waehlbar. Kalender nach Befinden, Tabelle, Nachtragen eines beliebigen Tages. |
+| **Heute** (oben) | Die Woche als Streifen, jeder Tag in der Farbe seines Befindens, antippen springt zum Tag; darunter, wie viel vom Tag schon erfasst ist. Die Fragen des Tages stehen in einer Karte, die Notiz ist das Journal des Tages. |
+| **Journal** (Route `#/verlauf`) | Bilanz: Tage im Journal, laufende und laengste Serie, Anteil der letzten 30 Tage, Befinden im Mittel mit Vergleich, ein Balken je Tag. Monatskalender in den Farben des Befindens, mit Punkten fuer Termin, Warnzeichen und Notiz; ein Tag aufgeklappt als Eintrag. Stand der letzten 14 Tage. Statistik: n, Mittel mit Streuung, Median, Spanne, Trend je Woche (Ausgleichsgerade, ab 8 Werten), Zusammenhaenge nach Pearson ab 14 gemeinsamen Tagen mit Einordnung nach Cohen, Wochentage, haeufigste Zeichen. Bis zu drei Regler als Linien ueber 14, 30 oder 90 Tage, frei waehlbar. Kalender nach Befinden, Tabelle, Nachtragen eines beliebigen Tages. |
 | **Essen** | Rezepte des Monats, passend zu den Erkrankungen, mit Herz zum Merken. Hinweise, wo eine Zutat nicht zur Erkrankung passt. Gemerkte Rezepte. Die Regeln je Erkrankung. |
 | **Wissen** | Aktuelle Forschung aus PubMed je Erkrankung und fuer jedes Paar, Arbeiten zum Merken. Die Kapitel aus dem Bericht, Warnzeichen, Fragen fuer den Termin. |
+| **Termine** | Eigener Bereich: Bilanz, naechster Termin mit Countdown, Fragen zum Mitnehmen und Kalenderdatei; nach dem Termin Ergebnis, naechste Schritte und Verordnung festhalten; Verlauf der Behandlung nach Fachrichtung filterbar. Die Arztmappe zeigt die Termine im Zeitraum mit Ergebnis. |
 | **Mappe** | Meine Erkrankungen, Arztmappe je Erkrankung oder alles, Gemerktes, Medikamente mit Erinnerung, Laborwerte mit Verlaufslinie, Termine mit Erinnerung, Anlaufstellen, Sicherung, Darstellung. |
 
 ### Erkrankungen als Bausteine
@@ -189,14 +204,19 @@ Zutaten, Zeiten, Portionen, Autorin und Adresse in `rezepte-netz.js`. Die
 Zubereitung ist Text der Autorin und bleibt auf der Originalseite; die App
 verlinkt sie. Bilder werden nicht kopiert.
 
-Gluten, dreifach: die Quelle ist glutenfrei oder markiert das Rezept so; eine
-Zutat auf der Sperrliste (Weizen, Dinkel, Gerste, Roggen, Malz, Couscous ...)
-verwirft das Rezept; eine Zutat, die nur mit Zusatz sicher ist (Mehl, Hafer,
-Brot, Kekse, Sojasauce, Backpulver, Bruehe, Bruehwuerfel ...), muss den Zusatz tragen, sonst steht
-beim Rezept sichtbar "Bitte pruefen". Ein schwacher Zusatz wie "glutenfrei
-moeglich" oder "gluten-free as needed" zaehlt nicht. Deutsche
-Zusammensetzungen (Butterkekse, Hartweizengriess) werden erkannt. Eine Garantie
-ist das nicht, und die App sagt das bei jedem Rezept aus dem Netz.
+Gluten, streng, seit Oktober 2026 (`werkzeug/glutenpruefung.js`): die Quelle
+ist glutenfrei oder markiert das Rezept so, und jede einzelne Zutatenzeile muss
+bestaetigt sein. Gesperrt (Weizen, Dinkel, Gerste, Roggen, Malz, Couscous ...)
+nur mit ausdruecklichem glutenfrei; nur mit Zusatz sicher (Mehl, Hafer, Brot,
+Nudeln, Sojasauce, Kekse ...) nur mit glutenfrei oder als bekannte glutenfreie
+Sorte; Packungsware (Backpulver, Bruehe, Schokolade, Gewuerzmischungen,
+glutenfreie Mehle ...) kommt auf die Einkaufsliste "mit Aufschrift glutenfrei
+kaufen" (EU: hoechstens 20 mg/kg, VO (EU) 828/2014); alles andere muss auf
+der Positivliste von Natur aus glutenfreier Einzelzutaten stehen. Eine Zeile,
+die die Pruefung nicht kennt, ein schwacher Zusatz ("glutenfrei moeglich") oder
+eine glutenhaltige Alternative ("or regular flour") verwirft das ganze Rezept.
+`pruefe-module.js` laesst jedes Rezept in `rezepte-netz.js` noch einmal durch
+dieselbe Pruefung. Eine Laboranalyse ist das nicht, und die App sagt das.
 
 Passend zur Erkrankung: `rezeptAchtung` in `module.js` sucht in den Zutaten
 nach dem, was nicht passt (Alkohol bei Psoriasis und Arthritis wegen
