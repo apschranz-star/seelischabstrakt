@@ -70,6 +70,10 @@ body[data-hero="minimal"] .hero{padding-block:clamp(28px,4vw,48px)}
 body[data-hero="minimal"] .wordmark{font-size:clamp(40px,7vw,96px)}
 .wordmark{font-family:var(--f-display);font-weight:800;line-height:.84;letter-spacing:-.045em;font-size:clamp(60px,12.5vw,176px);color:var(--ink);text-shadow:0 3px 0 rgba(0,0,0,.18)}
 .wordmark span{display:block}
+/* living colour: the word abstrakt is filled with paint that drifts and follows a finger or the mouse */
+.wordmark{position:relative}
+.wm-live{position:absolute;left:0;top:0;pointer-events:none}
+.wordmark.live #wm-bottom{color:transparent}
 .wordmark .lo{font-weight:300;letter-spacing:-.03em;color:var(--ink-2);padding-left:.06em}
 .motto{font-family:var(--f-mono);font-style:italic;font-size:clamp(16px,1.8vw,22px);color:var(--ink);margin:18px 0 0;letter-spacing:.02em}
 .hero-side{display:grid;gap:20px;max-width:44ch}
@@ -644,6 +648,93 @@ function renderTicker(){
   document.getElementById("trust").hidden=true;
   const mk=document.getElementById("mark"); mk.setAttribute("aria-label",tx("nav.contact")); mk.hidden=hide.has("contact");
 }
+/* ---------- living colour in "abstrakt" ----------
+   The colours of the paintings drift inside the letters; a swipe or the mouse
+   drags them along and leaves a smear that slowly closes again. Purely for the
+   look. The real text stays in the page (transparent) for screen readers,
+   search and selection. theme.layout.liveColour:false turns it off; with
+   reduced motion the word gets one still frame of colour. */
+const LiveColour=(()=>{
+  const PAL=["#D7262B","#2F5C9A","#7B3FA6","#F2B429","#EFE7D8","#120D0D","#E8879B","#4F8C86"];
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let host,span,cv,ctx,low,lc,paint,pc,mask,glyphs=[],font="",asc=0,W=0,H=0,dpr=1,raf=0,vis=false,t0=performance.now(),born=0,ci=0,dist=0;
+  const blobs=PAL.concat(PAL,PAL).map((c,i)=>({c,hx:(i*.137+.03)%1,hy:((i*.61)%1),x:0,y:0,vx:0,vy:0,r:.32+((i*7)%5)*.09,ph:i*1.7,sp:.14+((i*3)%5)*.04}));
+  let grain=null;
+  const ptr={x:-1e4,y:-1e4,px:null,py:null,vx:0,vy:0,on:0};
+  function mount(){
+    host=document.querySelector(".hero .wordmark"); span=document.getElementById("wm-bottom");
+    const off=SITE?.theme?.layout?.liveColour===false;
+    if(!host||!span||off||!document.createElement("canvas").getContext){ if(cv) cv.remove(); host?.classList.remove("live"); return; }
+    if(!cv){ cv=document.createElement("canvas"); cv.className="wm-live"; cv.setAttribute("aria-hidden","true"); ctx=cv.getContext("2d");
+      low=document.createElement("canvas"); lc=low.getContext("2d"); paint=document.createElement("canvas"); pc=paint.getContext("2d"); mask=document.createElement("canvas"); listen(); }
+    if(cv.parentNode!==host) host.appendChild(cv);
+    measure();
+  }
+  function measure(){
+    const tn=span.firstChild; if(!tn||tn.nodeType!==3||!tn.length){ host.classList.remove("live"); return; }
+    const cs=getComputedStyle(span); font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; const fs=parseFloat(cs.fontSize);
+    ctx.font=font; const m=ctx.measureText(tn.data); asc=m.fontBoundingBoxAscent; if(!asc){ host.classList.remove("live"); return; }
+    const hr=host.getBoundingClientRect(), r=document.createRange(); glyphs=[]; let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+    for(let i=0;i<tn.length;i++){ r.setStart(tn,i); r.setEnd(tn,i+1); const b=r.getBoundingClientRect(); glyphs.push({ch:tn.data[i],x:b.left-hr.left,y:b.top-hr.top}); x0=Math.min(x0,b.left);x1=Math.max(x1,b.right);y0=Math.min(y0,b.top);y1=Math.max(y1,b.bottom); }
+    const pad=Math.round(fs*.08); x0=x0-hr.left-pad; y0=y0-hr.top-pad; W=Math.ceil(x1-hr.left+pad-x0); H=Math.ceil(y1-hr.top+pad-y0);
+    glyphs.forEach(g=>{ g.x-=x0; g.y-=y0; });
+    dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); cv.style.width=W+"px"; cv.style.height=H+"px"; cv.style.transform=`translate(${x0}px,${y0}px)`;
+    low.width=Math.max(8,Math.ceil(W/5)); low.height=Math.max(4,Math.ceil(H/5)); paint.width=Math.max(8,Math.ceil(W/2)); paint.height=Math.max(4,Math.ceil(H/2));
+    if(!grain){ const n=document.createElement("canvas"); n.width=n.height=96; const nc=n.getContext("2d"), id=nc.createImageData(96,96); for(let i=0;i<id.data.length;i+=4){ const v=Math.random()*255|0; id.data[i]=id.data[i+1]=id.data[i+2]=v; id.data[i+3]=255; } nc.putImageData(id,0,0); grain=ctx.createPattern(n,"repeat"); }
+    mask.width=cv.width; mask.height=cv.height; const mc=mask.getContext("2d"); mc.setTransform(dpr,0,0,dpr,0,0); mc.font=font; mc.textBaseline="alphabetic"; mc.fillStyle="#000"; glyphs.forEach(q=>mc.fillText(q.ch,q.x,q.y+asc));
+    host.classList.add("live"); if(!born) born=performance.now(); frame(performance.now()); if(!still) loop();
+  }
+  function hit(cx,cy){
+    if(!cv||!cv.isConnected) return; const b=cv.getBoundingClientRect(); const x=cx-b.left, y=cy-b.top; const m=Math.max(24,H*.25);
+    if(x<-m||y<-m||x>b.width+m||y>b.height+m){ ptr.px=null; return; }
+    if(ptr.px!==null){ const dx=x-ptr.px, dy=y-ptr.py; ptr.vx=ptr.vx*.5+dx*.5; ptr.vy=ptr.vy*.5+dy*.5; stroke(ptr.px,ptr.py,x,y,Math.hypot(dx,dy)); }
+    ptr.x=x; ptr.y=y; ptr.px=x; ptr.py=y; ptr.on=1; if(still) frame(performance.now());
+  }
+  function stroke(ax,ay,bx,by,d){
+    dist+=d; if(dist>H*1.4){ dist=0; ci=(ci+1)%PAL.length; }
+    const k=paint.width/W, w=Math.max(4,H*k*(.26+Math.min(.22,d/110))), L=Math.hypot(bx-ax,by-ay)||1, nx=-(by-ay)/L, ny=(bx-ax)/L;
+    pc.globalCompositeOperation="source-over"; pc.lineCap="round";
+    pc.strokeStyle=PAL[ci]; pc.lineWidth=w; pc.beginPath(); pc.moveTo(ax*k,ay*k); pc.lineTo(bx*k,by*k); pc.stroke();
+    /* bristles: thin lines of the neighbouring colours inside the stroke */
+    for(let j=0;j<4;j++){ const o=(j/3-.5)*w*.8; pc.strokeStyle=PAL[(ci+1+j)%PAL.length]; pc.globalAlpha=.55; pc.lineWidth=Math.max(1,w*.09); pc.beginPath(); pc.moveTo(ax*k+nx*o,ay*k+ny*o); pc.lineTo(bx*k+nx*o,by*k+ny*o); pc.stroke(); }
+    pc.globalAlpha=1;
+  }
+  function listen(){
+    addEventListener("pointermove",e=>{ if(e.pointerType==="mouse") hit(e.clientX,e.clientY); },{passive:true});
+    const tch=e=>{ const t=e.touches&&e.touches[0]; if(t) hit(t.clientX,t.clientY); };
+    addEventListener("touchstart",e=>{ ptr.px=null; tch(e); },{passive:true}); addEventListener("touchmove",tch,{passive:true});
+    addEventListener("touchend",()=>{ ptr.px=null; },{passive:true});
+    let rt=0; addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(()=>host&&span&&measure(),120); });
+    document.fonts?.ready?.then(()=>host&&span&&measure());
+    document.addEventListener("visibilitychange",loop);
+    if("IntersectionObserver" in window) new IntersectionObserver(([e])=>{ vis=e.isIntersecting; loop(); }).observe(document.querySelector(".hero")); else vis=true;
+  }
+  function loop(){ if(raf||still||!vis||document.hidden||!host?.classList.contains("live")) return; raf=requestAnimationFrame(function f(t){ frame(t); raf=(vis&&!document.hidden)?requestAnimationFrame(f):0; }); }
+  function frame(t){
+    const s=(t-t0)/1000, lw=low.width, lh=low.height;
+    /* a ghost brush sweeps through the word once after load, to show it is alive */
+    const g=(t-born)/1800; if(!still&&g>0&&g<1){ const gx=W*(-.05+g*1.1), gy=H*(.5+.28*Math.sin(g*Math.PI*3)); if(ptr.gx!=null) stroke(ptr.gx,ptr.gy,gx,gy,Math.hypot(gx-ptr.gx,gy-ptr.gy)); ptr.gx=gx; ptr.gy=gy; ptr.x=gx; ptr.y=gy; ptr.vx=W*.02; ptr.vy=0; ptr.on=1; }
+    lc.globalCompositeOperation="source-over"; lc.fillStyle=PAL[4]; lc.fillRect(0,0,lw,lh);
+    for(const b of blobs){
+      const hx=b.hx+Math.sin(s*b.sp+b.ph)*.18, hy=b.hy+Math.cos(s*b.sp*1.3+b.ph)*.35;
+      const px=(b.hx+b.x)*W, py=(b.hy+b.y)*H; const d=Math.hypot(px-ptr.x,py-ptr.y), R=H*1.1;
+      if(ptr.on>.01&&d<R){ const f=(1-d/R)*ptr.on*.0009; b.vx+=ptr.vx*f; b.vy+=ptr.vy*f*(W/H); }
+      b.vx+=(hx-b.hx-b.x)*.002; b.vy+=(hy-b.hy-b.y)*.002; b.vx*=.94; b.vy*=.94; b.x+=b.vx; b.y+=b.vy;
+      const cx=(b.hx+b.x)*lw, cy=(b.hy+b.y)*lh, rr=b.r*lh*1.3; const gr=lc.createRadialGradient(cx,cy,0,cx,cy,rr);
+      gr.addColorStop(0,b.c); gr.addColorStop(.62,b.c); gr.addColorStop(1,b.c+"00"); lc.fillStyle=gr; lc.beginPath(); lc.arc(cx,cy,rr,0,7); lc.fill();
+    }
+    ptr.on*=.94; ptr.vx*=.9; ptr.vy*=.9;
+    /* the smear drifts with the last movement and slowly closes */
+    if(!still){ pc.globalCompositeOperation="copy"; pc.globalAlpha=.985; pc.drawImage(paint,ptr.vx*.08,ptr.vy*.08+.06); pc.globalAlpha=1; }
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.globalCompositeOperation="source-over"; ctx.clearRect(0,0,W,H);
+    ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality="high"; ctx.drawImage(low,0,0,W,H); ctx.drawImage(paint,0,0,W,H);
+    if(ptr.on>.02){ ctx.globalCompositeOperation="soft-light"; const sh=ctx.createRadialGradient(ptr.x,ptr.y,0,ptr.x,ptr.y,H*.9); sh.addColorStop(0,`rgba(255,255,255,${.55*ptr.on})`); sh.addColorStop(1,"rgba(255,255,255,0)"); ctx.fillStyle=sh; ctx.fillRect(0,0,W,H); }
+    if(grain){ ctx.globalCompositeOperation="overlay"; ctx.globalAlpha=.16; ctx.fillStyle=grain; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1; }
+    ctx.globalCompositeOperation="destination-in"; ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(mask,0,0);
+    ctx.globalCompositeOperation="source-over";
+  }
+  return {mount};
+})();
 function applyCustom(){
   const ui=SITE.texts?.ui||{}; ["en","de"].forEach(l=>{ UI[l]=Object.assign({},UI_BASE[l],ui[l]||{}); });
   const hide=new Set(SITE.theme?.layout?.hideSections||[]);
@@ -669,7 +760,7 @@ function applyAll(){
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tx(el.dataset.i18n));
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
-  renderSite(); renderTicker(); renderDrops(); renderWorks(); setupReveal();
+  renderSite(); renderTicker(); renderDrops(); renderWorks(); setupReveal(); LiveColour.mount();
 }
 
 /* ---------- legal pages (templates, fill via site.json) ---------- */
