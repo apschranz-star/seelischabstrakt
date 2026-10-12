@@ -13,8 +13,8 @@
     "defaultLang": "en"
   },
   "theme": {
-    "preset": "custom",
-    "_presets": "carpet | shawl | paper | gallery | custom. A preset fills colors and pattern; custom uses the values below as they are.",
+    "preset": "atelier",
+    "_presets": "atelier | carpet | shawl | paper | gallery | custom. atelier is the quiet day and night gallery; _carpetBackup holds the previous red carpet setup to switch back.",
     "colors": {
       "ground": "#8C1D1D",
       "groundLine": "#3A0708",
@@ -51,7 +51,13 @@
     },
     "patternSvg": "img/carpet-tile.jpg",
     "patternSize": "1100px 1100px",
-    "customCss": "body{background-image:linear-gradient(rgba(25,6,6,.42),rgba(25,6,6,.42)),url(img/carpet-tile.jpg);background-size:auto,1100px 1100px}"
+    "customCss": "",
+    "_carpetBackup": {
+      "preset": "custom",
+      "customCss": "body{background-image:linear-gradient(rgba(25,6,6,.42),rgba(25,6,6,.42)),url(img/carpet-tile.jpg);background-size:auto,1100px 1100px}",
+      "patternSvg": "img/carpet-tile.jpg",
+      "patternSize": "1100px 1100px"
+    }
   },
   "commerce": {
     "currency": "EUR",
@@ -200,8 +206,8 @@
       "de": "Jede Edition ist signiert und nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe limitiert; eine ausverkaufte Größe wird nicht nachgedruckt."
     },
     "aboutLead": {
-      "en": "<b>Much in little.</b> Fragments, surfaces, marks. The hand stays visible.",
-      "de": "<b>Viel im Kleinen.</b> Fragmente, Oberflächen, Spuren. Die Hand bleibt sichtbar."
+      "en": "<b>Fragments, surfaces, marks.</b> The hand stays visible.",
+      "de": "<b>Fragmente, Oberflächen, Spuren.</b> Die Hand bleibt sichtbar."
     },
     "aboutParagraphs": {
       "en": [
