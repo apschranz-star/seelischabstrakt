@@ -1,0 +1,15 @@
+{
+  "name": "sofia",
+  "private": true,
+  "type": "module",
+  "description": "Sofia: personal nutrition and health app built from her nutritionist's plan. Static PWA plus two Netlify functions.",
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.8"
+  }
+}
