@@ -45,9 +45,12 @@ export function analizzaRiga(riga) {
   if (!mVal) return null;
   const valore = numero(mVal[1]);
   const dopoValore = resto.slice(mVal.index + mVal[0].length);
-  const unita = e.unita.map((u) => u.u).sort((a, b) => b.length - a.length).find((u) => dopoValore.toLowerCase().replace(/\s+/g, "").includes(u.toLowerCase().replace(/\s+/g, ""))) || e.unita[0].u;
+  const compatto = dopoValore.toLowerCase().replace(/\s+/g, "");
+  const candidate = e.unita.flatMap((u) => [u.u, ...(u.alias || [])].map((nomeU) => ({ u: u.u, n: nomeU.toLowerCase().replace(/\s+/g, "") }))).sort((x, y) => y.n.length - x.n.length);
+  const trovata = candidate.find((c) => c.n && compatto.includes(c.n));
+  const unita = trovata ? trovata.u : e.unita[0].u;
   let min = null, max = null;
-  const intervallo = dopoValore.match(new RegExp(`(${NUM})\\s*(?:-|–|÷|a|to|bis)\\s*(${NUM})`));
+  const intervallo = dopoValore.match(new RegExp(`(${NUM})\\s*(?:-|\u2013|÷|a|to|bis)\\s*(${NUM})`));
   if (intervallo) { min = numero(intervallo[1]); max = numero(intervallo[2]); }
   else {
     const minore = dopoValore.match(new RegExp(`(?:<|≤|fino a|inferiore a|bis)\\s*(${NUM})`, "i"));

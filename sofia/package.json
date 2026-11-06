@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Sofia: personal nutrition and health app built from her nutritionist's plan. Static PWA plus two Netlify functions.",
   "scripts": {
-    "test": "node --test test/"
+    "test": "node --test test/*.test.mjs"
   },
   "engines": {
     "node": ">=20"

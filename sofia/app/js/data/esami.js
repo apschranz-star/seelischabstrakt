@@ -1,69 +1,48 @@
 /*
- * Lab markers Sofia can track. The app never ships reference ranges as
- * truth: she enters the range printed on her own report, because every lab
- * has its own. Units: the first unit is the canonical one, the others carry
- * the factor that converts them into it.
+ * Lab markers Sofia can track: 38 markers chosen and checked by the clinical
+ * evidence officer (docs/fonti/evidence-clinical.json), generated into
+ * esami-dati.js. Each marker has names (it, en, de), the aliases printed on
+ * Italian, Austrian and German reports, its units with the conversion factor
+ * to the canonical (SI) unit from the KDIGO tables, the body system, which
+ * side of the range matters, and why it matters for her, with sources.
  *
- * organo: the body system the marker belongs to in the 5D model
- *   brain, heart_vessels, kidneys, gut, blood, immune, joints, skin, bones,
- *   metabolism, liver, muscle
- * verso: which side of the lab range matters
- *   "alto" higher is worse, "basso" lower is worse, "entrambi" both
- * alias: spellings as printed on Italian, Austrian, German and English
- *   reports, used by the PDF import. Longer, more specific aliases win.
- *
- * Names, aliases, units and organs were checked by the clinical evidence
- * officer (docs/FONTI.md, council/evidence-clinical.json).
+ * Rules from the council, enforced here and in salute.js:
+ *   - no universal reference ranges: the range printed on her report is used
+ *   - units without a verified factor are never converted (antibody kits,
+ *     folate, urine red cells, HbA1c %): a trend only joins values with the
+ *     same unit
+ *   - the eGFR printed by the lab and the eGFR the app calculates (CKD-EPI
+ *     2021) are separate series, never one trend
  */
-const U = (u, f = 1) => ({ u, f });
+import { ESAMI_DATI } from "./esami-dati.js";
 
-export const ESAMI = [
-  { id: "creatinina", it: "Creatinina", en: "Creatinine", de: "Kreatinin", campione: "sangue", organo: "kidneys", verso: "alto", unita: [U("mg/dL"), U("µmol/L", 1 / 88.42), U("umol/L", 1 / 88.42)], alias: ["creatinina", "creatinine", "kreatinin", "crea"], perche: { it: "Misura quanto bene filtrano i reni: va seguita nel lupus con interessamento renale.", en: "Shows how well the kidneys filter: it is followed in lupus with kidney involvement." } },
-  { id: "egfr", it: "eGFR (filtrato glomerulare stimato)", en: "eGFR (estimated glomerular filtration rate)", de: "eGFR", campione: "sangue", organo: "kidneys", verso: "basso", unita: [U("mL/min/1,73m²")], alias: ["filtrato glomerulare", "velocità di filtrazione", "egfr", "vfg", "gfr", "ckd-epi"], perche: { it: "La stima della funzione renale; l'app può anche calcolarla dalla creatinina.", en: "The estimate of kidney function; the app can also calculate it from creatinine." } },
-  { id: "upcr", it: "Rapporto proteine/creatinina nelle urine", en: "Urine protein/creatinine ratio", de: "Protein/Kreatinin-Quotient im Urin", campione: "urine", organo: "kidneys", verso: "alto", unita: [U("mg/g"), U("mg/mmol", 8.84), U("g/g", 1000), U("mg/mg", 1000)], alias: ["rapporto proteine/creatinina", "proteine/creatinina", "protein/creatinine", "protein/kreatinin", "upcr"], perche: { it: "Le proteine perse con le urine: è il segnale principale da seguire nella nefrite lupica.", en: "Protein lost in the urine: the main signal followed in lupus nephritis." } },
-  { id: "proteinuria_24h", it: "Proteinuria delle 24 ore", en: "24-hour urine protein", de: "Proteinurie 24 h", campione: "urine", organo: "kidneys", verso: "alto", unita: [U("g/24h"), U("mg/24h", 0.001)], alias: ["proteinuria 24", "proteinuria delle 24", "proteine urine 24", "24h urine protein", "proteinurie"], perche: { it: "Proteine raccolte in 24 ore: stessa domanda del rapporto proteine/creatinina.", en: "Protein collected over 24 hours: the same question as the protein/creatinine ratio." } },
-  { id: "acr", it: "Rapporto albumina/creatinina nelle urine", en: "Urine albumin/creatinine ratio", de: "Albumin/Kreatinin-Quotient", campione: "urine", organo: "kidneys", verso: "alto", unita: [U("mg/g"), U("mg/mmol", 8.84)], alias: ["albumina/creatinina", "albumin/creatinine", "albumin/kreatinin", "microalbuminuria", "uacr", "acr"], perche: { it: "L'albumina nelle urine, un segnale precoce di danno renale.", en: "Albumin in the urine, an early sign of kidney damage." } },
-  { id: "emazie_urine", it: "Emazie nelle urine", en: "Red cells in urine", de: "Erythrozyten im Urin", campione: "urine", organo: "kidneys", verso: "alto", unita: [U("/campo"), U("/µL")], alias: ["emazie", "ematuria", "eritrociti urine", "erythrozyten", "red blood cells urine"], perche: { it: "Sangue nelle urine, da riferire al nefrologo nel lupus renale.", en: "Blood in the urine, to report to the nephrologist in lupus nephritis." } },
-  { id: "emoglobina", it: "Emoglobina", en: "Haemoglobin", de: "Hämoglobin", campione: "sangue", organo: "blood", verso: "entrambi", unita: [U("g/dL"), U("g/L", 0.1)], alias: ["emoglobina", "hämoglobin", "haemoglobin", "hemoglobin", "hgb", "hb"], perche: { it: "Anemia: frequente sia nella celiachia (ferro) sia nel lupus.", en: "Anaemia: common in both coeliac disease (iron) and lupus." } },
-  { id: "globuli_bianchi", it: "Globuli bianchi", en: "White blood cells", de: "Leukozyten", campione: "sangue", organo: "immune", verso: "entrambi", unita: [U("10³/µL"), U("10^9/L"), U("/µL", 0.001)], alias: ["globuli bianchi", "leucociti", "leukozyten", "white blood cells", "wbc"], perche: { it: "Nel lupus possono abbassarsi; anche alcuni farmaci li modificano.", en: "They can drop in lupus; some medicines change them too." } },
-  { id: "linfociti", it: "Linfociti", en: "Lymphocytes", de: "Lymphozyten", campione: "sangue", organo: "immune", verso: "basso", unita: [U("10³/µL"), U("10^9/L")], alias: ["linfociti", "lymphozyten", "lymphocytes", "lym"], perche: { it: "Linfociti bassi sono comuni nel lupus attivo.", en: "Low lymphocytes are common in active lupus." } },
-  { id: "piastrine", it: "Piastrine", en: "Platelets", de: "Thrombozyten", campione: "sangue", organo: "blood", verso: "entrambi", unita: [U("10³/µL"), U("10^9/L")], alias: ["piastrine", "thrombozyten", "platelets", "plt"], perche: { it: "Possono abbassarsi nel lupus.", en: "They can drop in lupus." } },
-  { id: "ferritina", it: "Ferritina", en: "Ferritin", de: "Ferritin", campione: "sangue", organo: "blood", verso: "entrambi", unita: [U("ng/mL"), U("µg/L")], alias: ["ferritina", "ferritin"], perche: { it: "Le scorte di ferro: spesso basse nella celiachia.", en: "Iron stores: often low in coeliac disease." } },
-  { id: "ferro", it: "Ferro (sideremia)", en: "Serum iron", de: "Eisen", campione: "sangue", organo: "blood", verso: "basso", unita: [U("µg/dL"), U("µmol/L", 5.585)], alias: ["sideremia", "ferro sierico", "serum iron", "eisen", "ferro"], perche: { it: "Il ferro circolante, da leggere insieme alla ferritina.", en: "Circulating iron, read together with ferritin." } },
-  { id: "vitamina_b12", it: "Vitamina B12", en: "Vitamin B12", de: "Vitamin B12", campione: "sangue", organo: "brain", verso: "basso", unita: [U("pg/mL"), U("pmol/L", 1 / 0.7378)], alias: ["vitamina b12", "cobalamina", "cobalamin", "vitamin b12", "b12"], perche: { it: "Può mancare nella celiachia; serve a sangue e sistema nervoso.", en: "Can be low in coeliac disease; needed for blood and the nervous system." } },
-  { id: "folati", it: "Folati (acido folico)", en: "Folate", de: "Folsäure", campione: "sangue", organo: "blood", verso: "basso", unita: [U("ng/mL"), U("nmol/L", 1 / 2.266)], alias: ["acido folico", "folati", "folato", "folsäure", "folate"], perche: { it: "Può mancare nella celiachia; serve a formare il sangue.", en: "Can be low in coeliac disease; needed to form blood." } },
-  { id: "pcr", it: "Proteina C reattiva (PCR)", en: "C-reactive protein (CRP)", de: "CRP", campione: "sangue", organo: "immune", verso: "alto", unita: [U("mg/L"), U("mg/dL", 10)], alias: ["proteina c reattiva", "c-reaktives protein", "c-reactive protein", "pcr", "crp"], perche: { it: "Infiammazione generale.", en: "General inflammation." } },
-  { id: "ves", it: "VES", en: "ESR", de: "BSG", campione: "sangue", organo: "immune", verso: "alto", unita: [U("mm/h")], alias: ["velocità di eritrosedimentazione", "eritrosedimentazione", "blutsenkung", "ves", "bsg", "esr"], perche: { it: "Infiammazione: nel lupus sale spesso con l'attività di malattia.", en: "Inflammation: in lupus it often rises with disease activity." } },
-  { id: "c3", it: "Complemento C3", en: "Complement C3", de: "Komplement C3", campione: "sangue", organo: "immune", verso: "basso", unita: [U("mg/dL"), U("g/L", 100)], alias: ["complemento c3", "komplement c3", "complement c3", "c3"], perche: { it: "Nel lupus un C3 basso può indicare attività di malattia.", en: "In lupus a low C3 can indicate disease activity." } },
-  { id: "c4", it: "Complemento C4", en: "Complement C4", de: "Komplement C4", campione: "sangue", organo: "immune", verso: "basso", unita: [U("mg/dL"), U("g/L", 100)], alias: ["complemento c4", "komplement c4", "complement c4", "c4"], perche: { it: "Come il C3: un C4 basso può indicare attività del lupus.", en: "Like C3: a low C4 can indicate lupus activity." } },
-  { id: "anti_dsdna", it: "Anticorpi anti-dsDNA", en: "Anti-dsDNA antibodies", de: "Anti-dsDNA", campione: "sangue", organo: "immune", verso: "alto", unita: [U("UI/mL"), U("IU/mL")], alias: ["anti-dsdna", "anti dsdna", "anti-ds-dna", "anticorpi anti dna", "ds-dna"], perche: { it: "Autoanticorpi del lupus: il medico ne segue l'andamento.", en: "Lupus autoantibodies: the doctor follows their trend." } },
-  { id: "ttg_iga", it: "Anticorpi anti-transglutaminasi IgA", en: "Anti-tissue transglutaminase IgA", de: "Anti-Transglutaminase IgA", campione: "sangue", organo: "gut", verso: "alto", unita: [U("U/mL"), U("UA/mL"), U("CU")], alias: ["anti-transglutaminasi", "antitransglutaminasi", "anti transglutaminasi", "transglutaminase", "ttg-iga", "atg", "ttg", "tg2"], perche: { it: "Mostra se la dieta senza glutine sta funzionando.", en: "Shows whether the gluten-free diet is working." } },
-  { id: "iga_totali", it: "IgA totali", en: "Total IgA", de: "IgA gesamt", campione: "sangue", organo: "gut", verso: "basso", unita: [U("mg/dL"), U("g/L", 100)], alias: ["iga totali", "iga sieriche", "immunoglobuline a", "iga gesamt", "total iga"], perche: { it: "Serve a leggere correttamente gli anticorpi IgA della celiachia.", en: "Needed to read the coeliac IgA antibodies correctly." } },
-  { id: "vitamina_d", it: "25-OH vitamina D", en: "25-OH vitamin D", de: "25-OH-Vitamin D", campione: "sangue", organo: "bones", verso: "basso", unita: [U("ng/mL"), U("nmol/L", 1 / 2.496)], alias: ["25-oh vitamina d", "25(oh)d", "25-oh-d", "25 oh vitamina d", "vitamina d", "calcidiolo", "25-hydroxy", "vitamin d"], perche: { it: "Ossa e muscoli; spesso bassa nel lupus e nella celiachia.", en: "Bones and muscles; often low in lupus and coeliac disease." } },
-  { id: "calcio", it: "Calcio", en: "Calcium", de: "Kalzium", campione: "sangue", organo: "bones", verso: "entrambi", unita: [U("mg/dL"), U("mmol/L", 4.008)], alias: ["calcemia", "calcio totale", "kalzium", "calcium", "calcio"], perche: { it: "Ossa e muscoli.", en: "Bones and muscles." } },
-  { id: "fosforo", it: "Fosforo", en: "Phosphate", de: "Phosphat", campione: "sangue", organo: "kidneys", verso: "entrambi", unita: [U("mg/dL"), U("mmol/L", 3.097)], alias: ["fosfatemia", "fosforo", "phosphat", "phosphate", "phosphorus"], perche: { it: "Conta in dieta solo se la funzione renale cala: allora lo dice il medico.", en: "Matters in the diet only if kidney function falls: then the doctor says so." } },
-  { id: "potassio", it: "Potassio", en: "Potassium", de: "Kalium", campione: "sangue", organo: "kidneys", verso: "entrambi", unita: [U("mmol/L"), U("mEq/L")], alias: ["potassiemia", "potassio", "kalium", "potassium"], perche: { it: "Come il fosforo: diventa una regola di dieta solo se i reni filtrano meno.", en: "Like phosphate: it becomes a diet rule only if the kidneys filter less." } },
-  { id: "sodio", it: "Sodio", en: "Sodium", de: "Natrium", campione: "sangue", organo: "kidneys", verso: "entrambi", unita: [U("mmol/L"), U("mEq/L")], alias: ["sodiemia", "sodio", "natrium", "sodium"], perche: { it: "Equilibrio dei liquidi.", en: "Fluid balance." } },
-  { id: "albumina", it: "Albumina", en: "Albumin", de: "Albumin", campione: "sangue", organo: "muscle", verso: "basso", unita: [U("g/dL"), U("g/L", 0.1)], alias: ["albumina sierica", "albumina", "albumin"], perche: { it: "Proteine nel sangue: cala se se ne perdono molte con le urine.", en: "Protein in the blood: it falls if much is lost in the urine." } },
-  { id: "colesterolo_totale", it: "Colesterolo totale", en: "Total cholesterol", de: "Gesamtcholesterin", campione: "sangue", organo: "heart_vessels", verso: "alto", unita: [U("mg/dL"), U("mmol/L", 38.67)], alias: ["colesterolo totale", "gesamtcholesterin", "total cholesterol", "cholesterin"], perche: { it: "Cuore e vasi; il lupus aumenta il rischio cardiovascolare.", en: "Heart and vessels; lupus raises cardiovascular risk." } },
-  { id: "ldl", it: "Colesterolo LDL", en: "LDL cholesterol", de: "LDL-Cholesterin", campione: "sangue", organo: "heart_vessels", verso: "alto", unita: [U("mg/dL"), U("mmol/L", 38.67)], alias: ["colesterolo ldl", "ldl-cholesterin", "ldl cholesterol", "ldl-c", "ldl"], perche: { it: "Il colesterolo che si deposita nei vasi.", en: "The cholesterol that deposits in vessels." } },
-  { id: "hdl", it: "Colesterolo HDL", en: "HDL cholesterol", de: "HDL-Cholesterin", campione: "sangue", organo: "heart_vessels", verso: "basso", unita: [U("mg/dL"), U("mmol/L", 38.67)], alias: ["colesterolo hdl", "hdl-cholesterin", "hdl cholesterol", "hdl-c", "hdl"], perche: { it: "Il colesterolo protettivo.", en: "The protective cholesterol." } },
-  { id: "trigliceridi", it: "Trigliceridi", en: "Triglycerides", de: "Triglyzeride", campione: "sangue", organo: "heart_vessels", verso: "alto", unita: [U("mg/dL"), U("mmol/L", 88.57)], alias: ["trigliceridi", "triglyzeride", "triglyceride", "triglycerides"], perche: { it: "Grassi nel sangue; risentono di zuccheri e alcol.", en: "Blood fats; affected by sugar and alcohol." } },
-  { id: "glicemia", it: "Glicemia a digiuno", en: "Fasting glucose", de: "Nüchternglukose", campione: "sangue", organo: "metabolism", verso: "entrambi", unita: [U("mg/dL"), U("mmol/L", 18.016)], alias: ["glicemia", "glucosio", "glukose", "glucose"], perche: { it: "Zuccheri nel sangue; i cortisonici possono alzarla.", en: "Blood sugar; steroids can raise it." } },
-  { id: "hba1c", it: "Emoglobina glicata (HbA1c)", en: "HbA1c", de: "HbA1c", campione: "sangue", organo: "metabolism", verso: "alto", unita: [U("mmol/mol"), U("%", null)], alias: ["emoglobina glicata", "glykiertes hämoglobin", "hba1c", "glicata"], perche: { it: "La media degli zuccheri degli ultimi 2-3 mesi.", en: "Average blood sugar over the last 2-3 months." } },
-  { id: "alt", it: "ALT (GPT)", en: "ALT", de: "ALT (GPT)", campione: "sangue", organo: "liver", verso: "alto", unita: [U("U/L")], alias: ["alanina aminotransferasi", "alanin-aminotransferase", "alt", "gpt", "alat"], perche: { it: "Fegato; da controllare anche con alcuni farmaci.", en: "Liver; checked with some medicines too." } },
-  { id: "ast", it: "AST (GOT)", en: "AST", de: "AST (GOT)", campione: "sangue", organo: "liver", verso: "alto", unita: [U("U/L")], alias: ["aspartato aminotransferasi", "aspartat-aminotransferase", "ast", "got", "asat"], perche: { it: "Fegato e muscoli.", en: "Liver and muscles." } },
-  { id: "ggt", it: "Gamma-GT", en: "Gamma-GT", de: "Gamma-GT", campione: "sangue", organo: "liver", verso: "alto", unita: [U("U/L")], alias: ["gamma-gt", "gamma gt", "γ-gt", "ggt"], perche: { it: "Fegato.", en: "Liver." } },
-  { id: "tsh", it: "TSH", en: "TSH", de: "TSH", campione: "sangue", organo: "metabolism", verso: "entrambi", unita: [U("mUI/L"), U("µUI/mL"), U("mIU/L")], alias: ["tireotropina", "tsh"], perche: { it: "Tiroide: le malattie autoimmuni della tiroide sono più frequenti con celiachia e lupus.", en: "Thyroid: autoimmune thyroid disease is more common with coeliac disease and lupus." } },
-];
-
+export const ESAMI = ESAMI_DATI;
 export const ESAME = Object.fromEntries(ESAMI.map((e) => [e.id, e]));
 
-/* Convert a value to the canonical unit of its marker. HbA1c % -> mmol/mol uses the IFCC-NGSP master equation. */
+/* The eGFR the app computes from creatinine: shown as its own series. */
+export const EGFR_CALC = {
+  id: "egfr_calc", it: "eGFR calcolato dall'app (CKD-EPI 2021)", en: "eGFR calculated by the app (CKD-EPI 2021)", de: "eGFR berechnet (CKD-EPI 2021)",
+  campione: "sangue", organo: "kidneys", organiSecondari: [], verso: "basso",
+  unita: [{ u: "mL/min/1.73 m2", f: 1, canonica: "mL/min/1.73 m2", alias: [] }], alias: [],
+  perche: { it: "Calcolato dalla tua creatinina, età e sesso con l'equazione CKD-EPI 2021. Non va unito all'eGFR stampato dal laboratorio, che può usare un'altra equazione.", en: "Calculated from your creatinine, age and sex with the CKD-EPI 2021 equation. Not to be joined with the eGFR printed by the lab, which may use another equation." },
+  calcolato: true,
+};
+
+export function unitaDi(id, unita) {
+  const e = id === "egfr_calc" ? EGFR_CALC : ESAME[id];
+  if (!e) return null;
+  const u = String(unita || "").toLowerCase().replace(/\s+/g, "");
+  return e.unita.find((x) => x.u.toLowerCase().replace(/\s+/g, "") === u || (x.alias || []).some((a) => a.toLowerCase().replace(/\s+/g, "") === u)) || null;
+}
+
+/* Value in the canonical unit, or null when no verified factor exists. */
 export function inCanonica(id, valore, unita) {
-  const e = ESAME[id];
-  if (!e || valore == null) return valore;
-  if (id === "hba1c" && unita === "%") return (valore - 2.152) / 0.09148;
-  const u = e.unita.find((x) => x.u === unita);
-  return u && u.f != null ? valore * u.f : valore;
+  if (valore == null) return null;
+  const u = unitaDi(id, unita);
+  return u && u.f != null ? valore * u.f : null;
+}
+
+export function canonica(id) {
+  const e = id === "egfr_calc" ? EGFR_CALC : ESAME[id];
+  return e ? (e.unita.find((x) => x.f === 1) || e.unita[0]).canonica || e.unita[0].u : "";
 }

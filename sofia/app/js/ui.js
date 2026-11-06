@@ -7,7 +7,7 @@ export function esc(s) {
 export const attr = (o) => esc(JSON.stringify(o));
 
 /* ------------------------------------------------------------- icons */
-const S = (d, extra = "") => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+const S = (d, extra = "") => `<svg class="ico-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
 export const I = {
   oggi: S('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
   settimana: S('<rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/>'),
@@ -71,7 +71,7 @@ export function num(n, dec = 0) {
 export function numAuto(n) {
   if (n == null || Number.isNaN(n)) return "-";
   const a = Math.abs(n);
-  return num(n, a >= 100 ? 0 : a >= 10 ? 1 : a >= 1 ? 2 : 3);
+  return num(n, a >= 100 ? 0 : a >= 10 ? 1 : 2);
 }
 export function dataLunga(iso) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -165,6 +165,13 @@ export function graficoLinea({ punti, banda = null, tendenza = null, unita = "",
   svg += `<line class="croce" x1="0" x2="0" y1="${mt}" y2="${H - mb}" visibility="hidden"/></svg>`;
   const dati = pts.map((p) => ({ x: p.x, y: p.y, px: p.px, fuori: !!p.fuori }));
   return `<div class="grafico" data-grafico="${attr({ dati, unita, decimali, W })}">${svg}<div class="tooltip" role="status"></div></div>`;
+}
+
+/* Widths and colours computed at render time: set through the DOM, which
+   the page's style-src 'self' allows, instead of style attributes. */
+export function applicaStili(root) {
+  for (const el of root.querySelectorAll("[data-w]")) el.style.width = Math.max(0, Math.min(100, Number(el.dataset.w) || 0)) + "%";
+  for (const el of root.querySelectorAll("[data-bg]")) el.style.background = el.dataset.bg;
 }
 
 /* Crosshair and tooltip for every chart in a container: pointer and keyboard. */

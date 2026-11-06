@@ -11,7 +11,7 @@
  * No data, no score: the organ stays grey. The score is a summary of her
  * entries, not a diagnosis, and the app says so wherever it is shown.
  */
-import { ESAMI, ESAME, inCanonica } from "../data/esami.js";
+import { ESAMI, ESAME, EGFR_CALC, inCanonica } from "../data/esami.js";
 import { egfr2021, bmi, categoriaBmi, giorniDa } from "./stats.js";
 import { aggiungiGiorni } from "./planner.js";
 
@@ -30,6 +30,7 @@ export const ORGANI = [
   { id: "muscle", it: "Muscoli", en: "Muscles", abitudini: ["passi"] },
 ];
 for (const o of ORGANI) o.esami = ESAMI.filter((e) => e.organo === o.id).map((e) => e.id);
+/* The computed eGFR has no lab range, so it never scores an organ; it is shown next to the lab's eGFR. */
 
 export const SCALE = {
   energia: { min: 1, max: 5, buono: "alto" },
@@ -50,7 +51,7 @@ export function statoDaPunteggio(p) {
 
 /* One lab result against its own range. */
 export function valutaEsame(r) {
-  const e = ESAME[r.marker];
+  const e = r.marker === "egfr_calc" ? EGFR_CALC : ESAME[r.marker];
   if (!e || r.valore == null) return { punteggio: null, stato: "nd" };
   const { min, max } = r;
   if (min == null && max == null) return { punteggio: null, stato: "nd" };
@@ -71,19 +72,37 @@ export function eta(profilo, alGiorno) {
   return Number(alGiorno.slice(0, 4)) - anno;
 }
 
-/* All results of one marker up to a date, oldest first, with eGFR computed
-   from creatinine when the report did not print it and age and sex are known. */
+/* All results of one marker up to a date, oldest first. "canon" is the value
+   in the canonical unit when a verified factor exists, otherwise null; a
+   trend only joins values that share the same canonical scale or the same unit. */
 export function serieEsame(s, marker, finoA = "9999-12-31") {
-  const out = s.esami.filter((r) => r.marker === marker && r.data <= finoA).map((r) => ({ ...r, canon: inCanonica(marker, r.valore, r.unita) }));
-  if (marker === "egfr") {
-    const date = new Set(out.map((r) => r.data));
-    for (const c of s.esami.filter((r) => r.marker === "creatinina" && r.data <= finoA && !date.has(r.data))) {
-      const e = eta(s.profilo, c.data);
-      const v = egfr2021({ creatinina: inCanonica("creatinina", c.valore, c.unita), eta: e, sesso: s.profilo.sesso });
-      if (v) out.push({ id: "calc-" + c.id, data: c.data, marker: "egfr", valore: Math.round(v), unita: "mL/min/1,73m²", min: null, max: null, calcolato: true, canon: v });
-    }
+  if (marker === "egfr_calc") return serieEgfrCalcolato(s, finoA);
+  return s.esami.filter((r) => r.marker === marker && r.data <= finoA)
+    .map((r) => ({ ...r, canon: inCanonica(marker, r.valore, r.unita) }))
+    .sort((a, b) => (a.data < b.data ? -1 : 1));
+}
+
+/* CKD-EPI 2021 from each creatinine result, when birth year and sex are known. */
+export function serieEgfrCalcolato(s, finoA = "9999-12-31") {
+  const out = [];
+  for (const c of s.esami.filter((r) => r.marker === "creatinine" && r.data <= finoA)) {
+    const umol = inCanonica("creatinine", c.valore, c.unita);
+    const e = eta(s.profilo, c.data);
+    const v = umol != null ? egfr2021({ creatinina: umol / 88.4, eta: e, sesso: s.profilo.sesso }) : null;
+    if (v) out.push({ id: "calc-" + c.id, data: c.data, marker: "egfr_calc", valore: Math.round(v), unita: "mL/min/1.73 m2", min: null, max: null, calcolato: true, canon: v });
   }
   return out.sort((a, b) => (a.data < b.data ? -1 : 1));
+}
+
+/* Split a series where units cannot be converted into each other. */
+export function gruppiConfrontabili(serie) {
+  const gruppi = new Map();
+  for (const r of serie) {
+    const k = r.canon != null ? "canon" : "u:" + String(r.unita).toLowerCase();
+    if (!gruppi.has(k)) gruppi.set(k, []);
+    gruppi.get(k).push(r);
+  }
+  return [...gruppi.entries()].map(([k, righe]) => ({ chiave: k, convertito: k === "canon", righe }));
 }
 
 function ultimi(s, finoA, giorni) {
@@ -154,7 +173,7 @@ export function dateDati(s) {
 
 /* For the kidney sentinel: is any recent kidney result outside the lab range? */
 export function renaleFuoriRange(s, oggi) {
-  return ["creatinina", "egfr", "upcr", "proteinuria_24h", "acr"].some((m) => {
+  return ["creatinine", "egfr", "upcr", "proteinuria_24h", "uacr"].some((m) => {
     const serie = s.esami.filter((r) => r.marker === m && giorniDa(oggi, r.data) <= 180).sort((a, b) => (a.data < b.data ? -1 : 1));
     const u = serie[serie.length - 1];
     return u && valutaEsame(u).stato !== "ok" && valutaEsame(u).stato !== "nd";

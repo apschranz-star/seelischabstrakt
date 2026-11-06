@@ -46,8 +46,8 @@ function cervelloGeom() {
     v.fromBufferAttribute(p, i);
     const n = v.clone().normalize();
     /* folds: a few crossing sine waves, a groove down the middle */
-    let f = 0.012 * Math.sin(n.x * 22 + n.y * 9) + 0.01 * Math.sin(n.y * 25 - n.z * 13) + 0.008 * Math.sin(n.z * 31 + n.x * 7);
-    f -= 0.03 * Math.exp(-Math.pow(n.x * 9, 2));
+    let f = 0.005 * Math.sin(n.x * 18 + n.y * 7) + 0.004 * Math.sin(n.y * 21 - n.z * 11) + 0.003 * Math.sin(n.z * 26 + n.x * 5);
+    f -= 0.022 * Math.exp(-Math.pow(n.x * 9, 2));
     v.add(n.multiplyScalar(f));
     v.set(v.x * 1.0, v.y * 0.82, v.z * 1.18);
     p.setXYZ(i, v.x, v.y, v.z);
@@ -122,7 +122,7 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
   };
   const sfera = (r, mat, x, y, z, sx = 1, sy = 1, sz = 1) => { const m = new THREE.Mesh(new THREE.SphereGeometry(r, 28, 20), mat); m.position.set(x, y, z); m.scale.set(sx, sy, sz); return m; };
 
-  const mCerv = vetro(COLORI.nd, { alfa: 0.18, rim: 1.1, potenza: 1.6 });
+  const mCerv = vetro(COLORI.nd, { alfa: 0.12, rim: 0.85, potenza: 2.0 });
   const cerv = new THREE.Mesh(cervelloGeom(), mCerv); cerv.position.set(0, 1.715, 0.0);
   nuovo("brain", [cerv], new THREE.Vector3(0, 1.72, 0));
 
@@ -147,7 +147,7 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
 
   const mArt = vetro(COLORI.nd, { alfa: 0.35, rim: 1.2, potenza: 1.3 });
   const giunti = [];
-  for (const s of [-1, 1]) for (const [x, y] of [[0.215, 1.39], [0.29, 1.1], [0.31, 0.82], [0.1, 0.8], [0.11, 0.38], [0.115, -0.03]]) giunti.push(sfera(0.028, mArt, s * x, y, 0.01));
+  for (const s of [-1, 1]) for (const [x, y] of [[0.215, 1.39], [0.29, 1.1], [0.31, 0.82], [0.1, 0.8], [0.11, 0.38], [0.115, -0.03]]) giunti.push(sfera(0.022, mArt, s * x, y, 0.01));
   nuovo("joints", giunti, new THREE.Vector3(0.29, 1.1, 0.01));
 
   const mImm = vetro(COLORI.nd, { alfa: 0.35, rim: 1.2, potenza: 1.3 });
@@ -165,7 +165,7 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
   ].map((c) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(c.map((p) => new THREE.Vector3(...p))), 80, 0.008, 6, false), mSang));
   nuovo("blood", vasi, new THREE.Vector3(0.0, 1.0, -0.03));
 
-  const mMusc = vetro(COLORI.nd, { alfa: 0.05, rim: 0.5, potenza: 2.0 });
+  const mMusc = vetro(COLORI.nd, { alfa: 0.015, rim: 0.28, potenza: 2.6 });
   const muscoli = [];
   for (const s of [-1, 1]) { const a = capsula(0.06, 0.3, mMusc); a.position.set(s * 0.1, 0.6, 0); muscoli.push(a); const b = capsula(0.043, 0.2, mMusc); b.position.set(s * 0.255, 1.25, 0); b.rotation.z = s * 0.16; muscoli.push(b); }
   nuovo("muscle", muscoli, new THREE.Vector3(0.1, 0.6, 0));
@@ -271,7 +271,7 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
       const stato = o.gruppo ? o.gruppo.userData.stato : o.stato || "nd";
       const ritmo = ridotto ? 0 : PULSO[stato] || 1;
       const battito = id === "heart_vessels" ? 1 + 0.08 * Math.max(0, Math.sin(tempo * 7.5)) * (ridotto ? 0 : 1) : 1 + 0.035 * Math.sin(tempo * ritmo * 2 + (o.gruppo ? o.gruppo.userData.fase : 0));
-      const enfasi = 1 + o.evidenza * 0.25;
+      const enfasi = 1 + Math.min(o.evidenza, 1) * 0.12;
       o.evidenza = Math.max(0, o.evidenza - dt * 0.25);
       if (o.gruppo && id !== "metabolism") o.gruppo.scale.setScalar(battito * enfasi);
       for (const m of o.mats) {

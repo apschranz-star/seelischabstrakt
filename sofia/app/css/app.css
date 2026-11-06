@@ -104,6 +104,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 a { color: var(--olive-ink); }
 :root[data-tema="scuro"] a { color: var(--olive); }
 img, svg { display: block; }
+svg.ico-svg { width: 20px; height: 20px; flex: none; }
+.ricetta-link svg, .minimo svg { width: 15px; height: 15px; }
+a.card.consiglio { padding: 14px 16px; }
+a.card.consiglio > svg { width: 20px; height: 20px; color: var(--ink-3); }
+a.card.consiglio .riga svg { width: 26px; height: 26px; color: var(--plum); }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :focus-visible { outline: 2px solid var(--plum); outline-offset: 2px; border-radius: 6px; }
 
@@ -427,3 +432,32 @@ hr.sottile { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
   body { padding: 0; background: #fff; }
   .card { box-shadow: none; break-inside: avoid; }
 }
+
+/* Former inline styles. The page forbids style attributes (style-src 'self'), so they live here. */
+[data-s="s11696"] { margin:0; }
+[data-s="s18853"] { border:0;padding:0; }
+[data-s="s2a1b7"] { display:block; }
+[data-s="s54c2a"] { text-align:right; }
+[data-s="s56f43"] { margin-top:12px; }
+[data-s="s57b72"] { color:var(--trend); }
+[data-s="s6fb77"] { color:var(--series); }
+[data-s="s72143"] { display:block;padding:9px 0;border-top:1px solid var(--line); }
+[data-s="s80d65"] { text-decoration:none; }
+[data-s="s81ccb"] { margin:10px 2px; }
+[data-s="s83ef8"] { color:var(--bad); }
+[data-s="s8a77e"] { margin-top:8px; }
+[data-s="s96ad6"] { margin-top:4px; }
+[data-s="s96d03"] { margin:14px 0 6px; }
+[data-s="s97445"] { flex:1; }
+[data-s="s9ba0e"] { text-decoration:none;margin-bottom:12px; }
+[data-s="s9e40d"] { margin:6px 0 4px; }
+[data-s="sa0ec6"] { display:block;padding:10px 0;border-top:1px solid var(--line); }
+[data-s="sa6409"] { text-decoration:none;color:inherit;margin-top:12px; }
+[data-s="sb98c5"] { color:var(--terra); }
+[data-s="sc1385"] { margin:8px 0;padding:12px; }
+[data-s="sc1faf"] { margin:6px 0; }
+[data-s="sd2c17"] { margin-top:10px; }
+[data-s="sd4531"] { margin:4px 0 6px; }
+[data-s="sd6f2a"] { margin-top:14px; }
+[data-s="sda12f"] { margin-bottom:12px; }
+[data-s="sfe7b4"] { margin-top:6px; }

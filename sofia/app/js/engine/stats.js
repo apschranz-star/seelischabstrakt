@@ -114,15 +114,15 @@ export function bmi(kg, cm) {
   return kg / (m * m);
 }
 
-/* WHO adult categories. */
+/* WHO adult categories, WHO Technical Report Series 894, Table 2.1 (labels as verified by the clinical evidence officer). */
 export function categoriaBmi(v) {
   if (v == null) return null;
   if (v < 18.5) return { id: "sotto", it: "Sottopeso", en: "Underweight" };
-  if (v < 25) return { id: "normale", it: "Normopeso", en: "Normal weight" };
-  if (v < 30) return { id: "sovrappeso", it: "Sovrappeso", en: "Pre-obesity" };
-  if (v < 35) return { id: "ob1", it: "Obesità classe I", en: "Obesity class I" };
-  if (v < 40) return { id: "ob2", it: "Obesità classe II", en: "Obesity class II" };
-  return { id: "ob3", it: "Obesità classe III", en: "Obesity class III" };
+  if (v < 25) return { id: "normale", it: "Normopeso", en: "Normal range" };
+  if (v < 30) return { id: "sovrappeso", it: "Sovrappeso (pre-obesità)", en: "Pre-obese (overweight)" };
+  if (v < 35) return { id: "ob1", it: "Obesità di classe I", en: "Obese class I" };
+  if (v < 40) return { id: "ob2", it: "Obesità di classe II", en: "Obese class II" };
+  return { id: "ob3", it: "Obesità di classe III", en: "Obese class III" };
 }
 
 /* Exponentially smoothed weight trend: daily weights move with water and

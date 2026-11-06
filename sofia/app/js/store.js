@@ -22,6 +22,8 @@ export function vuoto() {
     pressione: [],
     diario: {},
     preferite: [],
+    bozze: {},
+    webCache: null,
     ultimoBackup: null,
     creato: new Date().toISOString(),
   };
@@ -35,6 +37,7 @@ function migra(s) {
   out.pref = { ...base.pref, ...(s.pref || {}) };
   for (const k of ["settimane", "pesi", "esami", "pressione", "preferite"]) if (!Array.isArray(out[k])) out[k] = [];
   if (!out.diario || typeof out.diario !== "object") out.diario = {};
+  if (!out.bozze || typeof out.bozze !== "object") out.bozze = {};
   out.v = VERSIONE;
   return out;
 }
@@ -69,6 +72,12 @@ export function cambia(fn) {
   fn(stato);
   salva();
   ascoltatori.forEach((f) => f(stato));
+}
+/* Change and save without redrawing: for sliders, which must not be
+   replaced while the finger is still on them. */
+export function cambiaSilenzioso(fn) {
+  fn(stato);
+  salva();
 }
 export function ascolta(f) {
   ascoltatori.add(f);

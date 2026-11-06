@@ -67,15 +67,17 @@ export function consiglioSettimana(sett, storia = [], salute = {}) {
   let pesce = 0;
   for (const g of sett.giorni) for (const p of ["pranzo", "cena"]) if (g[p] && g[p].cat === "pesce") pesce++;
   v.push(verdetto("lupus", NOTA, [
-    { it: `Pesce questa settimana: ${pesce} pasti. Integratore di omega 3 solo dopo l'approvazione del medico.`, en: `Fish this week: ${pesce} meals. Omega-3 supplement only after the doctor approves.` },
+    { it: `Pesce questa settimana: ${pesce} pasti.`, en: `Fish this week: ${pesce} meals.` },
+    { it: "Integratore di omega 3: una meta-analisi mostra un piccolo beneficio sull'attività del lupus, con certezza bassa. Solo dopo l'approvazione del medico, come scrive anche la nutrizionista.", en: "Omega-3 supplement: one meta-analysis shows a small benefit on lupus activity, with low certainty. Only after the doctor approves, as the nutritionist also writes.", fonte: "lupus_omega3" },
+    { it: "Nessun cibo cura il lupus: il piano aiuta peso, infiammazione generale e reni, le terapie restano del medico.", en: "No food treats lupus: the plan helps weight, general inflammation and kidneys, treatment stays with the doctor." },
   ]));
 
   /* Kidney sentinel: salty foods and the latest kidney results. */
   const salati = [...usati].filter((a) => ALIMENTI[a] && ALIMENTI[a].sale);
-  const motiviReni = [];
+  const motiviReni = [{ it: "KDIGO, malattie glomerulari: sodio sotto 2 g al giorno (meno di 5 g di sale). Per questo il piano dice sale con moderazione.", en: "KDIGO, glomerular disease: sodium below 2 g a day (under 5 g of salt). That is why the plan says salt in moderation.", fonte: "ln_sodium" }];
   if (salati.length) motiviReni.push({ it: "Alimenti salati: " + salati.map((a) => ALIMENTI[a].it).join(", ") + ". Non aggiungere altro sale.", en: "Salty foods: " + salati.map((a) => ALIMENTI[a].en).join(", ") + ". Do not add extra salt." });
   if (salute.renaleFuoriRange) motiviReni.push({ it: "Un esame renale recente è fuori dall'intervallo del laboratorio: parlane con il medico prima di cambiare le proteine.", en: "A recent kidney result is outside the lab range: talk to the doctor before changing protein." });
-  v.push(verdetto("reni", motiviReni.length ? NOTA : OK, motiviReni));
+  v.push(verdetto("reni", NOTA, motiviReni));
 
   return { ...decisione(v), checks: val.checks };
 }
@@ -111,6 +113,30 @@ const VETI = [
   { agente: "piano", re: R("\\b(tofu|tempeh|seitan|edamame|soy (milk|beans?)|textured vegetable)\\b"), it: "Soia e derivati: non previsti dal piano", en: "Soy products: not in the plan" },
   { agente: "piano", re: R("\\bsweet potato(es)?\\b|patate dolci|patate americane|yams?\\b"), it: "Patate dolci: non previste (il piano ha 200 g di patate al posto del pane)", en: "Sweet potatoes: not in the plan (the plan has 200 g potatoes instead of bread)" },
 ];
+
+/* Lupus notes that do not block a recipe for everyone. The clinical evidence
+   officer graded them (docs/fonti/evidence-clinical.json, ids in "fonte").
+   With her profile (medicines, immunosuppression) some become vetoes on her
+   phone: see notePersonali(). */
+export const NOTE_LUPUS = [
+  { re: R("\\bgarlic\\b|\\baglio\\b"), fonte: "lupus_garlic", it: "Aglio: un centro per il lupus consiglia di limitarlo, ma le prove sono solo consigli di associazioni di pazienti. Chiedi al medico.", en: "Garlic: a lupus centre advises limiting it, but the evidence is patient-organisation advice only. Ask the doctor." },
+  { re: R("grapefruit|pomelo|pompelmo"), fonte: "drug_grapefruit_cni", it: "Pompelmo o pomelo: da evitare se prendi ciclosporina, tacrolimus o voclosporina (schede tecniche).", en: "Grapefruit or pomelo: avoid if you take ciclosporin, tacrolimus or voclosporin (product labels)." },
+  { re: R("\\b(bean|mung|broccoli|radish|clover|pea|sunflower)? ?sprouts\\b|germogli"), fonte: "lupus_raw_sprouts_immunosuppressed", it: "Germogli crudi: da evitare se prendi immunosoppressori (indicazione FDA per chi ha difese ridotte).", en: "Raw sprouts: avoid if you take immunosuppressants (FDA advice for weakened immunity)." },
+  { re: R("st\\.? john'?s wort|iperico"), fonte: "drug_st_johns_wort", it: "Iperico: riduce i livelli di ciclosporina e tacrolimus nel sangue.", en: "St John's wort: lowers ciclosporin and tacrolimus blood levels." },
+];
+
+/* Profile-aware checks, run on Sofia's phone only (the profile never leaves it). */
+export function notePersonali(righe, profilo = {}) {
+  const farmaci = String(profilo.farmaci || "").toLowerCase();
+  const cni = /ciclosporin|tacrolimus|voclosporin|sandimmun|prograf|advagraf|envarsus|lupkynis/.test(farmaci);
+  const immuno = profilo.immunosoppressori === true || cni || /micofenol|mycophenol|cellcept|myfortic|azatioprin|imuran|ciclofosfamid|cyclophosphamid|metotressat|methotrexat|belimumab|benlysta|rituximab|anifrolumab|saphnelo|prednison|metilprednisolon|deltacortene|medrol/.test(farmaci);
+  const out = [];
+  for (const z of righe) {
+    if (cni && /grapefruit|pomelo|pompelmo/i.test(z)) out.push({ livello: VETO, it: `Pompelmo con ${"ciclosporina, tacrolimus o voclosporina"}: da evitare ("${z}")`, en: `Grapefruit with ciclosporin, tacrolimus or voclosporin: avoid ("${z}")` });
+    if (immuno && /sprouts|germogli/i.test(z)) out.push({ livello: VETO, it: `Germogli crudi con immunosoppressori: da evitare ("${z}")`, en: `Raw sprouts while immunosuppressed: avoid ("${z}")` });
+  }
+  return out;
+}
 
 /* Swaps the plan itself allows, applied automatically and shown to Sofia. */
 const ADATTAMENTI = [
@@ -236,6 +262,7 @@ export function valutaRicettaWeb({ ingredienti = [], titolo = "", categoria = ""
   for (const riga of ingredienti) {
     const z = String(riga);
     if (NON_CIBO.test(z)) continue;
+    for (const n of NOTE_LUPUS) if (n.re.test(z)) { alza("lupus", NOTA); motivi.lupus.push({ it: n.it, en: n.en, fonte: n.fonte }); }
     const veto = VETI.find((v) => v.re.test(z));
     if (veto) { alza(veto.agente, VETO); motivi[veto.agente].push({ it: `${veto.it}: "${z}"`, en: `${veto.en}: "${z}"` }); continue; }
     const ad = ADATTAMENTI.find((x) => x.re.test(z));
