@@ -24,7 +24,13 @@ Netlify project: `sofia-piano`, site id `3902075f-8500-47f3-8807-d8c902846694`
 - [x] Docs: README, COUNCIL, FONTI, PRIVACY
 - [x] Headless Chrome smoke test of every screen (CSP-safe styles)
 
+- [x] Deployed to Netlify 2026-11-06 19:01 UTC, deploy 6aee23e0046e4a5d4b1a11c6, 2 functions,
+      schedule 17 4 * * *, tests passed in the Netlify build. Gate armed at upload time.
+
 ## Open
-- [ ] Deploy to Netlify (gate armed locally from /home/claude/council/.sofia_code), live check
+- [ ] Independent QA auditor report: /home/claude/council/qa-report.md, fix BLOCKER and MAJOR, redeploy
+- [ ] Visitor access: the project defaults to Netlify team login for all deploys (Sofia cannot open it).
+      Changing it was refused by the permission check; ALX switches it in Netlify:
+      Project configuration > Access & security > Visitor access.
 - [ ] Independent QA auditor agent, fix findings, redeploy
 - [ ] Final report to ALX (visitor access switch, access code, branch)
