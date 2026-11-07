@@ -399,7 +399,15 @@ details.tabella summary { cursor: pointer; font-weight: 700; color: var(--ink-2)
 .corpo5d .cibi button.attivo { background: #f1ecf7; color: #1a1426; }
 .corpo5d .etichetta-organo { position: absolute; z-index: 3; pointer-events: none; transform: translate(-50%, -140%); background: rgba(12, 9, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.2); padding: 4px 9px; border-radius: 9px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
 .corpo5d .nota5d { position: absolute; left: 12px; top: 58px; font-size: 12px; color: rgba(241, 236, 247, 0.62); max-width: 60%; z-index: 2; }
-.corpo5d .no-webgl { padding: 80px 24px; text-align: center; }
+.corpo5d .no-webgl { padding: 72px 22px 150px; text-align: center; }
+.corpo5d .no-webgl p { margin: 0 auto 12px; max-width: 34ch; font-size: 15px; line-height: 1.45; }
+.corpo5d .no-webgl .btn { background: rgba(255, 255, 255, 0.92); color: #1a1426; border: 0; }
+/* Without 3D the scene becomes a plain column: tabs, hint, why, journey caption, foods. */
+.corpo5d.senza3d { min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 12px 12px; }
+.corpo5d.senza3d .sopra, .corpo5d.senza3d .nota5d, .corpo5d.senza3d .viaggio5d, .corpo5d.senza3d .sotto { position: static; max-width: none; }
+.corpo5d.senza3d .sopra { order: 0; } .corpo5d.senza3d .nota5d { order: 1; } .corpo5d.senza3d .no-webgl { order: 2; padding: 4px 2px; text-align: left; }
+.corpo5d.senza3d .no-webgl p { max-width: none; margin: 0 0 10px; }
+.corpo5d.senza3d .viaggio5d { order: 3; } .corpo5d.senza3d .sotto { order: 4; }
 .organo-card { display: flex; gap: 12px; align-items: flex-start; }
 .organo-card .pallino { width: 14px; height: 14px; border-radius: 50%; margin-top: 5px; flex: none; }
 .legenda5d { display: flex; flex-wrap: wrap; gap: 10px 14px; font-size: 13px; color: var(--ink-2); margin-top: 10px; }
@@ -541,3 +549,30 @@ hr.sottile { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
 .passi-viaggio li { padding: 4px 0; border-radius: 8px; transition: background .3s ease; }
 .passi-viaggio li.ora { background: color-mix(in srgb, var(--plum) 12%, transparent); }
 @media (prefers-reduced-motion: reduce) { .corpo5d .viaggio5d, .passi-viaggio li { transition: none; } }
+
+/* Food log: ingredients with their uncooked weight */
+.ing-lista { margin: 10px 0 4px; }
+.ing-riga { padding: 10px 0; border-top: 1px solid var(--line); }
+.ing-riga:first-child { border-top: 0; }
+.ing-testa { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.ing-dati { display: flex; align-items: center; gap: 10px; margin: 6px 0 2px; }
+.ing-dati .kcal { margin-left: auto; font-weight: 800; white-space: nowrap; }
+.ing-g { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--ink-2); }
+.ing-g input { width: 92px; min-height: 44px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r-s); padding: 8px 10px; font: inherit; font-weight: 700; color: var(--ink); }
+.stato-cibo { font-size: 11.5px; font-weight: 800; letter-spacing: 0.02em; border-radius: 999px; padding: 2px 8px; background: var(--surface-2); color: var(--ink-2); }
+.stato-cibo.crudo, .stato-cibo.secco { background: var(--olive-wash); color: var(--olive-ink); }
+.stato-cibo.cotto { background: var(--terra-wash); color: var(--ink); }
+.stato-cibo.conservato { background: var(--plum-wash); color: var(--ink); }
+.ing-totale { padding: 10px 0 2px; border-top: 2px solid var(--line); font-size: 17px; }
+.ing-totale .kcal { font-weight: 800; }
+.ing-risultati { display: grid; gap: 6px; margin: 6px 0 10px; }
+.ing-ris { display: flex; justify-content: space-between; align-items: center; gap: 10px; text-align: left; width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: var(--r-s); padding: 9px 12px; font: inherit; cursor: pointer; min-height: 44px; }
+.ing-ris.attivo { border-color: var(--olive); box-shadow: inset 0 0 0 1px var(--olive); }
+.ing-ris .kcal { white-space: nowrap; font-weight: 800; }
+.ing-ris .kcal small { font-weight: 600; color: var(--ink-3); }
+.ing-nuovo { margin: 10px 0; }
+.come-calcola { margin: 6px 0 10px; }
+.come-calcola summary { cursor: pointer; font-weight: 700; color: var(--ink-2); }
+.come-calcola ul { margin: 6px 0 0; padding-left: 18px; }
+.come-calcola li { margin: 4px 0; }
+

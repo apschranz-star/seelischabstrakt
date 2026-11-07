@@ -41,6 +41,13 @@ URLs, versions and the officers' notes, are in `docs/fonti/`.
   front-of-pack scheme (Department of Health and Food Standards Agency, Guide to
   creating a front of pack nutrition label, 2016). The daily limit shown with
   it is KDIGO's (clinical evidence below, `ln_sodium`).
+- Food log, raw weights: each ingredient is matched to the CIQUAL entry for
+  the raw food (or the dry one for grains, pasta and legumes), read from the
+  table's own name ("raw", "dried", "cooked", "canned"); the state is shown on
+  every line and cooked values are flagged. Plan foods use the council's raw
+  or dry composition records listed in `docs/fonti/evidence-nutrition.json`.
+  Values from outside the plan are copied into the logged line, with source
+  and code, so a past day never changes.
 - Weights of pieces the plan counts (a rice cake 8 g, a pot 125 g, an egg 50 g,
   a teaspoon 5 g, an olive 3 g) and 1.03 g per ml of milk are estimates, not
   from a source: they are marked as such and Sofia can change them in Settings.

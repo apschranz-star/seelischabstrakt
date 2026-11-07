@@ -111,7 +111,8 @@ function didascalia() {
   return `<div class="minimo">${fase.i + 1}. ${esc(p[0])}</div><div>${esc(p[1])}</div>`;
 }
 function avviaViaggio() {
-  if (!istanza || !cibo) return;
+  if (!cibo) return;
+  if (!istanza) { viaggioTesto(); return; }
   const mete = metePer(cibo);
   const nomi = Object.fromEntries([...mete, "gut", "blood"].map((id) => [id, nomeOrgano(id)]));
   istanza.viaggio(["gut", "blood", ...mete], (i, organo) => {
@@ -173,6 +174,7 @@ function foglioOrgano(id) {
 export async function dopo(s) {
   const posto = document.getElementById("scena5d");
   if (!posto) return;
+  if (!istanza && senza3d) { mostraSenza3d(posto); return; }
   if (!involucro) { involucro = document.createElement("div"); involucro.style.position = "absolute"; involucro.style.inset = "0"; }
   posto.prepend(involucro);
   if (!istanza) {
@@ -181,7 +183,8 @@ export async function dopo(s) {
       const ridotto = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       istanza = await creaCorpo(involucro, { ridotto, alTocco: (id) => { scelto = id; istanza.seleziona(id, nomeOrgano(id)); aggiornaChip(); apriFoglio(() => foglioOrgano(id)); } });
     } catch (e) {
-      posto.insertAdjacentHTML("beforeend", `<div class="no-webgl">${esc(L({ it: "Questo dispositivo non mostra il 3D. Sotto trovi gli stessi dati, sistema per sistema.", en: "This device cannot show 3D. Below are the same data, system by system." }))}</div>`);
+      senza3d = await motivo3d(e);
+      mostraSenza3d(document.getElementById("scena5d"));
       return;
     }
   }
@@ -190,17 +193,63 @@ export async function dopo(s) {
   if (scelto && modo !== "cibo") istanza.seleziona(scelto, nomeOrgano(scelto));
 }
 
+/* Why the 3D model is missing, in words Sofia can act on; the rest of the
+   screen (parts, what they are, the food journey) works without it. */
+let senza3d = null;
+async function motivo3d(err) {
+  const dopo = { it: " Sotto trovi tutto: le parti del corpo, cosa sono e il viaggio del cibo.", en: " Below you find it all: the body parts, what they are and the food journey." };
+  const con = (x) => ({ it: x.it + dopo.it, en: x.en + dopo.en });
+  if (err && err.message === "webgl") return con({ it: "Questo telefono non mostra il 3D (WebGL non disponibile).", en: "This phone cannot show 3D (WebGL not available)." });
+  if (navigator.onLine === false) return con({ it: "Sei offline e il modello 3D non è ancora sul telefono: si scarica alla prima connessione e poi resta.", en: "You are offline and the 3D model is not on the phone yet: it downloads on the first connection and then stays." });
+  try {
+    const r = await fetch("vendor/three.min.js", { method: "HEAD", cache: "no-store", credentials: "same-origin" });
+    if (r.status === 401 || r.status === 403) return con({ it: `Il sito ha rifiutato il modello 3D (codice ${r.status}, accesso non autorizzato): l'accesso al sito va riaperto nelle impostazioni Netlify.`, en: `The site refused the 3D model (code ${r.status}, not authorised): site access must be reopened in the Netlify settings.` });
+    if (!r.ok) return con({ it: `Il modello 3D non si è scaricato (codice ${r.status}).`, en: `The 3D model did not download (code ${r.status}).` });
+  } catch (e) {
+    return con({ it: "Il modello 3D non si è scaricato: il sito non risponde.", en: "The 3D model did not download: the site does not answer." });
+  }
+  return con({ it: "Il modello 3D non si è avviato su questo telefono.", en: "The 3D model did not start on this phone." });
+}
+
+function mostraSenza3d(posto) {
+  if (involucro) { involucro.remove(); involucro = null; }
+  if (!posto || posto.querySelector(".no-webgl")) return;
+  posto.classList.add("senza3d");
+  posto.insertAdjacentHTML("beforeend", `<div class="no-webgl" role="status"><p>${esc(L(senza3d))}</p><button class="btn piccolo" data-az="riprova5d">${esc(L({ it: "Riprova", en: "Try again" }))}</button></div>`);
+}
+
+/* Without 3D the journey runs as text: the same steps, one after the other. */
+let passoTesto = null;
+function viaggioTesto() {
+  if (passoTesto) { clearInterval(passoTesto); passoTesto = null; }
+  const tappe = [0, 1, 2, ...metePer(cibo).map((o, i) => ({ i: 3 + i, organo: o }))];
+  let k = 0;
+  const mostra = () => {
+    if (k >= tappe.length) { clearInterval(passoTesto); passoTesto = null; fase = { i: -1 }; }
+    else { const x = tappe[k++]; fase = typeof x === "number" ? { i: x, organo: null } : x; }
+    const el = document.getElementById("viaggio5d");
+    if (el) { el.hidden = false; el.innerHTML = didascalia(); }
+    for (const li of document.querySelectorAll(".passi-viaggio li")) li.classList.remove("ora");
+    const lis = document.querySelectorAll(".passi-viaggio li");
+    if (fase.i >= 0 && lis[fase.i]) lis[fase.i].classList.add("ora");
+  };
+  mostra();
+  passoTesto = setInterval(mostra, 2600);
+}
+
 function aggiornaChip() {
   for (const b of document.querySelectorAll(".parti5d .chip")) b.classList.toggle("attivo", b.dataset.id === scelto);
 }
 
 export function lascia() {
   if (gioco) { clearInterval(gioco); gioco = null; }
+  if (passoTesto) { clearInterval(passoTesto); passoTesto = null; }
   if (istanza) { istanza.distruggi(); istanza = null; }
   involucro = null;
 }
 
 registra({
+  riprova5d: () => { location.reload(); },
   modo5d: (d) => {
     modo = d.m;
     fase = null;

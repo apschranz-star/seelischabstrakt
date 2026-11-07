@@ -4,12 +4,17 @@
  *     (new VERSIONE, stamped by tools/build.sh) replaces the cache and takes
  *     over at once, the page reloads itself when nothing is being edited.
  *   - /api/ricette: network first, last answer from cache when offline.
- *   - Heavy files (three.js, pdf.js) are cached the first time they are used.
+ *   - Heavy files in vendor/ live in their own cache, kept across app
+ *     versions: three.js is fetched at install (the body screen needs it, and
+ *     a page that only works online is no use on the phone), pdf.js the first
+ *     time a lab report is read. Bump VENDOR when a file in vendor/ changes.
  * Sofia's own data is not here: it lives in localStorage, never in a cache.
  */
 const VERSIONE = "__VERSIONE__";
 const CACHE = "sofia-" + VERSIONE;
 const API = "sofia-api";
+const VENDOR = "sofia-vendor-1";
+const VENDOR_SUBITO = ["vendor/three.min.js"];
 const BASE = [
   "./", "index.html", "manifest.webmanifest", "css/app.css", "fonts/fonts.css",
   "fonts/fraunces-latin-normal-300-700.woff2", "fonts/fraunces-latin-ext-normal-300-700.woff2", "fonts/fraunces-latin-italic-300-700.woff2",
@@ -31,13 +36,15 @@ self.addEventListener("install", (e) => {
     const c = await caches.open(CACHE);
     await c.addAll(BASE);
     for (const f of FACOLTATIVI) { try { await c.add(f); } catch (err) { /* gate not armed in local tests */ } }
+    const v = await caches.open(VENDOR);
+    for (const f of VENDOR_SUBITO) { try { if (!(await v.match(f))) await v.add(f); } catch (err) { /* fetched again on first use */ } }
     await self.skipWaiting();
   })());
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil((async () => {
-    for (const k of await caches.keys()) if (k.startsWith("sofia-") && k !== CACHE && k !== API) await caches.delete(k);
+    for (const k of await caches.keys()) if (k.startsWith("sofia-") && k !== CACHE && k !== API && k !== VENDOR) await caches.delete(k);
     await self.clients.claim();
   })());
 });
@@ -59,13 +66,24 @@ self.addEventListener("fetch", (e) => {
     })());
     return;
   }
+  if (url.pathname.includes("/vendor/")) {
+    e.respondWith((async () => {
+      const v = await caches.open(VENDOR);
+      const hit = await v.match(e.request, { ignoreSearch: true });
+      if (hit) return hit;
+      const r = await fetch(e.request);
+      if (r.ok) v.put(e.request, r.clone());
+      return r;
+    })());
+    return;
+  }
   e.respondWith((async () => {
     const c = await caches.open(CACHE);
     const hit = await c.match(e.request, { ignoreSearch: true });
     if (hit) return hit;
     try {
       const r = await fetch(e.request);
-      if (r.ok && (url.pathname.includes("/vendor/") || url.pathname.endsWith(".js") || url.pathname.endsWith(".mjs"))) c.put(e.request, r.clone());
+      if (r.ok && (url.pathname.endsWith(".js") || url.pathname.endsWith(".mjs"))) c.put(e.request, r.clone());
       return r;
     } catch (err) {
       if (e.request.mode === "navigate") return (await c.match("index.html")) || Response.error();

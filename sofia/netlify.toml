@@ -11,7 +11,7 @@
 [functions]
   node_bundler = "esbuild"
 
-# Static responses only; the two functions set their own headers in code.
+# Static responses only; the three functions set their own headers in code.
 [[headers]]
   for = "/*"
   [headers.values]

@@ -22,7 +22,7 @@ export const PAROLE = {
   /* potatoes */
   patate: ["potato"], patata: ["potato"], "patate dolci": ["sweet potato"], "patata dolce": ["sweet potato"], "patata americana": ["sweet potato"], manioca: ["cassava"],
   /* legumes */
-  lenticchie: ["lentil"], ceci: ["chick pea", "chickpea"], fagioli: ["bean"], cannellini: ["white bean", "haricot bean"], borlotti: ["bean"],
+  lenticchie: ["lentil"], ceci: ["chick pea", "chickpea"], fagioli: ["haricot bean", "bean, dried", "kidney bean", "bean"], "fagioli secchi": ["bean, dried"], cannellini: ["white bean", "haricot bean", "bean, dried"], borlotti: ["bean, dried", "bean"],
   fave: ["broad bean"], "piselli secchi": ["split pea"], soia: ["soy", "soybean"], lupini: ["lupin"], edamame: ["soybean", "edamame"],
   /* fruit */
   mela: ["apple"], mele: ["apple"], pera: ["pear"], pere: ["pear"], banana: ["banana"], banane: ["banana"], arancia: ["orange"], arance: ["orange"],
@@ -50,7 +50,7 @@ export const PAROLE = {
   cracker: ["cracker"], grissini: ["breadstick"], fette: ["rusk"], "fette biscottate": ["rusk"], cereali: ["breakfast cereal", "cereal"],
   "corn flakes": ["corn flakes"], muesli: ["muesli"], farina: ["flour"], pangrattato: ["breadcrumb"], piadina: ["flatbread", "piadina"], tortilla: ["tortilla"],
   /* fish */
-  salmone: ["salmon"], tonno: ["tuna"], merluzzo: ["cod"], nasello: ["hake"], orata: ["sea bream"], branzino: ["sea bass"], spigola: ["sea bass"],
+  salmone: ["salmon"], tonno: ["tuna"], merluzzo: ["cod"], nasello: ["hake"], orata: ["gilthead seabream", "seabream", "sea bream"], branzino: ["sea bass", "seabass"], spigola: ["sea bass", "seabass"],
   sogliola: ["sole"], platessa: ["plaice"], trota: ["trout"], sgombro: ["mackerel"], sardine: ["sardine"], sarde: ["sardine"], alici: ["anchovy"],
   acciughe: ["anchovy"], "pesce spada": ["swordfish"], gamberi: ["shrimp", "prawn"], gamberetti: ["shrimp"], calamari: ["squid"], calamaro: ["squid"],
   seppia: ["cuttlefish"], seppie: ["cuttlefish"], polpo: ["octopus"], cozze: ["mussel"], vongole: ["clam"], baccala: ["salt cod", "cod, salted"],
@@ -74,7 +74,7 @@ export const PAROLE = {
   caprino: ["goat cheese", "goat's milk cheese"], formaggio: ["cheese"], "bevanda di soia": ["soy drink", "soya drink"], "latte di soia": ["soy drink", "soya drink"],
   "bevanda di avena": ["oat drink", "oat-based"], "latte di avena": ["oat drink", "oat-based"], "bevanda di riso": ["rice drink", "rice-based"], "latte di mandorla": ["almond drink", "almond-based"],
   /* fats */
-  "olio extravergine": ["olive oil, extra virgin"], "olio di oliva": ["olive oil"], olio: ["oil"], "olio di semi": ["sunflower oil", "oil"], "olio di girasole": ["sunflower oil"],
+  "olio extravergine": ["olive oil, extra virgin"], "olio di oliva": ["olive oil"], olio: ["olive oil, extra virgin", "olive oil", "oil"], "olio di semi": ["sunflower oil", "oil"], "olio di girasole": ["sunflower oil"],
   "olio di mais": ["corn oil", "maize oil"], "olio di arachidi": ["peanut oil"], "olio di colza": ["rapeseed oil"], "olio di cocco": ["coconut oil"], burro: ["butter"], margarina: ["margarine", "spread"],
   /* sweet */
   zucchero: ["sugar"], miele: ["honey"], marmellata: ["jam"], confettura: ["jam"], cioccolato: ["chocolate"], "cioccolato fondente": ["dark chocolate"],

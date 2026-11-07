@@ -15,7 +15,7 @@ The access code and the plain text of the plan are never committed. Both live
 outside the repository: `/home/claude/council/.sofia_code` and
 `/home/claude/council/piano-testo.json`.
 
-1. `node --test test/*.test.mjs` (59 tests on 2026-11-07).
+1. `node --test test/*.test.mjs` (63 tests on 2026-11-07).
 2. Only if the plan text changed or the code was rotated:
    `SOFIA_ACCESS_KEY="$(cat /home/claude/council/.sofia_code)" node tools/cifra-piano.mjs /home/claude/council/piano-testo.json`
    writes `app/data/piano-testo.cifrato.json`. `--decifra` prints the plain JSON back.
@@ -57,10 +57,18 @@ encrypted with it, so a new code always means step 2 again.
   - hashed gate (`tools/gate-sofia.mjs`), encryption format 2 (header bound), adjustable unit weights
   - scraper: post and recipe links only from the feed's own site, unparsable dates stored as null
 
+- [x] Body screen independent of the network (2026-11-07): three.js stored at install in a cache that
+  survives updates; without 3D the screen says why (401, offline, no WebGL) and runs as text
+- [x] Food log with uncooked weights per ingredient (2026-11-07): raw or dry values first (CIQUAL 2020,
+  plan composition, package, label), grams x kcal per 100 g and source on every line, logged meals
+  correctable per ingredient
+
 ## Open
-- [ ] Deploy the overhaul (procedure above) and verify it online
+- [x] Overhaul deployed 2026-11-07 03:38 UTC (deploy 6aee9d1c6fbba832e23b5a3e)
+- [ ] Deploy the 3D hardening and the raw-ingredient log, verify it online
 - [ ] Independent QA review of the overhaul and re-check of S3 (read-only), fix what it finds, redeploy
-- [ ] Visitor access: the project defaults to Netlify team login for all deploys (Sofia cannot open it).
+- [ ] Visitor access (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
+      request, runs the old cached version and cannot load the 3D library): team login is on for all deploys.
       Changing it was refused by the permission check; ALX switches it in Netlify:
       Project configuration > General > Visitor access > Project visibility (password protection
       if the plan offers it; legacy plans: Access & security > Visitor access > Password Protection).

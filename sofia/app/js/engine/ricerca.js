@@ -7,6 +7,7 @@
  */
 import { ALIMENTI } from "../data/alimenti.js";
 import { PAROLE, NOME_IT, normalizza } from "../data/dizionario.js";
+import { statoDaNome, secchiCiqual, CRUDO } from "./nutrizione.js";
 
 let tabella = null;
 export async function caricaTabella() {
@@ -46,7 +47,10 @@ export function terminiInglesi(q) {
 const rawRe = /\braw\b/;
 const PIATTO = /\b(cake|sausage|pie|sauce|soup|biscuit|ravioli|nuggets?|burger|sandwich|pizza|filled|stuffed|salad|dish|tart|quiche|flour|confectionery|praline|with (fruits?|nuts|mint|orange))\b/;
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-function punteggi(t, termini, q) {
+const COTTURA = /\b(cooked|boiled|steamed|roasted|baked|grilled|fried|pan-fried|saut[ée]ed|braised|stewed|poached|scrambled|microwaved|toasted|reheated|rehydrated|reconstituted)\b/;
+/* crudo: for the food log, where Sofia weighs ingredients uncooked. Raw entries
+   (and dry grains, pasta and legumes) come first, cooked ones last. */
+function punteggi(t, termini, q, crudo = false) {
   const out = [];
   const res = termini.map((term) => [term, new RegExp("(^|[ ,(])" + esc(term) + "(?![a-z])")]);
   for (let i = 0; i < t.CIBI.length; i++) {
@@ -55,15 +59,22 @@ function punteggi(t, termini, q) {
     for (const [term, re] of res) {
       if (!re.test(nome)) continue;
       let x = nome.startsWith(term) ? 12 : 7;
-      if (nome.split(",")[0].trim() === term) x += 5;
+      if (nome.split(",")[0].trim() === term) x += crudo ? 8 : 5;
       x += term.length * 0.05;
       s = Math.max(s, x);
     }
     if (!s) continue;
     const c = t.CIBI[i];
     if (c[t.I.kcal] == null) continue;
-    if (rawRe.test(nome)) s += 3;
-    if (/cooked|boiled|roasted|grilled|canned|prepacked|in sauce/.test(nome)) s -= 1;
+    const gruppo = String(c[t.I.gruppo]);
+    if (crudo) {
+      if (CRUDO.test(nome) && !/pre-fried/.test(nome)) s += 5;
+      else if (secchiCiqual(gruppo) && /\b(dried|dry)\b/.test(nome) && !COTTURA.test(nome)) s += 5;
+      if (COTTURA.test(nome) || /^(0401|0405|0407)/.test(gruppo)) s -= 6;
+    } else {
+      if (rawRe.test(nome)) s += 3;
+      if (/cooked|boiled|roasted|grilled|canned|prepacked|in sauce/.test(nome)) s -= 1;
+    }
     if (PIATTO.test(nome) && !PIATTO.test(q)) s -= 7;
     if (String(c[t.I.gruppo]).startsWith("01")) s -= 3;
     s -= (nome.split(",").length - 1) * 0.6 + nome.length * 0.01;
@@ -71,10 +82,10 @@ function punteggi(t, termini, q) {
   }
   return out.sort((a, b) => b[0] - a[0]);
 }
-export function cercaCiqual(q, t, max = 8) {
+export function cercaCiqual(q, t, max = 8, { crudo = false } = {}) {
   const n = normalizza(q);
   for (const gruppo of terminiInglesi(q)) {
-    const p = punteggi(t, gruppo, n);
+    const p = punteggi(t, gruppo, n, crudo);
     if (p.length) return p.slice(0, max).map(([, i]) => daCiqual(t, i, q));
   }
   return [];
@@ -88,7 +99,8 @@ export function daCiqual(t, i, q = "") {
   const per100 = {};
   for (const k of ["kcal", "prot", "carb", "fat", "sug", "fib", "sat", "salt", "na", "k", "p", "ca", "fe", "mg", "vitc", "vitd", "b12", "fol", "epa", "dha", "ala"]) if (c[I[k]] != null) per100[k] = c[I[k]];
   const nome = it ? it.charAt(0).toUpperCase() + it.slice(1) : (q && normalizza(q) && PAROLE[normalizza(q)] ? q.charAt(0).toUpperCase() + q.slice(1) : nomeEn);
-  return { fonte: "ciqual", codice: c[I.code], nomeEn, nome, gruppoCiqual: String(c[I.gruppo]), stimaKcal: c[I.stimaKcal] || 0, per100 };
+  const gruppoCiqual = String(c[I.gruppo]);
+  return { fonte: "ciqual", codice: c[I.code], nomeEn, nome, gruppoCiqual, stato: statoDaNome(nomeEn, secchiCiqual(gruppoCiqual)), stimaKcal: c[I.stimaKcal] || 0, per100 };
 }
 
 export async function cercaOnline(q) {

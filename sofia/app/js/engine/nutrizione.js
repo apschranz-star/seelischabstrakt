@@ -2,6 +2,8 @@
  * Calories and nutrients of meals and days, from the plan's amounts.
  *
  * Sources, in this order:
+ *   0. an ingredient logged with its own values per 100 g (copied from
+ *      CIQUAL, a package or a label when it was logged: line.p),
  *   1. a food Sofia added herself (values from CIQUAL or from the package,
  *      via Open Food Facts),
  *   2. a vegetable or fruit she picked by name (CIQUAL 2020, data/scelte.js),
@@ -15,6 +17,7 @@
 import { COMPOSIZIONE } from "../data/evidenze.js";
 import { VERDURE, FRUTTA, PROXY } from "../data/scelte.js";
 import { OBIETTIVI, COLAZIONE, SPUNTINO, PRANZO, CENA, DOPOCENA } from "../data/piano.js";
+import { ALIMENTI } from "../data/alimenti.js";
 
 export const PESI_PREDEFINITI = { galletta: 8, vasetto: 125, uovo: 50, cucchiaino: 5, oliva: 3 };
 export const OBIETTIVO_KCAL = OBIETTIVI.kcal;
@@ -69,6 +72,57 @@ export function per100(a, { scelta: sc = null, extra = null } = {}) {
   return null;
 }
 
+/* A line that carries its own values per 100 g. */
+function daRiga(v) {
+  return { v: { ...vuoto(), ...v.p }, stima: v.stimaKcal ? "energia stimata dai macronutrienti" : null, fonte: v.fonte || null };
+}
+
+/* ------------------------------------------------ raw weights and sources */
+/* The state the values per 100 g refer to, read from the source's own name.
+   The food log asks for uncooked weights, so every line says it. "Dried" means
+   uncooked only for grains, pasta and legumes (secchi); dried fruit is as sold. */
+const COTTO = /\b(cooked|boiled|steamed|roasted|baked|grilled|fried|pan-fried|saut[ée]ed|braised|stewed|poached|scrambled|microwaved|toasted|pur[ée]e|reheated|rehydrated|reconstituted)\b/;
+/* "raw" as a qualifier of the food itself ("Spinach, raw", "Salmon, raw, wild"), not of a part of a dish ("..., raw cured ham, ..."). */
+export const CRUDO = /(^|, )raw(,|$| \()/;
+const CONSERVATO = /\b(canned|drained|in brine|in oil|in salt|salted, dried|semi-preserved|smoked|cured|pickled)\b/;
+export function statoDaNome(nomeEn, secchi = false) {
+  const n = String(nomeEn || "").toLowerCase();
+  if (CRUDO.test(n) && !/pre-fried/.test(n)) return "crudo";
+  if (COTTO.test(n)) return "cotto";
+  if (secchi && /\b(dried|dry)\b/.test(n)) return "secco";
+  if (CONSERVATO.test(n)) return "conservato";
+  return "venduto";
+}
+export const STATI = {
+  crudo: { it: "crudo", en: "raw" },
+  secco: { it: "secco, da cuocere", en: "dry, uncooked" },
+  cotto: { it: "cotto", en: "cooked" },
+  conservato: { it: "conservato", en: "preserved" },
+  venduto: { it: "come si compra", en: "as sold" },
+};
+const NOME_FONTE = { ciqual: "CIQUAL 2020", off: "Open Food Facts", etichetta: "etichetta" };
+const SECCHI = new Set(["cereali", "legumi"]);
+export const secchiCiqual = (gruppo) => /^(0301|0203)/.test(String(gruppo || ""));
+
+/* Where the values of a line come from: state, sources with their codes,
+   kcal per 100 g, and whether they are an average or a stand-in. */
+export function origineVoce(v, opz = {}) {
+  const extra = (opz.extra || {})[v.a];
+  if (v.p) return { stato: v.stato || null, fonti: [{ db: NOME_FONTE[v.fonte] || v.fonte || null, id: v.codice || null, nome: v.nomeEn || v.marca || null }], kcal100: v.p.kcal ?? null };
+  if (extra) return { stato: extra.fonte === "ciqual" ? statoDaNome(extra.nomeEn, secchiCiqual(extra.gruppoCiqual)) : "venduto", fonti: [{ db: NOME_FONTE[extra.fonte] || extra.fonte, id: extra.codice || null, nome: extra.nomeEn || extra.marca || null }], kcal100: extra.per100 ? extra.per100.kcal ?? null : null };
+  if (v.scelta && SCELTA[v.scelta]) { const x = SCELTA[v.scelta]; return { stato: statoDaNome(x.nomeEn), fonti: [{ db: "CIQUAL 2020", id: String(x.codice), nome: x.nomeEn }], kcal100: x.v.kcal }; }
+  if (ZERO.has(v.a)) return { stato: null, fonti: [], kcal100: 0 };
+  const p = per100(v.a, {});
+  const lista = COMPOSIZIONE[v.a];
+  if (lista && lista.length && p) {
+    const secchi = SECCHI.has((ALIMENTI[v.a] || {}).gruppo);
+    const stati = [...new Set(lista.map((c) => statoDaNome(c.en, secchi)))];
+    return { stato: stati.length === 1 ? stati[0] : null, fonti: lista.map((c) => ({ db: c.db, id: c.dbId, nome: c.en })), media: lista.length > 1, kcal100: p.v.kcal };
+  }
+  if (PROXY[v.a]) return { stato: statoDaNome(PROXY[v.a].nomeEn, true), fonti: [{ db: "CIQUAL 2020", id: String(PROXY[v.a].codice), nome: PROXY[v.a].nomeEn }], simile: true, kcal100: PROXY[v.a].v.kcal };
+  return { stato: null, fonti: [], kcal100: p ? p.v.kcal : null, stima: p ? p.stima : null };
+}
+
 /* Grams of one plan line. */
 export function grammi(v, pesi = PESI_PREDEFINITI) {
   const p = { ...PESI_PREDEFINITI, ...(pesi || {}) };
@@ -99,7 +153,7 @@ export function valoriVoce(v, opz = {}) {
     return { a: v.a, g: 0, val: vuoto(), stime, manca: v.q == null && v.u !== "q.b." && !ZERO.has(v.a) && v.a !== "passata", nonContato: true };
   }
   const ids = [v.a, ...(v.con || [])];
-  const fonti = ids.map((a, i) => per100(a, { scelta: i === 0 ? v.scelta : null, extra: opz.extra }));
+  const fonti = ids.map((a, i) => (i === 0 && v.p ? daRiga(v) : per100(a, { scelta: i === 0 ? v.scelta : null, extra: opz.extra })));
   if (gr.g == null || fonti.some((f) => !f)) return { a: v.a, g: gr.g, val: null, stime, manca: true };
   if (ids.length > 1) stime.push("peso condiviso: media degli alimenti");
   for (const f of fonti) if (f.stima) stime.push(f.stima);

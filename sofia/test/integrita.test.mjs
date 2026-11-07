@@ -74,6 +74,9 @@ test("the service worker precaches every app module, so the app works offline", 
   giu(join(radice, "app/js"), "js/");
   for (const m of moduli) assert.ok(sw.includes('"' + m + '"'), "sw.js does not precache " + m);
   assert.ok(sw.includes('"data/piano-testo.cifrato.json"'));
+  /* The body screen imports three.js: it is stored at install in a cache that survives app updates. */
+  assert.match(sw, /VENDOR_SUBITO = \[[^\]]*"vendor\/three\.min\.js"/);
+  assert.match(sw, /k !== VENDOR\b/);
 });
 
 test("the plan text and the access code never appear in clear in the repository", () => {

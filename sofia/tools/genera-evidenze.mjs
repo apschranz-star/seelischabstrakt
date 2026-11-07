@@ -41,6 +41,8 @@ const NOMI_NUTRIENTI = {
   vitamin_b12: ["vitamina B12", "vitamin B12"], folate: ["folati", "folate"], omega3_epa_dha: ["omega-3 EPA e DHA", "omega-3 EPA and DHA"], omega3_ala: ["omega-3 ALA", "omega-3 ALA"],
 };
 const tondo = (x, d = 2) => (x == null ? null : Math.round(x * 10 ** d) / 10 ** d);
+/* The app's English is British (as in Coeliac UK and the ESsCD guidelines): the officers' own English texts say "coeliac". Source titles and official EU wording stay as published. */
+const gb = (s) => (s == null ? s : String(s).replace(/\bceliac\b/g, "coeliac").replace(/\bCeliac\b/g, "Coeliac"));
 const KEEP = ["kcal", "protein_g", "carb_g", "fat_g", "fibre_g", "calcium_mg", "iron_mg", "magnesium_mg", "potassium_mg", "sodium_mg", "vitc_mg", "vitd_ug", "b12_ug", "folate_ug", "epa_dha_g", "ala_g"];
 
 const cibi = {};
@@ -78,7 +80,7 @@ const esami = clin ? clin.labs.map((l) => ({
   organo: l.organ, organiSecondari: l.secondary_organs || [], verso: VERSO[l.direction] || "entrambi",
   unita: l.units.map((u) => ({ u: u.unit, f: u.to_canonical_factor == null ? null : u.to_canonical_factor, canonica: u.canonical, alias: u.unit_aliases || [] })),
   alias: [...new Set([...(l.aliases || []), ...(ALIAS_EXTRA[l.id] || [])].map((x) => String(x).toLowerCase().trim()).filter((x) => x.length >= 2))],
-  perche: { it: l.why_it, en: l.why_en },
+  perche: { it: l.why_it, en: gb(l.why_en) },
   note: l.notes || null,
   fonti: (l.sources || []).map((x) => ({ titolo: x.title, editore: x.publisher, anno: x.year, url: x.url })),
 })) : [];
@@ -86,7 +88,7 @@ writeFileSync(join(qui, "..", "app", "js", "data", "esami-dati.js"), `/* GENERAT
 
 const clinApp = clin ? {
   generato: clin.generated,
-  dieta: clin.diet_points.map((d) => ({ id: d.id, condizione: d.condition, tipo: d.type, cibi: d.foods || [], it: d.statement_it, en: d.statement_en, evidenza: d.evidence, fonti: (d.sources || []).map((x) => ({ titolo: x.title, editore: x.publisher, anno: x.year, url: x.url })) })),
+  dieta: clin.diet_points.map((d) => ({ id: d.id, condizione: d.condition, tipo: d.type, cibi: d.foods || [], it: d.statement_it, en: gb(d.statement_en), evidenza: d.evidence, fonti: (d.sources || []).map((x) => ({ titolo: x.title, editore: x.publisher, anno: x.year, url: x.url })) })),
   egfr: clin.egfr_ckd_epi_2021,
   bmi: clin.bmi_who,
   acqua: clin.mineral_water_calcium,
