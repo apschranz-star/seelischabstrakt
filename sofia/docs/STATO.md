@@ -15,7 +15,7 @@ The access code and the plain text of the plan are never committed. Both live
 outside the repository: `/home/claude/council/.sofia_code` and
 `/home/claude/council/piano-testo.json`.
 
-1. `node --test test/*.test.mjs` (66 tests on 2026-11-07).
+1. `node --test test/*.test.mjs` (67 tests on 2026-11-07).
 2. Only if the plan text changed or the code was rotated:
    `SOFIA_ACCESS_KEY="$(cat /home/claude/council/.sofia_code)" node tools/cifra-piano.mjs /home/claude/council/piano-testo.json`
    writes `app/data/piano-testo.cifrato.json`. `--decifra` prints the plain JSON back.
@@ -72,7 +72,8 @@ encrypted with it, so a new code always means step 2 again.
   cooked octopus from the plan's ratio, weekly limits in Componi, app suggestions marked, build fails
   without a gate in production, lookup cache purged first, lookup answers only the app's pages, 3D cause
   check, docs)
-- [ ] Deploy the round 3 fixes and have the auditor re-check the four MAJOR items
+- [x] Round 3 fixes deployed 2026-11-07 14:54 UTC (deploy 6aef3b7d8a8aed0989f6fd7f); auditor re-check: approve
+- [x] Re-check minors fixed: Brussels sprouts not vetoed, Undo restores only the affected meal, sweet potato flour not wheat
 - [ ] Independent QA review of the overhaul and re-check of S3 (read-only), fix what it finds, redeploy
 - [ ] Visitor access (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
       request, runs the old cached version and cannot load the 3D library): team login is on for all deploys.

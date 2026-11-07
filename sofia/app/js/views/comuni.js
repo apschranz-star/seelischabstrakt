@@ -202,7 +202,7 @@ registra({
     /* Unticking a meal she weighed, composed or corrected removes her work: it can be undone. */
     const e = logDi(S(), d.data)[d.pasto];
     const togli = !!((S().diario[d.data] || {}).pasti || {})[d.pasto];
-    if (togli && voceSua(e)) return cambiaConAnnulla(d.data, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => spunta(s, d));
+    if (togli && voceSua(e)) return cambiaConAnnulla(d.data, d.pasto, 0, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => spunta(s, d));
     cambia((s) => spunta(s, d));
   },
   rimescolaPasto: (d) => {

@@ -63,11 +63,13 @@ export function istantanea(voci) {
 export const voceSua = (e) => !!e && (e.fonte !== "piano" || !!e.modificato);
 
 let annulla = null;
-/* Applies fn and keeps the day's food log as it was, so the toast can undo it
-   for a few seconds. Only the log is restored, not the rest of the day. */
-export function cambiaConAnnulla(data, messaggio, fn) {
+/* Applies fn and keeps that one meal as it was (for "altro", the entry at
+   index i), so the toast can undo it for a few seconds. Only that meal comes
+   back: anything else logged meanwhile stays. */
+export function cambiaConAnnulla(data, pasto, i, messaggio, fn) {
   const g = S().diario[data] || {};
-  annulla = { data, mangiato: copia(g.mangiato || null), pasti: copia(g.pasti || null) };
+  const m = g.mangiato || {};
+  annulla = { data, pasto, i, voce: copia(pasto === "altro" ? (m.altro || [])[i] : m[pasto]) || null, spuntato: (g.pasti || {})[pasto] };
   cambia(fn);
   toast(messaggio, { az: "annullaDiario", testo: L({ it: "Annulla", en: "Undo" }) });
 }
@@ -76,7 +78,7 @@ export function cambiaConAnnulla(data, messaggio, fn) {
 export function registraNelDiario(data, pasto, voci, fonte, nomeLibero = null) {
   const prima = pasto !== "altro" ? logDi(S(), data)[pasto] : null;
   if (voceSua(prima)) {
-    cambiaConAnnulla(data, L({ it: `${nomePasto(pasto)} sostituito`, en: `${nomePasto(pasto)} replaced` }), (s) => scriviVoce(s, data, pasto, voci, fonte, nomeLibero));
+    cambiaConAnnulla(data, pasto, 0, L({ it: `${nomePasto(pasto)} sostituito`, en: `${nomePasto(pasto)} replaced` }), (s) => scriviVoce(s, data, pasto, voci, fonte, nomeLibero));
     return true;
   }
   cambia((s) => scriviVoce(s, data, pasto, voci, fonte, nomeLibero));
@@ -407,7 +409,7 @@ function salvaIngredienti(sostituisci = false) {
     };
     ing = null;
     chiudiFoglio();
-    if (svuota) cambiaConAnnulla(data, L({ it: `${nomePasto(pasto)} tolto dal diario`, en: `${nomePasto(pasto)} removed from the diary` }), applica);
+    if (svuota) cambiaConAnnulla(data, pasto, modifica.i || 0, L({ it: `${nomePasto(pasto)} tolto dal diario`, en: `${nomePasto(pasto)} removed from the diary` }), applica);
     else { cambia(applica); toast(L({ it: "Diario aggiornato", en: "Diary updated" })); }
     return;
   }
@@ -419,7 +421,7 @@ function salvaIngredienti(sostituisci = false) {
     cambia((s) => { const e = s.diario[data].mangiato[pasto]; e.voci.push(...istantanea(voci)); e.modificato = ora; });
     toast(L({ it: "Aggiunti al pasto", en: "Added to the meal" }));
   } else if (esistente) {
-    cambiaConAnnulla(data, L({ it: `${nomePasto(pasto)} sostituito`, en: `${nomePasto(pasto)} replaced` }), (s) => scriviVoce(s, data, pasto, voci, "ingredienti"));
+    cambiaConAnnulla(data, pasto, 0, L({ it: `${nomePasto(pasto)} sostituito`, en: `${nomePasto(pasto)} replaced` }), (s) => scriviVoce(s, data, pasto, voci, "ingredienti"));
   } else {
     registraNelDiario(data, pasto, voci, "ingredienti");
     toast(L({ it: "Diario aggiornato", en: "Diary updated" }));
@@ -509,7 +511,7 @@ registra({
   ingTogli: (d) => { if (ing) { ing.voci.splice(Number(d.i), 1); ing.invalidi.clear(); ridisegna(); } },
   ingRegistra: () => salvaIngredienti(false),
   ingSostituisci: () => salvaIngredienti(true),
-  togliDalDiario: (d) => cambiaConAnnulla(d.data, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => {
+  togliDalDiario: (d) => cambiaConAnnulla(d.data, d.pasto, Number(d.i) || 0, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => {
     const g = s.diario[d.data];
     if (!g || !g.mangiato) return;
     if (d.pasto === "altro") { (g.mangiato.altro || []).splice(Number(d.i), 1); }
@@ -517,12 +519,18 @@ registra({
   }),
   annullaDiario: () => {
     if (!annulla) return;
-    const { data, mangiato, pasti } = annulla;
+    const { data, pasto, i, voce, spuntato } = annulla;
     annulla = null;
     cambia((s) => {
       const g = (s.diario[data] = s.diario[data] || {});
-      if (mangiato) g.mangiato = mangiato; else delete g.mangiato;
-      if (pasti) g.pasti = pasti; else delete g.pasti;
+      g.mangiato = g.mangiato || {};
+      if (pasto === "altro") {
+        if (voce) { g.mangiato.altro = Array.isArray(g.mangiato.altro) ? g.mangiato.altro : []; g.mangiato.altro.splice(Math.min(i, g.mangiato.altro.length), 0, voce); }
+        return;
+      }
+      if (voce) g.mangiato[pasto] = voce; else delete g.mangiato[pasto];
+      g.pasti = g.pasti || {};
+      if (spuntato === undefined) delete g.pasti[pasto]; else g.pasti[pasto] = spuntato;
     });
     toast(L({ it: "Ripristinato", en: "Restored" }));
   },

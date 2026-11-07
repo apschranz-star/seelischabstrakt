@@ -125,8 +125,9 @@ export const VETI = [
 ];
 
 /* Sprouts, in the words the sources use: CIQUAL writes "Mung bean, sprouted or
-   soy spouts, raw" (sic) and "Lentils, sprouted". */
-export const GERMOGLI = "\\bsprout(s|ed|ing)?\\b|\\bspouts\\b|germogl";
+   soy spouts, raw" (sic) and "Lentils, sprouted". Brussels sprouts and sprouting
+   broccoli are ordinary vegetables, not seed sprouts. */
+export const GERMOGLI = "(?<!brussels )\\bsprouts?\\b(?! broccoli)|\\bsprouted\\b|\\bspouts\\b|germogl";
 /* Thoroughly heat-treated sprouts (canned, boiled) are not the raw or lightly cooked ones the advice is about. */
 const GERMOGLI_BEN_COTTI = "\\b(canned|boiled|in scatola|bolliti)\\b";
 

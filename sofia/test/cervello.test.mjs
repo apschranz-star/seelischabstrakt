@@ -127,3 +127,15 @@ test("free-text extras: wheat flour and soy sauce vetoed, at-risk and unknown wo
   for (const e of ["dado", "dado vegetale", "brodo vegetale", "zucchero", "farina di riso", "farina di avena", "cornflour"]) assert.equal(g(e), "nota", e);
   for (const e of ["capperi", "origano", "lime", "scorza d'arancia", "sale", "pepe nero", "aglio"]) assert.equal(g(e), "ok", e);
 });
+
+/* QA round 3 re-check: Brussels sprouts are a vegetable; CIQUAL spells sweet potato flour "potatoe". */
+test("Brussels sprouts are not seed sprouts, sweet potato flour is not wheat", async () => {
+  const { caricaTabella, daCiqual } = await import("../app/js/engine/ricerca.js");
+  const t = await caricaTabella();
+  const rec = (code) => daCiqual(t, t.CIBI.findIndex((c) => String(c[t.I.code]) === String(code)));
+  const immuno = { profilo: { farmaci: "micofenolato", immunosoppressori: true } };
+  assert.equal(valutaAlimento(rec(20058), immuno).seggi.find((z) => z.agente === "lupus").livello, "ok", "Brussels sprout, raw");
+  assert.notEqual(valutaAlimento(rec(20812), { profilo: {} }).seggi.find((z) => z.agente === "glutine").livello, "veto", "sweet potato flour");
+  const v = valutaAlimento({ nome: "broccoli", nomeEn: "purple sprouting broccoli", fonte: "testo", per100: null, classe: "verdure" }, immuno);
+  assert.notEqual(v.seggi.find((z) => z.agente === "lupus").livello, "veto");
+});
