@@ -81,6 +81,8 @@ encrypted with it, so a new code always means step 2 again.
   measures and brands, "Cosa hai mangiato oggi", suggestions, ideas page with ingredient signals
 - [x] Week (2026-11-07): bars eaten and left per row (vegetables and fruit included), "Togli ingredienti"
   with vegetables and fruit, redo the days from today keeping past days and logged meals (`rifaiDa`)
+- [x] Home, food log, ideas and week deployed 2026-11-07 19:28 UTC (deploy 6aef7bb8a2ee5d7cd73cb286,
+  gate armed from the live hash, Sofia's code unchanged)
 - [ ] Plan text: the live gate code (set by the Netlify agent) does not open `piano-testo.cifrato.json`,
   which is encrypted with the earlier code. Needs the code Sofia uses now (from ALX, env var only):
   step 2 above with it, then redeploy
