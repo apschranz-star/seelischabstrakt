@@ -88,7 +88,8 @@ encrypted with it, so a new code always means step 2 again.
   step 2 above with it, then redeploy
 - [x] Corpo 5D food-specific journey (2026-11-07): stops ranked by what the portion brings, nutrient amount,
   share of the NRV and the claim's daily amount at each stop; camera follows the food, nutrient colours,
-  light settles around the organ, "Avanti", text journey with reading time (`viaggioCibo`)
+  light settles around the organ, "Avanti", text journey with reading time (`viaggioCibo`);
+  deployed 2026-11-07 (deploy 6aef7f55e2ea352fd5fc63d0, gate from the live hash)
 - [ ] Independent QA review of the overhaul and re-check of S3 (read-only), fix what it finds, redeploy
 - [x] Visitor access: ALX switched team login off (2026-11-07). Was: (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
       request, runs the old cached version and cannot load the 3D library): team login is on for all deploys.
