@@ -9,7 +9,9 @@
  * (or dry) values: the plan's verified composition (CREA, CIQUAL, USDA), the
  * ANSES CIQUAL 2020 table, a package (Open Food Facts) or the values on the
  * label. Values found outside the plan are copied into the line when it is
- * logged, so a day's figure never changes afterwards. Every line shows
+ * logged; plan foods use the plan's composition data (it changes only with an
+ * app update) and lines counted in pieces the unit weights in Settings, so a
+ * past day can move if those change. Every line shows
  * grams x kcal per 100 g and its source; estimates are marked and missing
  * data is said, never guessed.
  */
@@ -43,6 +45,7 @@ export function nomeVoce(v, s = S()) {
 }
 
 export const logDi = (s, data) => ((s.diario[data] || {}).mangiato) || {};
+const copia = (x) => (x == null ? x : JSON.parse(JSON.stringify(x)));
 
 /* Lines as they are stored: alternatives dropped; shared amounts, picks and
    the values copied from outside the plan kept. */
@@ -55,15 +58,37 @@ export function istantanea(voci) {
   });
 }
 
+/* An entry is more than a plain plan tick when she weighed, composed or corrected it:
+   losing it would lose her work, so changes to it can be undone. */
+export const voceSua = (e) => !!e && (e.fonte !== "piano" || !!e.modificato);
+
+let annulla = null;
+/* Applies fn and keeps the day's food log as it was, so the toast can undo it
+   for a few seconds. Only the log is restored, not the rest of the day. */
+export function cambiaConAnnulla(data, messaggio, fn) {
+  const g = S().diario[data] || {};
+  annulla = { data, mangiato: copia(g.mangiato || null), pasti: copia(g.pasti || null) };
+  cambia(fn);
+  toast(messaggio, { az: "annullaDiario", testo: L({ it: "Annulla", en: "Undo" }) });
+}
+
+/* Returns true when it replaced her own entry (then an Undo toast is already showing). */
 export function registraNelDiario(data, pasto, voci, fonte, nomeLibero = null) {
-  cambia((s) => {
-    const g = (s.diario[data] = s.diario[data] || {});
-    g.mangiato = g.mangiato || {};
-    const voce = { voci: istantanea(voci), fonte, ora: new Date().toISOString() };
-    if (nomeLibero) voce.nome = nomeLibero;
-    if (pasto === "altro") { g.mangiato.altro = Array.isArray(g.mangiato.altro) ? g.mangiato.altro : []; g.mangiato.altro.push(voce); }
-    else { g.mangiato[pasto] = voce; g.pasti = g.pasti || {}; g.pasti[pasto] = true; }
-  });
+  const prima = pasto !== "altro" ? logDi(S(), data)[pasto] : null;
+  if (voceSua(prima)) {
+    cambiaConAnnulla(data, L({ it: `${nomePasto(pasto)} sostituito`, en: `${nomePasto(pasto)} replaced` }), (s) => scriviVoce(s, data, pasto, voci, fonte, nomeLibero));
+    return true;
+  }
+  cambia((s) => scriviVoce(s, data, pasto, voci, fonte, nomeLibero));
+  return false;
+}
+function scriviVoce(s, data, pasto, voci, fonte, nomeLibero) {
+  const g = (s.diario[data] = s.diario[data] || {});
+  g.mangiato = g.mangiato || {};
+  const voce = { voci: istantanea(voci), fonte, ora: new Date().toISOString() };
+  if (nomeLibero) voce.nome = nomeLibero;
+  if (pasto === "altro") { g.mangiato.altro = Array.isArray(g.mangiato.altro) ? g.mangiato.altro : []; g.mangiato.altro.push(voce); }
+  else { g.mangiato[pasto] = voce; g.pasti = g.pasti || {}; g.pasti[pasto] = true; }
 }
 
 function kcalTesto(k) { return `${num(k)} kcal`; }
@@ -109,7 +134,7 @@ export function cartaCalorie(s, data) {
     </div>
     <div class="metro ${stato}" role="meter" aria-valuemin="0" aria-valuemax="${OBIETTIVO_KCAL}" aria-valuenow="${Math.round(mangiato)}" aria-label="${esc(L({ it: "Calorie mangiate su 1400", en: "Calories eaten of 1400" }))}"><i data-w="${Math.min(100, quota * 100)}"></i></div>
     <div class="minimo riga tra"><span>0</span><span>${esc(L({ it: "obiettivo del piano: circa 1400 kcal", en: "plan target: about 1400 kcal" }))}</span></div>
-    <div class="piccolo muted" data-s="sd6f2a">${esc(L({ it: "Proteine", en: "Protein" }))} ${num(g.tot.prot)} g · ${esc(L({ it: "carboidrati", en: "carbs" }))} ${num(g.tot.carb)} g · ${esc(L({ it: "grassi", en: "fat" }))} ${num(g.tot.fat)} g · ${esc(L({ it: "fibre", en: "fibre" }))} ${num(g.tot.fib)} g</div>
+    <div class="piccolo muted" data-s="sd6f2a">${esc(L({ it: "Proteine", en: "Protein" }))} ${num(g.tot.prot)} g · ${esc(L({ it: "carboidrati", en: "carbs" }))} ${num(g.tot.carb)} g · ${esc(L({ it: "grassi", en: "fat" }))} ${num(g.tot.fat)} g · ${esc(L({ it: "fibre", en: "fibre" }))} ${num(g.tot.fib)} g${g.macroIncomplete ? esc(L({ it: " (incompleti: un'etichetta non li dà tutti)", en: " (incomplete: a label does not give them all)" })) : ""}</div>
     ${righe ? `<div class="log">${righe}</div>` : `<p class="piccolo muted">${esc(L({ it: "Segna i pasti con la spunta: le dosi del piano vengono registrate da sole. Se mangi altro o dosi diverse, pesa gli ingredienti a crudo e inseriscili qui.", en: "Tick meals as eaten: the plan's amounts are logged by themselves. If you eat something else or other amounts, weigh the ingredients raw and enter them here." }))}</p>`}
     <div class="riga wrap" data-s="sd6f2a"><button class="btn piccolo" data-az="apriIngredienti" data-data="${data}">${I.piu}${esc(L({ it: "Ingredienti a crudo", en: "Raw ingredients" }))}</button></div>
     ${stime}${manca}
@@ -154,7 +179,6 @@ function storico(s, data, opz) {
 
 /* ------------------------------------- ingredients sheet, uncooked weights */
 let ing = null;
-const copia = (x) => JSON.parse(JSON.stringify(x));
 const numero = (x) => { const n = Number(String(x ?? "").trim().replace(",", ".")); return String(x ?? "").trim() === "" ? NaN : n; };
 const CAMPI_100 = ["kcal", "prot", "carb", "fat", "fib", "salt"];
 function valori100(per100) {
@@ -167,10 +191,17 @@ function pastoDellOra(d = new Date()) {
   return h < 10 ? "colazione" : h < 12 ? "spuntino" : h < 16 ? "pranzo" : h < 21.5 ? "cena" : "dopocena";
 }
 const statoTesto = (st) => (st && STATI[st] ? L(STATI[st]) : "");
+/* What weight to enter, by the state the values refer to. */
+const PESO = {
+  crudo: { it: "g crudi", en: "g raw" }, secco: { it: "g secchi", en: "g dry" }, cotto: { it: "g cotti", en: "g cooked" },
+  conservato: { it: "g sgocciolati", en: "g drained" }, venduto: { it: "g", en: "g" },
+};
+const pesoTesto = (st) => L(PESO[st] || PESO.venduto);
 
 function fonteTesto(o) {
   if (!o.fonti || !o.fonti.length) return "";
   const f = o.fonti.map((x) => [x.db, x.id, x.nome].filter(Boolean).join(" ")).join("; ");
+  if (o.resa) return L({ it: o.resa.it, en: o.resa.en }) + ": " + f;
   if (o.media) return L({ it: `media di ${o.fonti.length} alimenti: `, en: `average of ${o.fonti.length} foods: ` }) + f;
   if (o.simile) return L({ it: "valori di un alimento simile: ", en: "values of a similar food: " }) + f;
   return f;
@@ -182,7 +213,7 @@ function calcoloTesto(r, o) {
   const k100 = k100Testo(o.kcal100);
   return r.val && r.g && k100 != null ? `${num(r.g)} g × ${k100} kcal/100 g = ${num(r.val.kcal)} kcal` : "";
 }
-const macroTesto = (tot) => `${L({ it: "Proteine", en: "Protein" })} ${num(tot.prot, 1)} g · ${L({ it: "carboidrati", en: "carbs" })} ${num(tot.carb, 1)} g · ${L({ it: "grassi", en: "fat" })} ${num(tot.fat, 1)} g · ${L({ it: "fibre", en: "fibre" })} ${num(tot.fib, 1)} g`;
+const macroTesto = (tot, incompleti = false) => `${L({ it: "Proteine", en: "Protein" })} ${num(tot.prot, 1)} g · ${L({ it: "carboidrati", en: "carbs" })} ${num(tot.carb, 1)} g · ${L({ it: "grassi", en: "fat" })} ${num(tot.fat, 1)} g · ${L({ it: "fibre", en: "fibre" })} ${num(tot.fib, 1)} g` + (incompleti ? L({ it: " (incompleti: un'etichetta non li dà tutti)", en: " (incomplete: a label does not give them all)" }) : "");
 
 /* One ingredient: name, raw state, grams (editable), kcal, and how it was worked out. */
 function rigaIngrediente(v, i, opz, s) {
@@ -198,11 +229,12 @@ function rigaIngrediente(v, i, opz, s) {
   if (r.manca && !r.nonContato) note.push(t("infoMancante"));
   if (v.con && v.con.length) note.push(L({ it: "peso condiviso tra: ", en: "weight shared between: " }) + [v.a, ...v.con].map((a) => nome(a, lingua())).join(", "));
   for (const x of r.stime) if (!/^1 |metà|peso condiviso/.test(x)) note.push(x);
+  if (o.stato === "cotto" && !o.resa) note.push(L({ it: "valori per il cibo cotto: scrivi il peso da cotto", en: "values for the cooked food: enter the cooked weight" }));
   if (v.a === "verdure" && !v.scelta) note.push(L({ it: "media di 5 verdure: per un valore preciso toglila e aggiungi le verdure che hai usato", en: "average of 5 vegetables: for a precise value remove it and add the vegetables you used" }));
   return `<div class="ing-riga">
     <div class="ing-testa"><strong>${esc(nomeVoce(v, s))}</strong>${o.stato ? `<span class="stato-cibo ${esc(o.stato)}">${esc(statoTesto(o.stato))}</span>` : ""}</div>
     <div class="ing-dati">
-      <label class="ing-g"><input type="number" inputmode="decimal" min="0" max="3000" step="1" value="${esc(valore)}" placeholder="g" data-input="ingGrammi" data-i="${i}" aria-label="${esc(L({ it: `Grammi a crudo: ${nomeVoce(v, s)}`, en: `Raw grams: ${nomeVoce(v, s)}` }))}"><span>g</span></label>
+      <label class="ing-g"><input type="number" inputmode="decimal" min="0" max="3000" step="1" value="${esc(valore)}" placeholder="g" data-input="ingGrammi" data-i="${i}" aria-label="${esc(`${nomeVoce(v, s)}: ${pesoTesto(o.stato)}`)}"><span>${esc(pesoTesto(o.stato))}</span></label>
       <span class="kcal" id="ing-k-${i}">${r.val ? esc(kcalTesto(r.val.kcal)) : "-"}</span>
       <button class="icon-btn mini" data-az="ingTogli" data-i="${i}" aria-label="${esc(L({ it: "Togli", en: "Remove" }))}">${I.chiudi}</button>
     </div>
@@ -255,6 +287,7 @@ function foglioIngredienti() {
     ${miei.length ? `<div class="minimo">${esc(L({ it: "I tuoi cibi", en: "Your foods" }))}</div>
       <div class="scelte">${miei.map(([id, x]) => `<button class="chip ${c && c.a === id ? "attivo" : ""}" data-az="ingScegli" data-tipo="mio" data-id="${esc(id)}">${esc(x.nome)}</button>`).join("")}</div>` : ""}
     <div class="minimo">${esc(L({ it: "Tabella CIQUAL 2020 (prima i valori a crudo)", en: "CIQUAL 2020 table (raw values first)" }))}</div>
+    ${ing.ciqual.length && ing.ciqual[0].parziale ? `<div class="avviso">${I.avviso}<div class="piccolo">${esc(L({ it: "Nessun alimento per tutta la frase: questi risultati sono per una parola sola. Controlla che sia il cibo giusto.", en: "Nothing for the whole phrase: these results are for a single word. Check it is the right food." }))}</div></div>` : ""}
     ${ing.ciqual.length ? `<div class="ing-risultati">${ing.ciqual.map((x, i) => `<button class="ing-ris ${c && c.tipo === "ciqual" && c.rec.codice === x.codice ? "attivo" : ""}" data-az="ingScegli" data-tipo="ciqual" data-i="${i}">
         <span><strong>${esc(x.nome)}</strong> <span class="stato-cibo ${esc(x.stato)}">${esc(statoTesto(x.stato))}</span><br><span class="minimo">${esc(x.nomeEn)} · ${esc(String(x.codice))}</span></span>
         <span class="kcal">${esc(num(x.per100.kcal))}<small> kcal/100 g</small></span></button>`).join("")}</div>`
@@ -287,8 +320,8 @@ function foglioIngredienti() {
       return `<div class="card piatta ing-nuovo">
         <div class="ing-testa"><strong>${esc(nomeC)}</strong>${o.stato ? `<span class="stato-cibo ${esc(o.stato)}">${esc(statoTesto(o.stato))}</span>` : ""}</div>
         <div class="minimo">${o.kcal100 != null ? esc(`${k100Testo(o.kcal100)} kcal/100 g`) : esc(t("infoMancante"))}${o.fonti.length ? " · " + esc(fonteTesto(o)) : ""}</div>
-        ${o.stato === "cotto" ? `<p class="minimo">${I.avviso} ${esc(L({ it: "Questi valori sono per il cibo cotto: usali solo se hai pesato da cotto.", en: "These values are for the cooked food: use them only if you weighed it cooked." }))}</p>` : ""}
-        <label class="campo"><span>${esc(o.stato === "cotto" ? L({ it: "Grammi da cotto", en: "Cooked grams" }) : L({ it: "Grammi a crudo", en: "Raw grams" }))}</span><input type="number" inputmode="decimal" min="1" max="3000" id="ing-grammi" value="${esc(ing.grammi)}" data-input="ingGrammiNuovo"></label>
+        ${o.stato === "cotto" ? `<div class="avviso terra">${I.avviso}<div class="piccolo">${esc(L({ it: "Questi valori sono per il cibo cotto: usali solo se hai pesato da cotto.", en: "These values are for the cooked food: use them only if you weighed it cooked." }))}</div></div>` : ""}
+        <label class="campo"><span>${esc(L(({ crudo: { it: "Grammi a crudo", en: "Raw grams" }, secco: { it: "Grammi a secco, prima di cuocere", en: "Dry grams, before cooking" }, cotto: { it: "Grammi da cotto", en: "Cooked grams" }, conservato: { it: "Grammi sgocciolati", en: "Drained grams" } })[o.stato] || { it: "Grammi", en: "Grams" }))}</span><input type="number" inputmode="decimal" min="1" max="3000" id="ing-grammi" value="${esc(ing.grammi)}" data-input="ingGrammiNuovo"></label>
         <p class="piccolo" id="ing-anteprima" aria-live="polite">${esc(anteprima())}</p>
         <button class="btn primario" data-az="ingAggiungi">${I.piu}${esc(L({ it: "Aggiungi", en: "Add" }))}</button></div>`;
     })();
@@ -297,21 +330,24 @@ function foglioIngredienti() {
     <p class="piccolo muted">${esc(L({ it: "Pesa ogni ingrediente prima di cuocerlo e scrivi i grammi: l'app li trasforma in calorie con i valori a crudo delle tabelle ufficiali o dell'etichetta.", en: "Weigh each ingredient before cooking and enter the grams: the app turns them into calories with the raw values of official tables or of the label." }))}</p>
     <details class="come-calcola"><summary class="piccolo">${esc(L({ it: "Come calcola le calorie", en: "How the calories are worked out" }))}</summary>
       <ul class="piccolo">
-        <li>${esc(L({ it: "Peso a crudo: la cottura cambia soprattutto l'acqua, che non ha calorie, quindi grammi a crudo per valori a crudo danno le calorie del piatto. Olio e burro della cottura vanno aggiunti a parte.", en: "Raw weight: cooking mostly changes water, which has no calories, so raw grams times raw values give the calories of the dish. Oil and butter used for cooking are added separately." }))}</li>
-        <li>${esc(L({ it: "Valori per 100 g: cibi del piano dalle tabelle verificate dal consiglio (CREA, CIQUAL, USDA); gli altri dalla tabella ufficiale CIQUAL 2020 (ANSES) o dall'etichetta della confezione.", en: "Values per 100 g: plan foods from the tables checked by the council (CREA, CIQUAL, USDA); the others from the official CIQUAL 2020 table (ANSES) or from the package label." }))}</li>
+        <li>${esc(L({ it: "Peso a crudo: la cottura cambia soprattutto l'acqua, che non ha calorie, quindi grammi a crudo per valori a crudo danno le calorie del piatto. L'olio della cottura va aggiunto a parte. Ogni riga dice a che stato si riferiscono i valori (crudo, secco, cotto, sgocciolato) e quindi che peso scrivere.", en: "Raw weight: cooking mostly changes water, which has no calories, so raw grams times raw values give the calories of the dish. Cooking oil is added separately. Each line says which state its values refer to (raw, dry, cooked, drained) and so which weight to enter." }))}</li>
+        <li>${esc(L({ it: "Valori per 100 g: cibi del piano dalle tabelle verificate dal consiglio (CREA, CIQUAL, USDA), per pochi cibi da un alimento simile (lo dice la riga); gli altri dalla tabella ufficiale CIQUAL 2020 (ANSES), da una confezione di Open Food Facts (dati inseriti da utenti: controlla l'etichetta) o dall'etichetta che copi tu.", en: "Values per 100 g: plan foods from the tables checked by the council (CREA, CIQUAL, USDA), for a few foods from a similar food (the line says so); the others from the official CIQUAL 2020 table (ANSES), from an Open Food Facts package (user-entered data: check the label) or from the label you copy." }))}</li>
         <li>${esc(L({ it: "Energia: CIQUAL e le etichette UE usano i fattori del Regolamento (UE) 1169/2011: 4 kcal per grammo di proteine e di carboidrati, 9 di grassi, 2 di fibre.", en: "Energy: CIQUAL and EU labels use the factors of Regulation (EU) 1169/2011: 4 kcal per gram of protein and of carbohydrate, 9 of fat, 2 of fibre." }))}</li>
         <li>${esc(L({ it: "Sono stime: le tabelle danno valori medi e un prodotto reale può differire. Con i valori dell'etichetta il calcolo è più preciso.", en: "These are estimates: tables give average values and a real product can differ. With the label values the result is more precise." }))}</li>
       </ul></details>
     ${ing.modifica ? "" : `<label class="campo"><span>${esc(L({ it: "Pasto", en: "Meal" }))}</span><select data-cambia="ingPasto">${ORDINE_LOG.map((p) => `<option value="${p}" ${ing.pasto === p ? "selected" : ""}>${esc(nomePasto(p))}</option>`).join("")}</select></label>
-      ${esistente ? `<p class="minimo">${esc(L({ it: `${nomePasto(ing.pasto)} è già registrato (${num(valoriVoci(esistente.voci, opz).tot.kcal)} kcal): questi ingredienti si aggiungono.`, en: `${nomePasto(ing.pasto)} is already logged (${num(valoriVoci(esistente.voci, opz).tot.kcal)} kcal): these ingredients are added to it.` }))}</p>` : ""}`}
+      ${esistente ? `<p class="minimo">${esc(L({ it: `${nomePasto(ing.pasto)} è già registrato (${num(valoriVoci(esistente.voci, opz).tot.kcal)} kcal): alla fine scegli se aggiungere questi ingredienti o sostituirlo.`, en: `${nomePasto(ing.pasto)} is already logged (${num(valoriVoci(esistente.voci, opz).tot.kcal)} kcal): at the end choose whether to add these ingredients or replace it.` }))}</p>` : ""}`}
     <div class="ing-lista">${ing.voci.length ? ing.voci.map((v, i) => rigaIngrediente(v, i, opz, s)).join("") : `<p class="piccolo muted">${esc(L({ it: "Ancora nessun ingrediente.", en: "No ingredients yet." }))}</p>`}</div>
     ${ing.voci.length ? `<div class="ing-totale riga tra"><strong>${esc(L({ it: "Totale", en: "Total" }))}</strong><span class="kcal" id="ing-tot">${tot.completo ? "" : "≥ "}${esc(kcalTesto(tot.tot.kcal))}</span></div>
-      <p class="minimo" id="ing-mac">${esc(macroTesto(tot.tot))}</p>` : ""}
+      <p class="minimo" id="ing-mac">${esc(macroTesto(tot.tot, tot.macroIncomplete))}</p>` : ""}
     <h3 class="sotto-tit">${esc(L({ it: "Aggiungi un ingrediente", en: "Add an ingredient" }))}</h3>
     <input class="cerca" type="search" id="cerca-ing" placeholder="${esc(L({ it: "Es. riso basmati, zucchine, petto di pollo", en: "E.g. basmati rice, courgettes, chicken breast" }))}" value="${esc(ing.q)}" data-input="ingCerca" aria-label="${esc(L({ it: "Cerca un ingrediente", en: "Search an ingredient" }))}">
     ${risultati}
     ${nuovo}
-    <button class="btn primario pieno" data-az="ingRegistra">${I.spunta}${esc(ing.modifica ? L({ it: "Salva", en: "Save" }) : L({ it: "Registra nel diario", en: "Log it" }))}</button>`;
+    ${esistente ? `<div class="campi2">
+        <button class="btn primario" data-az="ingRegistra">${I.piu}${esc(L({ it: `Aggiungi al ${nomePasto(ing.pasto).toLowerCase()}`, en: `Add to ${nomePasto(ing.pasto).toLowerCase()}` }))}</button>
+        <button class="btn" data-az="ingSostituisci">${I.scambio}${esc(L({ it: "Sostituisci", en: "Replace" }))}</button></div>`
+      : `<button class="btn primario pieno" data-az="ingRegistra">${I.spunta}${esc(ing.modifica ? L({ it: "Salva", en: "Save" }) : L({ it: "Registra nel diario", en: "Log it" }))}</button>`}`;
 }
 
 function rimettiFuoco(id) {
@@ -348,14 +384,15 @@ export function apriIngredienti({ data = isoData(new Date()), pasto = null, modi
   caricaTabella();
 }
 
-function salvaIngredienti() {
+function salvaIngredienti(sostituisci = false) {
   if (!ing) return;
   if (ing.invalidi.size) { toast(L({ it: "Controlla i grammi segnati", en: "Check the grams marked" })); return; }
   const ora = new Date().toISOString();
   const voci = ing.voci;
   const { data, pasto, modifica } = ing;
   if (modifica) {
-    cambia((s) => {
+    const svuota = !voci.length;
+    const applica = (s) => {
       const g = s.diario[data];
       if (!g || !g.mangiato) return;
       if (pasto === "altro") {
@@ -367,16 +404,26 @@ function salvaIngredienti() {
         if (!voci.length) { delete g.mangiato[pasto]; if (g.pasti) g.pasti[pasto] = false; }
         else { g.mangiato[pasto].voci = istantanea(voci); g.mangiato[pasto].modificato = ora; }
       }
-    });
-  } else {
-    if (!voci.length) { toast(L({ it: "Aggiungi almeno un ingrediente", en: "Add at least one ingredient" })); return; }
-    const esistente = pasto !== "altro" && logDi(S(), data)[pasto];
-    if (esistente) cambia((s) => { const e = s.diario[data].mangiato[pasto]; e.voci.push(...istantanea(voci)); e.modificato = ora; });
-    else registraNelDiario(data, pasto, voci, "ingredienti");
+    };
+    ing = null;
+    chiudiFoglio();
+    if (svuota) cambiaConAnnulla(data, L({ it: `${nomePasto(pasto)} tolto dal diario`, en: `${nomePasto(pasto)} removed from the diary` }), applica);
+    else { cambia(applica); toast(L({ it: "Diario aggiornato", en: "Diary updated" })); }
+    return;
   }
+  if (!voci.length) { toast(L({ it: "Aggiungi almeno un ingrediente", en: "Add at least one ingredient" })); return; }
+  const esistente = pasto !== "altro" && logDi(S(), data)[pasto];
   ing = null;
   chiudiFoglio();
-  toast(L({ it: "Diario aggiornato", en: "Diary updated" }));
+  if (esistente && !sostituisci) {
+    cambia((s) => { const e = s.diario[data].mangiato[pasto]; e.voci.push(...istantanea(voci)); e.modificato = ora; });
+    toast(L({ it: "Aggiunti al pasto", en: "Added to the meal" }));
+  } else if (esistente) {
+    cambiaConAnnulla(data, L({ it: `${nomePasto(pasto)} sostituito`, en: `${nomePasto(pasto)} replaced` }), (s) => scriviVoce(s, data, pasto, voci, "ingredienti"));
+  } else {
+    registraNelDiario(data, pasto, voci, "ingredienti");
+    toast(L({ it: "Diario aggiornato", en: "Diary updated" }));
+  }
 }
 
 registra({
@@ -457,14 +504,26 @@ registra({
     const c = document.getElementById("ing-c-" + i); if (c) c.textContent = calcoloTesto(r, origineVoce(v, opz));
     const tot = valoriVoci(ing.voci, opz);
     const tEl = document.getElementById("ing-tot"); if (tEl) tEl.textContent = (tot.completo ? "" : "≥ ") + kcalTesto(tot.tot.kcal);
-    const m = document.getElementById("ing-mac"); if (m) m.textContent = macroTesto(tot.tot);
+    const m = document.getElementById("ing-mac"); if (m) m.textContent = macroTesto(tot.tot, tot.macroIncomplete);
   },
   ingTogli: (d) => { if (ing) { ing.voci.splice(Number(d.i), 1); ing.invalidi.clear(); ridisegna(); } },
-  ingRegistra: () => salvaIngredienti(),
-  togliDalDiario: (d) => cambia((s) => {
+  ingRegistra: () => salvaIngredienti(false),
+  ingSostituisci: () => salvaIngredienti(true),
+  togliDalDiario: (d) => cambiaConAnnulla(d.data, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => {
     const g = s.diario[d.data];
     if (!g || !g.mangiato) return;
     if (d.pasto === "altro") { (g.mangiato.altro || []).splice(Number(d.i), 1); }
     else { delete g.mangiato[d.pasto]; if (g.pasti) g.pasti[d.pasto] = false; }
   }),
+  annullaDiario: () => {
+    if (!annulla) return;
+    const { data, mangiato, pasti } = annulla;
+    annulla = null;
+    cambia((s) => {
+      const g = (s.diario[data] = s.diario[data] || {});
+      if (mangiato) g.mangiato = mangiato; else delete g.mangiato;
+      if (pasti) g.pasti = pasti; else delete g.pasti;
+    });
+    toast(L({ it: "Ripristinato", en: "Restored" }));
+  },
 });

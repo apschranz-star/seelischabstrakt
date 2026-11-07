@@ -200,10 +200,14 @@ async function motivo3d(err) {
   const dopo = { it: " Sotto trovi tutto: le parti del corpo, cosa sono e il viaggio del cibo.", en: " Below you find it all: the body parts, what they are and the food journey." };
   const con = (x) => ({ it: x.it + dopo.it, en: x.en + dopo.en });
   if (err && err.message === "webgl") return con({ it: "Questo telefono non mostra il 3D (WebGL non disponibile).", en: "This phone cannot show 3D (WebGL not available)." });
+  /* If the library is on the phone, the network is not the problem. */
+  try {
+    if (window.caches && (await caches.match("vendor/three.min.js", { ignoreSearch: true }))) return con({ it: "Il modello 3D è sul telefono ma non si è avviato.", en: "The 3D model is on the phone but did not start." });
+  } catch (e) { /* no cache access */ }
   if (navigator.onLine === false) return con({ it: "Sei offline e il modello 3D non è ancora sul telefono: si scarica alla prima connessione e poi resta.", en: "You are offline and the 3D model is not on the phone yet: it downloads on the first connection and then stays." });
   try {
     const r = await fetch("vendor/three.min.js", { method: "HEAD", cache: "no-store", credentials: "same-origin" });
-    if (r.status === 401 || r.status === 403) return con({ it: `Il sito ha rifiutato il modello 3D (codice ${r.status}, accesso non autorizzato): l'accesso al sito va riaperto nelle impostazioni Netlify.`, en: `The site refused the 3D model (code ${r.status}, not authorised): site access must be reopened in the Netlify settings.` });
+    if (r.status === 401 || r.status === 403) return con({ it: `Il sito ha rifiutato il modello 3D (codice ${r.status}, accesso non autorizzato): l'accesso al sito va riaperto, chiedi ad ALX.`, en: `The site refused the 3D model (code ${r.status}, not authorised): site access must be reopened, ask ALX.` });
     if (!r.ok) return con({ it: `Il modello 3D non si è scaricato (codice ${r.status}).`, en: `The 3D model did not download (code ${r.status}).` });
   } catch (e) {
     return con({ it: "Il modello 3D non si è scaricato: il sito non risponde.", en: "The 3D model did not download: the site does not answer." });

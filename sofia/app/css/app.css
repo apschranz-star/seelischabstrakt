@@ -378,7 +378,9 @@ details.tabella summary { cursor: pointer; font-weight: 700; color: var(--ink-2)
   background: var(--ink); color: var(--bg); padding: 11px 16px; border-radius: 14px; font-weight: 600; font-size: 14.5px;
   z-index: 50; opacity: 0; transition: all 0.22s; max-width: 92vw; text-align: center;
 }
-.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.toast { pointer-events: none; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast-azione { margin-left: 8px; background: none; border: 0; color: inherit; font: inherit; font-weight: 800; text-decoration: underline; min-height: 32px; padding: 0 4px; cursor: pointer; }
 
 /* -------------------------------------------------------- 5D body */
 .corpo5d { margin: 0 -16px; position: relative; background: radial-gradient(120% 90% at 50% 20%, #2a2140 0%, #120e1d 55%, #07060c 100%); color: #f1ecf7; min-height: 62vh; overflow: hidden; }

@@ -97,3 +97,33 @@ test("the food lookup cache deletes answers older than 7 days and unreadable one
   assert.equal(await ripulisciCache(store, { ora }), 2);
   assert.deepEqual([...dati.keys()], ["tofu"]);
 });
+
+/* QA round 3, MAJOR 1: CIQUAL names raw sprouts "sprouted" and "spouts" (sic). */
+test("raw sprouts are vetoed while immunosuppressed, in CIQUAL's own words", async () => {
+  const { caricaTabella, daCiqual } = await import("../app/js/engine/ricerca.js");
+  const t = await caricaTabella();
+  const rec = (code) => daCiqual(t, t.CIBI.findIndex((c) => c[t.I.code] === code || String(c[t.I.code]) === String(code)));
+  const immuno = { profilo: { farmaci: "micofenolato", immunosoppressori: true } };
+  for (const code of [20183, 20521]) {
+    const v = valutaAlimento(rec(code), immuno);
+    assert.equal(v.livello, "no", rec(code).nomeEn);
+    assert.equal(v.seggi.find((z) => z.agente === "lupus").livello, "veto");
+  }
+  assert.notEqual(valutaAlimento(rec(20029), immuno).livello, "no", "canned sprouts are heat-treated");
+  assert.equal(valutaAlimento(rec(20183), { profilo: {} }).livello, "si", "without immunosuppressants");
+});
+
+/* QA round 3, MAJOR 3: the verdict depends on the current profile, so lists must ask again. */
+test("a medicine in the profile changes the verdict of a stored food", () => {
+  const pompelmo = { nome: "Pompelmo", nomeEn: "Grapefruit, pulp, raw", fonte: "ciqual", codice: 13040, gruppoCiqual: "0204", per100: { kcal: 39, prot: 0.6, carb: 7.9, fat: 0.1, fib: 1.2, salt: 0 } };
+  assert.notEqual(valutaAlimento(pompelmo, { profilo: {} }).livello, "no");
+  assert.equal(valutaAlimento(pompelmo, { profilo: { farmaci: "tacrolimus" } }).livello, "no");
+});
+
+/* QA round 3, MAJOR 4: free text in a recipe is not a food record. */
+test("free-text extras: wheat flour and soy sauce vetoed, at-risk and unknown words need the label", () => {
+  const g = (e) => valutaAlimento({ nome: e, fonte: "testo", per100: null, classe: "spezie" }, { profilo: {} }).seggi.find((z) => z.agente === "glutine").livello;
+  for (const e of ["farina", "farina 00", "salsa di soia", "soy sauce", "besciamella", "panko", "lievito madre", "worcestershire", "flour"]) assert.equal(g(e), "veto", e);
+  for (const e of ["dado", "dado vegetale", "brodo vegetale", "zucchero", "farina di riso", "farina di avena", "cornflour"]) assert.equal(g(e), "nota", e);
+  for (const e of ["capperi", "origano", "lime", "scorza d'arancia", "sale", "pepe nero", "aglio"]) assert.equal(g(e), "ok", e);
+});

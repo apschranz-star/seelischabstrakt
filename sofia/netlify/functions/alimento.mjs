@@ -12,6 +12,10 @@ import { cercaOFF, query, CACHE_STORE, SETTE_GIORNI } from "../../lib/off.mjs";
 const json = (dati, stato = 200) => new Response(JSON.stringify(dati), { status: stato, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex" } });
 
 export default async (req) => {
+  /* Only the app's own pages: a browser on another site gets 403 (Sec-Fetch-Site,
+     sent by current browsers; a request without it is not from a web page). */
+  const sito = req.headers.get("sec-fetch-site");
+  if (sito && sito !== "same-origin" && sito !== "none") return json({ errore: "origine", risultati: [] }, 403);
   const q = query(new URL(req.url).searchParams.get("q"));
   if (q.length < 2) return json({ errore: "query", risultati: [] }, 400);
   const chiave = q.toLowerCase();

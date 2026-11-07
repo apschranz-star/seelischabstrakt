@@ -56,8 +56,8 @@ export function giudicaRicetta(r, s = S()) {
   const extra = String(r.extra || "").split(",").map((x) => x.trim()).filter(Boolean);
   for (const e of extra) {
     const x = valutaAlimento({ nome: e, fonte: "testo", per100: null, classe: "spezie" }, ctx);
-    const vetoGlutine = x.seggi.find((z) => z.agente === "glutine" && z.livello === "veto");
-    if (vetoGlutine) { peggio("no"); motivi.push({ it: `${e}: ${vetoGlutine.motivi[0].it}`, en: `${e}: ${vetoGlutine.motivi[0].en}` }); }
+    const glutine = x.seggi.find((z) => z.agente === "glutine" && (z.livello === "veto" || z.livello === "nota"));
+    if (glutine) { peggio(glutine.livello === "veto" ? "no" : "medio"); motivi.push({ it: `${e}: ${glutine.motivi[0].it}`, en: `${e}: ${glutine.motivi[0].en}` }); }
     for (const v of VETI.filter((z) => z.agente === "lupus")) if (v.re.test(e)) { peggio("no"); motivi.push({ it: v.it, en: v.en }); }
     for (const n of notePersonali([e], s.profilo)) { peggio("no"); motivi.push({ it: n.it, en: n.en }); }
     for (const n of NOTE_LUPUS) if (n.re.test(e)) motivi.push({ it: n.it, en: n.en });
@@ -78,7 +78,8 @@ function foglioNuova() {
   const b = bozza;
   const gruppi = {};
   for (const [id, a] of Object.entries(ALIMENTI)) if (!["acqua", "caffe", "tisane"].includes(id)) (gruppi[a.gruppo] = gruppi[a.gruppo] || []).push([id, L(a)]);
-  const miei = Object.values(s.alimentiExtra || {}).filter((x) => x.livello !== "no");
+  const ctxOra = { profilo: s.profilo, renaleFuoriRange: renaleFuoriRange(s, isoData(new Date())) };
+  const miei = Object.values(s.alimentiExtra || {}).filter((x) => valutaAlimento(x, ctxOra).livello !== "no");
   const select = `<select data-cambia="ricAggiungi" aria-label="${esc(L({ it: "Aggiungi un ingrediente", en: "Add an ingredient" }))}"><option value="">${esc(L({ it: "+ Aggiungi un ingrediente", en: "+ Add an ingredient" }))}</option>
     ${miei.length ? `<optgroup label="${esc(L({ it: "I miei cibi", en: "My foods" }))}">${miei.map((x) => `<option value="${esc(x.id)}">${esc(x.nome)}</option>`).join("")}</optgroup>` : ""}
     ${Object.entries(gruppi).map(([g, lista]) => `<optgroup label="${esc(g)}">${lista.map(([id, n]) => `<option value="${id}">${esc(n)}</option>`).join("")}</optgroup>`).join("")}</select>`;

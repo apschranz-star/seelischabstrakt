@@ -106,7 +106,15 @@ export function classeDi({ gruppoCiqual = null, categorie = [], nome = "", per10
 
 /* ------------------------------------------------------------ gluten */
 const DICITURA_SG = R("senza glutine|gluten[ -]?free|sans gluten|glutenfrei|sin gluten|no[ -]gluten");
-const CON_GLUTINE = R("\\b(frumento|grano(?!\\s+saraceno)|wheat|farro|spelt|orzo|barley|segale|rye|kamut|khorasan|triticale|bulgur|cous ?cous|cuscus|seitan|malto(?!destrin)|malt(?!o?dextrin|ose|itol)|birra|beer|semolin|semola(?! di (riso|mais))|pangrattato|breadcrumb|impanat|panat|breaded|batter|pastella|biscott|biscuit|cookie|cracker|grissin|rusk|fette biscottate|croissant|cornett|brioche|merendin|wafer|torta|cake|pastry|pasticc|pizza|lasagn|raviol|tortellin|gnocch|crepe|pancake|waffle|piadin|pita|bagel|focaccia|panino|sandwich|couscous)");
+/* "farina" alone is wheat flour in Italian; flours of naturally gluten-free foods are not
+   (oat flour is handled by AVENA). Same for "flour" in English. */
+const FARINA = "farina(?!\\s+(di\\s+|d')?(riso|mais|ceci|lenticch|pisell|legum|grano\\s+saraceno|saraceno|quinoa|castagn|mandorl|cocco|tapioca|manioca|sorgo|miglio|amaranto|teff|patat|fave|nocciol|avena|soia))|(?<!(rice|corn|maize|chickpea|chick pea|gram|buckwheat|almond|coconut|potato|tapioca|cassava|chestnut|lentil|pea|soy|soya|sorghum|millet|quinoa|teff|amaranth|oat|carob|hazelnut|banana|rice-maize) )\\bflour";
+const CON_GLUTINE = R("\\b(" + FARINA + "|salsa di soia|soy sauce|shoyu|besciamell|bechamel|béchamel|panko|lievito madre|sourdough|worcestershire|udon|ramen|freekeh|frumento|grano(?!\\s+saraceno)|wheat|farro|spelt|orzo|barley|segale|rye|kamut|khorasan|triticale|bulgur|cous ?cous|cuscus|seitan|malto(?!destrin)|malt(?!o?dextrin|ose|itol)|birra|beer|semolin|semola(?! di (riso|mais))|pangrattato|breadcrumb|impanat|panat|breaded|batter|pastella|biscott|biscuit|cookie|cracker|grissin|rusk|fette biscottate|croissant|cornett|brioche|merendin|wafer|torta|cake|pastry|pasticc|pizza|lasagn|raviol|tortellin|gnocch|crepe|pancake|waffle|piadin|pita|bagel|focaccia|panino|sandwich|couscous)");
+/* Foods AIC lists as at risk: they may or may not contain gluten, only the label says. */
+const A_RISCHIO = R("\\b(dado|dadi|brodo (granulare|in polvere|pronto|vegetale|di carne|di pollo)|bouillon|stock cube|lievito (chimico|per dolci|istantaneo|in polvere)|baking powder|insaporitor|spezie miste|mix di spezie|curry|senape|mustard|ketchup|maionese|mayonnaise|salsa|sauce|aroma|flavouring|amido|starch|cacao|cocoa|caramell|surimi)");
+/* Free text (a recipe extra) is not a food record: only plain herbs, spices and
+   condiments are passed as naturally gluten free; any other text is "check the label". */
+const TESTO_SG = R("^(sale( grosso| fino| marino| iodato)?|pepe( nero| bianco| rosa)?|peperoncino|paprika|curcuma|zenzero|cannella|noce moscata|chiodi di garofano|cumino|coriandolo|basilico|prezzemolo|rosmarino|origano|timo|salvia|menta|alloro|aneto|erba cipollina|maggiorana|dragoncello|finocchietto|erbe aromatiche|aglio|cipolla|cipollotto|scalogno|limone|lime|scorza (d'arancia|di limone|di lime)|succo di (limone|lime|arancia)|arancia|aceto( di vino( bianco| rosso)?| di mele)?|olio( extravergine( di oliva)?| evo| di oliva)?|capperi|olive|semi di (sesamo|lino|chia|zucca|girasole)|sesamo|acqua|vino( bianco| rosso)?|salt|sea salt|pepper|black pepper|chilli|chili|paprika|turmeric|ginger|cinnamon|nutmeg|cumin|garlic|onion|shallot|lemon|lime|lemon zest|orange zest|lemon juice|basil|parsley|rosemary|oregano|thyme|sage|mint|bay leaf|dill|chives|capers|olives|vinegar|wine vinegar|olive oil|sesame seeds|water)$");
 const PASTA_PANE = R("\\b(pasta|pane|bread|spaghetti|penne|fusilli|noodle)");
 const ALTRI_CEREALI_SG = R("riso|rice|mais|maize|corn|legum|lentic|lentil|lens|ceci|chick|pisell|\\bpea\\b|saraceno|buckwheat|quinoa|sorgo|sorghum|miglio|millet|amarant|teff|patat|potato|castagn|chestnut");
 const AVENA = R("\\b(avena|oat|oats|oatmeal)\\b");
@@ -125,6 +133,8 @@ function seggioGlutine(c, classe) {
   if (sospetto && !certificato) return { livello: VETO, motivi: [{ it: "Di solito contiene glutine (frumento, orzo, segale, farro o derivati). Va bene solo una versione con la dicitura senza glutine.", en: "Usually contains gluten (wheat, barley, rye, spelt or derivatives). Only a version labelled gluten free will do." }] };
   if (AVENA.test(testo) && !certificato) return { livello: NOTA, motivi: [{ it: "Avena: solo se certificata senza glutine.", en: "Oats: only if certified gluten free." }] };
   if (certificato) return { livello: OK, motivi: [{ it: "Con la dicitura senza glutine.", en: "Labelled gluten free." }] };
+  if (A_RISCHIO.test(testo)) return { livello: NOTA, motivi: [{ it: "Può contenere glutine oppure no: va bene solo con la dicitura senza glutine (AIC lo considera a rischio).", en: "It may or may not contain gluten: only with the gluten-free wording (AIC lists it as at risk)." }] };
+  if (c.fonte === "testo" && !TESTO_SG.test(String(c.nome || "").trim())) return { livello: NOTA, motivi: [{ it: "Non è un cibo che l'app riconosce: controlla la dicitura senza glutine prima di usarlo.", en: "Not a food the app recognises: check the gluten-free wording before using it." }] };
   if (c.fonte === "off" && !tag && !etichette) return { livello: NOTA, motivi: [{ it: "Nessuna informazione sul glutine nella scheda: controlla la dicitura senza glutine sulla confezione.", en: "No gluten information in the record: check the gluten-free wording on the package." }] };
   if (ETICHETTA_SEMPRE.has(classe) || c.fonte === "off") return { livello: NOTA, motivi: [{ it: "Compralo con la dicitura senza glutine (spiga barrata).", en: "Buy it labelled gluten free (crossed grain)." }] };
   return { livello: OK, motivi: [{ it: "Naturalmente senza glutine.", en: "Naturally gluten free." }] };
@@ -153,6 +163,8 @@ const RISO_OK = R("brown|whole|integrale|basmati|venere|black|red|wild|nero|ross
 const NOCI_PIANO = R("\\b(noci|noce|walnut|mandorl|almond|nocciol|hazelnut|chia|lino|linseed|flax)");
 
 const p = (it, en) => ({ it, en, fonte: PIANO });
+/* Swaps the plan does not write: the app's own suggestion, to confirm with the nutritionist. */
+const sugg = (it, en) => ({ it, en, fonte: "app" });
 
 function seggioPiano(c, classe) {
   const testo = [c.nome, c.nomeEn, c.ingredienti].filter(Boolean).join(" ");
@@ -181,12 +193,12 @@ function seggioPiano(c, classe) {
   }
   if (classe === "grassi") {
     if (R("extra ?verg|extra virgin").test(testo)) return { livello: OK, motivi: [p("Olio extravergine di oliva: il condimento del piano.", "Extra virgin olive oil: the plan's dressing.")] };
-    if (R("avocado").test(testo)) return { livello: OK, motivi: [p("Avocado: tra i cibi consigliati dalla nutrizionista. Conta come grasso: al posto di parte dell'olio.", "Avocado: among the foods the nutritionist recommends. It counts as fat: instead of part of the oil.")] };
+    if (R("avocado").test(testo)) return { livello: OK, motivi: [p("Avocado: tra i cibi consigliati dalla nutrizionista.", "Avocado: among the foods the nutritionist recommends."), sugg("Conta come grasso: al posto di parte dell'olio.", "It counts as fat: instead of part of the oil.")] };
     return { livello: ADATTA, motivi: [p("Il piano usa solo olio extravergine: burro, panna e altri grassi non sono previsti.", "The plan uses only extra virgin olive oil: butter, cream and other fats are not included.")] };
   }
   if (classe === "verdure") return { livello: OK, motivi: [p("Verdura: 300 g a pranzo e 300 g a cena, anche di più se non sei sazia. L'olio non cambia.", "Vegetable: 300 g at lunch and 300 g at dinner, more if still hungry. The oil stays the same.")] };
   if (classe === "patate") {
-    if (R("dolc|sweet").test(testo)) return { livello: ADATTA, motivi: [p("Patate dolci: non nel piano. Le patate non sono verdure: a cena al posto del pane, con le calorie dei 200 g di patate.", "Sweet potatoes: not in the plan. Potatoes are not vegetables: at dinner instead of bread, with the calories of 200 g potatoes.")] };
+    if (R("dolc|sweet").test(testo)) return { livello: ADATTA, motivi: [p("Patate dolci: non nel piano. Le patate non sono verdure.", "Sweet potatoes: not in the plan. Potatoes are not vegetables."), sugg("A cena al posto del pane, con le calorie dei 200 g di patate.", "At dinner instead of bread, with the calories of 200 g potatoes.")] };
     return { livello: OK, motivi: [p("Patate: non sono verdure. A cena 200 g al posto del pane.", "Potatoes: not vegetables. At dinner 200 g instead of bread.")] };
   }
   if (classe === "legumi") return { livello: OK, motivi: [p("Legumi: 2 pranzi e 1 cena a settimana.", "Legumes: 2 lunches and 1 dinner a week.")] };
@@ -198,7 +210,7 @@ function seggioPiano(c, classe) {
     return { livello: OK, motivi: [p("Frutta secca: tra i cibi consigliati. Il piano nomina noci, mandorle e nocciole.", "Nuts: among the recommended foods. The plan names walnuts, almonds and hazelnuts.")] };
   }
   if (classe === "cereali") {
-    if (RISO_BIANCO_MAIS.test(testo) || (RISO.test(testo) && !RISO_OK.test(testo))) return { livello: ADATTA, motivi: [p("La nutrizionista chiede di evitare pasta di mais e riso semplice: meglio cereali in chicco (grano saraceno, quinoa, miglio, sorgo).", "The nutritionist asks to avoid corn pasta and plain white rice: whole grains are better (buckwheat, quinoa, millet, sorghum).")] };
+    if (RISO_BIANCO_MAIS.test(testo) || (RISO.test(testo) && !RISO_OK.test(testo))) return { livello: ADATTA, motivi: [p("La nutrizionista chiede di evitare pasta di mais e \"riso semplice\" (l'app lo legge anche come riso bianco: è tra le domande aperte). Meglio cereali in chicco (grano saraceno, quinoa, miglio, sorgo).", "The nutritionist asks to avoid corn pasta and \"plain rice\" (the app also reads it as white rice: it is among the open questions). Whole grains are better (buckwheat, quinoa, millet, sorghum).")] };
     if (R("pasta").test(testo) && !R("legum|lentic|lentil|ceci|chick|saraceno|buckwheat|riso integrale|brown rice|avena|oat").test(testo)) return { livello: ADATTA, motivi: [p("Pasta senza glutine: va bene se fatta con un solo ingrediente (grano saraceno, riso integrale, legumi 100%), senza mono e digliceridi.", "Gluten-free pasta: fine if made from a single ingredient (buckwheat, brown rice, 100% legumes), without mono- and diglycerides.")] };
     return { livello: OK, motivi: [p("Cereali in chicco o pasta di un solo ingrediente: la scelta preferita della nutrizionista a pranzo.", "Whole grains or single-ingredient pasta: the nutritionist's preferred lunch choice.")] };
   }
@@ -212,7 +224,7 @@ function seggioPiano(c, classe) {
     return { livello: ADATTA, motivi: [p("Pane o cracker senza glutine confezionati: spesso tanti additivi. Scegli quelli con pochi ingredienti; a cena al posto dei 60 g di pane.", "Packaged gluten-free bread or crackers: often many additives. Choose few ingredients; at dinner instead of the 60 g bread.")] };
   }
   if (classe === "carne") {
-    if (CARNE_ROSSA.test(testo)) return { livello: ADATTA, motivi: [p("Carne rossa: non nel piano (a cena solo vitello o maiale magro, max 1 volta a settimana). Se la mangi, magra e come quella.", "Red meat: not in the plan (at dinner only lean veal or pork, max once a week). If you eat it, lean and counted like those.")] };
+    if (CARNE_ROSSA.test(testo)) return { livello: ADATTA, motivi: [p("Carne rossa: non nel piano (a cena solo vitello o maiale magro, max 1 volta a settimana).", "Red meat: not in the plan (at dinner only lean veal or pork, max once a week)."), sugg("Se la mangi, magra e contata come quella.", "If you eat it, lean and counted like those.")] };
     if ((v.fat || 0) > 10) return { livello: ADATTA, motivi: [p("Carne grassa: il piano usa tagli magri.", "Fatty meat: the plan uses lean cuts.")] };
     return { livello: OK, motivi: [p("Carne bianca o magra: nel piano 1-2 volte a pranzo e a cena.", "White or lean meat: in the plan 1-2 times at lunch and at dinner.")] };
   }
@@ -222,7 +234,7 @@ function seggioPiano(c, classe) {
     return { livello: OK, motivi: [p("Pesce: il piano lo vuole spesso (2-3 cene e 1-2 pranzi a settimana).", "Fish: the plan wants it often (2-3 dinners and 1-2 lunches a week).")] };
   }
   if (classe === "uova") return { livello: OK, motivi: [p("Uova: 1 pranzo e 1 cena a settimana, cucinate come vuoi.", "Eggs: 1 lunch and 1 dinner a week, cooked as you like.")] };
-  if (classe === "proteine_veg") return { livello: ADATTA, motivi: [p("Non nel piano: puoi usarlo al posto di una proteina con la porzione calcolata, poi chiedi conferma alla nutrizionista.", "Not in the plan: you can use it instead of a protein with the computed portion, then ask the nutritionist to confirm.")] };
+  if (classe === "proteine_veg") return { livello: ADATTA, motivi: [p("Non nel piano.", "Not in the plan."), sugg("Al posto di una proteina con la porzione calcolata.", "Instead of a protein with the computed portion.")] };
   if (classe === "latte" || classe === "yogurt") {
     if ((v.sug || 0) > 6) return { livello: ADATTA, motivi: [p("Zuccherato o aromatizzato: il piano usa yogurt e latte bianchi, senza zucchero.", "Sweetened or flavoured: the plan uses plain yogurt and milk, without sugar.")] };
     if (R("soia|soy|avena|oat|riso|rice|mandorl|almond|cocco|coconut").test(testo)) return { livello: ADATTA, motivi: [p("Bevanda vegetale: non nel piano. Se la usi al posto del latte, senza zucchero.", "Plant drink: not in the plan. If you use it instead of milk, unsweetened.")] };
@@ -261,7 +273,9 @@ function seggioReni(c, porzioni, renale) {
 }
 
 /* ---------------------------------------------------------- portions */
-const tondo = (x) => Math.max(5, Math.round(x / 5) * 5);
+/* Grams a kitchen scale can weigh: to 5 g from 30 g up, to 1 g below (10 g of jam or
+   oil rounded to 5 g would be up to a third off the reference calories). */
+const tondo = (x) => (x >= 30 ? Math.round(x / 5) * 5 : Math.max(1, Math.round(x)));
 const mediana = (xs) => { const s = xs.filter((x) => x != null).sort((a, b) => a - b); return s.length ? s[Math.floor(s.length / 2)] : null; };
 let RIF = null;
 function rif(voci) { const r = valoriVoci(voci); return r.completo ? { kcal: r.tot.kcal, prot: r.tot.prot } : null; }

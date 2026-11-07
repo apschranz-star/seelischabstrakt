@@ -73,15 +73,18 @@ same order of seniority, and gives one of three verdicts:
 
 | Seat | Seniority | Checks | Veto |
 |---|---|---|---|
-| Custode del glutine | 1 | Declared allergens and "may contain" traces, foods that usually contain gluten unless labelled gluten free, oats only certified | yes |
-| Sentinella lupus | 2 | The same vetoes and notes as for recipes, with her medicines profile | yes |
+| Custode del glutine | 1 | Declared allergens and "may contain" traces, foods that usually contain gluten unless labelled gluten free (plain "farina" is wheat flour; soy sauce, besciamella, panko, sourdough), oats only certified, foods AIC lists as at risk (stock cubes, sauces, baking powder) only with the label; free text passes only for plain herbs, spices and condiments | yes |
+| Sentinella lupus | 2 | The same vetoes and notes as for recipes, with her medicines profile (raw sprouts while immunosuppressed, in the words CIQUAL uses: "sprouted", "spouts") | yes |
 | Custode del piano | 3 | What the nutritionist excludes (fried food, alcohol, refined oils, cold cuts, sweets, sugary drinks) or limits (cooked ham, dark chocolate only 85-90%) | yes |
 | Sentinella reni | 4 | More than 1.5 g salt per 100 g; potassium and phosphorus when a kidney result is out of range | no |
 | Analista dei dati | 5 | Where the values come from (CIQUAL 2020 or an Open Food Facts package), estimates, missing data | no |
 
 The portion it proposes has the same calories as the plan portion it replaces
 (protein foods too, with a warning when they bring much less protein). Without
-calories there is no portion: "Informazione mancante".
+calories there is no portion: "Informazione mancante". Swaps the plan does not
+write are shown as the app's suggestion, to confirm with the nutritionist. The
+meal builder and the recipe picker ask the seats again with her current
+profile, so a new medicine changes what they offer.
 
 ## Release gate
 

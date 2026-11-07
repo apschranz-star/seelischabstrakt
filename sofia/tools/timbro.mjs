@@ -16,7 +16,15 @@ const visita = (d) => {
 };
 visita(app);
 const v = h.digest("hex").slice(0, 12);
+/* The vendor cache survives app versions; its name follows the vendor files
+   themselves, so a changed library is fetched again without a manual bump. */
+const hv = createHash("sha256");
+const ven = join(app, "vendor");
+for (const n of readdirSync(ven).sort()) hv.update(n).update(readFileSync(join(ven, n)));
+const vv = hv.digest("hex").slice(0, 12);
 const sw = join(app, "sw.js");
-const testo = readFileSync(sw, "utf8").replace(/const VERSIONE = "[^"]*";/, `const VERSIONE = "${v}";`);
+const testo = readFileSync(sw, "utf8")
+  .replace(/const VERSIONE = "[^"]*";/, `const VERSIONE = "${v}";`)
+  .replace(/const VENDOR = "[^"]*";/, `const VENDOR = "sofia-vendor-${vv}";`);
 writeFileSync(sw, testo);
-console.log("sw.js version", v);
+console.log("sw.js version", v, "vendor", vv);

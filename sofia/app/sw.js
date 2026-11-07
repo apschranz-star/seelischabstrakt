@@ -7,13 +7,14 @@
  *   - Heavy files in vendor/ live in their own cache, kept across app
  *     versions: three.js is fetched at install (the body screen needs it, and
  *     a page that only works online is no use on the phone), pdf.js the first
- *     time a lab report is read. Bump VENDOR when a file in vendor/ changes.
+ *     time a lab report is read. tools/timbro.mjs names VENDOR after a hash of
+ *     vendor/, so a changed library is fetched again.
  * Sofia's own data is not here: it lives in localStorage, never in a cache.
  */
 const VERSIONE = "__VERSIONE__";
 const CACHE = "sofia-" + VERSIONE;
 const API = "sofia-api";
-const VENDOR = "sofia-vendor-1";
+const VENDOR = "sofia-vendor-__VENDOR__";
 const VENDOR_SUBITO = ["vendor/three.min.js"];
 const BASE = [
   "./", "index.html", "manifest.webmanifest", "css/app.css", "fonts/fonts.css",

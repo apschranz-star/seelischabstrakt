@@ -124,6 +124,12 @@ export const VETI = [
   { agente: "piano", re: R("\\bsweet potato(es)?\\b|patate dolci|patate americane|yams?\\b"), it: "Patate dolci: non previste (il piano ha 200 g di patate al posto del pane)", en: "Sweet potatoes: not in the plan (the plan has 200 g potatoes instead of bread)" },
 ];
 
+/* Sprouts, in the words the sources use: CIQUAL writes "Mung bean, sprouted or
+   soy spouts, raw" (sic) and "Lentils, sprouted". */
+export const GERMOGLI = "\\bsprout(s|ed|ing)?\\b|\\bspouts\\b|germogl";
+/* Thoroughly heat-treated sprouts (canned, boiled) are not the raw or lightly cooked ones the advice is about. */
+const GERMOGLI_BEN_COTTI = "\\b(canned|boiled|in scatola|bolliti)\\b";
+
 /* Lupus notes that do not block a recipe for everyone. The clinical evidence
    officer graded them (docs/fonti/evidence-clinical.json, ids in "fonte").
    With her profile (medicines, immunosuppression) some become vetoes on her
@@ -131,7 +137,7 @@ export const VETI = [
 export const NOTE_LUPUS = [
   { re: R("\\bgarlic\\b|\\baglio\\b"), fonte: "lupus_garlic", it: "Aglio: un centro per il lupus consiglia di limitarlo, ma le prove sono solo consigli di associazioni di pazienti. Chiedi al medico.", en: "Garlic: a lupus centre advises limiting it, but the evidence is patient-organisation advice only. Ask the doctor." },
   { re: R(AGRUMI_CNI), fonte: "drug_grapefruit_cni", it: "Pompelmo, pomelo, arancia amara di Siviglia o tangelo: da evitare se prendi ciclosporina, tacrolimus o voclosporina (schede tecniche e FDA).", en: "Grapefruit, pomelo, Seville (bitter) orange or tangelo: avoid if you take ciclosporin, tacrolimus or voclosporin (product labels and FDA)." },
-  { re: R("\\b(bean|mung|broccoli|radish|clover|pea|sunflower)? ?sprouts\\b|germogli"), fonte: "lupus_raw_sprouts_immunosuppressed", it: "Germogli crudi: da evitare se prendi immunosoppressori (indicazione FDA per chi ha difese ridotte).", en: "Raw sprouts: avoid if you take immunosuppressants (FDA advice for weakened immunity)." },
+  { re: R(GERMOGLI), fonte: "lupus_raw_sprouts_immunosuppressed", it: "Germogli crudi: da evitare se prendi immunosoppressori (indicazione FDA per chi ha difese ridotte).", en: "Raw sprouts: avoid if you take immunosuppressants (FDA advice for weakened immunity)." },
   { re: R(IPERICO), fonte: "drug_st_johns_wort", it: "Iperico: con ciclosporina da evitare (la scheda riporta una forte riduzione della ciclosporina nel sangue); con tacrolimus o voclosporina chiedi al medico prima di qualsiasi integratore (le schede avvertono sugli induttori del CYP3A4).", en: "St John's wort: avoid with ciclosporin (the label reports a marked fall in blood ciclosporin); with tacrolimus or voclosporin ask the doctor before any supplement (the labels warn about CYP3A4 inducers)." },
 ];
 
@@ -150,7 +156,7 @@ export function notePersonali(righe, profilo = {}) {
   for (const z of righe) {
     if (cni && R(AGRUMI_CNI).test(z)) out.push({ livello: VETO, it: `Pompelmo, pomelo, arancia amara o tangelo con ciclosporina, tacrolimus o voclosporina: da evitare ("${z}")`, en: `Grapefruit, pomelo, bitter orange or tangelo with ciclosporin, tacrolimus or voclosporin: avoid ("${z}")` });
     if (cni && R(IPERICO).test(z)) out.push({ livello: VETO, it: `Iperico con ciclosporina, tacrolimus o voclosporina: chiedi al medico ("${z}")`, en: `St John's wort with ciclosporin, tacrolimus or voclosporin: ask the doctor ("${z}")` });
-    if (immuno && /sprouts|germogli/i.test(z)) out.push({ livello: VETO, it: `Germogli crudi con immunosoppressori: da evitare ("${z}")`, en: `Raw sprouts while immunosuppressed: avoid ("${z}")` });
+    if (immuno && R(GERMOGLI).test(z) && !R(GERMOGLI_BEN_COTTI).test(z)) out.push({ livello: VETO, it: `Germogli crudi con immunosoppressori: da evitare ("${z}")`, en: `Raw sprouts while immunosuppressed: avoid ("${z}")` });
   }
   return out;
 }

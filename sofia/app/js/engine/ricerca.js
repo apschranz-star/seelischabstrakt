@@ -82,11 +82,17 @@ function punteggi(t, termini, q, crudo = false) {
   }
   return out.sort((a, b) => b[0] - a[0]);
 }
+/* parziale: the whole phrase found nothing and the results come from single
+   words ("germogli di soia" must not silently become dry soybeans). */
 export function cercaCiqual(q, t, max = 8, { crudo = false } = {}) {
   const n = normalizza(q);
-  for (const gruppo of terminiInglesi(q)) {
-    const p = punteggi(t, gruppo, n, crudo);
-    if (p.length) return p.slice(0, max).map(([, i]) => daCiqual(t, i, q));
+  const gruppi = terminiInglesi(q);
+  const frase = n.split(" ").length > 1;
+  const intera = !!PAROLE[n];
+  for (let k = 0; k < gruppi.length; k++) {
+    const p = punteggi(t, gruppi[k], n, crudo);
+    const parziale = frase && k < gruppi.length - 1 && !(intera && k === 0);
+    if (p.length) return p.slice(0, max).map(([, i]) => ({ ...daCiqual(t, i, q), parziale }));
   }
   return [];
 }

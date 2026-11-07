@@ -9,7 +9,7 @@ import { I, esc } from "../ui.js";
 import { registra, ridisegna } from "../ctx.js";
 import { decifraConPassphrase } from "../cripto.js";
 
-let testo = null, stato = "chiuso", lng = null;
+let testo = null, stato = "chiuso", lng = null, erroreRete = "";
 
 function codiceSalvato() {
   try { return localStorage.getItem("sofia-codice") || sessionStorage.getItem("sofia-codice"); } catch (e) { return null; }
@@ -18,9 +18,20 @@ function codiceSalvato() {
 async function apri(codice) {
   stato = "apro";
   ridisegna();
+  /* Two different failures: the file did not arrive (offline, site access) or the code does not open it. */
+  let file = null;
   try {
     const r = await fetch("data/piano-testo.cifrato.json", { cache: "no-cache" });
-    testo = await decifraConPassphrase(await r.json(), codice, "sofia-piano");
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    file = await r.json();
+  } catch (e) {
+    stato = "rete";
+    erroreRete = String(e && e.message || "");
+    ridisegna();
+    return;
+  }
+  try {
+    testo = await decifraConPassphrase(file, codice, "sofia-piano");
     stato = "aperto";
     try { localStorage.setItem("sofia-codice", codice); } catch (e) { /* private mode */ }
   } catch (e) {
@@ -52,7 +63,8 @@ export function render() {
       <p class="piccolo muted">${esc(L({ it: "È personale, quindi è cifrato: si apre con il codice dell'app, solo su questo telefono.", en: "It is personal, so it is encrypted: it opens with the app's code, only on this phone." }))}</p>
       ${stato === "apro" ? `<p class="piccolo">${esc(L({ it: "Apro il testo...", en: "Opening the text..." }))}</p>` : `<form data-invia="apriPianoTesto" class="stack">
         <label class="campo"><span>${esc(L({ it: "Codice dell'app", en: "App code" }))}</span><input name="codice" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" required></label>
-        ${stato === "errore" ? `<p class="piccolo" role="alert">${I.avviso} ${esc(L({ it: "Il codice non apre il testo.", en: "The code does not open the text." }))}</p>` : ""}
+        ${stato === "errore" ? `<div class="avviso" role="alert">${I.avviso}<div class="piccolo">${esc(L({ it: "Il codice non apre il testo.", en: "The code does not open the text." }))}</div></div>` : ""}
+        ${stato === "rete" ? `<div class="avviso" role="alert">${I.avviso}<div class="piccolo">${esc(L({ it: `Il testo del piano non si è scaricato (${erroreRete || "nessuna risposta"}): il codice non c'entra. Riprova quando sei online; se dice 401, l'accesso al sito va riaperto (chiedi ad ALX).`, en: `The plan text did not download (${erroreRete || "no answer"}): it is not the code. Try again when online; if it says 401, site access must be reopened (ask ALX).` }))}</div></div>` : ""}
         <button class="btn primario pieno">${I.lucchetto}${esc(L({ it: "Apri", en: "Open" }))}</button></form>`}
     </section>`;
   }

@@ -1,5 +1,5 @@
 node_modules/
 .netlify/
-# generated at publish time by tools/build.sh from tools/gate (same as anker)
+# generated at publish time by tools/gate-sofia.mjs (hash of the access code only); never committed
 app/zugang.js
 app/zugang.css

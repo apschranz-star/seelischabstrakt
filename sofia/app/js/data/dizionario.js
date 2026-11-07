@@ -17,7 +17,7 @@ export const PAROLE = {
   indivia: ["endive"], scarola: ["endive"], valeriana: ["lamb's lettuce"], songino: ["lamb's lettuce"], "cavoletti di bruxelles": ["brussels sprout"],
   "cavolo nero": ["curly kale"], "cavolo riccio": ["curly kale"], cavolo: ["cabbage"], verza: ["cabbage"], "cavolo rosso": ["red cabbage"],
   barbabietola: ["beetroot"], rape: ["turnip"], rapa: ["turnip"], ravanelli: ["radish"], ravanello: ["radish"], piselli: ["garden peas"],
-  aglio: ["garlic"], scalogno: ["shallot"], germogli: ["sprout"], "germogli di soia": ["bean sprout", "soybean sprout"], "germogli di erba medica": ["alfalfa seeds, sprouted", "alfalfa"], "erba medica": ["alfalfa"], alfalfa: ["alfalfa"],
+  aglio: ["garlic"], scalogno: ["shallot"], germogli: ["sprouted"], "germogli di soia": ["mung bean, sprouted", "soy spouts"], "germogli di fagioli mung": ["mung bean, sprouted"], "germogli di lenticchie": ["lentils, sprouted"], "germogli di erba medica": ["alfalfa seeds, sprouted", "alfalfa"], "erba medica": ["alfalfa"], alfalfa: ["alfalfa"],
   avocado: ["avocado"], olive: ["olive"], oliva: ["olive"], mais: ["corn", "maize"], polenta: ["polenta"], okra: ["okra"],
   /* potatoes */
   patate: ["potato"], patata: ["potato"], "patate dolci": ["sweet potato"], "patata dolce": ["sweet potato"], "patata americana": ["sweet potato"], manioca: ["cassava"],

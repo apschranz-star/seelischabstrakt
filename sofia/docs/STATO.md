@@ -15,7 +15,7 @@ The access code and the plain text of the plan are never committed. Both live
 outside the repository: `/home/claude/council/.sofia_code` and
 `/home/claude/council/piano-testo.json`.
 
-1. `node --test test/*.test.mjs` (63 tests on 2026-11-07).
+1. `node --test test/*.test.mjs` (66 tests on 2026-11-07).
 2. Only if the plan text changed or the code was rotated:
    `SOFIA_ACCESS_KEY="$(cat /home/claude/council/.sofia_code)" node tools/cifra-piano.mjs /home/claude/council/piano-testo.json`
    writes `app/data/piano-testo.cifrato.json`. `--decifra` prints the plain JSON back.
@@ -65,7 +65,14 @@ encrypted with it, so a new code always means step 2 again.
 
 ## Open
 - [x] Overhaul deployed 2026-11-07 03:38 UTC (deploy 6aee9d1c6fbba832e23b5a3e)
-- [ ] Deploy the 3D hardening and the raw-ingredient log, verify it online
+- [x] 3D hardening and raw-ingredient log deployed 2026-11-07 14:16 UTC (deploy 6aef3285692c3ff0f99df001)
+- [x] QA round 3 fixes (4 MAJOR: raw sprouts in CIQUAL's words, undo before a weighed or composed meal is
+  removed or replaced, live verdicts in Componi and the recipe picker, gluten seat for free-text extras;
+  minors: plan text download vs wrong code, shared-line factor, gram labels by state, add or replace,
+  cooked octopus from the plan's ratio, weekly limits in Componi, app suggestions marked, build fails
+  without a gate in production, lookup cache purged first, lookup answers only the app's pages, 3D cause
+  check, docs)
+- [ ] Deploy the round 3 fixes and have the auditor re-check the four MAJOR items
 - [ ] Independent QA review of the overhaul and re-check of S3 (read-only), fix what it finds, redeploy
 - [ ] Visitor access (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
       request, runs the old cached version and cannot load the 3D library): team login is on for all deploys.
@@ -74,4 +81,6 @@ encrypted with it, so a new code always means step 2 again.
       if the plan offers it; legacy plans: Access & security > Visitor access > Password Protection).
 - [ ] ALX deletes the old GitHub branch `sofia-app` and asks GitHub Support to purge its commits from caches
 - [ ] Deploys from before 2026-11-07 hold data removed since: keep them behind login or delete them
+- [ ] Later (QA round 3 minors, not urgent): keep the public recipe cache out of localStorage and warn
+      near the 5 MB quota (m7, about 0.8 MB after a year); gate verifier with PBKDF2 and its own salt (m10)
 - [ ] Final report to ALX (visitor access, new access code, branch, old deploys)

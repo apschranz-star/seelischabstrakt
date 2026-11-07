@@ -7,11 +7,12 @@ import { L, lingua, t } from "../i18n.js";
 import { I, esc, num, quantita } from "../ui.js";
 import { registra, apriFoglio, chiudiFoglio, ridisegna, toast } from "../ctx.js";
 import { nome } from "../data/alimenti.js";
-import { COLAZIONE, SPUNTINO, PRANZO, CENA, DOPOCENA } from "../data/piano.js";
+import { COLAZIONE, SPUNTINO, PRANZO, CENA, DOPOCENA, LIMITI } from "../data/piano.js";
 import { VERDURE, FRUTTA } from "../data/scelte.js";
-import { OPZ, isoData } from "../engine/planner.js";
+import { OPZ, isoData, aggiungiGiorni } from "../engine/planner.js";
 import { valoriVoci, confrontoPasto, PASTI } from "../engine/nutrizione.js";
-import { opzioniNutrizione, registraNelDiario, nomePasto } from "./diario.js";
+import { opzioniNutrizione, registraNelDiario, nomePasto, logDi } from "./diario.js";
+import { livelloAttuale } from "./miei.js";
 
 const ORDINE = ["colazione", "spuntino", "pranzo", "cena", "dopocena"];
 let b = nuova("pranzo", isoData(new Date()));
@@ -24,7 +25,7 @@ const esclusi = (s) => new Set(s.pref.escludi || []);
 function opzioneOk(o, ex) {
   return !o.voci.some((v) => ex.has(v.a) && !(v.o || []).some((x) => !ex.has(x.a)));
 }
-const mieiDi = (s, classi) => Object.entries(s.alimentiExtra || {}).filter(([, x]) => x.livello !== "no" && classi.includes(x.classe));
+const mieiDi = (s, classi) => Object.entries(s.alimentiExtra || {}).filter(([, x]) => classi.includes(x.classe) && livelloAttuale(x, s) !== "no");
 const porzioneMia = (x, pasto) => (x.porzioni || []).find((p) => p.pasto === pasto) || (x.porzioni || [])[0];
 
 function voceSemplice(v) {
@@ -77,6 +78,23 @@ function gruppoScelte(titolo, contenuto) {
   return `<div class="gruppo-scelte"><div class="lab-scelte">${esc(titolo)}</div><div class="scelte">${contenuto}</div></div>`;
 }
 
+/* The plan's weekly limits on single foods (tuna, smoked salmon, ragù, veal or
+   pork, swordfish): count the logged meals of the period before this one. */
+function limitiSuperati(s, voci) {
+  const usati = new Set(voci.map((v) => v.a));
+  const out = [];
+  for (const lim of LIMITI) {
+    if (!lim.alimenti || lim.max == null || lim.pasto !== b.pasto || !lim.alimenti.some((a) => usati.has(a))) continue;
+    let n = 0;
+    for (let k = 1; k < lim.periodoGiorni; k++) {
+      const e = logDi(s, aggiungiGiorni(b.data, -k))[lim.pasto];
+      if (e && e.voci.some((v) => lim.alimenti.includes(v.a))) n++;
+    }
+    if (n + 1 > lim.max) out.push({ lim, n });
+  }
+  return out;
+}
+
 export function renderComponi(s, { inFoglio = false } = {}) {
   const ex = esclusi(s), opz = opzioniNutrizione(s);
   const pasti = `<div class="chips">${ORDINE.map((p) => chip("cmpPasto", p, b.pasto === p, nomePasto(p))).join("")}</div>`;
@@ -112,9 +130,10 @@ export function renderComponi(s, { inFoglio = false } = {}) {
   const r = valoriVoci(voci, opz);
   const conf = confrontoPasto(b.pasto, r.tot.kcal);
   const def = PASTI[b.pasto];
-  const stato = conf.stato === "ok" ? `<span class="stato ok">${I.ok}${esc(L({ it: "In linea col piano", en: "In line with the plan" }))}</span>`
-    : conf.stato === "sopra" ? `<span class="stato attenzione">${I.avviso}${esc(L({ it: "Sopra il piano", en: "Above the plan" }))}</span>`
-      : `<span class="stato attenzione">${I.avviso}${esc(L({ it: "Sotto il piano", en: "Below the plan" }))}</span>`;
+  const stato = conf.stato === "ok" ? `<span class="stato ok">${I.ok}${esc(L({ it: "Calorie in linea col piano", en: "Calories in line with the plan" }))}</span>`
+    : conf.stato === "sopra" ? `<span class="stato attenzione">${I.avviso}${esc(L({ it: "Calorie sopra il piano", en: "Calories above the plan" }))}</span>`
+      : `<span class="stato attenzione">${I.avviso}${esc(L({ it: "Calorie sotto il piano", en: "Calories below the plan" }))}</span>`;
+  const oltre = limitiSuperati(s, voci);
   const macro = [["prot", "proteine", { it: "Proteine", en: "Protein" }], ["carb", "carboidrati", { it: "Carboidrati", en: "Carbs" }], ["fat", "grassi", { it: "Grassi", en: "Fat" }]].map(([k, m, lab]) => {
     const [lo, hi] = def.macro[m];
     const v = r.tot[k];
@@ -124,6 +143,7 @@ export function renderComponi(s, { inFoglio = false } = {}) {
   const somma = `<section class="card somma">
     <div class="riga tra"><div><div class="minimo">${esc(nomePasto(b.pasto))}</div><div class="grande-kcal">${r.completo ? "" : "≥ "}${num(r.tot.kcal)} <small>kcal</small></div></div>${stato}</div>
     <div class="minimo">${esc(L({ it: "Il piano dice circa", en: "The plan says about" }))} ${def.kcal[0] === def.kcal[1] ? def.kcal[0] : def.kcal.join("-")} kcal</div>
+    ${oltre.map((x) => `<div class="avviso">${I.avviso}<div class="piccolo">${esc(L(x.lim))}. ${esc(L({ it: `Già ${x.n} ${x.n === 1 ? "volta" : "volte"} nel diario degli ultimi ${x.lim.periodoGiorni} giorni.`, en: `Already ${x.n} ${x.n === 1 ? "time" : "times"} in the diary of the last ${x.lim.periodoGiorni} days.` }))}</div></div>`).join("")}
     <div class="griglia3" data-s="sd6f2a">${macro}</div>
     <ul class="lista-ingr">${voci.map((v) => `<li><span>${esc(v.scelta ? (lingua() === "en" ? (VERDURE.concat(FRUTTA).find((x) => x.id === v.scelta) || {}).en : (VERDURE.concat(FRUTTA).find((x) => x.id === v.scelta) || {}).it) : s.alimentiExtra[v.a] ? s.alimentiExtra[v.a].nome : v.testo ? L(v.testo) : nome(v.a, lingua()))}</span><span class="q">${esc(quantita(v))}</span></li>`).join("")}</ul>
     ${r.stime.length ? `<p class="minimo">${esc(L({ it: "Stime", en: "Estimates" }))}: ${esc(r.stime.join("; "))}</p>` : ""}
@@ -160,8 +180,8 @@ registra({
     const s = S();
     const voci = vociComposte(s);
     const r = valoriVoci(voci, opzioniNutrizione(s));
-    registraNelDiario(b.data, b.pasto, voci, "composto");
+    const sostituito = registraNelDiario(b.data, b.pasto, voci, "composto");
     chiudiFoglio();
-    toast(L({ it: `Registrato: ${Math.round(r.tot.kcal)} kcal`, en: `Logged: ${Math.round(r.tot.kcal)} kcal` }));
+    if (!sostituito) toast(L({ it: `Registrato: ${Math.round(r.tot.kcal)} kcal`, en: `Logged: ${Math.round(r.tot.kcal)} kcal` }));
   },
 });

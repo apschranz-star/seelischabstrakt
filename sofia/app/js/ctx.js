@@ -40,10 +40,18 @@ export const foglioAperto = () => !!foglio.render;
 
 /* ------------------------------------------------------------ toast */
 let tId = null;
-export function toast(msg) {
+/* azione: { az, testo } adds one button (for example Undo) and keeps the toast up longer. */
+export function toast(msg, azione = null) {
   const t = document.getElementById("toast");
   t.textContent = msg;
+  if (azione) {
+    const b = document.createElement("button");
+    b.className = "toast-azione";
+    b.dataset.az = azione.az;
+    b.textContent = azione.testo;
+    t.append(" ", b);
+  }
   t.classList.add("on");
   clearTimeout(tId);
-  tId = setTimeout(() => t.classList.remove("on"), 2600);
+  tId = setTimeout(() => t.classList.remove("on"), azione ? 8000 : 2600);
 }

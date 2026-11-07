@@ -44,10 +44,17 @@ URLs, versions and the officers' notes, are in `docs/fonti/`.
 - Food log, raw weights: each ingredient is matched to the CIQUAL entry for
   the raw food (or the dry one for grains, pasta and legumes), read from the
   table's own name ("raw", "dried", "cooked", "canned"); the state is shown on
-  every line and cooked values are flagged. Plan foods use the council's raw
-  or dry composition records listed in `docs/fonti/evidence-nutrition.json`.
-  Values from outside the plan are copied into the logged line, with source
-  and code, so a past day never changes.
+  every line, the weight to enter is named after it, and cooked values are
+  flagged. Plan foods use the council's composition records in
+  `docs/fonti/evidence-nutrition.json`: raw or dry for foods cooked at home,
+  canned or drained where the plan names them so (drained legumes, tuna in
+  water). Cooked octopus is derived from raw octopus with the plan's own
+  equivalence (270 g raw = 160 g cooked), so both choices give the same
+  calories. Seven plan foods without a record use a similar CIQUAL food,
+  marked on the line (piadina, pangrattato, farina di avena, minestrone,
+  pesto, caffè, tisane). Values from outside the plan are copied into the
+  logged line with source and code; plan lines follow the composition data of
+  the app version and lines in pieces the unit weights in Settings.
 - Weights of pieces the plan counts (a rice cake 8 g, a pot 125 g, an egg 50 g,
   a teaspoon 5 g, an olive 3 g) and 1.03 g per ml of milk are estimates, not
   from a source: they are marked as such and Sofia can change them in Settings.

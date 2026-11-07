@@ -10,7 +10,7 @@ import { OPZ, vociPasto, rimescolaPasto, invertiPranzoCena, vicine, ETICHETTE_CA
 import { consiglioRicetta, AGENTI } from "../engine/consiglio.js";
 import { nuovoSeme } from "../engine/rng.js";
 import { valoriVoci, PASTI as PASTI_KCAL } from "../engine/nutrizione.js";
-import { opzioniNutrizione, istantanea, logDi } from "./diario.js";
+import { opzioniNutrizione, istantanea, logDi, voceSua, cambiaConAnnulla, nomePasto } from "./diario.js";
 import { foglioMia } from "./ricettemie.js";
 
 export const PASTI_ORDINE = ["colazione", "spuntino", "pranzo", "cena", "dopocena"];
@@ -176,6 +176,19 @@ export function foglioRicetta(id) {
 }
 
 /* ----------------------------------------------------------- actions */
+/* Tick or untick a meal as eaten; ticking logs the plan's lines unless she already logged that meal. */
+function spunta(s, d) {
+  const g = (s.diario[d.data] = s.diario[d.data] || {});
+  g.pasti = g.pasti || {};
+  g.pasti[d.pasto] = !g.pasti[d.pasto];
+  g.mangiato = g.mangiato || {};
+  if (g.pasti[d.pasto]) {
+    const w = settimanaDi(s, d.data);
+    const giorno = w && w.giorni.find((x) => x.data === d.data);
+    if (giorno && !g.mangiato[d.pasto]) g.mangiato[d.pasto] = { voci: istantanea(vociPasto(giorno, d.pasto)), fonte: "piano", ora: new Date().toISOString() };
+  } else delete g.mangiato[d.pasto];
+}
+
 registra({
   chiudiFoglio: () => chiudiFoglio(),
   apriPasto: (d) => apriFoglio(() => foglioPasto(d.data, d.pasto)),
@@ -185,17 +198,13 @@ registra({
     if (i >= 0) s.preferite.splice(i, 1); else s.preferite.push(d.id);
   }),
   /* Ticking a meal logs the plan's amounts for it; unticking removes them. */
-  spunta: (d) => cambia((s) => {
-    const g = (s.diario[d.data] = s.diario[d.data] || {});
-    g.pasti = g.pasti || {};
-    g.pasti[d.pasto] = !g.pasti[d.pasto];
-    g.mangiato = g.mangiato || {};
-    if (g.pasti[d.pasto]) {
-      const w = settimanaDi(s, d.data);
-      const giorno = w && w.giorni.find((x) => x.data === d.data);
-      if (giorno && !g.mangiato[d.pasto]) g.mangiato[d.pasto] = { voci: istantanea(vociPasto(giorno, d.pasto)), fonte: "piano", ora: new Date().toISOString() };
-    } else delete g.mangiato[d.pasto];
-  }),
+  spunta: (d) => {
+    /* Unticking a meal she weighed, composed or corrected removes her work: it can be undone. */
+    const e = logDi(S(), d.data)[d.pasto];
+    const togli = !!((S().diario[d.data] || {}).pasti || {})[d.pasto];
+    if (togli && voceSua(e)) return cambiaConAnnulla(d.data, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => spunta(s, d));
+    cambia((s) => spunta(s, d));
+  },
   rimescolaPasto: (d) => {
     const s = S();
     const w = settimanaDi(s, d.data);

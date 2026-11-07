@@ -50,8 +50,17 @@ function daEvidenze(lista) {
 
 const daScelte = (x) => ({ kcal: x.v.kcal, prot: x.v.prot || 0, carb: x.v.carb || 0, fat: x.v.fat || 0, fib: x.v.fib || 0, salt: x.v.salt || 0 });
 
+/* Cooked foods the plan gives as equivalent to a raw amount ("270 g polpo crudo
+   o 160 g polpo cotto"): their values follow from the raw ones with the plan's
+   own ratio, so both choices give the same calories, as the plan intends. */
+export const RESE = { polpo_cotto: { da: "polpo_crudo", fattore: 270 / 160, it: "dal polpo crudo con il rapporto del piano (270 g crudo = 160 g cotto)", en: "from raw octopus with the plan's ratio (270 g raw = 160 g cooked)" } };
+
 /* Values per 100 g for a food id, or null when nothing reliable exists. */
 export function per100(a, { scelta: sc = null, extra = null } = {}) {
+  if (RESE[a] && !(extra && extra[a])) {
+    const base = per100(RESE[a].da, {});
+    if (base) { const v = {}; for (const k of CAMPI) v[k] = (base.v[k] || 0) * RESE[a].fattore; return { v, stima: "valori " + RESE[a].it, fonte: base.fonte }; }
+  }
   if (extra && extra[a]) {
     const x = extra[a];
     return { v: { ...vuoto(), ...x.per100 }, stima: x.per100 && x.stimaKcal ? "energia stimata" : null, fonte: x.fonte };
@@ -107,6 +116,16 @@ export const secchiCiqual = (gruppo) => /^(0301|0203)/.test(String(gruppo || "")
 /* Where the values of a line come from: state, sources with their codes,
    kcal per 100 g, and whether they are an average or a stand-in. */
 export function origineVoce(v, opz = {}) {
+  if (v.con && v.con.length) {
+    const parti = [v.a, ...v.con].map((a, i) => origineVoce({ a, scelta: i === 0 ? v.scelta : null }, opz));
+    const k = parti.map((x) => x.kcal100);
+    const stati = [...new Set(parti.map((x) => x.stato))];
+    return { stato: stati.length === 1 ? stati[0] : null, fonti: parti.flatMap((x) => x.fonti), media: true, kcal100: k.every((x) => x != null) ? k.reduce((a, b) => a + b, 0) / k.length : null };
+  }
+  if (RESE[v.a]) {
+    const base = origineVoce({ a: RESE[v.a].da }, opz);
+    return { stato: "cotto", fonti: base.fonti, resa: RESE[v.a], kcal100: base.kcal100 != null ? base.kcal100 * RESE[v.a].fattore : null };
+  }
   const extra = (opz.extra || {})[v.a];
   if (v.p) return { stato: v.stato || null, fonti: [{ db: NOME_FONTE[v.fonte] || v.fonte || null, id: v.codice || null, nome: v.nomeEn || v.marca || null }], kcal100: v.p.kcal ?? null };
   if (extra) return { stato: extra.fonte === "ciqual" ? statoDaNome(extra.nomeEn, secchiCiqual(extra.gruppoCiqual)) : "venduto", fonti: [{ db: NOME_FONTE[extra.fonte] || extra.fonte, id: extra.codice || null, nome: extra.nomeEn || extra.marca || null }], kcal100: extra.per100 ? extra.per100.kcal ?? null : null };
@@ -159,19 +178,23 @@ export function valoriVoce(v, opz = {}) {
   for (const f of fonti) if (f.stima) stime.push(f.stima);
   const val = vuoto();
   for (const k of CAMPI) val[k] = (fonti.reduce((s, f) => s + (f.v[k] || 0), 0) / fonti.length) * gr.g / 100;
-  return { a: v.a, g: gr.g, val, stime, manca: false, media: fonti[0].media || null };
+  /* A label or package line without protein, carbohydrate or fat counts them as 0: say so. */
+  const macroMancanti = !!v.p && ["prot", "carb", "fat"].some((k) => v.p[k] == null);
+  return { a: v.a, g: gr.g, val, stime, manca: false, media: fonti[0].media || null, macroMancanti };
 }
 
 export function valoriVoci(voci, opz = {}) {
   const tot = vuoto();
   const righe = (voci || []).map((v) => valoriVoce(v, opz));
   const stime = new Set(), mancanti = [];
+  let macroIncomplete = false;
   for (const r of righe) {
     r.stime.forEach((x) => stime.add(x));
     if (r.manca) mancanti.push(r.a);
+    if (r.macroMancanti) macroIncomplete = true;
     if (r.val) for (const k of CAMPI) tot[k] += r.val[k];
   }
-  return { tot, righe, stime: [...stime], mancanti, completo: !mancanti.length };
+  return { tot, righe, stime: [...stime], mancanti, completo: !mancanti.length, macroIncomplete };
 }
 
 /* How a meal compares with the plan's own figure for that meal ("circa"):
@@ -188,6 +211,7 @@ export function confrontoPasto(pasto, kcal) {
 /* A day from the food log: entries per meal plus extras. */
 export function giornata(log, opz = {}) {
   const tot = vuoto(), perPasto = {}, stime = new Set(), mancanti = [];
+  let macroIncomplete = false;
   for (const [pasto, voce] of Object.entries(log || {})) {
     const elenco = Array.isArray(voce) ? voce : [voce];
     for (const e of elenco) {
@@ -197,7 +221,8 @@ export function giornata(log, opz = {}) {
       for (const k of CAMPI) { tot[k] += r.tot[k]; perPasto[pasto][k] += r.tot[k]; }
       r.stime.forEach((x) => stime.add(x));
       mancanti.push(...r.mancanti);
+      if (r.macroIncomplete) macroIncomplete = true;
     }
   }
-  return { tot, perPasto, restano: OBIETTIVO_KCAL - tot.kcal, stime: [...stime], mancanti };
+  return { tot, perPasto, restano: OBIETTIVO_KCAL - tot.kcal, stime: [...stime], mancanti, macroIncomplete };
 }

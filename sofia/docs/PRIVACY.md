@@ -12,12 +12,13 @@ only to its own address. Two requests carry anything beyond static files:
 
 - `GET /api/ricette`: the public list of recipes chosen by the council.
 - `GET /api/alimento?q=<food name>`: only when Sofia presses the online search
-  for a food. The app's own Netlify function sends that name, and nothing
-  else, to Open Food Facts (search.openfoodfacts.org) and returns the packages
-  found. Open Food Facts sees Netlify's server, not her phone. The name and the
+  for a food. The app's own Netlify function (it answers only the app's own
+  pages) sends that name, and nothing else, to Open Food Facts
+  (search.openfoodfacts.org) and returns the packages found. Open Food Facts sees Netlify's server, not her phone. The name and the
   results are kept in the project's Netlify Blobs store `sofia-alimenti` for
   7 days, so the same search does not go out twice; the daily run deletes
-  older answers. Nothing that identifies her is stored with them.
+  older answers before it does anything else. Nothing that identifies her is
+  stored with them.
 
 Fonts, the 3D library, the PDF reader and the food composition table are
 served from the same address. No analytics, no external fonts, no tracking.
@@ -36,10 +37,12 @@ translation) is published only encrypted (`data/piano-testo.cifrato.json`,
 same method, the key is the access code). The plain text is kept outside the
 repository.
 
-**This repository.** It is public. It contains the plan's foods and amounts,
-the evidence files and the code, but no surname, no contact details, no health
-data of Sofia and no plain text of the nutritionist's letter (tests enforce
-this). The nutritionist's name appears only in the encrypted plan text.
+**This repository.** It is public. It contains the plan's foods, amounts and
+food rules (the app needs them), the evidence files and the code, but no
+surname, no contact details and no health data of Sofia. The personal parts of
+the nutritionist's letter and her name appear only in the encrypted plan text;
+a test checks sample phrases of those parts and that the gate files are never
+committed.
 
 **Access.** The site asks search engines not to index it and shows a gate that
 holds only a hash of the access code. The gate keeps casual visitors out; it

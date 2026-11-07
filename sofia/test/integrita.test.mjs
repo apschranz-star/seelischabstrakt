@@ -77,9 +77,15 @@ test("the service worker precaches every app module, so the app works offline", 
   /* The body screen imports three.js: it is stored at install in a cache that survives app updates. */
   assert.match(sw, /VENDOR_SUBITO = \[[^\]]*"vendor\/three\.min\.js"/);
   assert.match(sw, /k !== VENDOR\b/);
+  assert.match(sw, /const VENDOR = "sofia-vendor-__VENDOR__";/, "tools/timbro.mjs names the vendor cache");
 });
 
-test("the plan text and the access code never appear in clear in the repository", () => {
+/* The personal parts of the letter (sample phrases) stay in the encrypted file only; the
+   plan's food rules are in the code on purpose. The access code is never committed: the
+   generated gate files are git-ignored (the code itself is secret, so no test can name it). */
+test("the letter's personal text stays encrypted and the gate files are not committed", () => {
+  const ignora = readFileSync(join(radice, ".gitignore"), "utf8").split("\n").map((x) => x.trim());
+  assert.ok(ignora.includes("app/zugang.js") && ignora.includes("app/zugang.css"), "the gate files must stay git-ignored");
   for (const f of tuttiTesti) {
     if (f.endsWith("piano-testo.cifrato.json")) continue;
     const t = readFileSync(f, "utf8");
