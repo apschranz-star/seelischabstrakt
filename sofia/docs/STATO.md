@@ -3,7 +3,9 @@
 Any session that picks up this project reads this file first and continues
 from the first unchecked item without asking. Keep it short and current.
 
-Branch: `sofia-app` in `apschranz-star/seelischabstrakt`.
+Branch: `sofia-app-clean` in `apschranz-star/seelischabstrakt` (one squashed commit, no surname in its
+history). The old branch `sofia-app` has the surname in two commits: ALX deletes it on GitHub
+(the force-push to rewrite it was refused by the permission check).
 Netlify project: `sofia-piano`, site id `3902075f-8500-47f3-8807-d8c902846694`
 (team `a-p-schranz`). Deploy: run the command returned by the Netlify MCP
 `deploy-site` operation from inside `sofia/`.
@@ -34,9 +36,11 @@ Netlify project: `sofia-piano`, site id `3902075f-8500-47f3-8807-d8c902846694`
       council wording per sources, citrus and St John's wort checks from the medicines profile.
 
 ## Open
-- [ ] Redeploy with the fixes (gate armed locally first, see build.sh)
+- [x] Redeployed 2026-11-07 02:31 UTC, deploy 6aee8d51a012db9473ca4a83, 2 functions, schedule 17 4 * * *
 - [ ] QA auditor tasks 6 (privacy and security) and 7 (wording): resume the agent, fix, redeploy
 - [ ] Visitor access: the project defaults to Netlify team login for all deploys (Sofia cannot open it).
       Changing it was refused by the permission check; ALX switches it in Netlify:
-      Project configuration > Access & security > Visitor access.
+      Project configuration > General > Visitor access > Project visibility (legacy plans:
+      Access & security > Visitor access > Password Protection).
+- [ ] ALX deletes the old GitHub branch `sofia-app`
 - [ ] Final report to ALX (visitor access switch, access code, branch)
