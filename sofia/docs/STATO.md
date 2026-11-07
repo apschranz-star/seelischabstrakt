@@ -15,7 +15,7 @@ The access code and the plain text of the plan are never committed. Both live
 outside the repository: `/home/claude/council/.sofia_code` and
 `/home/claude/council/piano-testo.json`.
 
-1. `node --test test/*.test.mjs` (75 tests on 2026-11-07).
+1. `node --test test/*.test.mjs` (77 tests on 2026-11-07).
 2. Only if the plan text changed or the code was rotated:
    `SOFIA_ACCESS_KEY="$(cat /home/claude/council/.sofia_code)" node tools/cifra-piano.mjs /home/claude/council/piano-testo.json`
    writes `app/data/piano-testo.cifrato.json`. `--decifra` prints the plain JSON back.
@@ -86,8 +86,9 @@ encrypted with it, so a new code always means step 2 again.
 - [ ] Plan text: the live gate code (set by the Netlify agent) does not open `piano-testo.cifrato.json`,
   which is encrypted with the earlier code. Needs the code Sofia uses now (from ALX, env var only):
   step 2 above with it, then redeploy
-- [ ] Corpo 5D: food-specific journey (salmon: EPA and DHA, vitamin D, B12, protein with amounts per
-  portion and the EU claim with its condition), camera and particle tuning
+- [x] Corpo 5D food-specific journey (2026-11-07): stops ranked by what the portion brings, nutrient amount,
+  share of the NRV and the claim's daily amount at each stop; camera follows the food, nutrient colours,
+  light settles around the organ, "Avanti", text journey with reading time (`viaggioCibo`)
 - [ ] Independent QA review of the overhaul and re-check of S3 (read-only), fix what it finds, redeploy
 - [x] Visitor access: ALX switched team login off (2026-11-07). Was: (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
       request, runs the old cached version and cannot load the 3D library): team login is on for all deploys.

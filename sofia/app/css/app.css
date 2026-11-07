@@ -681,3 +681,12 @@ hr.sottile { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
 .togli-gruppo summary { cursor: pointer; font-weight: 700; color: var(--ink-2); font-size: 14px; padding: 6px 0; }
 .colpiti { margin: 6px 0 10px; padding-left: 18px; font-size: 13.5px; }
 .togli .avviso .btn { margin-top: 2px; }
+
+/* Corpo 5D journey caption: the food's own nutrients at each stop, and a Next control */
+.corpo5d .viaggio5d { max-height: 54%; overflow-y: auto; }
+.corpo5d .viaggio5d .riga.tra { align-items: center; gap: 8px; }
+.corpo5d .viaggio5d .avanti5d { color: #fff; font-weight: 800; padding: 4px 8px; min-height: 32px; white-space: nowrap; }
+.corpo5d .viaggio5d .nutr5d { margin-top: 6px; }
+.corpo5d .viaggio5d .nutr5d.secondo { border-top: 1px solid rgba(255, 255, 255, 0.14); padding-top: 6px; font-size: 13px; }
+.corpo5d .viaggio5d .nutr5d strong { color: #fff; }
+.passi-viaggio li > div { margin-top: 3px; }

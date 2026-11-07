@@ -130,3 +130,46 @@ test("redo the days from today keeps the past and the plan's limits", () => {
   for (const g of r.giorni.slice(5)) for (const p of ["pranzo", "cena"]) assert.ok(!vociPasto(g, p).some((v) => via.includes(v.a)), `${g.data} ${p}`);
   assert.equal(lunediDi(r.giorni[0].data), LUN);
 });
+
+/* Corpo 5D: the food's own journey, with amounts from the composition records and the claims' daily amounts. */
+import { viaggioCibo, impattiCibo, CIBI_5D } from "../app/js/engine/impatti.js";
+import { CLAIMS, COMPOSIZIONE, SOGLIE } from "../app/js/data/evidenze.js";
+
+test("salmon's journey: omega-3 at the heart, B12 and DHA at the brain, vitamin D at the bones", () => {
+  const v = viaggioCibo("salmone");
+  assert.deepEqual(v.porzione, { q: 90, u: "g", g: 90 });
+  assert.deepEqual(v.mete.map((m) => m.organo), ["heart_vessels", "brain", "bones", "blood"]);
+  const r = COMPOSIZIONE.salmone[0].per100g;
+  const cuore = v.mete[0].nutrienti[0];
+  assert.equal(cuore.chiave, "omega3_epa_dha");
+  assert.ok(Math.abs(cuore.quantita - r.epa_dha_g * 0.9 * 1000) < 1e-6);
+  assert.match(CLAIMS.find((c) => c.id === "epa_dha_heart").condizioni.en, /250 mg EPA\+DHA per day/);
+  assert.equal(cuore.giorno, 250);
+  assert.equal(cuore.raggiunto, true);
+  const ossa = v.mete[2].nutrienti[0];
+  assert.equal(ossa.chiave, "vitamin_d");
+  assert.ok(Math.abs(ossa.nrvPct - (r.vitd_ug * 0.9 / SOGLIE.nrv.vitd_ug) * 100) < 1e-6);
+  /* DHA alone is not in the records: no number, the combined value is given as such */
+  const dha = v.mete[1].nutrienti.find((n) => n.chiave === "dha_40mg_per_100g_and_100kcal");
+  assert.equal(dha.quantita, null);
+  assert.equal(dha.raggiunto, null);
+  assert.ok(dha.insieme > 0);
+  /* selenium: no amount in the records, only the "source of" floor */
+  const sel = v.organi.flatMap((o) => o.nutrienti).find((n) => n.chiave === "selenium");
+  assert.equal(sel.quantita, null);
+  assert.ok(Math.abs(sel.almenoPct - 13.5) < 1e-9);
+  assert.match(v.bocca[0].it, /90 g/);
+  assert.ok(v.intestino.some((x) => /EPA e DHA/.test(x.it) && /vitamina D/.test(x.it)));
+  assert.ok(v.sangue.some((x) => /linfa/.test(x.it)));
+});
+
+test("every food of the journey: at most four stops, each backed by a claim the plan meets", () => {
+  for (const id of CIBI_5D) {
+    const v = viaggioCibo(id);
+    const ok = new Set(impattiCibo(id).filter((x) => x.stato === "ok").map((x) => x.organo));
+    assert.ok(v.mete.length <= 4, id);
+    for (const m of v.mete) assert.ok(ok.has(m.organo), `${id} ${m.organo}`);
+    for (const m of v.mete) for (const n of m.nutrienti) if (n.quantita != null) assert.ok(n.quantita >= 0 && Number.isFinite(n.quantita), `${id} ${n.chiave}`);
+    for (const x of [...v.bocca, ...v.intestino, ...v.sangue]) assert.ok(!/\d\.\d/.test(x.it), `${id}: Italian decimals use a comma: ${x.it}`);
+  }
+});

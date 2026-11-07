@@ -1,11 +1,11 @@
 /* Corpo 5D: space (3D), time (her data over time), food (what reaches which system). */
 import { S } from "../store.js";
 import { t, L, lingua } from "../i18n.js";
-import { I, esc, dataConAnno, statoHtml, numAuto, applicaStili } from "../ui.js";
+import { I, esc, dataConAnno, statoHtml, num, numAuto, applicaStili } from "../ui.js";
 import { registra, apriFoglio } from "../ctx.js";
 import { ORGANI, statoCorpo, dateDati, punteggioOrgano, renaleFuoriRange } from "../engine/salute.js";
 import { ESAME } from "../data/esami.js";
-import { impattiCibo, organiDelCibo, cibiPerOrgano, CIBI_5D, massimoNelPiano } from "../engine/impatti.js";
+import { impattiCibo, organiDelCibo, cibiPerOrgano, CIBI_5D, massimoNelPiano, viaggioCibo } from "../engine/impatti.js";
 import { valoriVoci } from "../engine/nutrizione.js";
 import { ALIMENTI, nome } from "../data/alimenti.js";
 import { isoData } from "../engine/planner.js";
@@ -93,33 +93,69 @@ function porzioneDelPiano(id) {
   if (id === "uovo") return { a: id, q: 1, u: "pz" };
   return null;
 }
-const metePer = (id) => {
-  const ordine = ["heart_vessels", "brain", "muscle", "bones", "immune", "blood", "skin", "metabolism", "liver", "kidneys", "joints"];
-  const imp = impattiCibo(id).filter((x) => x.stato === "ok").map((x) => x.organo);
-  return ordine.filter((o) => imp.includes(o)).slice(0, 4);
+/* The food's own journey (engine/impatti.viaggioCibo), cached per food. */
+let viaggioCache = { id: null, v: null };
+const viaggioDi = (id) => {
+  if (viaggioCache.id !== id) viaggioCache = { id, v: viaggioCibo(id, { renaleFuoriRange: renaleFuoriRange(S(), isoData(new Date())), pesi: S().pesiUnita }) };
+  return viaggioCache.v;
 };
+const metePer = (id) => viaggioDi(id).mete.map((m) => m.organo);
+
+/* "Vitamina D" -> "vitamina D" inside a sentence; acronyms (DHA, EPA, ALA) stay as they are. */
+const minuscola = (t) => (/^[A-ZÀ-Ý][a-zà-ÿ]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
+
+/* Particle colour of each stop: the nutrient that leads it (presentation only). */
+const COLORE_NUTRIENTE = {
+  omega3_epa_dha: 0xffc35c, dha_40mg_per_100g_and_100kcal: 0xffd98a, omega3_ala: 0xe8d36a, vitamin_d: 0xfff27a, vitamin_b12: 0xff7aa8,
+  protein: 0x8fd3ff, potassium: 0xc59bff, calcium: 0xf2f2f2, iron: 0xe0805a, magnesium: 0x7ad9c8, folate: 0x9be07a, vitamin_c: 0xffa64d,
+  high_fibre: 0xb5d96b, low_sodium: 0x9fd8ff, selenium: 0xd6c3ff, zinc: 0xb8c4d6, iodine: 0x9fb6ff, vitamin_e: 0xffe08a, vitamin_b6: 0xffb3d1,
+};
+
+/* One nutrient at one stop, in plain words: amount in the portion, share of the EU reference, daily amount of the claim. */
+function righeNutriente(n, por) {
+  const quanto = por ? (por.u === "pz" ? L({ it: "in 1 pezzo", en: "in 1 piece" }) : L({ it: `in ${por.q} g`, en: `in ${por.q} g` })) : "";
+  const q = n.quantita != null ? `${numAuto(n.quantita)} ${n.unita} ${quanto}` : n.insieme != null ? L({ it: `da solo non è nei dati (EPA e DHA insieme: ${numAuto(n.insieme)} mg ${quanto})`, en: `not in the data on its own (EPA and DHA together: ${numAuto(n.insieme)} mg ${quanto})` }) : L({ it: "quantità: informazione mancante nei dati", en: "amount: information missing in the data" });
+  const extra = [];
+  if (n.nrvPct != null) extra.push(L({ it: `${num(n.nrvPct)}% del valore di riferimento UE al giorno`, en: `${num(n.nrvPct)}% of the EU daily reference value` }));
+  else if (n.almenoPct != null) extra.push(L({ it: `almeno il ${num(n.almenoPct)}% del valore di riferimento UE (è "fonte di")`, en: `at least ${num(n.almenoPct)}% of the EU reference value (it is a "source of")` }));
+  if (n.giorno) extra.push(n.raggiunto === true ? L({ it: `l'effetto si ottiene con ${num(n.giorno)} ${n.unita} al giorno: questa porzione basta`, en: `the effect needs ${num(n.giorno)} ${n.unita} a day: this portion is enough` })
+    : n.raggiunto === false ? L({ it: `l'effetto si ottiene con ${num(n.giorno)} ${n.unita} al giorno: questa porzione ne dà ${numAuto(n.quantita)}`, en: `the effect needs ${num(n.giorno)} ${n.unita} a day: this portion gives ${numAuto(n.quantita)}` })
+    : L({ it: `l'effetto si ottiene con ${num(n.giorno)} ${n.unita} al giorno: non verificabile con questi dati`, en: `the effect needs ${num(n.giorno)} ${n.unita} a day: cannot be checked with these data` }));
+  return { titolo: `${L(n.nome)}: ${q}`, claim: L(n.claim.testo), extra };
+}
 function didascalia() {
   if (!cibo) return "";
   const n = nome(cibo, lingua()).split(" (")[0];
   if (fase == null) return `<strong>${esc(n)}</strong><div>${esc(L({ it: "Premi Ripeti per seguire il viaggio.", en: "Press Replay to follow the journey." }))}</div>`;
   if (fase.i === -1) return `<strong>${esc(n)}</strong><div>${esc(L({ it: "Fine del viaggio. Sotto trovi tutto, passo per passo.", en: "End of the journey. Below you find it all, step by step." }))}</div><button class="btn piccolo" data-az="ripetiViaggio">${I.play}${esc(L({ it: "Ripeti", en: "Replay" }))}</button>`;
+  const v = viaggioDi(cibo);
+  const avanti = `<button class="btn-testo avanti5d" data-az="avantiViaggio" aria-label="${esc(L({ it: "Passo successivo", en: "Next step" }))}">${esc(L({ it: "Avanti", en: "Next" }))} ›</button>`;
   if (fase.organo && fase.i >= 3) {
-    const righe = impattiCibo(cibo).filter((x) => x.organo === fase.organo && x.stato === "ok").map((x) => L(x.claim.testo));
-    return `<div class="minimo">${fase.i + 1}. ${esc(nomeOrgano(fase.organo))}</div><div>${esc([...new Set(righe)].slice(0, 2).join(". "))}.</div>`;
+    const meta = v.mete.find((m) => m.organo === fase.organo);
+    /* the stop's leading nutrient over the body; the others are named and detailed in the panel below */
+    const r = meta ? righeNutriente(meta.nutrienti[0], v.porzione) : null;
+    const anche = meta ? [...new Set(meta.nutrienti.slice(1).map((n) => minuscola(L(n.nome))))] : [];
+    return `<div class="riga tra"><div class="minimo">${fase.i + 1}. ${esc(nomeOrgano(fase.organo))}</div>${avanti}</div>
+      ${r ? `<div class="nutr5d"><strong>${esc(r.titolo)}</strong><div>«${esc(r.claim)}»</div>${r.extra.length ? `<div class="minimo">${esc(r.extra.join(" · "))}</div>` : ""}</div>` : ""}
+      ${anche.length ? `<div class="minimo">${esc(L({ it: "Anche: ", en: "Also: " }) + anche.join(", "))}</div>` : ""}`;
   }
   const p = PASSI[Math.min(fase.i, 2)][lingua() === "en" ? "en" : "it"];
-  return `<div class="minimo">${fase.i + 1}. ${esc(p[0])}</div><div>${esc(p[1])}</div>`;
+  const propri = [v.bocca, v.intestino, v.sangue][Math.min(fase.i, 2)] || [];
+  return `<div class="riga tra"><div class="minimo">${fase.i + 1}. ${esc(p[0])}</div>${avanti}</div><div>${esc(propri.length ? propri.map(L).join(" ") : p[1])}</div>`;
 }
 function avviaViaggio() {
   if (!cibo) return;
   if (!istanza) { viaggioTesto(); return; }
   const mete = metePer(cibo);
   const nomi = Object.fromEntries([...mete, "gut", "blood"].map((id) => [id, nomeOrgano(id)]));
+  const v = viaggioDi(cibo);
+  const colori = Object.fromEntries(v.mete.map((m) => [m.organo, COLORE_NUTRIENTE[m.nutrienti[0].chiave] || 0xfff1c9]));
   istanza.viaggio(["gut", "blood", ...mete], (i, organo) => {
     fase = { i, organo };
     const el = document.getElementById("viaggio5d");
     if (el) { el.hidden = false; el.innerHTML = didascalia(); }
-  }, nomi);
+    for (const li of document.querySelectorAll(".passi-viaggio li")) li.classList.toggle("ora", Number(li.dataset.i) === i);
+  }, nomi, { colori });
 }
 
 function pannelloCibo() {
@@ -127,6 +163,11 @@ function pannelloCibo() {
   const imp = impattiCibo(cibo, { renaleFuoriRange: renaleFuoriRange(S(), isoData(new Date())) });
   const por = porzioneDelPiano(cibo);
   const val = por ? valoriVoci([por]) : null;
+  const v = viaggioDi(cibo);
+  /* key nutrients of the portion with real numbers (the "why" of this food) */
+  const chiave = [];
+  for (const o of v.organi) for (const n of o.nutrienti) if (n.quantita != null && !chiave.some((x) => x.chiave === n.chiave) && n.chiave !== "protein" && n.chiave !== "low_sodium") chiave.push(n);
+  chiave.sort((a, b) => b.forza - a.forza);
   const ruoli = val && val.completo ? `<div class="card piatta" data-s="sd2c17"><strong>${esc(L({ it: "Cosa porta una porzione del piano", en: "What one plan portion brings" }))} (${esc(por.u === "pz" ? `${por.q} ${L({ it: "pezzo", en: "piece" })}` : `${por.q} g`)})</strong>
       <ul class="piccolo">
         <li>${esc(L({ it: `Energia: circa ${Math.round(val.tot.kcal)} kcal`, en: `Energy: about ${Math.round(val.tot.kcal)} kcal` }))}</li>
@@ -134,11 +175,15 @@ function pannelloCibo() {
         ${val.tot.carb >= 1 ? `<li>${esc(L({ it: `Carboidrati ${Math.round(val.tot.carb)} g: energia, soprattutto per cervello e muscoli`, en: `Carbohydrate ${Math.round(val.tot.carb)} g: energy, above all for brain and muscles` }))}</li>` : ""}
         ${val.tot.fat >= 1 ? `<li>${esc(L({ it: `Grassi ${Math.round(val.tot.fat)} g: energia di riserva; aiutano ad assorbire le vitamine A, D, E e K`, en: `Fat ${Math.round(val.tot.fat)} g: stored energy; they help absorb vitamins A, D, E and K` }))}</li>` : ""}
         ${val.tot.fib >= 1 ? `<li>${esc(L({ it: `Fibre ${Math.round(val.tot.fib)} g: nutrono i batteri buoni dell'intestino e saziano`, en: `Fibre ${Math.round(val.tot.fib)} g: they feed the good gut bacteria and keep you full` }))}</li>` : ""}
+        ${chiave.slice(0, 5).map((n) => `<li>${esc(`${L(n.nome)} ${numAuto(n.quantita)} ${n.unita}`)}${n.nrvPct != null ? ` <span class="minimo">${esc(L({ it: `(${num(n.nrvPct)}% del valore di riferimento UE)`, en: `(${num(n.nrvPct)}% of the EU reference value)` }))}</span>` : ""}${n.giorno ? ` <span class="minimo">${esc(L({ it: `(effetto con ${num(n.giorno)} ${n.unita} al giorno)`, en: `(effect with ${num(n.giorno)} ${n.unita} a day)` }))}</span>` : ""}</li>`).join("")}
       </ul><p class="fonte">${esc(L({ it: "Valori: tabelle CREA, CIQUAL e USDA del consiglio", en: "Values: CREA, CIQUAL and USDA tables checked by the council" }))}</p></div>` : "";
+  const altri = v.organi.filter((o) => !v.mete.some((m) => m.organo === o.organo));
   const passi = `<div class="card piatta" data-s="sd2c17"><strong>${esc(L({ it: "Il viaggio nel corpo", en: "The journey through the body" }))}</strong>
-      <ol class="piccolo passi-viaggio">${PASSI.map((p, i) => `<li class="${fase && fase.i === i ? "ora" : ""}"><strong>${esc(p[lingua() === "en" ? "en" : "it"][0])}</strong>: ${esc(p[lingua() === "en" ? "en" : "it"][1])}</li>`).join("")}
-      ${metePer(cibo).map((o, i) => `<li class="${fase && fase.organo === o && fase.i >= 3 ? "ora" : ""}"><strong>${esc(nomeOrgano(o))}</strong>: ${esc([...new Set(imp.filter((x) => x.organo === o && x.stato === "ok").map((x) => L(x.claim.testo)))].slice(0, 2).join(". "))}.</li>`).join("")}</ol>
+      <ol class="piccolo passi-viaggio">${PASSI.map((p, i) => { const propri = [v.bocca, v.intestino, v.sangue][i] || []; return `<li data-i="${i}" class="${fase && fase.i === i ? "ora" : ""}"><strong>${esc(p[lingua() === "en" ? "en" : "it"][0])}</strong>: ${esc(propri.length ? propri.map(L).join(" ") : p[lingua() === "en" ? "en" : "it"][1])}</li>`; }).join("")}
+      ${v.mete.map((m, k) => `<li data-i="${k + 3}" class="${fase && fase.organo === m.organo && fase.i >= 3 ? "ora" : ""}"><strong>${esc(nomeOrgano(m.organo))}</strong>${m.nutrienti.slice(0, 3).map((n) => { const r = righeNutriente(n, v.porzione); return `<div>${esc(r.titolo)}. «${esc(r.claim)}»${r.extra.length ? ` <span class="minimo">${esc(r.extra.join(" · "))}</span>` : ""}</div>`; }).join("")}</li>`).join("")}</ol>
+      ${altri.length ? `<p class="minimo">${esc(L({ it: "Raggiunge anche: ", en: "Also reaches: " }) + altri.map((o) => `${nomeOrgano(o.organo)} (${[...new Set(o.nutrienti.map((n) => minuscola(L(n.nome))))].join(", ")})`).join("; "))}</p>` : ""}
       <button class="btn piccolo" data-az="ripetiViaggio">${I.play}${esc(L({ it: "Guarda il viaggio", en: "Watch the journey" }))}</button></div>`;
+
   const gl = (ALIMENTI[cibo] || {}).glutine;
   const intestino = gl === "certificata"
     ? { it: "Solo se certificato senza glutine: così protegge l'intestino nella celiachia (dieta senza glutine rigorosa, ESsCD).", en: "Only if certified gluten free: then it protects the gut in coeliac disease (strict gluten-free diet, ESsCD)." }
@@ -222,23 +267,24 @@ function mostraSenza3d(posto) {
   posto.insertAdjacentHTML("beforeend", `<div class="no-webgl" role="status"><p>${esc(L(senza3d))}</p><button class="btn piccolo" data-az="riprova5d">${esc(L({ it: "Riprova", en: "Try again" }))}</button></div>`);
 }
 
-/* Without 3D the journey runs as text: the same steps, one after the other. */
-let passoTesto = null;
+/* Without 3D the journey runs as text: the same steps, one after the other,
+   with time to read (longer at the organs) and "Avanti" to move on. */
+let passoTesto = null, avantiTesto = () => {};
 function viaggioTesto() {
-  if (passoTesto) { clearInterval(passoTesto); passoTesto = null; }
+  if (passoTesto) { clearTimeout(passoTesto); passoTesto = null; }
   const tappe = [0, 1, 2, ...metePer(cibo).map((o, i) => ({ i: 3 + i, organo: o }))];
   let k = 0;
   const mostra = () => {
-    if (k >= tappe.length) { clearInterval(passoTesto); passoTesto = null; fase = { i: -1 }; }
+    if (passoTesto) { clearTimeout(passoTesto); passoTesto = null; }
+    if (k >= tappe.length) fase = { i: -1 };
     else { const x = tappe[k++]; fase = typeof x === "number" ? { i: x, organo: null } : x; }
     const el = document.getElementById("viaggio5d");
     if (el) { el.hidden = false; el.innerHTML = didascalia(); }
-    for (const li of document.querySelectorAll(".passi-viaggio li")) li.classList.remove("ora");
-    const lis = document.querySelectorAll(".passi-viaggio li");
-    if (fase.i >= 0 && lis[fase.i]) lis[fase.i].classList.add("ora");
+    for (const li of document.querySelectorAll(".passi-viaggio li")) li.classList.toggle("ora", Number(li.dataset.i) === fase.i);
+    if (fase.i >= 0) passoTesto = setTimeout(mostra, fase.organo ? 6500 : 5000);
   };
+  avantiTesto = mostra;
   mostra();
-  passoTesto = setInterval(mostra, 2600);
 }
 
 function aggiornaChip() {
@@ -247,7 +293,7 @@ function aggiornaChip() {
 
 export function lascia() {
   if (gioco) { clearInterval(gioco); gioco = null; }
-  if (passoTesto) { clearInterval(passoTesto); passoTesto = null; }
+  if (passoTesto) { clearTimeout(passoTesto); passoTesto = null; }
   if (istanza) { istanza.distruggi(); istanza = null; }
   involucro = null;
 }
@@ -269,6 +315,7 @@ registra({
     avviaViaggio();
   },
   ripetiViaggio: () => { fase = null; avviaViaggio(); },
+  avantiViaggio: () => { if (istanza && istanza.prossimo && istanza.prossimo()) return; if (passoTesto) avantiTesto(); },
   organo5d: (d) => {
     scelto = d.id;
     if (istanza) { istanza.evidenzia([d.id]); istanza.seleziona(d.id, nomeOrgano(d.id)); }

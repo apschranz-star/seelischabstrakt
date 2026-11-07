@@ -279,12 +279,33 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
   ro.observe(contenitore);
   dimensiona();
 
+  function avanza(v) {
+    v.i++;
+    if (v.i >= v.segmenti.length) { viaggioAtt = null; tCibo = -1; mCibo.opacity = 0; fineViaggio(); v.onFase(-1, null); }
+    else { v.t = 0; avviaSegmento(v); }
+  }
   function avviaSegmento(v) {
     const sg = v.segmenti[v.i];
-    if (sg.organo) { organi[sg.organo] && (organi[sg.organo].evidenza = 1.2); selezionato = sg.organo; etichetta.textContent = v.nomi[sg.organo] || ""; etichetta.hidden = !etichetta.textContent; }
+    if (sg.organo && sg.fase >= 3) { organi[sg.organo] && (organi[sg.organo].evidenza = 1.2); selezionato = sg.organo; etichetta.textContent = v.nomi[sg.organo] || ""; etichetta.hidden = !etichetta.textContent; }
     else { selezionato = null; etichetta.hidden = true; }
-    v.onFase(v.i, sg.organo);
+    /* the light takes the colour of what travels at this step (the stop's leading nutrient) */
+    mCibo.color.setHex(sg.colore || 0xfff1c9);
+    /* the camera follows the food: closer at each step, back to the whole body at the end */
+    if (!ridotto) inquadra(sg);
+    v.onFase(v.i, sg.fase >= 3 ? sg.organo : null);
   }
+
+  /* camera framing for a journey step: the point to look at, and how close */
+  function inquadra(sg) {
+    const centro = sg.mira.clone();
+    corpo.localToWorld(centro);
+    /* the caption covers the lower part of the view: frame the point in the upper part
+       (camera and target shifted down together, the view stays level) */
+    const giu = new THREE.Vector3(0, -0.11 * sg.distanza, 0);
+    obiettivoMira = centro.clone().add(giu);
+    obiettivoCam = centro.clone().add(giu).add(new THREE.Vector3(0, 0.03, sg.distanza));
+  }
+  const fineViaggio = () => { obiettivoCam = posCorpo.clone(); obiettivoMira = mira.clone(); selezionato = null; etichetta.hidden = true; };
 
   /* --------------------------------------------------------- loop */
   let attivo = true, visibile = true, ultimo = performance.now(), tempo = 0;
@@ -337,18 +358,23 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
       const seg = v.segmenti[v.i];
       v.t += dt;
       const k = Math.min(1, v.t / seg.durata);
+      /* at an organ, once arrived, the light settles around it and circles slowly (it is being used there) */
+      const giro = seg.fase >= 3 ? Math.min(1, Math.max(0, (v.t - seg.durata) / 0.6)) : 0;
+      const c = seg.fase >= 3 ? seg.curva.getPoint(1) : null;
       for (let i = 0; i < nCibo; i++) {
         const kk = Math.min(1, Math.max(0, k * 1.35 - (i / nCibo) * 0.35));
         const p = seg.curva.getPoint(kk);
-        posC[i * 3] = p.x + Math.sin(i * 12.9) * 0.006; posC[i * 3 + 1] = p.y + Math.cos(i * 3.1) * 0.004; posC[i * 3 + 2] = p.z + Math.cos(i * 7.3) * 0.006;
+        let x = p.x + Math.sin(i * 12.9) * 0.006, y = p.y + Math.cos(i * 3.1) * 0.004, z = p.z + Math.cos(i * 7.3) * 0.006;
+        if (giro > 0) {
+          const a = i * 2.39996 + tempo * (0.9 + (i % 5) * 0.12), r = seg.raggio * (0.55 + ((i * 37) % 10) / 22);
+          x += (c.x + Math.cos(a) * r - x) * giro; y += (c.y + Math.sin(a * 0.7) * r * 0.7 - y) * giro; z += (c.z + Math.sin(a) * r - z) * giro;
+        }
+        posC[i * 3] = x; posC[i * 3 + 1] = y; posC[i * 3 + 2] = z;
       }
       geoC.attributes.position.needsUpdate = true;
-      mCibo.opacity += ((k < 0.08 ? k * 10 : 0.85) - mCibo.opacity) * passo(dt, 8);
-      if (v.t >= seg.durata + seg.pausa) {
-        v.i++;
-        if (v.i >= v.segmenti.length) { viaggioAtt = null; tCibo = -1; mCibo.opacity = 0; v.onFase(-1, null); }
-        else { v.t = 0; avviaSegmento(v); }
-      }
+      mCibo.opacity += ((ridotto ? 0 : k < 0.08 ? k * 10 : 0.9) - mCibo.opacity) * passo(dt, 8);
+      mCibo.size = 0.028 + giro * 0.006 * (1 + Math.sin(tempo * 4));
+      if (v.t >= seg.durata + seg.pausa) avanza(v);
     } else if (mCibo.opacity > 0) mCibo.opacity = Math.max(0, mCibo.opacity - dt * 2);
     /* the label follows the selected organ while the body turns */
     if (selezionato && organi[selezionato]) {
@@ -382,26 +408,29 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
       if (selezionato) tSel = 0;
     },
     deseleziona() { selezionato = null; etichetta.hidden = true; },
-    /* steps: mouth, stomach, gut, blood, then each target organ; onFase(i, organ) on each step, onFase(-1) at the end */
-    viaggio(bersagli, onFase = () => {}, nomi = {}) {
-      const mete = bersagli.filter((id) => organi[id] && id !== "gut" && id !== "blood");
+    /* steps: mouth, stomach, gut, blood, then each target organ; onFase(i, organ) on each step, onFase(-1) at the end.
+       opz.colori: { organ: hex } colour of the light at each stop. Pace: time to read each caption (longer at the organs);
+       prossimo() moves on at once. With reduced motion the steps advance the same way, without moving lights or camera. */
+    viaggio(bersagli, onFase = () => {}, nomi = {}, opz = {}) {
+      const colori = opz.colori || {};
+      /* the first two are the way in (gut, blood); the rest are the stops, blood included when it is one */
+      const mete = bersagli.slice(2).filter((id) => organi[id]);
       const segmenti = [
-        { fase: 0, organo: null, durata: 2.2, pausa: 0.6, curva: curva([bocca, [0.0, 1.45, 0.08], [0.02, 1.25, 0.06], stomaco]) },
-        { fase: 1, organo: "gut", durata: 3.2, pausa: 0.6, curva: curva([stomaco, ...curvaInt.getPoints(24)]) },
-        { fase: 2, organo: "blood", durata: 2.2, pausa: 0.6, curva: curva([[0.0, 0.88, 0.02], [-0.02, 0.98, 0.0], fegato, cuore]) },
-        ...mete.map((id) => ({ fase: 3, organo: id, durata: 1.8, pausa: 1.6, curva: curva([cuore, cuore.clone().lerp(organi[id].centro, 0.5).add(new THREE.Vector3(0, 0.03, 0.05)), organi[id].centro]) })),
+        { fase: 0, organo: null, durata: 2.4, pausa: 3.2, colore: 0xfff1c9, mira: new THREE.Vector3(0, 1.32, 0), distanza: 3.4, curva: curva([bocca, [0.0, 1.45, 0.08], [0.02, 1.25, 0.06], stomaco]) },
+        { fase: 1, organo: "gut", durata: 3.4, pausa: 3.4, colore: 0xffe2a8, mira: new THREE.Vector3(0, 0.96, 0), distanza: 2.6, curva: curva([stomaco, ...curvaInt.getPoints(24)]) },
+        { fase: 2, organo: "blood", durata: 2.4, pausa: 3.4, colore: 0xff9a8a, mira: new THREE.Vector3(-0.02, 1.15, 0), distanza: 2.9, curva: curva([[0.0, 0.88, 0.02], [-0.02, 0.98, 0.0], fegato, cuore]) },
+        ...mete.map((id) => ({ fase: 3, organo: id, durata: 1.8, pausa: 5.2, colore: colori[id] || 0xfff1c9, mira: organi[id].centro.clone(), distanza: id === "brain" ? 1.6 : 2.3, raggio: id === "brain" ? 0.09 : id === "bones" || id === "muscle" || id === "skin" ? 0.16 : 0.07,
+          curva: curva([cuore, cuore.clone().lerp(organi[id].centro, 0.5).add(new THREE.Vector3(0, 0.03, 0.05)), organi[id].centro]) })),
       ];
+      /* face the body to the camera for the journey */
+      rotY = Math.round(rotY / (Math.PI * 2)) * Math.PI * 2; rotX = 0; autoRot = false;
       viaggioAtt = { segmenti, i: 0, t: 0, onFase, nomi };
       tCibo = 0;
-      if (ridotto) {
-        /* no moving lights: the steps advance on a timer and each target simply lights up */
-        viaggioAtt = null;
-        segmenti.forEach((sg, i) => setTimeout(() => { if (sg.organo) { this.evidenzia([sg.organo]); this.seleziona(sg.organo, nomi[sg.organo]); } onFase(i, sg.organo); if (i === segmenti.length - 1) setTimeout(() => onFase(-1, null), 2500); }, i * 2500));
-        return;
-      }
       avviaSegmento(viaggioAtt);
     },
-    fermaViaggio() { viaggioAtt = null; tCibo = -1; },
+    /* next step now; false when no journey is running */
+    prossimo() { if (!viaggioAtt) return false; avanza(viaggioAtt); return true; },
+    fermaViaggio() { if (viaggioAtt) fineViaggio(); viaggioAtt = null; tCibo = -1; },
     vista(v) {
       if (v === "cervello") { obiettivoCam = posCervello.clone(); obiettivoMira = miraCervello.clone(); }
       else { obiettivoCam = posCorpo.clone(); obiettivoMira = mira.clone(); }

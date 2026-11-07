@@ -80,6 +80,19 @@ URLs, versions and the officers' notes, are in `docs/fonti/`.
   planned meals. A logged food counts as vegetable or fruit by the plan's food
   group, CIQUAL groups 0201 (vegetables) and 0204 (fruit), or the class the
   food brain gave her own foods.
+- Corpo 5D food journey (`app/js/engine/impatti.js`, `viaggioCibo`): amounts
+  per plan portion from the council's composition records
+  (`docs/fonti/evidence-nutrition.json`) times the plan's grams; share of the
+  nutrient reference values of Regulation (EU) 1169/2011 Annex XIII Part A
+  (`SOGLIE.nrv`); daily amounts from the claims' conditions of use in
+  Regulation (EU) 432/2012 (EPA and DHA 250 mg, DHA 250 mg, ALA 2 g). Where a
+  record holds no amount (selenium, iodine, zinc, vitamin B6, vitamin E, DHA
+  alone), only the floor of the "source of" rule is shown (15% of the NRV per
+  100 g, Regulation (EC) 1924/2006 Annex). The digestion steps are general
+  physiology (protein digestion starting in the stomach, bile and fat
+  absorption, fat-soluble vitamins and long-chain fatty acids reaching the
+  blood through the lymph, vitamin B12 absorbed in the terminal ileum, iron in
+  the duodenum), not health claims.
 - Check: the plan's own meals computed this way come close to the plan's
   calorie figures (lunch and dinner medians about 5% above them; the test in
   `test/cervello.test.mjs` allows 12%).
