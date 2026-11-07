@@ -94,7 +94,15 @@ encrypted with it, so a new code always means step 2 again.
 - [x] Home, food log, ideas and week deployed 2026-11-07 19:28 UTC (deploy 6aef7bb8a2ee5d7cd73cb286,
   gate armed from the live hash, Sofia's code unchanged)
 - [x] Plan text re-encrypted with the code Sofia uses now (2026-11-07; round trip checked, the earlier
-  code no longer opens it)
+  code no longer opens it). Deployed 2026-11-07 (deploy 6aefa37e74c8f474eb12a4fa, gate from the live
+  hash). Live end-to-end check with her code: gate opens, plan text opens, a meal logs and shows,
+  brand lookup 200, week bars and Togli ingredienti present, 3D journey runs
+- Note: Netlify injects `/.netlify/scripts/hud?variant=public` (free-plan project visibility badge) into
+  the live HTML. Our CSP blocks its inline iframe parts, so the browser console shows two CSP errors
+  from `about:srcdoc`; they are not from the app. The script only keeps its own localStorage key
+  (badge dismissed) and makes no requests. Not changed (ALX's rule: nothing unasked)
+- [ ] Trial week daily read-only check (site 200, gate hash unchanged, functions and logs): creating
+  the scheduled task was refused by the permission check on 2026-11-07; ALX decides
 - [x] Corpo 5D food-specific journey (2026-11-07): stops ranked by what the portion brings, nutrient amount,
   share of the NRV and the claim's daily amount at each stop; camera follows the food, nutrient colours,
   light settles around the organ, "Avanti", text journey with reading time (`viaggioCibo`);
