@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#f5efe6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14110e" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sofia">
+<meta name="description" content="Piano alimentare personale, ricette e salute.">
+<title>Sofia</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="zugang.css">
+<script src="zugang.js"></script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<div class="app" id="app">
+  <noscript><p style="padding:24px">Questa app ha bisogno di JavaScript. / This app needs JavaScript.</p></noscript>
+</div>
+<nav class="nav" id="nav" aria-label="Sezioni"></nav>
+<div id="velo" class="velo" hidden></div>
+<div id="foglio" class="foglio" role="dialog" aria-modal="true" tabindex="-1" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

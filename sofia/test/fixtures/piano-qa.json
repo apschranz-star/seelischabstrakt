@@ -1,0 +1,1273 @@
+{
+ "_meta": {
+  "fonte": "Plan PDF of the nutritionist (4 pages), uploaded by ALX",
+  "autore_trascrizione": "QA indipendente, trascritto dal PDF prima di aprire app/js/data/piano.js",
+  "data": "2026-11-06",
+  "note_trascrizione": [
+   "Unita come nel PDF: 'gr' trascritto come g; 'ml' resta ml; conteggi (vasetto, galletta, uovo, olive, cucchiaino, piadina) restano conteggi.",
+   "Il PDF non indica il peso di '1 vasetto' di yogurt (spuntino 2-4, dopocena 5) ne di '1 galletta' ne di '5 gallette'.",
+   "Intestazione con i dati professionali della nutrizionista: NON trascritta qui di proposito.",
+   "Refusi originali conservati dove rilevanti: 'cerali s.g' (cena idea 3), 'se su non ci sono' (acqua)."
+  ]
+ },
+ "obiettivo": {
+  "titolo": "Schema dietetico generale per dieta ipocalorica di circa 1400 kcal con circa 1 g proteine/kg peso corporeo",
+  "kcal_giorno": 1400,
+  "proteine": "circa 1 g/kg peso corporeo"
+ },
+ "colazione": {
+  "facoltativo": false,
+  "range": {
+   "kcal": "circa 200",
+   "proteine_g": [
+    8,
+    10
+   ],
+   "carbo_g": [
+    25,
+    34
+   ],
+   "grassi_g": [
+    2,
+    6
+   ]
+  },
+  "opzioni": [
+   {
+    "n": 1,
+    "items": [
+     {
+      "alimento": "yogurt bianco magro 0%",
+      "qta": 150,
+      "unita": "g"
+     },
+     {
+      "alimento": "fiocchi di avena",
+      "qta": 25,
+      "unita": "g"
+     },
+     {
+      "alimento": "frutta fresca",
+      "qta": 80,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "items": [
+     {
+      "alimento": "yogurt bianco magro 0%",
+      "qta": 150,
+      "unita": "g"
+     },
+     {
+      "alimento": "frutta fresca",
+      "qta": 150,
+      "unita": "g"
+     },
+     {
+      "alimento": "cioccolato fondente 85-90%",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "items": [
+     {
+      "alimento": "yogurt bianco magro 0%",
+      "qta": 150,
+      "unita": "g"
+     },
+     {
+      "alimento": "frutta fresca",
+      "qta": 150,
+      "unita": "g"
+     },
+     {
+      "alimento": "frutta secca (noci mandorle nocciole)",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "items": [
+     {
+      "alimento": "latte parzialmente scremato",
+      "qta": 150,
+      "unita": "ml"
+     },
+     {
+      "alimento": "fiocchi di avena",
+      "qta": 20,
+      "unita": "g"
+     },
+     {
+      "alimento": "frutta fresca",
+      "qta": 100,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "items": [
+     {
+      "alimento": "latte parzialmente scremato",
+      "qta": 150,
+      "unita": "ml"
+     },
+     {
+      "alimento": "fiocchi di avena",
+      "qta": 30,
+      "unita": "g"
+     },
+     {
+      "alimento": "marmellata o miele",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "items": [
+     {
+      "alimento": "pane integrale senza glutine",
+      "qta": 30,
+      "unita": "g",
+      "alternativa": "o due gallette di grano saraceno/riso integrale (2 pezzi)"
+     },
+     {
+      "alimento": "ricotta light",
+      "qta": 90,
+      "unita": "g"
+     },
+     {
+      "alimento": "marmellata",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   }
+  ],
+  "sostituzioni": [
+   {
+    "da": "latte (parzialmente scremato)",
+    "da_qta": 150,
+    "da_unita": "g/ml",
+    "a": [
+     {
+      "alimento": "kefir bianco da bere",
+      "qta": 150,
+      "unita": "g/ml",
+      "frequenza": "libera"
+     },
+     {
+      "alimento": "yogurt greco bianco 0%",
+      "qta": 120,
+      "unita": "g",
+      "frequenza": "ogni tanto"
+     }
+    ]
+   },
+   {
+    "da": "yogurt bianco magro 0%",
+    "da_qta": 150,
+    "da_unita": "g",
+    "a": [
+     {
+      "alimento": "kefir bianco da bere",
+      "qta": 140,
+      "unita": "g/ml",
+      "frequenza": "libera"
+     },
+     {
+      "alimento": "yogurt greco bianco 0%",
+      "qta": 110,
+      "unita": "g",
+      "frequenza": "ogni tanto"
+     }
+    ]
+   },
+   {
+    "da": "fiocchi di avena",
+    "regola": "sempre usando lo stesso peso",
+    "a_pag3": [
+     "fiocchi di grano saraceno",
+     "riso soffiato integrale",
+     "miglio soffiato",
+     "quinoa soffiata"
+    ],
+    "nota": "I fiocchi di avena sono i meglio; alternative solo ogni tanto per cambiare (pag. 3)"
+   }
+  ],
+  "note": [
+   "Per la marmellata prediligi una a ridotto contenuto di zuccheri, puoi anche aggiungere la cannella."
+  ]
+ },
+ "spuntino": {
+  "facoltativo": true,
+  "etichetta": "SE VUOI FARLO",
+  "range": {
+   "kcal": [
+    100,
+    120
+   ],
+   "proteine_g": [
+    5,
+    7
+   ],
+   "carbo_g": [
+    10,
+    20
+   ],
+   "grassi_g": [
+    1,
+    6
+   ]
+  },
+  "opzioni": [
+   {
+    "n": 1,
+    "items": [
+     {
+      "alimento": "frutta a scelta o macedonia di frutta",
+      "qta": 150,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "items": [
+     {
+      "alimento": "yogurt magro bianco 0%",
+      "qta": 1,
+      "unita": "vasetto (peso non indicato)"
+     },
+     {
+      "alimento": "frutta secca",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "items": [
+     {
+      "alimento": "yogurt magro bianco 0%",
+      "qta": 1,
+      "unita": "vasetto (peso non indicato)"
+     },
+     {
+      "alimento": "cioccolato fondente 85-90%",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "items": [
+     {
+      "alimento": "yogurt magro bianco 0%",
+      "qta": 1,
+      "unita": "vasetto (peso non indicato)"
+     },
+     {
+      "alimento": "frutta a piacere",
+      "qta": 100,
+      "unita": "g",
+      "alternativa": "o 25 g prugne secche"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "items": [
+     {
+      "alimento": "galletta di riso integrale/grano saraceno",
+      "qta": 1,
+      "unita": "pezzo"
+     },
+     {
+      "alimento": "fiocchi di latte",
+      "qta": 70,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "items": [
+     {
+      "alimento": "galletta di riso integrale/grano saraceno",
+      "qta": 1,
+      "unita": "pezzo"
+     },
+     {
+      "alimento": "philadelphia light",
+      "qta": 30,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "items": [
+     {
+      "alimento": "galletta di riso integrale/grano saraceno",
+      "qta": 1,
+      "unita": "pezzo"
+     },
+     {
+      "alimento": "hummus di ceci",
+      "qta": 40,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "items": [
+     {
+      "alimento": "galletta di riso integrale/grano saraceno",
+      "qta": 1,
+      "unita": "pezzo"
+     },
+     {
+      "alimento": "ricotta light o protein",
+      "qta": 40,
+      "unita": "g"
+     },
+     {
+      "alimento": "cannella",
+      "qta": null,
+      "unita": "a piacere"
+     }
+    ]
+   }
+  ],
+  "note": [
+   "lo spuntino puoi farlo la mattina o durante un altro momento della giornata"
+  ]
+ },
+ "pranzo": {
+  "facoltativo": false,
+  "range": {
+   "kcal": [
+    490,
+    500
+   ],
+   "proteine_g": [
+    20,
+    30
+   ],
+   "carbo_g": [
+    59,
+    75
+   ],
+   "grassi_g": [
+    11,
+    19
+   ]
+  },
+  "regola": "COMBINARE UNA FONTE DI CARBOIDRATI CON UNA FONTE DI PROTEINE A SCELTA, + 300 g verdure a piacere (peso crudo) + 10 g olio evo (1 cucchiaio). Sulla pasta se vuoi puoi usare passata di pomodoro (quantita non indicata).",
+  "carboidrati": [
+   {
+    "n": 1,
+    "alimento": "pasta di grano saraceno",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 2,
+    "alimento": "pasta di avena",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 3,
+    "alimento": "pasta di riso integrale",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 4,
+    "alimento": "riso basmati",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 5,
+    "alimento": "riso venere",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 6,
+    "alimento": "riso integrale",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 7,
+    "alimento": "quinoa",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 8,
+    "alimento": "grano saraceno",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 9,
+    "alimento": "sorgo",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 10,
+    "alimento": "miglio",
+    "qta": 80,
+    "unita": "g"
+   },
+   {
+    "n": 11,
+    "alimento": "legumi secchi",
+    "qta": 70,
+    "unita": "g",
+    "alternativa": "o 180 g gia scolati",
+    "limite": {
+     "tipo": "obiettivo",
+     "testo": "mangiare 2 v. a sett",
+     "volte": 2,
+     "periodo": "settimana"
+    }
+   }
+  ],
+  "proteine": [
+   {
+    "n": 1,
+    "alimento": "tonno al naturale",
+    "qta": 60,
+    "unita": "g",
+    "limite": {
+     "tipo": "max",
+     "testo": "max 2 a sett",
+     "volte": 2,
+     "periodo": "settimana"
+    }
+   },
+   {
+    "n": 2,
+    "alimento": "salmone affumicato",
+    "qta": 40,
+    "unita": "g",
+    "limite": {
+     "tipo": "max",
+     "testo": "max 1 a sett",
+     "volte": 1,
+     "periodo": "settimana"
+    }
+   },
+   {
+    "n": 3,
+    "alimento": "gamberi/gamberetti sgusciati",
+    "qta": 70,
+    "unita": "g"
+   },
+   {
+    "n": 4,
+    "alimento": "calamaro/seppia/totano puliti",
+    "qta": 70,
+    "unita": "g"
+   },
+   {
+    "n": 5,
+    "alimento": "polpo cotto",
+    "qta": 50,
+    "unita": "g"
+   },
+   {
+    "n": 6,
+    "alimento": "petto di pollo",
+    "qta": 60,
+    "unita": "g",
+    "nota": "a pranzo solo pollo (tacchino/coniglio solo a cena)"
+   },
+   {
+    "n": 7,
+    "alimento": "mozzarella light o protein",
+    "qta": 50,
+    "unita": "g"
+   },
+   {
+    "n": 8,
+    "alimento": "fiocchi di latte",
+    "qta": 70,
+    "unita": "g"
+   },
+   {
+    "n": 9,
+    "alimento": "ricotta light",
+    "qta": 50,
+    "unita": "g"
+   },
+   {
+    "n": 10,
+    "alimento": "philadelphia light",
+    "qta": 40,
+    "unita": "g"
+   },
+   {
+    "n": 11,
+    "alimento": "uovo",
+    "qta": 1,
+    "unita": "pezzo"
+   },
+   {
+    "n": 12,
+    "alimento": "ragu",
+    "qta": 90,
+    "unita": "g",
+    "limite": {
+     "tipo": "max",
+     "testo": "max 1 a sett",
+     "volte": 1,
+     "periodo": "settimana"
+    }
+   }
+  ],
+  "contorni_fissi": [
+   {
+    "alimento": "verdure a piacere (peso crudo)",
+    "qta": 300,
+    "unita": "g"
+   },
+   {
+    "alimento": "olio evo",
+    "qta": 10,
+    "unita": "g",
+    "equivalenza": "1 cucchiaio"
+   }
+  ],
+  "gia_combinate": {
+   "titolo": "ALTRE ALTERNATIVE GIA' COMBINATE PER PRANZO PER COMODITA'",
+   "limite": {
+    "tipo": "max",
+    "testo": "max 1 a sett (nell'intestazione del gruppo)",
+    "volte": 1,
+    "periodo": "settimana",
+    "ambito_lettura_letterale": "gruppo intero"
+   },
+   "opzioni": [
+    {
+     "n": 1,
+     "items": [
+      {
+       "alimento": "pasta/riso (o varianti elencate sopra)",
+       "qta": 80,
+       "unita": "g"
+      },
+      {
+       "alimento": "pesto",
+       "qta": 30,
+       "unita": "g"
+      },
+      {
+       "alimento": "verdure",
+       "qta": 300,
+       "unita": "g"
+      }
+     ],
+     "nota": "nessun olio indicato"
+    },
+    {
+     "n": 2,
+     "items": [
+      {
+       "alimento": "pasta/riso (o varianti elencate sopra)",
+       "qta": 80,
+       "unita": "g"
+      },
+      {
+       "alimento": "tonno al naturale",
+       "qta": 30,
+       "unita": "g"
+      },
+      {
+       "alimento": "mozzarella light",
+       "qta": 30,
+       "unita": "g"
+      },
+      {
+       "alimento": "olive piccole snocciolate",
+       "qta": 10,
+       "unita": "pezzi"
+      },
+      {
+       "alimento": "verdure",
+       "qta": 300,
+       "unita": "g"
+      },
+      {
+       "alimento": "olio evo",
+       "qta": 5,
+       "unita": "g"
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "items": [
+      {
+       "alimento": "pasta/riso (o varianti elencate sopra)",
+       "qta": 80,
+       "unita": "g"
+      },
+      {
+       "alimento": "uovo sodo",
+       "qta": 1,
+       "unita": "pezzo"
+      },
+      {
+       "alimento": "tonno al naturale",
+       "qta": 30,
+       "unita": "g"
+      },
+      {
+       "alimento": "verdure",
+       "qta": 300,
+       "unita": "g"
+      },
+      {
+       "alimento": "olio evo",
+       "qta": 5,
+       "unita": "g"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "cena": {
+  "facoltativo": false,
+  "range": {
+   "kcal": "circa 460",
+   "proteine_g": [
+    15,
+    45
+   ],
+   "carbo_g": [
+    35,
+    43
+   ],
+   "grassi_g": [
+    11,
+    22
+   ]
+  },
+  "proteine": [
+   {
+    "n": 1,
+    "alimento": "petto di pollo o tacchino o coniglio",
+    "qta": 150,
+    "unita": "g"
+   },
+   {
+    "n": 2,
+    "alimento": "vitello o maiale magro",
+    "qta": 130,
+    "unita": "g",
+    "limite": {
+     "tipo": "max",
+     "testo": "max 1 volta a sett",
+     "volte": 1,
+     "periodo": "settimana"
+    }
+   },
+   {
+    "n": 3,
+    "alimento": "uova + albume",
+    "items": [
+     {
+      "alimento": "uova",
+      "qta": 2,
+      "unita": "pezzi"
+     },
+     {
+      "alimento": "albume",
+      "qta": 50,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "alimento": "polpo",
+    "qta": 270,
+    "unita": "g",
+    "stato": "crudo",
+    "alternativa": "o 160 g polpo cotto"
+   },
+   {
+    "n": 5,
+    "alimento": "calamaro/seppia/totano puliti",
+    "qta": 200,
+    "unita": "g"
+   },
+   {
+    "n": 6,
+    "alimento": "filetto di merluzzo o nasello",
+    "qta": 210,
+    "unita": "g"
+   },
+   {
+    "n": 7,
+    "alimento": "gamberi o gamberetti sgusciati crudi",
+    "qta": 180,
+    "unita": "g"
+   },
+   {
+    "n": 8,
+    "alimento": "filetto di platessa o orata o altro pesce bianco",
+    "qta": 180,
+    "unita": "g"
+   },
+   {
+    "n": 9,
+    "alimento": "alici fresche",
+    "qta": 160,
+    "unita": "g"
+   },
+   {
+    "n": 10,
+    "alimento": "pesce spada fresco",
+    "qta": 130,
+    "unita": "g",
+    "limite": {
+     "tipo": "max",
+     "testo": "max 1 volta a sett",
+     "volte": 1,
+     "periodo": "settimana"
+    }
+   },
+   {
+    "n": 11,
+    "alimento": "salmone fresco",
+    "qta": 90,
+    "unita": "g"
+   },
+   {
+    "n": 12,
+    "alimento": "mozzarella light o protein",
+    "qta": 100,
+    "unita": "g"
+   },
+   {
+    "n": 13,
+    "alimento": "fiocchi di latte",
+    "qta": 160,
+    "unita": "g"
+   },
+   {
+    "n": 14,
+    "alimento": "legumi secchi",
+    "qta": 40,
+    "unita": "g",
+    "alternativa": "o 130 g gia scolati",
+    "limite": {
+     "tipo": "obiettivo",
+     "testo": "mangiare 1 a sett",
+     "volte": 1,
+     "periodo": "settimana",
+     "condiviso_con": "cena idea 3 (minestra)"
+    }
+   }
+  ],
+  "contorni_fissi": [
+   {
+    "alimento": "verdure a piacere / minestrone sole verdure",
+    "qta": 300,
+    "unita": "g"
+   },
+   {
+    "alimento": "olio evo",
+    "qta": 10,
+    "unita": "g",
+    "equivalenza": "1 cucchiaio"
+   }
+  ],
+  "pane_e_alternative": [
+   {
+    "alimento": "pane integrale senza glutine",
+    "qta": 60,
+    "unita": "g"
+   },
+   {
+    "alimento": "gallette di grano saraceno o riso integrale",
+    "qta": 5,
+    "unita": "pezzi"
+   },
+   {
+    "alimento": "patate",
+    "qta": 200,
+    "unita": "g"
+   }
+  ],
+  "pane_alternative_solo_testo_pag3": [
+   "stick di polenta (secondo il libro di dietetica; nessuna quantita indicata)"
+  ],
+  "conversioni": {
+   "panare": {
+    "regola": "10 g pane = 10 g pangrattato",
+    "esempio_pag4": "magari puoi fare 20 g di pangrattato e 30 g di pane (nota: 20+30=50, non 60; testo originale)"
+   },
+   "infarinare": {
+    "regola": "10 g pane = 7 g farina",
+    "farine_preferite_pag3": [
+     "farina di avena",
+     "farina di grano saraceno"
+    ]
+   }
+  },
+  "gia_combinate": {
+   "titolo": "IDEE ALTERNATIVE GIA' COMBINATE PER CENA",
+   "opzioni": [
+    {
+     "n": 1,
+     "descrizione": "piadina integrale senza glutine usata come base per la pizza",
+     "items": [
+      {
+       "alimento": "piadina integrale senza glutine",
+       "qta": 1,
+       "unita": "pezzo da 100 g"
+      },
+      {
+       "alimento": "passata di pomodoro",
+       "qta": null,
+       "unita": "non indicata"
+      },
+      {
+       "alimento": "mozzarella protein",
+       "qta": 100,
+       "unita": "g"
+      },
+      {
+       "alimento": "verdure a piacere per condire",
+       "qta": 100,
+       "unita": "g"
+      }
+     ],
+     "nota": "nessun olio indicato; mozzarella 'protein' (non 'light o protein')",
+     "limite": {
+      "tipo": "max",
+      "testo": "max 1 a sett",
+      "volte": 1,
+      "periodo": "settimana"
+     }
+    },
+    {
+     "n": 2,
+     "descrizione": "pane + rotolo di frittata",
+     "items": [
+      {
+       "alimento": "pane integrale senza glutine",
+       "qta": 60,
+       "unita": "g"
+      },
+      {
+       "alimento": "uova (rotolo di frittata)",
+       "qta": 2,
+       "unita": "pezzi"
+      },
+      {
+       "alimento": "philadelphia light",
+       "qta": 30,
+       "unita": "g"
+      },
+      {
+       "alimento": "prosciutto cotto",
+       "qta": 20,
+       "unita": "g"
+      },
+      {
+       "alimento": "verdure a piacere",
+       "qta": 300,
+       "unita": "g"
+      },
+      {
+       "alimento": "olio evo",
+       "qta": 10,
+       "unita": "g"
+      }
+     ],
+     "limite": {
+      "tipo": "max",
+      "testo": "max 1 volta ogni 2 sett",
+      "volte": 1,
+      "periodo": "2 settimane"
+     }
+    },
+    {
+     "n": 3,
+     "descrizione": "minestra di cereali e legumi",
+     "items": [
+      {
+       "alimento": "legumi secchi",
+       "qta": 30,
+       "unita": "g",
+       "alternativa": "o 100 g scolati"
+      },
+      {
+       "alimento": "cereali senza glutine (testo: 'cerali s.g')",
+       "qta": 50,
+       "unita": "g"
+      },
+      {
+       "alimento": "parmigiano",
+       "qta": 1,
+       "unita": "cucchiaino"
+      },
+      {
+       "alimento": "verdure",
+       "qta": "200-300",
+       "unita": "g"
+      },
+      {
+       "alimento": "olio evo",
+       "qta": 10,
+       "unita": "g"
+      }
+     ],
+     "limite": {
+      "tipo": "obiettivo",
+      "testo": "mangiare i legumi 1 sera a settimana, o come opzione sopra o come questa opzione",
+      "volte": 1,
+      "periodo": "settimana",
+      "condiviso_con": "cena proteina 14 (legumi)"
+     }
+    }
+   ]
+  }
+ },
+ "dopocena": {
+  "facoltativo": true,
+  "etichetta": "FACOLTATIVO",
+  "range": {
+   "kcal": "circa 100",
+   "proteine_g": [
+    1,
+    6
+   ],
+   "carbo_g": [
+    1,
+    19
+   ],
+   "grassi_g": [
+    1,
+    9
+   ]
+  },
+  "opzioni": [
+   {
+    "n": 1,
+    "items": [
+     {
+      "alimento": "frutta a piacere",
+      "qta": 150,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "items": [
+     {
+      "alimento": "cioccolato fondente 85-90%",
+      "qta": 15,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "items": [
+     {
+      "alimento": "frutta secca",
+      "qta": 15,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "items": [
+     {
+      "alimento": "frutta fresca",
+      "qta": 100,
+      "unita": "g"
+     },
+     {
+      "alimento": "frutta secca",
+      "qta": 10,
+      "unita": "g"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "items": [
+     {
+      "alimento": "yogurt bianco magro 0%",
+      "qta": 1,
+      "unita": "vasetto (peso non indicato)"
+     },
+     {
+      "alimento": "fiocchi di avena e/o cioccolato ('10 gr tra fiocchi di avena e cioccolato')",
+      "qta": 10,
+      "unita": "g totali"
+     }
+    ]
+   }
+  ]
+ },
+ "limiti_settimanali": [
+  {
+   "pasto": "pranzo",
+   "alimento": "legumi (70 g secchi / 180 g scolati)",
+   "testo": "mangiare 2 v. a sett",
+   "tipo": "obiettivo",
+   "volte": 2,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "pranzo",
+   "alimento": "tonno al naturale 60 g",
+   "testo": "max 2 a sett",
+   "tipo": "max",
+   "volte": 2,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "pranzo",
+   "alimento": "salmone affumicato 40 g",
+   "testo": "max 1 a sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "pranzo",
+   "alimento": "ragu 90 g",
+   "testo": "max 1 a sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "pranzo",
+   "alimento": "alternative gia combinate (gruppo)",
+   "testo": "max 1 a sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "cena",
+   "alimento": "vitello o maiale magro 130 g",
+   "testo": "max 1 volta a sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "cena",
+   "alimento": "pesce spada fresco 130 g",
+   "testo": "max 1 volta a sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "cena",
+   "alimento": "legumi (40 g secchi / 130 g scolati) OPPURE minestra idea 3",
+   "testo": "mangiare 1 a sett; mangiare i legumi 1 sera a settimana, o come opzione sopra o come questa opzione",
+   "tipo": "obiettivo",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "cena",
+   "alimento": "piadina-pizza (idea 1)",
+   "testo": "max 1 a sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 1
+  },
+  {
+   "pasto": "cena",
+   "alimento": "pane + rotolo di frittata con prosciutto cotto (idea 2)",
+   "testo": "max 1 volta ogni 2 sett",
+   "tipo": "max",
+   "volte": 1,
+   "periodo_settimane": 2
+  },
+  {
+   "pasto": "colazione",
+   "alimento": "yogurt greco 0% come sostituto di latte o yogurt",
+   "testo": "(ogni tanto)",
+   "tipo": "qualitativo",
+   "volte": null
+  },
+  {
+   "pasto": "generale",
+   "alimento": "prosciutto cotto (pag. 3)",
+   "testo": "se mangi un pezzo di prosciutto cotto 1 volta ogni due settimane non succede niente",
+   "tipo": "contesto",
+   "volte": 1,
+   "periodo_settimane": 2
+  }
+ ],
+ "regola_generale_limiti": "Il segreto di uno schema generale e alternare e non mangiare sempre le stesse cose. Rispettare i limiti (es: max 1 volta a sett, mangiare 1 volta a sett ecc..)",
+ "frequenze_ideali_sarebbe_perfetto": {
+  "pranzo": {
+   "legumi": 2,
+   "carne": "1-2",
+   "pesce": "1-2",
+   "uova": 1,
+   "formaggio": 2,
+   "somma_min_max": "7-9"
+  },
+  "cena": {
+   "legumi": 1,
+   "carne bianca": "1-2",
+   "pesce": "2-3",
+   "uova": 1,
+   "formaggio": 1,
+   "somma_min_max": "6-8"
+  },
+  "nota_QA": "A pranzo i legumi sono contati come categoria accanto a carne/pesce/uova/formaggio, e la somma dei minimi fa esattamente 7: indizio che nei giorni di legumi i legumi occupano lo slot proteico. Ma lo schema grafico mette i legumi nella colonna carboidrati (voce 11) con 'COMBINARE UNA FONTE DI CARBOIDRATI CON UNA FONTE DI PROTEINE'. Punto ambiguo."
+ },
+ "integrazione": {
+  "testo": "Integrazione consigliata da me e da far approvare dal medico: omega 3",
+  "pag4": "ti consiglierei di cominciare a prendere gli omega 3 che contribuiscono a ridurre l'infiammazione generale. Semmai consultati anche con tua mamma ed eventualmente se decidete di aggiungerli fammi sapere"
+ },
+ "regole_generali_pag4": [
+  {
+   "n": 1,
+   "tema": "acqua",
+   "testo": "Bevi almeno 2-3 litri di acqua al giorno. Acqua Ferrarelle o Lete per arrivare al fabbisogno di calcio; se non ci sono, un'acqua con buon contenuto di calcio.",
+   "numeri": {
+    "litri_min": 2,
+    "litri_max": 3
+   }
+  },
+  {
+   "n": 2,
+   "tema": "mangiare piano",
+   "testo": "Mangia piano, se mangi piano ti sazi prima e meglio."
+  },
+  {
+   "n": 3,
+   "tema": "verdure",
+   "testo": "Porzione standard di verdure crude 300 g a pranzo e 300 g a cena; puoi mangiarne di piu se non ti senti sazia. Occhio al gonfiore e all'olio a disposizione che non varia. Scegli le verdure che vuoi, l'importante e variare; le patate non sono verdure.",
+   "numeri": {
+    "pranzo_g": 300,
+    "cena_g": 300
+   }
+  },
+  {
+   "n": 4,
+   "tema": "limone",
+   "testo": "E consigliato usare per condire e insaporire il limone soprattutto per aumentare l'assorbimento di ferro dalle verdure, o altre spezie a piacere."
+  },
+  {
+   "n": 5,
+   "tema": "sale e caffe",
+   "testo": "Usare il sale in modo moderato; caffe meglio non superare i 3 al giorno, senza zucchero.",
+   "numeri": {
+    "caffe_max_giorno": 3
+   }
+  },
+  {
+   "n": 6,
+   "tema": "camminata",
+   "testo": "Se puoi, almeno 30 minuti di camminata veloce 5 volte a settimana. Aumenta il dispendio calorico. Frase che scrivo a tutti: devi fare i conti anche con come ti senti con il lupus.",
+   "numeri": {
+    "minuti_min": 30,
+    "volte_settimana": 5
+   }
+  },
+  {
+   "n": 7,
+   "tema": "inversione",
+   "testo": "E sempre possibile in caso di necessita invertire il pranzo con la cena."
+  },
+  {
+   "n": 8,
+   "tema": "ricette libere",
+   "testo": "Non e importante come mangi le cose; uova in frittata, sode o come vuoi. Puoi fare la ricetta che vuoi, l'importante e che rispetti le dosi. Panare: 10 g di pane equivalgono a 10 g di pangrattato, magari 20 g di pangrattato e 30 g di pane."
+  },
+  {
+   "n": 9,
+   "tema": "omega 3",
+   "testo": "Visto che di base c'e un'infiammazione cronica, ti consiglierei gli omega 3 che contribuiscono a ridurre l'infiammazione generale; consultati anche con tua mamma; da far approvare dal medico (pag. 2)."
+  },
+  {
+   "n": 10,
+   "tema": "aderenza e alcol",
+   "testo": "Piu ti attieni al piano piu vai in deficit calorico. Se esci resta in linea (la sera secondo, contorno e pane). Evita bevande alcoliche (anche perche fortemente infiammatorie), preferisci sempre l'acqua."
+  }
+ ],
+ "indicazioni_pag3_si": [
+  "cereali integrali (a chicco come il grano saraceno sono il top)",
+  "verdura di stagione",
+  "olio di oliva",
+  "pesce",
+  "frutta secca",
+  "semi oleosi (chia, semi di lino)",
+  "avocado",
+  "frutti ricchi di sostanze antiossidanti",
+  "spezie",
+  "acqua",
+  "antiossidanti es.: more, lamponi, mirtilli, melograno, uva, agrumi, cacao/cioccolato al 90%, zenzero, curcuma, cannella, origano, prezzemolo, olio extravergine, te verde o nero/tisane senza zucchero, verdura di diversi colori",
+  "colazione: fiocchi di avena (base scientifica: migliorano profilo glicemico e lipidico); alternative ogni tanto: fiocchi di grano saraceno, riso soffiato integrale, miglio soffiato, quinoa soffiata; abbinare proteina (yogurt greco, yogurt, latte), frutta fresca (mirtilli, more, lamponi), frutta secca, semi oleosi, cioccolato fondente 90%",
+  "pranzo: cereali a chicco (grano saraceno, quinoa, miglio, sorgo); pasta a ingrediente singolo (grano saraceno, avena, riso integrale); pasta di legumi 100% (senza glutine) [nessuna quantita indicata]",
+  "cena: alternative al pane: gallette (ingrediente unico, grano saraceno o riso integrale), patate, stick di polenta [nessuna quantita]",
+  "farine per impanare: farina di avena o di grano saraceno",
+  "preparati senza glutine (mix) solo per occasioni (pane: mix rustico Schar come 'meno peggio'; pizza: mix 'Ori di Sicilia'); meglio evitarli"
+ ],
+ "indicazioni_pag3_no": [
+  "prodotti raffinati: prodotti da forno, confezionati, fortemente zuccherati",
+  "carne lavorata: affettati, insaccati, wurstel, anche affettati di pollo (eccezione: prosciutto cotto 1 volta ogni 2 settimane, cena idea 2)",
+  "oli raffinati: mais, colza, girasole, arachide",
+  "fritti",
+  "alcol",
+  "sale in eccesso",
+  "pranzo: pasta di mais, (pasta di) riso semplice, paste addizionate di mono e digliceridi degli acidi grassi",
+  "prodotti senza glutine industriali con lunga lista di ingredienti (zucchero, mono e digliceridi, addensanti, emulsionanti, coloranti, stabilizzanti) nella quotidianita",
+  "glutine: a vita (la dieta senza glutine e l'unica cura per la celiachia)",
+  "zucchero nel caffe"
+ ],
+ "rene_lupus_pag4": "Filtrato e creatinina per ora a posto; i medici non hanno detto di ridurre le proteine, quindi per ora apporto proteico normale. Se ripetendo gli esami cambiasse qualcosa e i dottori dicessero di mangiarne meno, ci si regola di conseguenza.",
+ "punti_ambigui": [
+  "A1. Pranzo legumi: voce 11 della lista carboidrati; la regola dice carboidrato + proteina. Lettura letterale: legumi (come carboidrato) + una proteina della lista. Lettura alternativa (indizio 'Sarebbe perfetto'): legumi come fonte proteica senza altra proteina. Nessuna delle due rientra perfettamente nei range dichiarati (stima QA: legumi+proteina supera 30 g proteine; legumi da soli sotto 490 kcal).",
+  "A2. 'max 1 a sett' delle alternative gia combinate a pranzo: nell'intestazione del gruppo; lettura letterale = gruppo intero max 1 a settimana.",
+  "A3. Il tonno da 30 g delle alternative gia combinate 2 e 3 conta per il 'max 2 a sett' del tonno? Il limite e scritto sulla voce '60 gr tonno al naturale'. Non specificato.",
+  "A4. 'mangiare 2 v. a sett' / 'mangiare 1 a sett' sono obiettivi (esattamente o almeno), non massimi; il testo generale li cita come 'limiti' da rispettare ('mangiare 1 volta a sett').",
+  "A5. Peso di '1 vasetto' di yogurt non indicato (in Italia di solito 125 g, ma e un'ipotesi).",
+  "A6. Cena: i 'pane e alternative' (60 g pane / 5 gallette / 200 g patate) valgono anche con i legumi (voce 14), per lettura letterale della parentesi grafica che abbraccia le voci 1-14.",
+  "A7. '80 gr pasta/riso (o varianti elencate sopra)': le varianti da 80 g sono le voci 1-10; i legumi (70 g) non sono una variante di pasta/riso.",
+  "A8. Esempio panatura pag. 4 (20 g pangrattato + 30 g pane = 50 g) non somma a 60 g."
+ ]
+}
