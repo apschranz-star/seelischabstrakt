@@ -9,6 +9,16 @@ was refused by the permission check and is not retried.
 Netlify project: `sofia-piano`, site id `3902075f-8500-47f3-8807-d8c902846694`
 (team `a-p-schranz`).
 
+**Access code rule (ALX, 2026-11-07): the code is never changed unless ALX asks.**
+No rotation, no arming with another code, no tool or agent that sets one. Every
+deploy arms the gate from the live hash (step 3). The current code is only in
+`/home/claude/council/.sofia_code` (local, mode 600): never printed, never
+committed, used through environment variables only.
+
+**Trial week: Saturday 2026-11-07 to Friday 2026-11-13.** Sofia uses the app;
+nothing on the live app changes during the trial unless ALX asks (daily checks
+are read-only and report). Review on Saturday 2026-11-14.
+
 ## Deploy (from this workspace)
 
 The access code and the plain text of the plan are never committed. Both live
@@ -22,8 +32,8 @@ outside the repository: `/home/claude/council/.sofia_code` and
 3. Arm the gate with the hash that is online, so a redeploy never changes Sofia's code:
    `SOFIA_ACCESS_HASH="$(curl -sS https://sofia-piano.netlify.app/zugang.js | grep -o '[0-9a-f]\{64\}' | head -1)" node tools/gate-sofia.mjs`.
    Only when the code is rotated on purpose: `SOFIA_ACCESS_KEY=... node tools/gate-sofia.mjs`.
-   Since 2026-11-07 15:30 UTC the live gate is the one a Netlify agent deploy set (hash `1c061b15...`);
-   the code in `/home/claude/council/.sofia_code` no longer matches it and must NOT be used to arm.
+   The live gate hash is `1c061b15...` (2026-11-07). `/home/claude/council/.sofia_code` holds the matching
+   code (checked 2026-11-07: sha256 of "sofia-gate|" + code equals the live hash).
 4. `app/zugang.js` and `app/zugang.css` are git-ignored and the upload leaves ignored files out:
    back up `.gitignore`, remove those two lines, run the command returned by the Netlify MCP
    `deploy-site` operation from inside `sofia/`, restore `.gitignore`, delete the two generated files.
@@ -83,9 +93,8 @@ encrypted with it, so a new code always means step 2 again.
   with vegetables and fruit, redo the days from today keeping past days and logged meals (`rifaiDa`)
 - [x] Home, food log, ideas and week deployed 2026-11-07 19:28 UTC (deploy 6aef7bb8a2ee5d7cd73cb286,
   gate armed from the live hash, Sofia's code unchanged)
-- [ ] Plan text: the live gate code (set by the Netlify agent) does not open `piano-testo.cifrato.json`,
-  which is encrypted with the earlier code. Needs the code Sofia uses now (from ALX, env var only):
-  step 2 above with it, then redeploy
+- [x] Plan text re-encrypted with the code Sofia uses now (2026-11-07; round trip checked, the earlier
+  code no longer opens it)
 - [x] Corpo 5D food-specific journey (2026-11-07): stops ranked by what the portion brings, nutrient amount,
   share of the NRV and the claim's daily amount at each stop; camera follows the food, nutrient colours,
   light settles around the organ, "Avanti", text journey with reading time (`viaggioCibo`);
