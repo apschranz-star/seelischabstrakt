@@ -6,11 +6,17 @@
  *
  * No 3D model is downloaded: every shape is generated here, so nothing comes
  * from another server and there is no third-party artwork to license.
+ *
+ * Motion is kept calm on purpose: organs breathe by a percent or two around
+ * their own centre (they never move), the body turns slowly and stops while
+ * something is selected, and every change eases in over about half a second.
  */
 import * as THREE from "../../vendor/three.min.js";
 
 const COLORI = { ok: 0x7be0a0, attenzione: 0xffc96b, male: 0xff7a6b, nd: 0x8f86a8 };
-const PULSO = { ok: 0.9, attenzione: 1.5, male: 2.4, nd: 0.6 };
+const PULSO = { ok: 0.5, attenzione: 0.8, male: 1.1, nd: 0.4 };
+/* Frame-rate independent easing: the share of the way covered in dt seconds. */
+const passo = (dt, velocita) => 1 - Math.exp(-dt * velocita);
 
 /* Fresnel glow: bright at the rim, nearly clear in the middle. */
 function vetro(colore, { alfa = 0.1, rim = 1.0, potenza = 2.2 } = {}) {
@@ -30,7 +36,7 @@ function flusso(colore) {
     uniforms: { uColore: { value: new THREE.Color(colore) }, uT: { value: 0 }, uLuce: { value: 1 } },
     vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
     fragmentShader: `uniform vec3 uColore; uniform float uT; uniform float uLuce; varying vec2 vUv;
-      void main(){ float d = fract(vUv.x * 6.0 - uT * 0.6); float g = smoothstep(0.0, 0.15, d) * (1.0 - smoothstep(0.15, 0.5, d)); gl_FragColor = vec4(uColore * (0.35 + g * 1.4) * uLuce, (0.18 + g * 0.7) * uLuce); }`,
+      void main(){ float d = fract(vUv.x * 6.0 - uT * 0.35); float g = smoothstep(0.0, 0.15, d) * (1.0 - smoothstep(0.15, 0.5, d)); gl_FragColor = vec4(uColore * (0.35 + g * 1.4) * uLuce, (0.18 + g * 0.7) * uLuce); }`,
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   });
 }
@@ -112,9 +118,12 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
 
   /* -------------------------------------------------------- organs */
   const organi = {};
+  /* Each organ group sits at its own centre, so breathing and emphasis scale
+     it in place instead of moving it across the body. */
   const nuovo = (id, oggetti, centro) => {
     const g = new THREE.Group();
-    oggetti.forEach((o) => g.add(o));
+    g.position.copy(centro);
+    oggetti.forEach((o) => { o.position.sub(centro); g.add(o); });
     g.userData = { id, stato: "nd", fase: Math.random() * 6 };
     corpo.add(g);
     organi[id] = { gruppo: g, centro: centro.clone(), mats: oggetti.map((o) => o.material), colore: new THREE.Color(COLORI.nd), target: new THREE.Color(COLORI.nd), evidenza: 0 };
@@ -185,17 +194,25 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
   /* skin: the shell itself */
   organi.skin = { gruppo: null, centro: new THREE.Vector3(-0.2, 1.3, 0.06), mats: [guscio], colore: new THREE.Color(0x9d8cff), target: new THREE.Color(0x9d8cff), evidenza: 0, guscio: true };
 
-  /* ------------------------------------------------ food particles */
-  const nCibo = 160, geoC = new THREE.BufferGeometry(), posC = new Float32Array(nCibo * 3);
+  /* ------------------------------------------------ food journey */
+  /* A small stream of light follows the food step by step: mouth to
+     stomach, along the gut, into the blood, then to each system it feeds.
+     Each step is slow enough to follow and comes with its caption. */
+  const nCibo = 90, geoC = new THREE.BufferGeometry(), posC = new Float32Array(nCibo * 3);
   geoC.setAttribute("position", new THREE.BufferAttribute(posC, 3));
-  const mCibo = new THREE.PointsMaterial({ color: 0xfff1c9, size: 0.03, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+  const mCibo = new THREE.PointsMaterial({ color: 0xfff1c9, size: 0.028, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
   const puntiCibo = new THREE.Points(geoC, mCibo);
   corpo.add(puntiCibo);
-  let percorsi = [], tCibo = -1;
-  const bocca = new THREE.Vector3(0, 1.6, 0.17), stomaco = new THREE.Vector3(0.03, 1.08, 0.05);
+  let tCibo = -1, viaggioAtt = null;
+  const bocca = new THREE.Vector3(0, 1.6, 0.17), stomaco = new THREE.Vector3(0.03, 1.08, 0.05), fegato = new THREE.Vector3(-0.07, 1.13, 0.03), cuore = new THREE.Vector3(0.035, 1.28, 0.04);
+  const curva = (pts) => new THREE.CatmullRomCurve3(pts.map((p) => (p.isVector3 ? p : new THREE.Vector3(...p))));
 
   /* ---------------------------------------------------- interaction */
-  let rotY = 0.35, rotX = 0, autoRot = !ridotto, trasc = null, pinza = null;
+  let rotY = 0.35, rotX = 0, autoRot = !ridotto, trasc = null, pinza = null, selezionato = null, tSel = 0;
+  const etichetta = document.createElement("div");
+  etichetta.className = "etichetta-organo";
+  etichetta.hidden = true;
+  contenitore.appendChild(etichetta);
   const puntatori = new Map();
   canvas.addEventListener("pointerdown", (e) => { canvas.setPointerCapture(e.pointerId); puntatori.set(e.pointerId, { x: e.clientX, y: e.clientY }); trasc = { x: e.clientX, y: e.clientY, t: performance.now(), mosso: false }; autoRot = false; });
   canvas.addEventListener("pointermove", (e) => {
@@ -232,7 +249,23 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
     const oggetti = Object.values(organi).filter((o) => o.gruppo).flatMap((o) => o.gruppo.children);
     const hit = ray.intersectObjects(oggetti, false)[0];
     if (hit) { alTocco(hit.object.parent.userData.id); return; }
+    /* Small or hidden organs: the nearest organ centre on screen within 44 px. */
+    let vicino = null, dist = 44;
+    for (const [id, o] of Object.entries(organi)) {
+      if (id === "skin") continue;
+      const p = schermo(o);
+      const d = Math.hypot(p.x - (e.clientX - r.left), p.y - (e.clientY - r.top));
+      if (d < dist) { dist = d; vicino = id; }
+    }
+    if (vicino) { alTocco(vicino); return; }
     if (ray.intersectObjects(parti, false)[0]) alTocco("skin");
+  }
+  function schermo(o) {
+    const v = o.centro.clone();
+    corpo.localToWorld(v);
+    v.project(camera);
+    const r = canvas.getBoundingClientRect();
+    return { x: ((v.x + 1) / 2) * r.width, y: ((1 - v.y) / 2) * r.height };
   }
 
   /* ------------------------------------------------------- sizing */
@@ -245,6 +278,13 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
   const ro = new ResizeObserver(dimensiona);
   ro.observe(contenitore);
   dimensiona();
+
+  function avviaSegmento(v) {
+    const sg = v.segmenti[v.i];
+    if (sg.organo) { organi[sg.organo] && (organi[sg.organo].evidenza = 1.2); selezionato = sg.organo; etichetta.textContent = v.nomi[sg.organo] || ""; etichetta.hidden = !etichetta.textContent; }
+    else { selezionato = null; etichetta.hidden = true; }
+    v.onFase(v.i, sg.organo);
+  }
 
   /* --------------------------------------------------------- loop */
   let attivo = true, visibile = true, ultimo = performance.now(), tempo = 0;
@@ -260,46 +300,61 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
     const dt = Math.min(0.05, (ora - ultimo) / 1000);
     ultimo = ora;
     tempo += dt;
-    if (autoRot) rotY += dt * 0.25;
-    corpo.rotation.y += (rotY - corpo.rotation.y) * 0.12;
-    corpo.rotation.x += (rotX - corpo.rotation.x) * 0.12;
-    camera.position.lerp(obiettivoCam, 0.06);
-    miraAtt.lerp(obiettivoMira, 0.06);
+    if (autoRot && !selezionato && tCibo < 0) rotY += dt * 0.12;
+    const k = passo(dt, 5), kc = passo(dt, 3);
+    corpo.rotation.y += (rotY - corpo.rotation.y) * k;
+    corpo.rotation.x += (rotX - corpo.rotation.x) * k;
+    camera.position.lerp(obiettivoCam, kc);
+    miraAtt.lerp(obiettivoMira, kc);
     camera.lookAt(miraAtt);
     for (const [id, o] of Object.entries(organi)) {
-      o.colore.lerp(o.target, 0.06);
+      o.colore.lerp(o.target, passo(dt, 3));
       const stato = o.gruppo ? o.gruppo.userData.stato : o.stato || "nd";
-      const ritmo = ridotto ? 0 : PULSO[stato] || 1;
-      const battito = id === "heart_vessels" ? 1 + 0.08 * Math.max(0, Math.sin(tempo * 7.5)) * (ridotto ? 0 : 1) : 1 + 0.035 * Math.sin(tempo * ritmo * 2 + (o.gruppo ? o.gruppo.userData.fase : 0));
-      const enfasi = 1 + Math.min(o.evidenza, 1) * 0.12;
-      o.evidenza = Math.max(0, o.evidenza - dt * 0.25);
+      const ritmo = ridotto ? 0 : PULSO[stato] || 0.5;
+      const battito = id === "heart_vessels" ? 1 + 0.025 * Math.max(0, Math.sin(tempo * 6.0)) * (ridotto ? 0 : 1) : 1 + 0.012 * Math.sin(tempo * ritmo * 2 + (o.gruppo ? o.gruppo.userData.fase : 0));
+      const scelto = selezionato === id ? 1 : 0;
+      const enfasi = 1 + Math.min(o.evidenza + scelto, 1) * 0.05;
+      o.evidenza = Math.max(0, o.evidenza - dt * 0.35);
       if (o.gruppo && id !== "metabolism") o.gruppo.scale.setScalar(battito * enfasi);
       for (const m of o.mats) {
-        if (m.uniforms && m.uniforms.uColore) { m.uniforms.uColore.value.copy(o.colore); m.uniforms.uLuce.value = 1 + o.evidenza * 1.5; if (m.uniforms.uT) m.uniforms.uT.value = tempo * (ridotto ? 0 : 1); }
-        else if (m.color) { m.color.copy(o.colore); m.opacity = 0.5 + 0.3 * Math.sin(tempo * 1.2) + o.evidenza * 0.3; }
+        const luce = 1 + Math.min(o.evidenza + scelto * 0.8, 1.6) * 1.2 - (selezionato && !scelto && id !== "skin" ? 0.25 : 0);
+        if (m.uniforms && m.uniforms.uColore) { m.uniforms.uColore.value.copy(o.colore); m.uniforms.uLuce.value += (luce - m.uniforms.uLuce.value) * passo(dt, 6); if (m.uniforms.uT) m.uniforms.uT.value = tempo * (ridotto ? 0 : 1); }
+        else if (m.color) { m.color.copy(o.colore); m.opacity = 0.55 + 0.12 * Math.sin(tempo * 0.8) + o.evidenza * 0.3; }
       }
     }
     /* metabolism cloud breathes */
     if (!ridotto) {
       for (let i = 0; i < nPunti; i++) {
         const [a0, r, y0, v] = base[i];
-        const a = a0 + tempo * v * 0.3;
-        posP[i * 3] = Math.cos(a) * r; posP[i * 3 + 1] = y0 + 0.02 * Math.sin(tempo + i); posP[i * 3 + 2] = Math.sin(a) * r * 0.6;
+        const a = a0 + tempo * v * 0.12;
+        posP[i * 3] = Math.cos(a) * r; posP[i * 3 + 1] = y0 + 0.006 * Math.sin(tempo * 0.7 + i); posP[i * 3 + 2] = Math.sin(a) * r * 0.6;
       }
       geoP.attributes.position.needsUpdate = true;
     }
-    /* food particles */
-    if (tCibo >= 0) {
-      tCibo += dt / 3.2;
+    /* food journey */
+    if (viaggioAtt) {
+      const v = viaggioAtt;
+      const seg = v.segmenti[v.i];
+      v.t += dt;
+      const k = Math.min(1, v.t / seg.durata);
       for (let i = 0; i < nCibo; i++) {
-        const k = Math.min(1, Math.max(0, tCibo * 1.25 - (i / nCibo) * 0.4));
-        const p = percorsi[i % percorsi.length];
-        const v = p.getPoint(k);
-        posC[i * 3] = v.x + Math.sin(i * 12.9) * 0.008; posC[i * 3 + 1] = v.y; posC[i * 3 + 2] = v.z + Math.cos(i * 7.3) * 0.008;
+        const kk = Math.min(1, Math.max(0, k * 1.35 - (i / nCibo) * 0.35));
+        const p = seg.curva.getPoint(kk);
+        posC[i * 3] = p.x + Math.sin(i * 12.9) * 0.006; posC[i * 3 + 1] = p.y + Math.cos(i * 3.1) * 0.004; posC[i * 3 + 2] = p.z + Math.cos(i * 7.3) * 0.006;
       }
       geoC.attributes.position.needsUpdate = true;
-      mCibo.opacity = tCibo < 0.1 ? tCibo * 9 : tCibo > 0.9 ? Math.max(0, (1.1 - tCibo) * 4.5) : 0.9;
-      if (tCibo > 1.1) { tCibo = -1; mCibo.opacity = 0; }
+      mCibo.opacity += ((k < 0.08 ? k * 10 : 0.85) - mCibo.opacity) * passo(dt, 8);
+      if (v.t >= seg.durata + seg.pausa) {
+        v.i++;
+        if (v.i >= v.segmenti.length) { viaggioAtt = null; tCibo = -1; mCibo.opacity = 0; v.onFase(-1, null); }
+        else { v.t = 0; avviaSegmento(v); }
+      }
+    } else if (mCibo.opacity > 0) mCibo.opacity = Math.max(0, mCibo.opacity - dt * 2);
+    /* the label follows the selected organ while the body turns */
+    if (selezionato && organi[selezionato]) {
+      const p = schermo(organi[selezionato]);
+      etichetta.style.left = p.x + "px";
+      etichetta.style.top = p.y + "px";
     }
     renderer.render(scena, camera);
   }
@@ -318,25 +373,40 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
       }
     },
     evidenzia(ids) {
-      for (const id of ids) if (organi[id]) organi[id].evidenza = 1.6;
+      for (const id of ids) if (organi[id]) organi[id].evidenza = 1.2;
     },
-    mostraCibo(bersagli) {
-      percorsi = [];
-      const lista = bersagli.length ? bersagli : ["gut"];
-      for (const id of lista) {
-        const o = organi[id];
-        if (!o) continue;
-        percorsi.push(new THREE.CatmullRomCurve3([bocca, new THREE.Vector3(0, 1.42, 0.06), stomaco, new THREE.Vector3(0.0, 0.98, 0.05), o.centro.clone().lerp(stomaco, 0.25), o.centro]));
+    seleziona(id, testo) {
+      selezionato = organi[id] ? id : null;
+      etichetta.textContent = testo || "";
+      etichetta.hidden = !selezionato || !testo;
+      if (selezionato) tSel = 0;
+    },
+    deseleziona() { selezionato = null; etichetta.hidden = true; },
+    /* steps: mouth, stomach, gut, blood, then each target organ; onFase(i, organ) on each step, onFase(-1) at the end */
+    viaggio(bersagli, onFase = () => {}, nomi = {}) {
+      const mete = bersagli.filter((id) => organi[id] && id !== "gut" && id !== "blood");
+      const segmenti = [
+        { fase: 0, organo: null, durata: 2.2, pausa: 0.6, curva: curva([bocca, [0.0, 1.45, 0.08], [0.02, 1.25, 0.06], stomaco]) },
+        { fase: 1, organo: "gut", durata: 3.2, pausa: 0.6, curva: curva([stomaco, ...curvaInt.getPoints(24)]) },
+        { fase: 2, organo: "blood", durata: 2.2, pausa: 0.6, curva: curva([[0.0, 0.88, 0.02], [-0.02, 0.98, 0.0], fegato, cuore]) },
+        ...mete.map((id) => ({ fase: 3, organo: id, durata: 1.8, pausa: 1.6, curva: curva([cuore, cuore.clone().lerp(organi[id].centro, 0.5).add(new THREE.Vector3(0, 0.03, 0.05)), organi[id].centro]) })),
+      ];
+      viaggioAtt = { segmenti, i: 0, t: 0, onFase, nomi };
+      tCibo = 0;
+      if (ridotto) {
+        /* no moving lights: the steps advance on a timer and each target simply lights up */
+        viaggioAtt = null;
+        segmenti.forEach((sg, i) => setTimeout(() => { if (sg.organo) { this.evidenzia([sg.organo]); this.seleziona(sg.organo, nomi[sg.organo]); } onFase(i, sg.organo); if (i === segmenti.length - 1) setTimeout(() => onFase(-1, null), 2500); }, i * 2500));
+        return;
       }
-      if (!percorsi.length) return;
-      tCibo = ridotto ? 1.0 : 0;
-      if (ridotto) { this.evidenzia(lista); return; }
-      setTimeout(() => this.evidenzia(lista), 1600);
+      avviaSegmento(viaggioAtt);
     },
+    fermaViaggio() { viaggioAtt = null; tCibo = -1; },
     vista(v) {
       if (v === "cervello") { obiettivoCam = posCervello.clone(); obiettivoMira = miraCervello.clone(); }
       else { obiettivoCam = posCorpo.clone(); obiettivoMira = mira.clone(); }
     },
+    mostraCibo(bersagli) { this.viaggio(bersagli); },
     posizioneSchermo(id) {
       const o = organi[id];
       if (!o) return null;
@@ -351,6 +421,7 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", nascosto);
+      etichetta.remove();
       scena.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
       renderer.dispose();
       canvas.remove();

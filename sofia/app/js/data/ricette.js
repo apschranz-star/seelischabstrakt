@@ -277,7 +277,7 @@ export const RICETTE = [
   {
     id: "r-n3", pasto: "cena", abbina: { prot: ["cp1"], variante: "coniglio", pane: "gallette" }, minuti: 60, tag: [],
     titolo: Q("Coniglio in umido con verdure e rosmarino", "Rabbit stewed with vegetables and rosemary"),
-    ingredienti: [{ a: "coniglio", q: 150, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("cipolla, carote, sedano e bietole", "onion, carrots, celery and chard") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_saraceno", q: 5, u: "pz", testo: Q("5 gallette (o 60 g di pane)", "5 rice cakes (or 60 g bread)") }],
+    ingredienti: [{ a: "coniglio", q: 150, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("cipolla, carote, sedano e bietole", "onion, carrots, celery and chard") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_saraceno", q: 5, u: "pz", testo: Q("5 gallette di grano saraceno (o 60 g di pane)", "5 buckwheat cakes (or 60 g bread)") }],
     extra: [Q("rosmarino", "rosemary"), Q("salvia", "sage"), Q("alloro", "bay leaf")],
     passi: {
       it: ["Rosola il coniglio a pezzi in casseruola con un goccio d'acqua e le erbe.", "Aggiungi cipolla, carote e sedano a cubetti e un mestolo d'acqua calda.", "Copri e cuoci a fuoco basso 40-45 minuti, aggiungendo acqua se serve.", "Bietole saltate a parte, olio a crudo, gallette."],
@@ -317,7 +317,7 @@ export const RICETTE = [
   {
     id: "r-n7", pasto: "cena", abbina: { prot: ["cp5"], pane: "gallette" }, minuti: 15, tag: [],
     titolo: Q("Calamari alla griglia con insalata di finocchi", "Grilled squid with fennel salad"),
-    ingredienti: [{ a: "calamari", q: 200, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("finocchi, rucola e ravanelli", "fennel, rocket and radishes") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_saraceno", q: 5, u: "pz", testo: Q("5 gallette (o 60 g di pane)", "5 rice cakes (or 60 g bread)") }],
+    ingredienti: [{ a: "calamari", q: 200, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("finocchi, rucola e ravanelli", "fennel, rocket and radishes") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_saraceno", q: 5, u: "pz", testo: Q("5 gallette di grano saraceno (o 60 g di pane)", "5 buckwheat cakes (or 60 g bread)") }],
     extra: [Q("limone", "lemon"), Q("prezzemolo", "parsley")],
     passi: {
       it: ["Scalda bene una griglia o una padella di ghisa.", "Cuoci i calamari interi 2 minuti per lato, poi tagliali ad anelli.", "Affetta sottili finocchi e ravanelli, unisci la rucola.", "Olio, limone e prezzemolo su tutto."],
@@ -337,7 +337,7 @@ export const RICETTE = [
   {
     id: "r-n9", pasto: "cena", abbina: { prot: ["cp7"], pane: "gallette" }, minuti: 15, tag: ["spezie", "veloce"],
     titolo: Q("Gamberi in padella con zucchine e zenzero", "Pan-fried prawns with courgettes and ginger"),
-    ingredienti: [{ a: "gamberi", q: 180, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("zucchine e cipollotto", "courgettes and spring onion") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_riso", q: 5, u: "pz", testo: Q("5 gallette (o 60 g di pane)", "5 rice cakes (or 60 g bread)") }],
+    ingredienti: [{ a: "gamberi", q: 180, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("zucchine e cipollotto", "courgettes and spring onion") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_riso", q: 5, u: "pz", testo: Q("5 gallette di riso integrale (o 60 g di pane)", "5 brown rice cakes (or 60 g bread)") }],
     extra: [Q("zenzero", "ginger"), Q("limone", "lemon"), Q("prezzemolo", "parsley")],
     passi: {
       it: ["Taglia zucchine a bastoncini e cipollotto a rondelle.", "Saltali a fuoco alto 4-5 minuti con un goccio d'acqua e lo zenzero grattugiato.", "Aggiungi i gamberi per 2-3 minuti.", "Olio a crudo, limone e prezzemolo."],
@@ -397,7 +397,7 @@ export const RICETTE = [
   {
     id: "r-n15", pasto: "cena", abbina: { prot: ["cp13"], pane: "gallette" }, minuti: 20, tag: [],
     titolo: Q("Fiocchi di latte con verdure grigliate ed erbe", "Cottage cheese with grilled vegetables and herbs"),
-    ingredienti: [{ a: "fiocchi_latte", q: 160, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("melanzane, zucchine, peperoni", "aubergine, courgettes, peppers") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_riso", q: 5, u: "pz", testo: Q("5 gallette (o 60 g di pane)", "5 rice cakes (or 60 g bread)") }],
+    ingredienti: [{ a: "fiocchi_latte", q: 160, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("melanzane, zucchine, peperoni", "aubergine, courgettes, peppers") }, { a: "olio_evo", q: 10, u: "g" }, { a: "gallette_riso", q: 5, u: "pz", testo: Q("5 gallette di riso integrale (o 60 g di pane)", "5 brown rice cakes (or 60 g bread)") }],
     extra: [Q("erba cipollina", "chives"), Q("menta", "mint"), Q("pepe", "pepper")],
     passi: {
       it: ["Griglia le verdure a fette.", "Mescola i fiocchi di latte con erba cipollina, menta e pepe.", "Servi le verdure con l'olio a crudo, i fiocchi di latte sopra e le gallette."],

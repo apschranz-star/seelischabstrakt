@@ -15,10 +15,13 @@ const BASE = [
   "fonts/fraunces-latin-normal-300-700.woff2", "fonts/fraunces-latin-ext-normal-300-700.woff2", "fonts/fraunces-latin-italic-300-700.woff2",
   "fonts/manrope-latin-normal.woff2", "fonts/manrope-latin-ext-normal.woff2",
   "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png",
-  "js/main.js", "js/ctx.js", "js/ui.js", "js/i18n.js", "js/store.js",
+  "js/main.js", "js/ctx.js", "js/ui.js", "js/i18n.js", "js/store.js", "js/cripto.js",
   "js/data/alimenti.js", "js/data/piano.js", "js/data/ricette.js", "js/data/esami.js", "js/data/esami-dati.js", "js/data/evidenze.js",
+  "js/data/scelte.js", "js/data/dizionario.js", "js/data/ciqual.js", "data/piano-testo.cifrato.json",
   "js/engine/rng.js", "js/engine/planner.js", "js/engine/consiglio.js", "js/engine/stats.js", "js/engine/salute.js", "js/engine/impatti.js", "js/engine/labparse.js",
+  "js/engine/nutrizione.js", "js/engine/cervello.js", "js/engine/ricerca.js",
   "js/views/comuni.js", "js/views/oggi.js", "js/views/settimana.js", "js/views/cibo.js", "js/views/salute.js", "js/views/corpo.js", "js/views/consiglio.js", "js/views/impostazioni.js",
+  "js/views/diario.js", "js/views/componi.js", "js/views/miei.js", "js/views/pianotesto.js", "js/views/ricettemie.js",
   "js/three/corpo3d.js",
 ];
 const FACOLTATIVI = ["zugang.js", "zugang.css"];
@@ -50,7 +53,8 @@ self.addEventListener("fetch", (e) => {
         return r;
       } catch (err) {
         const hit = await caches.match(e.request);
-        return hit || new Response(JSON.stringify({ libreria: { ricette: [] }, ultimo: null, offline: true }), { headers: { "Content-Type": "application/json" } });
+        const vuota = url.pathname.startsWith("/api/alimento") ? { risultati: [], offline: true } : { libreria: { ricette: [] }, ultimo: null, offline: true };
+        return hit || new Response(JSON.stringify(vuota), { status: url.pathname.startsWith("/api/alimento") ? 503 : 200, headers: { "Content-Type": "application/json" } });
       }
     })());
     return;

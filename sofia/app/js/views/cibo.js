@@ -1,4 +1,5 @@
-/* Cibo: swaps with real numbers, curated recipes with shuffle, daily web recipes, the plan's rules. */
+/* Cibo: the plan (original text and English), the meal builder, her own
+   foods, recipes with filters and her own recipes, swaps, daily web recipes. */
 import { S, cambia, cambiaSilenzioso } from "../store.js";
 import { t, L, lingua } from "../i18n.js";
 import { I, esc, num, dataConAnno } from "../ui.js";
@@ -11,18 +12,25 @@ import { COMPOSIZIONE, NOMI_NUTRIENTI, CLINICA } from "../data/evidenze.js";
 import { porzione } from "../engine/impatti.js";
 import { notePersonali } from "../engine/consiglio.js";
 import { rng, nuovoSeme } from "../engine/rng.js";
+import { renderComponi } from "./componi.js";
+import * as miei from "./miei.js";
+import * as pianoTesto from "./pianotesto.js";
+import { mieComeRicette } from "./ricettemie.js";
 
-const SEZIONI = [["scambi", "scambi"], ["ricette", "ricette"], ["web", "dalWeb"], ["regole", "regole"]];
-let filtro = "tutte", soloPreferite = false, cerca = "", pescate = nuovoSeme();
+const SEZIONI = [["componi", { it: "Componi", en: "Compose" }], ["miei", { it: "I miei cibi", en: "My foods" }], ["ricette", { it: "Ricette", en: "Recipes" }], ["piano", { it: "Il piano", en: "The plan" }], ["scambi", { it: "Scambi", en: "Swaps" }], ["web", { it: "Dal web", en: "From the web" }]];
+let filtro = "tutte", soloPreferite = false, soloMie = false, tempoMax = 0, cercaRic = "", mostraEsclusi = false, cerca = "", pescate = nuovoSeme();
 
 export const titolo = () => t("cibo");
 
 export function render(s, parti) {
-  const sez = SEZIONI.some(([k]) => k === parti[0]) ? parti[0] : "scambi";
-  const seg = `<nav class="seg" aria-label="${esc(t("cibo"))}">${SEZIONI.map(([k, lab]) => `<button class="${sez === k ? "attivo" : ""}" data-az="vai" data-h="#/cibo/${k}" ${sez === k ? 'aria-current="page"' : ""}>${esc(t(lab))}</button>`).join("")}</nav>`;
+  const richiesta = parti[0] === "regole" ? "piano" : parti[0];
+  const sez = SEZIONI.some(([k]) => k === richiesta) ? richiesta : "componi";
+  const seg = `<nav class="seg scorre" aria-label="${esc(t("cibo"))}">${SEZIONI.map(([k, lab]) => `<button class="${sez === k ? "attivo" : ""}" data-az="vai" data-h="#/cibo/${k}" ${sez === k ? 'aria-current="page"' : ""}>${esc(L(lab))}</button>`).join("")}</nav>`;
+  if (sez === "componi") return seg + renderComponi(s);
+  if (sez === "miei") return seg + miei.render(s);
   if (sez === "ricette") return seg + ricette(s);
   if (sez === "web") return seg + web(s);
-  if (sez === "regole") return seg + regole();
+  if (sez === "piano") return seg + pianoTesto.render(s) + `<h2 class="sez">${esc(L({ it: "Regole e prove", en: "Rules and evidence" }))}</h2>` + regole();
   return seg + scambi();
 }
 
@@ -76,7 +84,7 @@ function vocePorzione(v) {
     p.valori.fibre_g ? `${num(p.valori.fibre_g, 1)} g ${L({ it: "fibre", en: "fibre" })}` : null,
     p.valori.calcium_mg ? `Ca ${num(p.valori.calcium_mg)} mg` : null,
     p.valori.iron_mg ? `Fe ${num(p.valori.iron_mg, 1)} mg` : null,
-  ].filter(Boolean).join(" · ") : null;
+  ].filter(Boolean).join(" · ") : (v.u === "g" || v.u === "ml") && v.q ? `${t("infoMancante")}: ${L({ it: "nessun dato di composizione verificato", en: "no verified composition data" })}` : null;
   return { top, lim, valori, fonteDi, varianti: p && p.varianti, gf: a.glutine };
 }
 
@@ -84,7 +92,7 @@ function scambi() {
   const q = cerca.trim().toLowerCase();
   const gruppi = GRUPPI().map((g) => ({ ...g, voci: g.voci.filter((v) => !q || nome(v.a, "it").toLowerCase().includes(q) || nome(v.a, "en").toLowerCase().includes(q) || (v.testo && L(v.testo).toLowerCase().includes(q))) })).filter((g) => g.voci.length);
   return `<input id="cerca-cibo" class="cerca" type="search" placeholder="${esc(L({ it: "Cerca un alimento (es. salmone, quinoa)", en: "Search a food (e.g. salmon, quinoa)" }))}" value="${esc(cerca)}" data-input="cercaCibo" aria-label="${esc(L({ it: "Cerca", en: "Search" }))}">
-  <p class="piccolo muted" data-s="s81ccb">${esc(L({ it: "Dentro ogni gruppo le dosi indicate si equivalgono: lo ha deciso la Dott.ssa Giunta. I valori per porzione vengono dalle tabelle CREA, CIQUAL e USDA verificate dal consiglio. Per gli alimenti a pezzi (uova, gallette) il peso non è nel piano, quindi niente numeri.", en: "Within each group the amounts are equivalent: Dott.ssa Giunta decided this. Per-portion values come from the CREA, CIQUAL and USDA tables checked by the council. For foods counted in pieces (eggs, rice cakes) the plan gives no weight, so no numbers." }))}</p>
+  <p class="piccolo muted" data-s="s81ccb">${esc(L({ it: "Dentro ogni gruppo le dosi indicate si equivalgono: lo ha deciso la nutrizionista. I valori per porzione vengono dalle tabelle CREA, CIQUAL e USDA verificate dal consiglio. Per gli alimenti a pezzi (uova, gallette) il peso non è nel piano, quindi niente numeri.", en: "Within each group the amounts are equivalent: the nutritionist decided this. Per-portion values come from the CREA, CIQUAL and USDA tables checked by the council. For foods counted in pieces (eggs, rice cakes) the plan gives no weight, so no numbers." }))}</p>
   ${gruppi.map((g) => {
     const best = migliori(g.voci);
     return `<section class="card gruppo-scambi"><h3>${esc(L(g.titolo))}</h3>
@@ -117,11 +125,29 @@ function scambi() {
 
 /* ----------------------------------------------------------- recipes */
 function ricette(s) {
-  const lista = RICETTE.filter((r) => (filtro === "tutte" || r.pasto === filtro) && (!soloPreferite || s.preferite.includes(r.id)));
+  const ex = new Set(s.pref.escludi || []);
+  const q = cercaRic.trim().toLowerCase();
+  const tutte = [...mieComeRicette(s), ...RICETTE];
+  const conEsclusi = (r) => r.ingredienti.some((v) => ex.has(v.a));
+  const lista = tutte.filter((r) => (filtro === "tutte" || r.pasto === filtro)
+    && (!soloPreferite || s.preferite.includes(r.id))
+    && (!soloMie || r.mia)
+    && (!tempoMax || r.minuti <= tempoMax)
+    && (mostraEsclusi || !conEsclusi(r))
+    && (!q || L(r.titolo).toLowerCase().includes(q) || r.ingredienti.some((v) => (s.alimentiExtra[v.a] ? s.alimentiExtra[v.a].nome : nome(v.a, lingua())).toLowerCase().includes(q) || (v.testo && L(v.testo).toLowerCase().includes(q)))));
+  const nascoste = tutte.filter((r) => !mostraEsclusi && conEsclusi(r)).length;
   const R = rng(pescate);
   const tre = R.shuffle(lista).slice(0, 3);
   const chips = ["tutte", "colazione", "pranzo", "cena", "spuntino", "dopocena"].map((p) => `<button class="chip ${filtro === p ? "attivo" : ""}" data-az="filtroRic" data-p="${p}">${esc(p === "tutte" ? L({ it: "Tutte", en: "All" }) : L(DEF[p].nome))}</button>`).join("");
-  return `<div class="chips">${chips}<button class="chip ${soloPreferite ? "attivo" : ""}" data-az="soloPref">${esc(L({ it: "Preferite", en: "Favourites" }))}</button></div>
+  return `<input id="cerca-ric" class="cerca" type="search" placeholder="${esc(L({ it: "Cerca per nome o ingrediente (es. salmone)", en: "Search by name or ingredient (e.g. salmon)" }))}" value="${esc(cercaRic)}" data-input="cercaRicetta" aria-label="${esc(L({ it: "Cerca una ricetta", en: "Search a recipe" }))}">
+    <div class="chips">${chips}</div>
+    <div class="chips"><button class="chip ${soloPreferite ? "attivo" : ""}" data-az="soloPref">${esc(L({ it: "Preferite", en: "Favourites" }))}</button>
+      <button class="chip ${soloMie ? "attivo" : ""}" data-az="soloMie">${esc(L({ it: "Le mie", en: "Mine" }))}</button>
+      <button class="chip ${tempoMax === 20 ? "attivo" : ""}" data-az="tempoRic" data-m="20">${esc(L({ it: "Fino a 20 min", en: "Up to 20 min" }))}</button>
+      <button class="chip ${tempoMax === 40 ? "attivo" : ""}" data-az="tempoRic" data-m="40">${esc(L({ it: "Fino a 40 min", en: "Up to 40 min" }))}</button>
+      <button class="chip ${mostraEsclusi ? "attivo" : ""}" data-az="mostraEsclusi">${esc(L({ it: "Anche con cibi che non mangio", en: "Also with foods I skip" }))}</button></div>
+    ${nascoste ? `<p class="minimo">${esc(L({ it: `${nascoste} ricette nascoste perché hanno cibi che non mangi.`, en: `${nascoste} recipes hidden because they have foods you skip.` }))}</p>` : ""}
+    <button class="btn piccolo primario" data-az="nuovaRicetta" data-s="s96d03">${I.piu}${esc(L({ it: "Nuova ricetta", en: "New recipe" }))}</button>
     <div class="card evidenza"><div class="riga tra"><h3>${esc(L({ it: "Pescate per te", en: "Picked for you" }))}</h3>
       <button class="btn piccolo primario" data-az="pesca">${I.rimescola}${esc(L({ it: "Rimescola", en: "Shuffle" }))}</button></div>
       ${tre.length ? tre.map((r) => cartaRicetta(r)).join("") : `<p class="muted">${esc(L({ it: "Nessuna ricetta con questo filtro.", en: "No recipe with this filter." }))}</p>`}
@@ -190,7 +216,7 @@ function regole() {
   const gruppo = (cond) => punti.filter((p) => cond.includes(p.condizione));
   const puntoHtml = (p) => `<div class="voce" data-s="s2a1b7"><div>${esc(L({ it: p.it, en: p.en }))}</div>
     <div class="minimo">${esc(L({ it: "Livello di prova", en: "Evidence" }))}: ${esc(p.evidenza)} · ${p.fonti.slice(0, 2).map((f) => `<a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">${esc(f.editore || f.titolo)}${f.anno ? " " + f.anno : ""}</a>`).join(", ")}</div></div>`;
-  return `<section class="card"><h3>${esc(L({ it: "Le regole della Dott.ssa Giunta", en: "Dott.ssa Giunta's rules" }))}</h3>
+  return `<section class="card"><h3>${esc(L({ it: "Le regole della nutrizionista", en: "The nutritionist's rules" }))}</h3>
     ${REGOLE.map((r) => `<div class="voce" data-s="s2a1b7">${esc(L(r))}</div>`).join("")}
     <p class="minimo">${esc(L({ it: "Acqua: la dicitura UE \"calcica\" indica calcio oltre 150 mg/l (Direttiva 2009/54/CE). Ferrarelle e Lete sono quelle consigliate.", en: "Water: the EU wording \"calcium-rich\" means calcium above 150 mg/l (Directive 2009/54/EC). Ferrarelle and Lete are the ones recommended." }))}</p></section>
   <section class="card"><h3>${esc(L({ it: "Sì: alimentazione antinfiammatoria", en: "Yes: anti-inflammatory eating" }))}</h3><ul class="piccolo">${SI_ANTINFIAMMATORI.map((x) => `<li>${esc(L(x))}</li>`).join("")}</ul></section>
@@ -208,6 +234,10 @@ registra({
   filtroRic: (d) => { filtro = d.p; cambia(() => {}); },
   soloPref: () => { soloPreferite = !soloPreferite; cambia(() => {}); },
   pesca: () => { pescate = nuovoSeme(); cambia(() => {}); },
+  soloMie: () => { soloMie = !soloMie; cambia(() => {}); },
+  tempoRic: (d) => { tempoMax = tempoMax === Number(d.m) ? 0 : Number(d.m); cambia(() => {}); },
+  mostraEsclusi: () => { mostraEsclusi = !mostraEsclusi; cambia(() => {}); },
+  cercaRicetta: (d, el) => { cercaRic = el.value; cambia(() => {}); const c = document.getElementById("cerca-ric"); if (c) { c.focus(); c.setSelectionRange(c.value.length, c.value.length); } },
   aggiornaWeb: () => aggiornaRicetteWeb(true),
 });
 void apriFoglio; void CENA;

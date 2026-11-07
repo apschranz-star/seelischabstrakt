@@ -60,10 +60,35 @@ the phone and in the daily Netlify function. No AI model decides anything.
 | Analista dei dati | 5 | Says when there is enough data: trend from 3 points, correlation from 14 paired days | no |
 | Revisore senior (chair) | - | Publishes approved or adapted results; anything vetoed is shown with the reason, never hidden | - |
 
+## The food brain (in the app)
+
+When Sofia adds a food, `app/js/engine/cervello.js` asks the same seats, in the
+same order of seniority, and gives one of three verdicts:
+
+| Verdict | Meaning |
+|---|---|
+| si | Fits the plan as it is |
+| medio | Fits with care: a seat asks for a check (label, amount, cocoa percentage) or the food is not in the plan but compatible |
+| no | Vetoed by the gluten guardian, the lupus sentinel or the plan keeper; the reason is shown |
+
+| Seat | Seniority | Checks | Veto |
+|---|---|---|---|
+| Custode del glutine | 1 | Declared allergens and "may contain" traces, foods that usually contain gluten unless labelled gluten free, oats only certified | yes |
+| Sentinella lupus | 2 | The same vetoes and notes as for recipes, with her medicines profile | yes |
+| Custode del piano | 3 | What the nutritionist excludes (fried food, alcohol, refined oils, cold cuts, sweets, sugary drinks) or limits (cooked ham, dark chocolate only 85-90%) | yes |
+| Sentinella reni | 4 | More than 1.5 g salt per 100 g; potassium and phosphorus when a kidney result is out of range | no |
+| Analista dei dati | 5 | Where the values come from (CIQUAL 2020 or an Open Food Facts package), estimates, missing data | no |
+
+The portion it proposes has the same calories as the plan portion it replaces
+(protein foods too, with a warning when they bring much less protein). Without
+calories there is no portion: "Informazione mancante".
+
 ## Release gate
 
 `tools/build.sh` runs the tests before anything is published. The tests cover
 every plan limit over 500 generated weeks, the council's verdicts, every
 recipe's amounts, the statistics against the clinical officer's vectors, the
-lab parser, the absence of em dashes, surname and contact data, and that the
-copied gate and gluten files equal their originals.
+lab parser, the food brain's verdicts and the plan's calories computed from
+composition data, the backup encryption, the scraper's link and date checks,
+the absence of em dashes, surname, contact data and the plan's plain text, and
+that the copied gluten files equal their originals.

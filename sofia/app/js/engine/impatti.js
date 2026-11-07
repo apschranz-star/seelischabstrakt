@@ -17,7 +17,7 @@ import { PASTI, PRANZO, CENA } from "../data/piano.js";
 import { ALIMENTI } from "../data/alimenti.js";
 
 /* Largest amount of a food the plan gives at one meal, in grams. */
-function massimoNelPiano(id) {
+export function massimoNelPiano(id) {
   let max = 0;
   const visita = (voci) => {
     for (const v of voci) {
@@ -47,7 +47,7 @@ export function impattiCibo(id, opz = {}) {
       }
       if (/potassium/.test(c.id)) nota = opz.renaleFuoriRange
         ? { it: "Un esame renale recente è fuori dall'intervallo del laboratorio: chiedi al medico se limitare il potassio.", en: "A recent kidney result is outside the lab range: ask the doctor whether to limit potassium." }
-        : { it: "Con interessamento renale il potassio si limita solo se il medico lo chiede. Quando la nutrizionista ha scritto il piano filtrato e creatinina erano a posto, e il piano non limita il potassio.", en: "With kidney involvement potassium is limited only if the doctor asks. When the nutritionist wrote the plan, filtration and creatinine were fine, and the plan does not limit potassium." };
+        : { it: "Con interessamento renale il potassio si limita solo se il medico lo chiede: il piano non lo limita.", en: "With kidney involvement potassium is limited only if the doctor asks: the plan does not limit it." };
       out.push({ organo: c.organo, claim: c, stato, nota, varianti: c.varianti[id] || [] });
     } else if (c.nonCalcolabile && c.candidati.includes(id)) {
       out.push({ organo: c.organo, claim: c, stato: "etichetta", nota: { it: "Dipende dal prodotto: non si può calcolare dalle tabelle, serve l'etichetta.", en: "Depends on the product: it cannot be computed from food tables, the label is needed." }, varianti: [] });

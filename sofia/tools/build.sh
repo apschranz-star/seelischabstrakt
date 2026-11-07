@@ -10,12 +10,11 @@ node --test test/*.test.mjs
 echo "2/4 evidence data from docs/fonti"
 node tools/genera-evidenze.mjs
 
-echo "3/4 access gate (same template as anker, gate/gate.snippet.html)"
-if [ -f app/zugang.js ] && ! grep -q "__ACCESS_KEY__" app/zugang.js; then
+echo "3/4 access gate (tools/gate-sofia.mjs: only a hash of the code goes into the page)"
+if [ -f app/zugang.js ] && grep -q 'var HASH = "[0-9a-f]\{64\}"' app/zugang.js; then
   echo "gate: already armed"
 else
-  python3 tools/gate/split.py app "Sofia" "Alexander Schranz, Wien"
-  sh tools/gate/inject.sh app/zugang.js "${SOFIA_ACCESS_KEY:-${SITE_ACCESS_KEY:-}}"
+  node tools/gate-sofia.mjs
 fi
 
 echo "4/4 version stamp for the service worker"

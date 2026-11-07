@@ -1,7 +1,7 @@
 # Sofia
 
-A personal app built from Sofia's nutrition plan (Dott.ssa Isabella Giunta,
-biologist nutritionist: hypocaloric about 1400 kcal, about 1 g protein per kg,
+A personal app built from Sofia's nutrition plan (written by her biologist
+nutritionist: hypocaloric about 1400 kcal, about 1 g protein per kg,
 gluten free, anti-inflammatory) for life with coeliac disease and lupus with
 kidney involvement. Italian first, English switch.
 
@@ -12,20 +12,30 @@ an access code. Installable on the phone (Add to Home Screen), works offline.
 
 | Screen | What Sofia gets |
 |---|---|
-| Oggi | Today's meals with amounts and a recipe, tick what she ate, water (2-3 L), coffee (max 3), walking (5 x 30 min), a daily check-in (energy, mood, sleep, joints, gut, skin, brain fog, gluten exposure) |
+| Oggi | Today's meals with amounts, calories and a recipe; tick what she ate or log any food in grams; calories eaten and left for the day (1400 kcal) with the last 7 days; water (2-3 L), coffee (max 3), walking (5 x 30 min), a daily check-in (energy, mood, sleep, joints, gut, skin, brain fog, gluten exposure) |
 | Settimana | A full week that respects every limit in the plan, shuffle the week or one meal, swap days, swap lunch and dinner, shopping list with gluten-free label notes |
-| Cibo | Swaps with the plan's equivalent amounts and real per-portion numbers (same or better), 44 curated recipes with shuffle, daily web recipes checked by the council, the plan's rules and the guideline points |
+| Cibo | Componi: build a meal from the plan's choices (carbohydrate, protein, bread, vegetables, fruit) with live calories, then log it. I miei cibi: add any food, the food brain says si / medio / no and how much replaces a plan portion; "Non mangio" removes single foods or whole groups (cheese) from the week. Ricette: 44 curated recipes plus her own, with filters (search, meal, favourites, mine, time) and shuffle. Il piano: the nutritionist's text in Italian and English. Swaps with real per-portion numbers, daily web recipes checked by the council |
 | Salute | Weight and BMI with trend and 95% interval, 38 lab markers (manual or read from a PDF report), eGFR CKD-EPI 2021, correlations from 14 days, encrypted backup |
-| Corpo 5D | Animated 3D body and brain coloured by her own data, a time slider through her results, and a food layer that shows which systems a food reaches through EU-authorised health claims |
+| Corpo 5D | 3D body and brain coloured by her own data, calm motion; tap any part to see what it is; a time slider through her results; pick a food (salmon, for example) and a short journey shows in plain words what happens to it in the body, step by step; what it does for an organ is shown only where an EU-authorised health claim says so |
 | Il consiglio | The rule agents, their seniority and vetoes, this week's verdict, the evidence base, open questions for the nutritionist and the doctors |
 
-Medical data never leaves the phone. See [docs/PRIVACY.md](docs/PRIVACY.md).
+Medical data never leaves the phone. The only lookup that leaves it is the
+name of a food Sofia searches online. See [docs/PRIVACY.md](docs/PRIVACY.md).
+
+## The food brain
+
+`app/js/engine/cervello.js` judges a food with the same council seats as the
+recipes (gluten, lupus, plan, kidneys, data; see [docs/COUNCIL.md](docs/COUNCIL.md)).
+Values come from the bundled ANSES CIQUAL 2020 table (3,147 foods, works
+offline) or, for packaged products, from Open Food Facts through the app's
+own function `/api/alimento`. No API key is needed. Missing values are shown
+as "Informazione mancante", never guessed.
 
 ## Runs by itself
 
 - The current week is created on every start, the next one from Saturday.
 - Every change is saved at once; an unfinished PDF import resumes where it stopped.
-- The daily recipe run (`netlify/functions/ricette-del-giorno.mjs`, 04:17 UTC) reads each post once, saves its progress, and is caught up by `/api/ricette` if a run was missed (lock with timeout, so two visitors never start two runs).
+- The daily recipe run (`netlify/functions/ricette-del-giorno.mjs`, 04:17 UTC) reads each post once, saves its progress, and is caught up by `/api/ricette` if a run was missed (lock with timeout, so two visitors never start two runs). Afterwards it deletes food lookups older than 7 days.
 - The service worker updates the app when a new version is published.
 - The build runs all tests first: a failing test stops the deploy and the version online stays online.
 
@@ -38,9 +48,9 @@ app/                 the published app (static, no build step needed)
   js/views/          screens
   js/three/          the 3D body
   vendor/            three.js (MIT), pdf.js (Apache 2.0)
-netlify/functions/   daily recipe run and /api/ricette
-lib/                 recipe pipeline, gluten check copied from anker (identical, tested)
-tools/               build, evidence generator, gate (copied from /gate, identical, tested)
+netlify/functions/   daily recipe run, /api/ricette, /api/alimento (food lookup)
+lib/                 recipe pipeline, Open Food Facts client, gluten check copied from anker (identical, tested)
+tools/               build, evidence generator, CIQUAL extractor, hashed gate, plan text encryption
 docs/                council, sources, privacy, resume file, research files
 test/                node --test
 ```
@@ -58,7 +68,10 @@ cd app && python3 -m http.server 8765   # open http://localhost:8765
 ## Deploy
 
 The Netlify project builds from this folder (`sofia/netlify.toml`, base
-directory `sofia`). Set `SOFIA_ACCESS_KEY` in the project's environment
-variables for the access code (falls back to `SITE_ACCESS_KEY`). Without a code
-the gate stays open. The shop site at the repository root returns 404 for
-`/sofia/*`.
+directory `sofia`). The access code comes from `SOFIA_ACCESS_KEY` (falls back
+to `SITE_ACCESS_KEY`); only a hash of it reaches the page. Without a code the
+gate stays open. The plan text (`app/data/piano-testo.cifrato.json`) is
+encrypted with the same code: a new code means encrypting it again with
+`tools/cifra-piano.mjs`. The steps used for uploads from the workspace are in
+[docs/STATO.md](docs/STATO.md). The shop site at the repository root returns
+404 for `/sofia/*`.

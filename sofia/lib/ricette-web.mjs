@@ -122,13 +122,22 @@ export function pulito(s) {
     .trim();
 }
 
-export function leggiFeed(xml) {
+/* Same site: hosts compared without a leading "www.". A post link or a recipe URL that points elsewhere is not followed. */
+function sito(u) {
+  try { return new URL(u).host.toLowerCase().replace(/^www\./, ""); } catch (e) { return null; }
+}
+export function stessoSito(a, b) {
+  const x = sito(a);
+  return x !== null && x === sito(b);
+}
+
+export function leggiFeed(xml, feed) {
   return [...String(xml).matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => {
     const it = m[1];
     const campo = (n) => { const x = it.match(new RegExp(`<${n}>([\\s\\S]*?)</${n}>`)); return x ? pulito(x[1].replace(/<!\[CDATA\[|\]\]>/g, "")) : ""; };
     const categorie = [...it.matchAll(/<category>([\s\S]*?)<\/category>/g)].map((k) => pulito(k[1].replace(/<!\[CDATA\[|\]\]>/g, "")));
     return { titolo: campo("title"), link: campo("link"), data: campo("pubDate"), categorie };
-  }).filter((i) => /^https:\/\//.test(i.link));
+  }).filter((i) => /^https:\/\//.test(i.link) && (!feed || stessoSito(i.link, feed)));
 }
 
 export function trovaRicetta(html) {
@@ -201,7 +210,7 @@ export function giudica(r, { fonte, link, categorie = [] }) {
   const titolo = pulito(r.name).split(/\s+\|\s+/)[0].slice(0, 140);
   const categoria = pulito([].concat(r.recipeCategory || [])[0] || "").slice(0, 40);
   const verdetto = valutaRicettaWeb({ ingredienti, titolo, categoria, gluten });
-  const url = /^https:\/\//.test(r.url || "") ? r.url : link;
+  const url = typeof r.url === "string" && /^https:\/\//.test(r.url) && stessoSito(r.url, link) ? r.url : link;
   const autore = pulito([].concat(r.author || []).map((a) => (typeof a === "string" ? a : a && a.name)).filter(Boolean)[0] || "");
   return {
     id: "web-" + new URL(url).host.replace(/^www\./, "").replace(/\W+/g, "-") + "-" + new URL(url).pathname.replace(/\W+/g, "-").replace(/^-|-$/g, "").slice(0, 60),
@@ -235,7 +244,7 @@ export async function raccogli({ client, visti = new Set(), perFonte = 4, fonti 
     const r = { fonte: q.name, letti: 0, approvate: 0, adattate: 0, respinte: 0, errore: null, motivi: {} };
     try {
       if (!(await client.permesso(q.feed))) { r.errore = "robots.txt"; rapporto.push(r); return; }
-      const voci = leggiFeed(await client.prendi(q.feed, "xml"));
+      const voci = leggiFeed(await client.prendi(q.feed, "xml"), q.feed);
       for (const v of voci) {
         if (letti >= perFonte) break;
         if (visti.has(v.link)) continue;
@@ -253,7 +262,9 @@ export async function raccogli({ client, visti = new Set(), perFonte = 4, fonti 
         const marcata = q.alles || /GlutenFreeDiet/i.test(dieta) || v.categorie.some((k) => KATEGORIE_GF.test(k));
         if (!marcata) { r.respinte++; r.motivi.non_marcata = (r.motivi.non_marcata || 0) + 1; continue; }
         const g = giudica(ric, { fonte: q.name, link: v.link, categorie: v.categorie });
-        g.data = ric.datePublished || v.data ? new Date(ric.datePublished || v.data).toISOString().slice(0, 10) : null;
+        /* An unparsable date is stored as null instead of throwing and losing the recipe. */
+        const quando = [ric.datePublished, v.data].map((x) => new Date(x || NaN)).find((d) => !isNaN(d.getTime()));
+        g.data = quando ? quando.toISOString().slice(0, 10) : null;
         if (g.esito === "approvata") r.approvate++;
         else if (g.esito === "adattata") r.adattate++;
         else { r.respinte++; r.motivi[g.da || "altro"] = (r.motivi[g.da || "altro"] || 0) + 1; }

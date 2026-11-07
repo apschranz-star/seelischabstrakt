@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { generaSettimana, validaSettimana, rimescolaPasto, conteggi, aggiungiGiorni, alimentiPasto } from "../app/js/engine/planner.js";
+import { generaSettimana, validaSettimana, rimescolaPasto, conteggi, aggiungiGiorni, alimentiPasto, vociPasto } from "../app/js/engine/planner.js";
 import { LIMITI, FREQUENZE_IDEALI } from "../app/js/data/piano.js";
 
 const INIZIO = "2026-11-09";
@@ -72,4 +72,16 @@ test("every plan limit is checked by the validator", () => {
   const w = generaSettimana({ seme: 3, inizio: INIZIO });
   const ids = validaSettimana(w).checks.map((c) => c.id);
   for (const L of LIMITI) assert.ok(ids.includes("limite_" + L.id), L.id);
+});
+
+test("foods she does not eat: a whole group can go (cheese), legumes cannot", async () => {
+  const { ALIMENTI } = await import("../app/js/data/alimenti.js");
+  const formaggi = Object.entries(ALIMENTI).filter(([, a]) => a.gruppo === "formaggi").map(([id]) => id);
+  for (let s = 1; s <= 25; s++) {
+    const w = generaSettimana({ seme: s * 31, inizio: "2026-11-09", pref: { escludi: formaggi } });
+    assert.ok(!w.errore, "no week without cheese, seed " + s);
+    assert.ok(validaSettimana(w).ok, "hard limits broken, seed " + s);
+    for (const g of w.giorni) for (const p of ["colazione", "spuntino", "pranzo", "cena", "dopocena"]) if (g[p]) assert.ok(!vociPasto(g, p).some((v) => formaggi.includes(v.a)), "cheese in " + g.data + " " + p);
+  }
+  assert.ok(generaSettimana({ seme: 5, inizio: "2026-11-09", pref: { escludi: ["legumi_secchi", "legumi_scolati"] } }).errore);
 });

@@ -89,7 +89,7 @@ function peso(s) {
     ${stat}
     <details class="tabella"><summary>${esc(L({ it: "Tabella", en: "Table" }))}</summary><table class="dati"><thead><tr><th>${esc(L({ it: "Data", en: "Date" }))}</th><th class="num">kg</th><th class="num">BMI</th><th></th></tr></thead><tbody>
       ${[...pesi].reverse().map((p) => `<tr><td>${esc(dataConAnno(p.data))}</td><td class="num">${num(p.kg, 1)}</td><td class="num">${s.profilo.altezza_cm ? num(bmi(p.kg, s.profilo.altezza_cm), 1) : "-"}</td><td class="num"><button class="btn-testo" data-az="eliminaPeso" data-id="${esc(p.id)}" aria-label="${esc(t("elimina"))}">${I.chiudi}</button></td></tr>`).join("")}
-    </tbody></table></details></section>` : `<div class="card vuoto"><div class="grande">${esc(L({ it: "Nessuna pesata ancora", en: "No weigh-ins yet" }))}</div><p>${esc(L({ it: "Pesati sempre allo stesso modo: al mattino, dopo il bagno, prima di colazione.", en: "Weigh yourself the same way each time: in the morning, after the toilet, before breakfast." }))}</p></div>`}`;
+    </tbody></table></details></section>` : `<div class="card vuoto"><div class="grande">${esc(L({ it: "Nessuna pesata ancora", en: "No weigh-ins yet" }))}</div><p>${esc(L({ it: "Pesati sempre allo stesso modo: al mattino, dopo essere andata in bagno, prima di colazione.", en: "Weigh yourself the same way each time: in the morning, after the toilet, before breakfast." }))}</p></div>`}`;
 }
 
 /* ------------------------------------------------------- lab results */

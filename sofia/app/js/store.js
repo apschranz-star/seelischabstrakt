@@ -7,6 +7,8 @@
  * (PBKDF2-SHA256 with 600,000 iterations, then AES-GCM 256). Without the
  * passphrase the file is unreadable, including for whoever stores it.
  */
+import { cifraConPassphrase, decifraConPassphrase } from "./cripto.js";
+
 const CHIAVE = "sofia-v1";
 const VERSIONE = 1;
 
@@ -25,6 +27,12 @@ export function vuoto() {
     bozze: {},
     webCache: null,
     ultimoBackup: null,
+    /* foods she added through the food brain, with the verdict they got */
+    alimentiExtra: {},
+    /* her own recipes */
+    ricetteMie: [],
+    /* her weights for pieces, pots and teaspoons (defaults in engine/nutrizione.js) */
+    pesiUnita: {},
     creato: new Date().toISOString(),
   };
 }
@@ -38,6 +46,9 @@ function migra(s) {
   for (const k of ["settimane", "pesi", "esami", "pressione", "preferite"]) if (!Array.isArray(out[k])) out[k] = [];
   if (!out.diario || typeof out.diario !== "object") out.diario = {};
   if (!out.bozze || typeof out.bozze !== "object") out.bozze = {};
+  if (!out.alimentiExtra || typeof out.alimentiExtra !== "object" || Array.isArray(out.alimentiExtra)) out.alimentiExtra = {};
+  if (!Array.isArray(out.ricetteMie)) out.ricetteMie = [];
+  if (!out.pesiUnita || typeof out.pesiUnita !== "object") out.pesiUnita = {};
   out.v = VERSIONE;
   return out;
 }
@@ -95,32 +106,18 @@ export async function chiediMemoriaPersistente() {
 }
 
 /* ------------------------------------------------------- encryption */
-const ITER = 600000;
-const b64 = (u8) => btoa(String.fromCharCode(...u8));
-const deb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-
-async function chiave(passphrase, sale, uso) {
-  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(passphrase), "PBKDF2", false, ["deriveKey"]);
-  return crypto.subtle.deriveKey({ name: "PBKDF2", salt: sale, iterations: ITER, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, [uso]);
-}
-
-export async function cifra(dati, passphrase) {
-  const sale = crypto.getRandomValues(new Uint8Array(16));
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const k = await chiave(passphrase, sale, "encrypt");
-  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, k, new TextEncoder().encode(JSON.stringify(dati))));
-  return { app: "sofia", formato: 1, kdf: "PBKDF2-SHA256", iterazioni: ITER, cifrario: "AES-GCM-256", sale: b64(sale), iv: b64(iv), dati: b64(ct), creato: new Date().toISOString() };
-}
-
-export async function decifra(file, passphrase) {
-  if (!file || file.app !== "sofia" || !file.dati) throw new Error("formato");
-  const k = await chiave(passphrase, deb64(file.sale), "decrypt");
-  const chiaro = await crypto.subtle.decrypt({ name: "AES-GCM", iv: deb64(file.iv) }, k, deb64(file.dati));
-  return JSON.parse(new TextDecoder().decode(chiaro));
+/* The backup leaves out what the app rebuilds by itself: the public recipe
+   cache and unfinished imports. */
+export const cifra = (dati, passphrase) => cifraConPassphrase(dati, passphrase, "sofia");
+export const decifra = (file, passphrase) => decifraConPassphrase(file, passphrase, "sofia");
+export function datiDaSalvare(s) {
+  const { webCache, bozze, ...resto } = s;
+  void webCache; void bozze;
+  return resto;
 }
 
 export async function esportaBackup(passphrase) {
-  const pacchetto = await cifra(stato, passphrase);
+  const pacchetto = await cifra(datiDaSalvare(stato), passphrase);
   const testo = JSON.stringify(pacchetto);
   const nome = `sofia-backup-${new Date().toISOString().slice(0, 10)}.json`;
   const file = new File([testo], nome, { type: "application/json" });

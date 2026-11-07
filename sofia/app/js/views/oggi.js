@@ -9,6 +9,8 @@ import { RICETTE } from "../data/ricette.js";
 import { rng, hash } from "../engine/rng.js";
 import { isoData, aggiungiGiorni, lunediDi, vicine } from "../engine/planner.js";
 import { renaleFuoriRange } from "../engine/salute.js";
+import { cartaCalorie } from "./diario.js";
+import { vociPasto } from "../engine/planner.js";
 
 export const titolo = (s) => `${t("ciao")} ${s.profilo.nome || ""}`.trim();
 export const sottotitolo = () => esc(maiuscola(dataLunga(isoData(new Date()))));
@@ -18,7 +20,7 @@ const CHECKIN = [
   ["dolori", 0, 10], ["intestino", 0, 10], ["pelle", 0, 10], ["nebbia", 0, 10],
 ];
 const ETICHETTE_SCALA = {
-  1: { it: "1 = molto bassa, 5 = ottima", en: "1 = very low, 5 = great" },
+  1: { it: "1 = pessimo, 5 = ottimo", en: "1 = very poor, 5 = great" },
   0: { it: "0 = niente, 10 = fortissimi", en: "0 = none, 10 = severe" },
 };
 
@@ -49,7 +51,14 @@ export function render(s) {
   <section class="card">
     <div class="riga tra"><h3>${esc(t("pianoDiOggi"))}</h3><span class="minimo">${fatti}/${ordine.filter((p) => g[p]).length}</span></div>
     ${ordine.map((p) => rigaPasto(g, p)).join("")}
+    <div class="riga wrap" data-s="sd6f2a"><button class="btn piccolo" data-az="apriComponi" data-data="${oggi}" data-pasto="pranzo">${I.piu}${esc(L({ it: "Componi un pasto", en: "Compose a meal" }))}</button></div>
   </section>
+  ${(() => {
+    const ex = new Set(s.pref.escludi || []);
+    const conEsclusi = w.giorni.filter((x) => x.data >= oggi).some((x) => ordine.some((p) => x[p] && vociPasto(x, p).some((v) => ex.has(v.a))));
+    return conEsclusi ? `<div class="avviso terra">${I.avviso}<div>${esc(L({ it: "Questa settimana ha pasti con cibi che non mangi.", en: "This week has meals with foods you skip." }))} <button class="btn-testo" data-az="rimescolaSettimana" data-inizio="${w.inizio}">${esc(L({ it: "Rifai la settimana", en: "Redo the week" }))}</button></div></div>` : "";
+  })()}
+  ${cartaCalorie(s, oggi)}
 
   <a class="card consiglio riga tra" href="#/consiglio" data-s="sa6409">
     <div class="riga">${I.consiglio}<div><div class="piccolo muted">${esc(L({ it: "Il consiglio sulla settimana", en: "The council on this week" }))}</div>${esitoHtml(dec.esito)}</div></div>${I.freccia}

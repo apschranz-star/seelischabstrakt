@@ -1,8 +1,8 @@
 /*
  * Food catalogue for Sofia's plan.
  *
- * Every food that appears in the plan of Dott.ssa Isabella Giunta (schema
- * dietetico generale, about 1400 kcal) has one entry here. The plan itself
+ * Every food that appears in the nutritionist's plan (schema dietetico
+ * generale, about 1400 kcal) has one entry here. The plan itself
  * (meals, grams, weekly limits) lives in piano.js and only refers to these ids.
  *
  * glutine

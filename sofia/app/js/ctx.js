@@ -1,5 +1,5 @@
 /* Shared app context: actions, redraw, bottom sheet, toast, navigation. */
-import { attivaGrafici, applicaStili } from "./ui.js";
+import { attivaGrafici, applicaStili, attivaColonne } from "./ui.js";
 
 export const azioni = {};
 export function registra(obj) { Object.assign(azioni, obj); }
@@ -25,6 +25,7 @@ function aggiornaFoglio() {
   f.innerHTML = `<div class="maniglia" aria-hidden="true"></div>${foglio.render()}`;
   f.scrollTop = scroll;
   attivaGrafici(f);
+  attivaColonne(f);
   applicaStili(f);
 }
 export function chiudiFoglio() {

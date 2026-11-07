@@ -1,7 +1,8 @@
 /*
  * Sofia's plan, transcribed from "Schema dietetico generale per dieta
  * ipocalorica di circa 1400 kcal con circa 1 g proteine/kg peso corporeo"
- * by Dott.ssa Isabella Giunta, Biologa Nutrizionista (4 pages).
+ * by her nutritionist (Biologa Nutrizionista, 4 pages). The author's name and
+ * the full letter are only in the encrypted plan text (app/data/), not here.
  *
  * Only the plan's own numbers are here. Nothing is added, rounded or
  * "improved". Where the plan gives no number the field says so with
@@ -21,7 +22,7 @@
 export const MANCANTE = "MANCANTE";
 
 export const FONTE = {
-  autrice: "Dott.ssa Isabella Giunta",
+  autrice: null, /* in the encrypted plan text only */
   ruolo: { it: "Biologa Nutrizionista", en: "Biologist Nutritionist" },
   titolo: {
     it: "Schema dietetico generale per dieta ipocalorica di circa 1400 kcal con circa 1 g proteine/kg peso corporeo",
@@ -114,7 +115,7 @@ export const PRANZO = {
     { id: "pp12", voci: [{ a: "ragu", q: 90, u: "g" }], max: 1, cat: "carne" },
   ],
   contorno: [{ a: "verdure", q: 300, u: "g" }, { a: "olio_evo", q: 10, u: "g" }],
-  extra: [{ a: "passata", q: null, u: "q.b.", testo: { it: "passata sulla pasta, se vuoi (quantità non indicata)", en: "passata on pasta if you like (amount not given)" } }],
+  extra: [{ a: "passata", q: null, u: null, testo: { it: "passata sulla pasta, se vuoi", en: "passata on pasta if you like" } }],
   /* "Altre alternative già combinate per pranzo per comodità (max 1 a sett)":
      the limit is written once for the whole group. */
   combinati: {
@@ -160,7 +161,7 @@ export const CENA = {
     { it: "Per infarinare: 10 g di pane = 7 g di farina.", en: "For flouring: 10 g bread = 7 g flour." },
   ],
   idee: [
-    { id: "ci1", cat: "formaggio", max: 1, voci: [{ a: "piadina_gf", q: 1, u: "pz", testo: { it: "1 piadina integrale senza glutine da 100 g come base pizza", en: "1 gluten-free wholegrain piadina of 100 g as pizza base" } }, { a: "passata", q: null, u: "q.b." }, { a: "mozzarella_protein", q: 100, u: "g" }, { a: "verdure", q: 100, u: "g" }] },
+    { id: "ci1", cat: "formaggio", max: 1, voci: [{ a: "piadina_gf", q: 1, u: "pz", testo: { it: "1 piadina integrale senza glutine da 100 g come base pizza", en: "1 gluten-free wholegrain piadina of 100 g as pizza base" } }, { a: "passata", q: null, u: null }, { a: "mozzarella_protein", q: 100, u: "g" }, { a: "verdure", q: 100, u: "g" }] },
     { id: "ci2", cat: "uova", ogniDueSettimane: 1, voci: [{ a: "pane_gf", q: 60, u: "g" }, { a: "uovo", q: 2, u: "pz", testo: { it: "rotolo di frittata con 2 uova", en: "omelette roll with 2 eggs" } }, { a: "philadelphia_light", q: 30, u: "g" }, { a: "prosciutto_cotto", q: 20, u: "g" }, { a: "verdure", q: 300, u: "g" }, { a: "olio_evo", q: 10, u: "g" }] },
     { id: "ci3", cat: "legumi", gruppoLegumi: true, voci: [{ a: "legumi_secchi", q: 30, u: "g", o: [{ a: "legumi_scolati", q: 100, u: "g" }] }, { a: "cereali_sg", q: 50, u: "g" }, { a: "parmigiano", q: 1, u: "cucchiaino" }, { a: "verdure", q: [200, 300], u: "g" }, { a: "olio_evo", q: 10, u: "g" }], testo: { it: "Minestra di cereali e legumi", en: "Grain and legume soup" } },
   ],
@@ -176,6 +177,7 @@ export const DOPOCENA = {
   facoltativo: true,
   kcal: [100, 100], circa: true,
   macro: { proteine: [1, 6], carboidrati: [1, 19], grassi: [1, 9] },
+  note: [{ it: "Il piano scrive \"1 vasetto\" di yogurt senza grammi: Informazione mancante.", en: "The plan says \"1 pot\" of yogurt without grams: information missing." }],
   opzioni: [
     { id: "d1", voci: [{ a: "frutta", q: 150, u: "g" }] },
     { id: "d2", voci: [{ a: "cioccolato", q: 15, u: "g" }] },
@@ -223,8 +225,8 @@ export const REGOLE = [
 
 /* What the plan says about kidneys (page 4), kept word for word in meaning. */
 export const RENI = {
-  it: "Il lupus ha interessato i reni. Per ora filtrato e creatinina sono a posto e i medici non hanno chiesto di ridurre le proteine, quindi il piano resta normale. Se ripetendo gli esami qualcosa cambia e i medici dicono di mangiarne meno, il piano si adegua.",
-  en: "Lupus has involved the kidneys. For now filtration and creatinine are fine and the doctors have not asked to reduce protein, so the plan stays as it is. If repeat tests change and the doctors say to eat less protein, the plan will be adjusted.",
+  it: "Proteine come nel piano finché i medici non chiedono di ridurle. Se ripetendo gli esami qualcosa cambia e i medici dicono di mangiarne meno, la nutrizionista adegua il piano.",
+  en: "Protein as in the plan unless the doctors ask to reduce it. If repeat tests change and the doctors say to eat less, the nutritionist will adjust the plan.",
 };
 
 /* Points from the personal notes (page 3) the app uses for "same or better" choices. */

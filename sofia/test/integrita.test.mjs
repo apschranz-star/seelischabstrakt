@@ -8,7 +8,9 @@ import { DESCRITTORI } from "../lib/ricette-web.mjs";
 const qui = dirname(fileURLToPath(import.meta.url));
 const radice = join(qui, "..");
 const testi = [];
-const visita = (d) => { for (const n of readdirSync(d)) { const p = join(d, n); if (n === "node_modules" || n === "vendor" || n === "fonti" || n.endsWith(".png") || n.endsWith(".woff2")) continue; if (statSync(p).isDirectory()) visita(p); else if (/\.(js|mjs|cjs|css|html|md|json|toml|sh|webmanifest)$/.test(n)) testi.push(p); } };
+/* Every text file, whatever its extension: a file is text when its first 8 KB have no NUL byte. */
+const binario = (p) => readFileSync(p).subarray(0, 8192).includes(0);
+const visita = (d) => { for (const n of readdirSync(d)) { const p = join(d, n); if (n === "node_modules" || n === "vendor" || n === "fonti" || n === ".netlify" || n === ".git") continue; if (statSync(p).isDirectory()) visita(p); else if (!binario(p)) testi.push(p); } };
 visita(radice);
 /* the privacy scan also covers the research files in docs/fonti */
 const fonti = join(radice, "docs/fonti");
@@ -50,7 +52,7 @@ test("the descriptor list never contains a food or gluten word", () => {
 });
 
 test("vendored copies are identical to the repository originals", () => {
-  const coppie = [["lib/glutenpruefung.cjs", "../anker/werkzeug/glutenpruefung.js"], ["tools/gate/gate.snippet.html", "../gate/gate.snippet.html"], ["tools/gate/split.py", "../gate/split.py"], ["tools/gate/inject.sh", "../gate/inject.sh"]];
+  const coppie = [["lib/glutenpruefung.cjs", "../anker/werkzeug/glutenpruefung.js"]];
   for (const [copia, orig] of coppie) {
     const o = join(radice, orig);
     if (!existsSync(o)) continue; /* deployed from sofia/ alone: originals not present */
@@ -63,4 +65,24 @@ test("the page forbids inline styles and scripts, and the app never writes style
   assert.match(html, /style-src 'self'/);
   assert.match(html, /script-src 'self'/);
   for (const f of testi.filter((x) => x.includes("/app/js/") && !x.includes("/three/"))) assert.ok(!/style="/.test(readFileSync(f, "utf8")), f);
+});
+
+test("the service worker precaches every app module, so the app works offline", () => {
+  const sw = readFileSync(join(radice, "app/sw.js"), "utf8");
+  const moduli = [];
+  const giu = (d, rel) => { for (const n of readdirSync(d)) { const p = join(d, n); if (statSync(p).isDirectory()) giu(p, rel + n + "/"); else if (n.endsWith(".js")) moduli.push(rel + n); } };
+  giu(join(radice, "app/js"), "js/");
+  for (const m of moduli) assert.ok(sw.includes('"' + m + '"'), "sw.js does not precache " + m);
+  assert.ok(sw.includes('"data/piano-testo.cifrato.json"'));
+});
+
+test("the plan text and the access code never appear in clear in the repository", () => {
+  for (const f of tuttiTesti) {
+    if (f.endsWith("piano-testo.cifrato.json")) continue;
+    const t = readFileSync(f, "utf8");
+    assert.ok(!new RegExp(["video" + "chiamata", "tua " + "mamma", "farmacia " + "di"].join("|"), "i").test(t), "plan letter text in " + f);
+  }
+  const cifrato = JSON.parse(readFileSync(join(radice, "app/data/piano-testo.cifrato.json"), "utf8"));
+  assert.equal(cifrato.app, "sofia-piano");
+  assert.equal(cifrato.iterazioni, 600000);
 });

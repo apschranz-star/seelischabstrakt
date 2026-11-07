@@ -93,7 +93,8 @@ export const maiuscola = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
 export function quantita(v) {
   const en = lingua() === "en";
-  if (v.q == null || v.u === "q.b.") return en ? "to taste" : "q.b.";
+  if (v.u === "q.b.") return en ? "to taste" : "q.b.";
+  if (v.q == null) return en ? "amount not given" : "quantità non indicata";
   const q = Array.isArray(v.q) ? `${v.q[0]}-${v.q[1]}` : num(v.q, v.q % 1 ? 1 : 0);
   if (v.u === "g" || v.u === "ml") return `${q} ${v.u}`;
   if (v.u === "pz") return en ? `${q} pcs` : `${q} pz`;
@@ -211,6 +212,32 @@ export function attivaGrafici(root) {
       if (e.key === "ArrowLeft") { mostra(idx - 1); e.preventDefault(); }
       if (e.key === "ArrowRight") { mostra(idx + 1); e.preventDefault(); }
     });
+  }
+}
+
+/* Bars (the 7-day calories): tooltip on hover, tap and keyboard focus. */
+export function attivaColonne(root) {
+  for (const c of root.querySelectorAll(".colonne")) {
+    if (c._attivo) continue;
+    c._attivo = true;
+    const tip = document.createElement("div");
+    tip.className = "tip";
+    tip.setAttribute("role", "status");
+    c.appendChild(tip);
+    const mostra = (el) => {
+      const r = c.getBoundingClientRect(), b = el.getBoundingClientRect();
+      tip.textContent = el.dataset.tip || "";
+      tip.style.left = (b.left - r.left + b.width / 2) + "px";
+      tip.classList.add("on");
+    };
+    const nascondi = () => tip.classList.remove("on");
+    for (const el of c.querySelectorAll(".colonna")) {
+      el.addEventListener("pointerenter", () => mostra(el));
+      el.addEventListener("pointerdown", () => mostra(el));
+      el.addEventListener("focus", () => mostra(el));
+      el.addEventListener("blur", nascondi);
+    }
+    c.addEventListener("pointerleave", nascondi);
   }
 }
 

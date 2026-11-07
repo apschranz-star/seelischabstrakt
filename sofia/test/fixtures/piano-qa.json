@@ -1160,7 +1160,7 @@
  },
  "integrazione": {
   "testo": "Integrazione consigliata da me e da far approvare dal medico: omega 3",
-  "pag4": "ti consiglierei di cominciare a prendere gli omega 3 che contribuiscono a ridurre l'infiammazione generale. Semmai consultati anche con tua mamma ed eventualmente se decidete di aggiungerli fammi sapere"
+  "pag4": "omissis (dettaglio personale, nel testo cifrato del piano)"
  },
  "regole_generali_pag4": [
   {
@@ -1221,7 +1221,7 @@
   {
    "n": 9,
    "tema": "omega 3",
-   "testo": "Visto che di base c'e un'infiammazione cronica, ti consiglierei gli omega 3 che contribuiscono a ridurre l'infiammazione generale; consultati anche con tua mamma; da far approvare dal medico (pag. 2)."
+   "testo": "Visto che di base c'e un'infiammazione cronica, ti consiglierei gli omega 3 che contribuiscono a ridurre l'infiammazione generale; da far approvare dal medico (pag. 2)."
   },
   {
    "n": 10,
@@ -1259,7 +1259,7 @@
   "glutine: a vita (la dieta senza glutine e l'unica cura per la celiachia)",
   "zucchero nel caffe"
  ],
- "rene_lupus_pag4": "Filtrato e creatinina per ora a posto; i medici non hanno detto di ridurre le proteine, quindi per ora apporto proteico normale. Se ripetendo gli esami cambiasse qualcosa e i dottori dicessero di mangiarne meno, ci si regola di conseguenza.",
+ "rene_lupus_pag4": "omissis (stato renale personale, nel testo cifrato del piano)",
  "punti_ambigui": [
   "A1. Pranzo legumi: voce 11 della lista carboidrati; la regola dice carboidrato + proteina. Lettura letterale: legumi (come carboidrato) + una proteina della lista. Lettura alternativa (indizio 'Sarebbe perfetto'): legumi come fonte proteica senza altra proteina. Nessuna delle due rientra perfettamente nei range dichiarati (stima QA: legumi+proteina supera 30 g proteine; legumi da soli sotto 490 kcal).",
   "A2. 'max 1 a sett' delle alternative gia combinate a pranzo: nell'intestazione del gruppo; lettura letterale = gruppo intero max 1 a settimana.",

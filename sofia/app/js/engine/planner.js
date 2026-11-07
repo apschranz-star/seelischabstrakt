@@ -167,6 +167,17 @@ export function vettoriCena() {
 }
 
 /* ------------------------------------------------------------ helpers */
+/* Move the days of categories with no options left to those that have some. */
+function riequilibra(R, vettore, categorie, disponibili) {
+  const v = { ...vettore };
+  let liberi = 0;
+  for (const c of categorie) if (!disponibili.includes(c) && v[c]) { liberi += v[c]; v[c] = 0; }
+  if (!liberi) return v;
+  const alt = categorie.filter((c) => disponibili.includes(c));
+  if (!alt.length) return null;
+  for (let i = 0; i < liberi; i++) { const c = R.pick(alt); v[c] = (v[c] || 0) + 1; }
+  return v;
+}
 function escluso(id, pref) {
   const ex = new Set(pref.escludi || []);
   if (!ex.size) return false;
@@ -211,7 +222,12 @@ function tentativo(R, inizio, storia, pref, seguenti = []) {
   const catComb = comb ? OPZ[comb].cat : undefined;
   const vett = vettoriPranzo(comb ? catComb : undefined);
   if (!vett.length) return null;
-  const v = R.pick(vett);
+  /* Foods she does not eat can empty a whole category (no cheese at all): its
+     days go to the categories that still have options. The ideal frequencies
+     are then missed on purpose and the council says so; hard limits still hold. */
+  const dispPranzo = CAT_PRANZO.filter((c) => PRANZO_PER_CAT[c].some((id) => !escluso(id, pref)));
+  const v = riequilibra(R, R.pick(vett), CAT_PRANZO, dispPranzo);
+  if (!v) return null;
   let cats = [];
   for (const c of CAT_PRANZO) for (let i = 0; i < v[c]; i++) cats.push(c);
   cats = R.shuffle(cats);
@@ -256,7 +272,9 @@ function tentativo(R, inizio, storia, pref, seguenti = []) {
 
   /* DINNER */
   const vc = vettoriCena();
-  const w = R.pick(vc);
+  const dispCena = CAT_CENA.filter((c) => (c === "legumi" ? ["cp14", "ci3"] : c === "uova" ? ["cp3", "ci2"] : c === "formaggio" ? ["cp12", "cp13", "ci1"] : c === "carne_bianca" ? ["cp1", "cp2"] : CENA_PER_CAT.pesce).some((id) => !escluso(id, pref)));
+  const w = riequilibra(R, R.pick(vc), CAT_CENA, dispCena);
+  if (!w) return null;
   let cc = [];
   for (const c of CAT_CENA) for (let i = 0; i < w[c]; i++) cc.push(c);
   cc = R.shuffle(cc);
@@ -359,20 +377,26 @@ export function vicine(settimane, inizio) {
 
 export function generaSettimana({ seme, inizio, storia = [], seguenti = [], pref = {}, tentativi = 160 }) {
   const R = rng(seme);
-  let migliore = null;
+  let migliore = null, ripiego = null;
   for (let t = 0; t < tentativi; t++) {
     const giorni = tentativo(R, inizio, storia, pref, seguenti);
     if (!giorni) continue;
     const sett = { versione: 1, seme, inizio, giorni };
     const val = validaSettimana(sett, storia, seguenti);
-    if (!val.ok || !val.idealeOk) continue;
-    const pen = penalita(giorni);
-    if (!migliore || pen < migliore.pen) migliore = { sett, pen };
-    if (pen === 0) break;
+    /* Ideal frequencies are preferred, not required: with foods excluded they
+       can be impossible, and the council then shows what is missed. */
+    const pen = penalita(giorni) + (val.idealeOk ? 0 : 1000);
+    if (val.ok) {
+      if (!migliore || pen < migliore.pen) migliore = { sett, pen };
+      if (pen === 0) break;
+    } else if (!ripiego || pen < ripiego.pen) ripiego = { sett, pen };
   }
-  if (!migliore) return { errore: "nessuna_settimana", seme, inizio };
-  migliore.sett.penalita = migliore.pen;
-  return migliore.sett;
+  const scelta = migliore || ripiego;
+  if (!scelta) return { errore: "nessuna_settimana", seme, inizio };
+  scelta.sett.penalita = scelta.pen;
+  /* Only when her exclusions make a hard limit impossible (no legumes at all, say). */
+  if (!migliore) scelta.sett.limitiRotti = true;
+  return scelta.sett;
 }
 
 /* Counts used by the validator, the council and the UI. */

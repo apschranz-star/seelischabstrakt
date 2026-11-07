@@ -17,12 +17,12 @@ import { PRANZO, CENA, COLAZIONE } from "../data/piano.js";
 import { validaSettimana, alimentiPasto } from "./planner.js";
 
 export const AGENTI = [
-  { id: "glutine", anzianita: 1, veto: true, nome: { it: "Custode del glutine", en: "Gluten guardian" }, ruolo: { it: "Celiachia: ogni ingrediente deve essere senza glutine o comprato con la dicitura senza glutine.", en: "Celiac disease: every ingredient must be gluten free or bought labelled gluten free." } },
+  { id: "glutine", anzianita: 1, veto: true, nome: { it: "Custode del glutine", en: "Gluten guardian" }, ruolo: { it: "Celiachia: ogni ingrediente deve essere senza glutine o comprato con la dicitura senza glutine.", en: "Coeliac disease: every ingredient must be gluten free or bought labelled gluten free." } },
   { id: "lupus", anzianita: 2, veto: true, nome: { it: "Sentinella lupus", en: "Lupus sentinel" }, ruolo: { it: "Esclude cibi sconsigliati nel lupus e segnala cosa chiedere al medico.", en: "Excludes foods advised against in lupus and flags what to ask the doctor." } },
-  { id: "piano", anzianita: 3, veto: true, nome: { it: "Custode del piano", en: "Plan keeper" }, ruolo: { it: "Solo alimenti, dosi e limiti scritti dalla Dott.ssa Giunta.", en: "Only foods, amounts and limits written by Dott.ssa Giunta." } },
+  { id: "piano", anzianita: 3, veto: true, nome: { it: "Custode del piano", en: "Plan keeper" }, ruolo: { it: "Solo alimenti, dosi e limiti scritti dalla nutrizionista.", en: "Only foods, amounts and limits written by the nutritionist." } },
   { id: "reni", anzianita: 4, veto: false, nome: { it: "Sentinella reni", en: "Kidney sentinel" }, ruolo: { it: "Sale, acqua e andamento degli esami renali. Segnala, non cambia il piano.", en: "Salt, water and kidney results over time. Flags, never changes the plan." } },
   { id: "dati", anzianita: 5, veto: false, nome: { it: "Analista dei dati", en: "Data analyst" }, ruolo: { it: "Dice quando i dati bastano per una statistica e quando no.", en: "Says when there is enough data for a statistic and when not." } },
-  { id: "presidente", anzianita: 0, veto: false, nome: { it: "Revisore senior", en: "Senior reviewer" }, ruolo: { it: "Presiede: pubblica solo cio che nessun seggio ha bloccato.", en: "Chair: publishes only what no seat blocked." } },
+  { id: "presidente", anzianita: 0, veto: false, nome: { it: "Revisore senior", en: "Senior reviewer" }, ruolo: { it: "Presiede: pubblica solo ciò che nessun seggio ha bloccato.", en: "Chair: publishes only what no seat blocked." } },
 ];
 
 /* Verdict levels */
@@ -79,7 +79,7 @@ export function consiglioSettimana(sett, storia = [], ctx = {}) {
   const salati = [...usati].filter((a) => ALIMENTI[a] && ALIMENTI[a].sale);
   const motiviReni = [
     { it: "Il piano dice di usare il sale in modo moderato. KDIGO, malattie glomerulari: sodio sotto 2 g al giorno (meno di 5 g di sale).", en: "The plan says to use salt in moderation. KDIGO, glomerular disease: sodium below 2 g a day (under 5 g of salt).", fonte: "ln_sodium" },
-    { it: "KDIGO indica anche peso normale e almeno 150 minuti a settimana di movimento moderato; il piano propone, se il lupus lo permette, 30 minuti di camminata veloce 5 volte a settimana.", en: "KDIGO also advises a normal weight and at least 150 minutes a week of moderate activity; the plan suggests, if lupus allows, 30 minutes of brisk walking 5 times a week.", fonte: "ln_weight_activity" },
+    { it: "KDIGO indica anche un peso normale e, nella malattia renale cronica, almeno 150 minuti a settimana di attività moderata; il piano propone, se il lupus lo permette, 30 minuti di camminata veloce 5 volte a settimana.", en: "KDIGO also advises a normal weight and, in chronic kidney disease, at least 150 minutes a week of moderate activity; the plan suggests, if lupus allows, 30 minutes of brisk walking 5 times a week.", fonte: "ln_weight_activity" },
   ];
   if (salati.length) motiviReni.push({ it: "Alimenti salati: " + salati.map((a) => ALIMENTI[a].it).join(", ") + ". Non aggiungere altro sale.", en: "Salty foods: " + salati.map((a) => ALIMENTI[a].en).join(", ") + ". Do not add extra salt." });
   if (salute.renaleFuoriRange) motiviReni.push({ it: "Un esame renale recente è fuori dall'intervallo del laboratorio: parlane con il medico prima di cambiare le proteine.", en: "A recent kidney result is outside the lab range: talk to the doctor before changing protein." });
@@ -104,12 +104,12 @@ const IPERICO = "st\\.? john'?s wort|iperico|hypericum";
 const NON_CIBO = R("^[^\\d]{0,40}:\\s*$|^(for the|per (il|la|le|i))\\b|cooking spray|non-?stick|parchment|toothpick|skewer|kitchen twine|optional garnish:?$");
 
 /* Veto lines with the seat that vetoes and why. */
-const VETI = [
+export const VETI = [
   { agente: "lupus", re: R("alfalfa|erba medica"), it: "Germogli di erba medica: sconsigliati nel lupus", en: "Alfalfa sprouts: advised against in lupus" },
   { agente: "lupus", re: R("echinacea"), it: "Echinacea: sconsigliata nel lupus", en: "Echinacea: advised against in lupus" },
   { agente: "piano", re: R("\\b(bacon|pancetta|guanciale|salami|salame|chorizo|sausages?|salsiccia|pepperoni|hot ?dogs?|frankfurters?|wurstel|deli (meat|turkey|chicken)|lunch ?meat|prosciutto(?! cotto)|speck|mortadella|bresaola|jerky|cold cuts?|affettat)\\b"), it: "Carne lavorata: esclusa dal piano", en: "Processed meat: excluded by the plan" },
   { agente: "piano", re: R("\\b(deep[ -]?fr|for frying|frying oil|oil for frying|fried)\\b|\\bfrittur"), it: "Frittura: esclusa dal piano", en: "Frying: excluded by the plan" },
-  { agente: "piano", re: R("\\b(beef|steak|ground meat|minced meat|lamb|mutton|duck|goose|venison|bison|veal stock|manzo|agnello|anatra)\\b"), it: "Carne non prevista dal piano", en: "Meat not in the plan" },
+  { agente: "piano", re: R("\\b(beef|steak|ground meat|minced meat|lamb|mutton|duck|goose|venison|bison|veal stock|manzo|agnello|anatra)\\b"), it: "Carne non prevista dal piano: manzo e macinato solo nel ragù del pranzo (90 g, max 1 a settimana), con la carne da confermare con la nutrizionista; per questo le ricette dal web restano fuori", en: "Meat not in the plan: beef and mince only in the lunch ragù (90 g, max once a week), with the meat to be confirmed by the nutritionist; so web recipes stay out" },
   { agente: "piano", re: R("\\b(sardines?|mackerel|trout|herring|tilapia|catfish|mussels|clams|scallops|crab|lobster|oysters?|sardine|sgombro|trota|cozze|vongole|capesante)\\b"), it: "Pesce non previsto dal piano", en: "Seafood not in the plan" },
   { agente: "piano", re: R("coconut (milk|cream)|heavy cream|whipping cream|double cream|half[ -]and[ -]half|panna|mascarpone|condensed milk|evaporated milk|ice cream"), it: "Panna, latte di cocco o latte condensato: non previsti dal piano", en: "Cream, coconut milk or condensed milk: not in the plan" },
   { agente: "piano", re: R("\\b(cake|cookies?|brownies?|muffins?|cupcakes?|frosting|icing|pie crust|pastry|pancake mix|waffle|donuts?|doughnuts?|marshmallows?|candy|caramel|sprinkles|chocolate chips|milk chocolate|white chocolate|nutella)\\b"), it: "Dolci e prodotti da forno: fuori dal piano ipocalorico", en: "Sweets and baked goods: outside the hypocaloric plan" },

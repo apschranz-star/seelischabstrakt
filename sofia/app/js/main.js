@@ -8,7 +8,7 @@
  */
 import { carica, S, cambia, ascolta, chiediMemoriaPersistente, memoriaNonDisponibile } from "./store.js";
 import { impostaLingua, t, L } from "./i18n.js";
-import { I, LOGO, esc, attivaGrafici, applicaStili } from "./ui.js";
+import { I, LOGO, esc, attivaGrafici, applicaStili, attivaColonne } from "./ui.js";
 import { azioni, impostaRender, ridisegna, chiudiFoglio, foglioAperto, toast } from "./ctx.js";
 import { generaSettimana, isoData, lunediDi, aggiungiGiorni, vicine } from "./engine/planner.js";
 import { nuovoSeme } from "./engine/rng.js";
@@ -76,6 +76,7 @@ function render() {
     <main id="vista">${v.render(s, r.parti)}</main>`;
   document.getElementById("nav").innerHTML = `<ul>${NAV.map(([id, ico]) => `<li><a href="#/${id}" class="${r.vista === id ? "attivo" : ""}" ${r.vista === id ? 'aria-current="page"' : ""}>${ico}<span>${esc(t(id))}</span></a></li>`).join("")}</ul>`;
   attivaGrafici(app);
+  attivaColonne(app);
   applicaStili(app);
   if (v.dopo) v.dopo(s, r.parti);
 }

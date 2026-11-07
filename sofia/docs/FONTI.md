@@ -5,7 +5,7 @@ URLs, versions and the officers' notes, are in `docs/fonti/`.
 
 ## The plan
 
-- Dott.ssa Isabella Giunta, Biologa Nutrizionista: "Schema dietetico generale
+- Sofia's nutritionist (Biologa Nutrizionista; name in the encrypted plan text): "Schema dietetico generale
   per dieta ipocalorica di circa 1400 kcal con circa 1 g proteine/kg peso
   corporeo", 4 pages. Transcribed in `app/js/data/piano.js`. Amounts the plan
   does not give are marked missing; open questions are in `DOMANDE_APERTE`.
@@ -22,6 +22,31 @@ URLs, versions and the officers' notes, are in `docs/fonti/`.
 - Composition: CREA Tabelle di composizione degli alimenti (50 foods), ANSES
   CIQUAL 2020 (17), USDA FoodData Central SR Legacy (10), cross-checked;
   only results confirmed by the cross-check are shown.
+
+## Food brain, meal builder and food log
+
+- ANSES, Ciqual French food composition table 2020 (https://ciqual.anses.fr/),
+  English table from the copy at https://zenodo.org/records/4770202 (file
+  sha256 `5551841f12f40fb6c869f80aa14e9db33bcfb7dcc135f000cb994a2cca4dc2f5`).
+  Licence: Etalab Open Licence 2.0 (the Zenodo copy: CC BY 4.0), credit to
+  ANSES. Extracted by `tools/ciqual/estrai.py` into `app/js/data/ciqual.js`
+  (baby foods left out). Energy is the table's EU Regulation 1169/2011 value;
+  where that is missing, the table's Jones-factor value; where both are
+  missing, the Annex XIV factors of Regulation 1169/2011 (protein and
+  carbohydrate 4, fat 9, fibre 2 kcal/g). Both fallbacks are marked as estimates.
+- Open Food Facts (https://world.openfoodfacts.org), search API at
+  search.openfoodfacts.org, database under the Open Database License 1.0.
+  Crowd-sourced: every value from it is shown with "always check the label".
+- "Very salty" means more than 1.5 g salt per 100 g, the "high" band of the UK
+  front-of-pack scheme (Department of Health and Food Standards Agency, Guide to
+  creating a front of pack nutrition label, 2016). The daily limit shown with
+  it is KDIGO's (clinical evidence below, `ln_sodium`).
+- Weights of pieces the plan counts (a rice cake 8 g, a pot 125 g, an egg 50 g,
+  a teaspoon 5 g, an olive 3 g) and 1.03 g per ml of milk are estimates, not
+  from a source: they are marked as such and Sofia can change them in Settings.
+- Check: the plan's own meals computed this way come close to the plan's
+  calorie figures (lunch and dinner medians about 5% above them; the test in
+  `test/cervello.test.mjs` allows 12%).
 
 ## Clinical evidence (`docs/fonti/evidence-clinical.json`)
 

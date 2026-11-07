@@ -9,6 +9,9 @@ import { RICETTE } from "../data/ricette.js";
 import { OPZ, vociPasto, rimescolaPasto, invertiPranzoCena, vicine, ETICHETTE_CAT } from "../engine/planner.js";
 import { consiglioRicetta, AGENTI } from "../engine/consiglio.js";
 import { nuovoSeme } from "../engine/rng.js";
+import { valoriVoci, PASTI as PASTI_KCAL } from "../engine/nutrizione.js";
+import { opzioniNutrizione, istantanea, logDi } from "./diario.js";
+import { foglioMia } from "./ricettemie.js";
 
 export const PASTI_ORDINE = ["colazione", "spuntino", "pranzo", "cena", "dopocena"];
 export const DEF = { colazione: COLAZIONE, spuntino: SPUNTINO, pranzo: PRANZO, cena: CENA, dopocena: DOPOCENA };
@@ -59,8 +62,14 @@ export function rigaPasto(g, pasto, { conSpunta = true } = {}) {
   const p = g[pasto];
   if (!p) return "";
   const def = DEF[pasto];
-  const diario = (S().diario[g.data] || {}).pasti || {};
+  const s = S();
+  const diario = (s.diario[g.data] || {}).pasti || {};
   const fatto = diario[pasto] === true;
+  const registrato = logDi(s, g.data)[pasto];
+  const voci = vociPasto(g, pasto);
+  const kc = valoriVoci(registrato ? registrato.voci : voci, opzioniNutrizione(s));
+  const kcal = `${registrato ? "" : "≈ "}${kc.completo ? "" : "≥ "}${Math.round(kc.tot.kcal)} kcal${registrato && registrato.fonte === "composto" ? " · " + L({ it: "composto da te", en: "composed by you" }) : ""}`;
+  const escluso = voci.some((v) => (s.pref.escludi || []).includes(v.a));
   const ric = ricettePerPasto(g, pasto)[0];
   const slot = g.invertito && (pasto === "pranzo" || pasto === "cena") ? (pasto === "pranzo" ? "cena" : "pranzo") : pasto;
   const cat = p.cat ? `<span class="cat ${p.cat}" title="${esc(L(ETICHETTE_CAT[p.cat]))}">${esc(L(ETICHETTE_CAT[p.cat]).charAt(0).toUpperCase())}</span>` : "";
@@ -70,6 +79,7 @@ export function rigaPasto(g, pasto, { conSpunta = true } = {}) {
       <div class="nome">${esc(L(DEF[slot].nome))}${def.facoltativo ? ` · ${esc(t("facoltativo"))}` : ""}${g.invertito && slot !== pasto ? ` · ${esc(t("invertito"))}` : ""}</div>
       <div class="cosa">${cat}${esc(titoloPasto(g, pasto))}</div>
       <div class="dosi">${esc(dosiBrevi(g, pasto))}</div>
+      <div class="kcal-riga">${esc(kcal)}${escluso ? ` <span class="etichetta terra">${esc(L({ it: "c'è un cibo che non mangi", en: "has a food you skip" }))}</span>` : ""}</div>
       ${ric ? `<div class="ricetta-link">${I.libro}${esc(L(ric.titolo))}</div>` : ""}
     </div>
     ${conSpunta ? `<button class="spunta ${fatto ? "fatto" : ""}" data-az="spunta" data-data="${g.data}" data-pasto="${pasto}" aria-pressed="${fatto}" aria-label="${esc(L({ it: "Segna come mangiato", en: "Mark as eaten" }))}">${I.spunta}</button>` : ""}
@@ -101,13 +111,15 @@ export function foglioPasto(data, pasto) {
   return `<button class="icon-btn chiudi" data-az="chiudiFoglio" aria-label="${esc(t("chiudi"))}">${I.chiudi}</button>
     <div class="minimo">${esc(maiuscola(dataLunga(data)))}</div>
     <h2>${esc(L(def.nome))}: ${esc(titoloPasto(g, pasto))}</h2>
-    <div class="muted piccolo">${esc(L({ it: "Circa", en: "About" }))} ${def.kcal[0] === def.kcal[1] ? def.kcal[0] : def.kcal.join("-")} kcal · ${esc(L({ it: "proteine", en: "protein" }))} ${def.macro.proteine.join("-")} g · ${esc(L({ it: "carboidrati", en: "carbs" }))} ${def.macro.carboidrati.join("-")} g · ${esc(L({ it: "grassi", en: "fat" }))} ${def.macro.grassi.join("-")} g</div>
+    <div class="muted piccolo">${esc(L({ it: "Il piano dice circa", en: "The plan says about" }))} ${def.kcal[0] === def.kcal[1] ? def.kcal[0] : def.kcal.join("-")} kcal · ${esc(L({ it: "proteine", en: "protein" }))} ${def.macro.proteine.join("-")} g · ${esc(L({ it: "carboidrati", en: "carbs" }))} ${def.macro.carboidrati.join("-")} g · ${esc(L({ it: "grassi", en: "fat" }))} ${def.macro.grassi.join("-")} g</div>
+    ${(() => { const r = valoriVoci(voci, opzioniNutrizione(s)); return `<div class="piccolo" data-s="sd6f2a"><strong>${esc(L({ it: "Questo pasto", en: "This meal" }))}: ${r.completo ? "" : "≥ "}${Math.round(r.tot.kcal)} kcal</strong> · P ${Math.round(r.tot.prot)} g · C ${Math.round(r.tot.carb)} g · G ${Math.round(r.tot.fat)} g${r.stime.length ? `<div class="minimo">${esc(L({ it: "Stime", en: "Estimates" }))}: ${esc(r.stime.join("; "))}</div>` : ""}${r.mancanti.length ? `<div class="minimo">${esc(t("infoMancante"))}: ${esc(r.mancanti.map((a) => nome(a, lingua())).join(", "))}</div>` : ""}</div>`; })()}
     <ul class="lista-ingr">${voci.map(lineaVoce).join("")}</ul>
     ${pasto === "pranzo" && g[pasto].tipo === "composto" ? `<p class="piccolo muted">${esc(L(PRANZO.regola))}</p>` : ""}
     ${note.length ? `<div class="stack">${note.map((n) => `<div class="avviso">${I.info}<div>${esc(L(n))}</div></div>`).join("")}</div>` : ""}
     <div class="riga wrap" data-s="sd6f2a">
       <button class="btn primario" data-az="rimescolaPasto" data-data="${data}" data-pasto="${pasto}">${I.rimescola}${esc(t("rimescolaPasto"))}</button>
       ${pasto === "pranzo" || pasto === "cena" ? `<button class="btn" data-az="inverti" data-data="${data}">${I.scambio}${esc(t("inverti"))}</button>` : ""}
+      <button class="btn" data-az="apriComponi" data-data="${data}" data-pasto="${pasto}">${I.piu}${esc(L({ it: "Ho mangiato altro: componi", en: "I ate something else: compose" }))}</button>
     </div>
     ${ricette.length ? `<h2 class="sez">${esc(t("ricette"))}</h2>${ricette.slice(0, 4).map((r) => cartaRicetta(r)).join("")}` : `<p class="muted piccolo" data-s="sd6f2a">${esc(L({ it: "Cucina come preferisci: conta rispettare le dosi.", en: "Cook it as you like: what matters is the amounts." }))}</p>`}`;
 }
@@ -119,6 +131,7 @@ export function cartaRicetta(r) {
     <div class="meta">
       <span class="etichetta">${I.orologio}${r.minuti} ${esc(t("minuti"))}</span>
       <span class="etichetta oliva">${esc(L(DEF[r.pasto].nome))}</span>
+      ${r.mia ? `<span class="etichetta viola">${esc(L({ it: "tua", en: "yours" }))}</span>` : ""}
       ${(r.tag || []).includes("omega3") ? `<span class="etichetta viola">omega-3</span>` : ""}
       ${(r.tag || []).includes("ferro_vitc") ? `<span class="etichetta terra">${esc(L({ it: "ferro + vitamina C", en: "iron + vitamin C" }))}</span>` : ""}
       ${(r.tag || []).includes("calcio") ? `<span class="etichetta">${esc(L({ it: "calcio", en: "calcium" }))}</span>` : ""}
@@ -166,15 +179,22 @@ export function foglioRicetta(id) {
 registra({
   chiudiFoglio: () => chiudiFoglio(),
   apriPasto: (d) => apriFoglio(() => foglioPasto(d.data, d.pasto)),
-  apriRicetta: (d) => apriFoglio(() => foglioRicetta(d.id)),
+  apriRicetta: (d) => apriFoglio(() => (String(d.id).startsWith("mia-") ? foglioMia(d.id) : foglioRicetta(d.id))),
   preferita: (d) => cambia((s) => {
     const i = s.preferite.indexOf(d.id);
     if (i >= 0) s.preferite.splice(i, 1); else s.preferite.push(d.id);
   }),
+  /* Ticking a meal logs the plan's amounts for it; unticking removes them. */
   spunta: (d) => cambia((s) => {
     const g = (s.diario[d.data] = s.diario[d.data] || {});
     g.pasti = g.pasti || {};
     g.pasti[d.pasto] = !g.pasti[d.pasto];
+    g.mangiato = g.mangiato || {};
+    if (g.pasti[d.pasto]) {
+      const w = settimanaDi(s, d.data);
+      const giorno = w && w.giorni.find((x) => x.data === d.data);
+      if (giorno && !g.mangiato[d.pasto]) g.mangiato[d.pasto] = { voci: istantanea(vociPasto(giorno, d.pasto)), fonte: "piano", ora: new Date().toISOString() };
+    } else delete g.mangiato[d.pasto];
   }),
   rimescolaPasto: (d) => {
     const s = S();
