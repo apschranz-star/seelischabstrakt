@@ -48,6 +48,8 @@ export function toast(msg, azione = null) {
     const b = document.createElement("button");
     b.className = "toast-azione";
     b.dataset.az = azione.az;
+    /* any other field travels as data (an id for the Undo) */
+    for (const [k, v] of Object.entries(azione)) if (k !== "az" && k !== "testo" && v != null) b.dataset[k] = String(v);
     b.textContent = azione.testo;
     t.append(" ", b);
   }

@@ -578,3 +578,106 @@ hr.sottile { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
 .come-calcola ul { margin: 6px 0 0; padding-left: 18px; }
 .come-calcola li { margin: 4px 0; }
 
+
+/* Home: day charts. Ring colours: the validated reference palette, fixed slot order
+   (carbs, protein, vegetables, fruit, fat); light needs visible labels (legend). */
+:root { --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-tema="chiaro"])) { --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; }
+}
+:root[data-tema="scuro"] { --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; }
+.eroe-grafici { display: grid; grid-template-columns: auto auto; justify-content: space-around; align-items: center; gap: 6px 10px; margin: 6px 0 4px; }
+.anelli { display: contents; }
+.ciambella .traccia { stroke: var(--surface-2); }
+.ciambella .valore { stroke: var(--series); }
+.ciambella .oltre { stroke: var(--warn); }
+.ciambella .num { font: 800 30px var(--font-ui); fill: var(--ink); }
+.ciambella .sub { font: 600 12px var(--font-ui); fill: var(--ink-3); }
+.ciambella .sub2 { font: 800 12.5px var(--font-ui); fill: var(--ink-2); }
+.anelli svg circle.traccia { stroke-opacity: 0.18; }
+.anelli svg .s1 { stroke: var(--s1); } .anelli svg .s2 { stroke: var(--s2); } .anelli svg .s3 { stroke: var(--s3); } .anelli svg .s4 { stroke: var(--s4); } .anelli svg .s5 { stroke: var(--s5); }
+/* one shared column grid for all rows (subgrid), so values, % and status line up */
+.legenda-anelli { grid-column: 1 / -1; list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 40px auto; column-gap: 8px; row-gap: 4px; }
+.legenda-anelli li { display: grid; grid-column: 1 / -1; grid-template-columns: 12px minmax(0, 1fr) auto 40px auto; grid-template-columns: subgrid; column-gap: 8px; align-items: center; font-size: 14px; min-height: 26px; }
+.legenda-anelli .fuori { grid-column: 3 / -1; text-align: right; font-size: 12.5px; color: var(--ink-3); }
+.legenda-anelli .fuori strong { color: var(--ink); font-weight: 800; }
+.legenda-anelli .pallino { width: 12px; height: 12px; border-radius: 50%; }
+.legenda-anelli .pallino.s1 { background: var(--s1); } .legenda-anelli .pallino.s2 { background: var(--s2); } .legenda-anelli .pallino.s3 { background: var(--s3); } .legenda-anelli .pallino.s4 { background: var(--s4); } .legenda-anelli .pallino.s5 { background: var(--s5); }
+.legenda-anelli .nome { font-weight: 700; color: var(--ink); }
+.legenda-anelli .val { font-weight: 800; color: var(--ink); white-space: nowrap; }
+.legenda-anelli .val small { font-weight: 600; color: var(--ink-3); }
+.legenda-anelli .pct { text-align: right; font-weight: 800; color: var(--ink-2); }
+.stato.mini { font-size: 11.5px; padding: 1px 6px; }
+.stato.mini svg { width: 12px; height: 12px; }
+.btn.grande { min-height: 52px; font-size: 16.5px; margin-top: 10px; }
+
+/* What she ate: one row per logged meal, the latest highlighted once */
+.voce-log { align-items: flex-start; }
+.voce-log .testo { flex: 1; min-width: 0; }
+.voce-log .testo strong { display: inline-flex; align-items: center; gap: 6px; }
+.voce-log .testo strong svg { width: 16px; height: 16px; color: var(--good); }
+.voce-log .cibi { font-size: 14px; color: var(--ink-2); margin-top: 2px; line-height: 1.35; }
+.voce-log .azioni { display: flex; align-items: center; gap: 4px; padding-top: 2px; }
+@keyframes appena { 0% { background: color-mix(in srgb, var(--series) 26%, transparent); } 100% { background: transparent; } }
+.appena { animation: appena 2.2s ease-out 1; border-radius: var(--r-s); }
+.storico-7 { margin-top: 8px; }
+.storico-7 summary { cursor: pointer; font-weight: 700; color: var(--ink-2); }
+.pasto .mangiato { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 800; color: var(--good); }
+.pasto .mangiato svg { width: 15px; height: 15px; }
+
+/* Suggestions */
+.sugg-lista { display: grid; gap: 8px; margin-top: 6px; }
+.sugg { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: var(--r-s); padding: 10px 12px; font: inherit; cursor: pointer; min-height: 52px; }
+.sugg > span:nth-child(2) { flex: 1; min-width: 0; }
+.sugg .ico svg { width: 22px; height: 22px; color: var(--olive); }
+.sugg > svg { width: 18px; height: 18px; color: var(--ink-3); }
+
+/* Registra cibo: steps, meals, basket, amounts */
+.passi-reg { display: flex; gap: 12px; margin: 0 0 8px; }
+.passi-reg span { font-weight: 700; color: var(--ink-3); }
+.passi-reg span.ora { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+.passi-reg span.fatto { color: var(--good); }
+.griglia-pasti { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.pasto-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-height: 64px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-s); background: var(--surface); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.pasto-btn.suggerito { border-color: var(--olive); box-shadow: inset 0 0 0 1px var(--olive); }
+.pasto-btn.fatto .minimo { color: var(--good); font-weight: 700; }
+.pasto-btn .minimo svg { width: 13px; height: 13px; vertical-align: -2px; }
+.btn.come-piano { justify-content: flex-start; text-align: left; gap: 10px; min-height: 56px; margin: 6px 0 4px; }
+.btn.come-piano span { display: block; }
+.cesto { border: 1px solid var(--line); border-radius: var(--r-s); padding: 6px 10px 2px; margin: 8px 0; background: var(--surface); }
+.piede-foglio { position: sticky; bottom: calc(-24px - var(--safe-b)); z-index: 1; background: var(--surface); padding: 10px 0 calc(6px + var(--safe-b)); margin-top: 12px; border-top: 1px solid var(--line); }
+.btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+.segmenti { display: flex; background: var(--surface-2); border-radius: 999px; padding: 4px; gap: 2px; margin: 12px 0 10px; }
+.segmenti button { flex: 1; border: 0; background: none; font: inherit; font-weight: 700; color: var(--ink-2); padding: 9px 10px; border-radius: 999px; min-height: 40px; cursor: pointer; }
+.segmenti button.attivo { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+.anteprima { font-size: 17px; font-weight: 800; margin: 10px 0; }
+
+/* Ideas: chosen ingredients carry a remove button */
+.chip-x { border: 0; background: none; color: inherit; padding: 0 0 0 6px; margin: 0; cursor: pointer; display: inline-flex; align-items: center; min-height: 28px; }
+.chip-x svg { width: 14px; height: 14px; }
+.chip svg { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; }
+.minimo svg { display: inline-block; width: 13px; height: 13px; vertical-align: -2px; }
+/* a chip just added: a ring pulse, so a dark chip stays readable */
+@keyframes appena-anello { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--series) 70%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
+.chip.appena { animation: appena-anello 1.4s ease-out 2; }
+
+/* Week: eaten and left, one bar per row (same palette slots as the home rings) */
+.barre { list-style: none; margin: 6px 0 4px; padding: 0; display: grid; gap: 12px; }
+.barra-testa, .barra-numeri { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.barra-testa .nome { font-weight: 700; color: var(--ink); display: inline-flex; align-items: center; gap: 7px; font-size: 14.5px; }
+.barra-testa .pallino { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.barra-testa .pallino.s1 { background: var(--s1); } .barra-testa .pallino.s2 { background: var(--s2); } .barra-testa .pallino.s3 { background: var(--s3); } .barra-testa .pallino.s4 { background: var(--s4); } .barra-testa .pallino.s5 { background: var(--s5); } .barra-testa .pallino.kcal { background: var(--series); }
+.barra-svg { display: block; width: 100%; height: auto; margin: 5px 0 3px; overflow: visible; }
+.barra-svg .traccia { stroke-opacity: 0.18; }
+.barra-svg .s1 { stroke: var(--s1); } .barra-svg .s2 { stroke: var(--s2); } .barra-svg .s3 { stroke: var(--s3); } .barra-svg .s4 { stroke: var(--s4); } .barra-svg .s5 { stroke: var(--s5); } .barra-svg .kcal { stroke: var(--series); }
+.barra-svg .tacca { stroke: var(--ink-2); }
+.barra-numeri { font-size: 13.5px; color: var(--ink-2); }
+.barra-numeri strong { color: var(--ink); font-weight: 800; }
+.giorno-kcal { margin-top: 8px; }
+.giorno-kcal .barra-svg { margin: 0 0 2px; }
+.giorno-vuoto { margin-top: 6px; }
+.togli .cerca { margin: 10px 0 8px; }
+.togli-gruppo { margin: 6px 0; }
+.togli-gruppo summary { cursor: pointer; font-weight: 700; color: var(--ink-2); font-size: 14px; padding: 6px 0; }
+.colpiti { margin: 6px 0 10px; padding-left: 18px; font-size: 13.5px; }
+.togli .avviso .btn { margin-top: 2px; }

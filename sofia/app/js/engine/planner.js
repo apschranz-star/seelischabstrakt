@@ -544,3 +544,37 @@ export function invertiPranzoCena(sett, i) {
   s.giorni[i].invertito = !s.giorni[i].invertito;
   return s;
 }
+
+/*
+ * Redo the days from `da` on and keep the days before it as they are (they
+ * are history: she may have eaten them). Whole weeks are generated with her
+ * exclusions and their days from `da` spliced after the kept ones; a splice
+ * is accepted only if the whole week keeps every hard limit of the plan
+ * (validaSettimana, 14-day windows included). The first splice that also
+ * meets the ideal frequencies wins; otherwise the first valid one. null when
+ * no seed gives a valid splice (the caller can offer the whole week).
+ */
+export function rifaiDa(sett, da, { storia = [], seguenti = [], pref = {}, semi = [], tentativi = 40, tieni = null } = {}) {
+  const fissi = sett.giorni.filter((g) => g.data < da).length;
+  if (fissi >= sett.giorni.length) return null;
+  let primo = null;
+  for (const seme of semi) {
+    const nuova = generaSettimana({ seme, inizio: sett.inizio, storia, seguenti, pref, tentativi });
+    if (nuova.errore) continue;
+    const giorni = [...sett.giorni.slice(0, fissi), ...nuova.giorni.slice(fissi).map((g) => ({ ...g }))];
+    /* tieni(data, pasto): meals of the first redone day to keep (already eaten) */
+    if (tieni) {
+      const vecchio = sett.giorni[fissi], nuovo = giorni[fissi];
+      let tenuti = 0;
+      for (const p of ["colazione", "spuntino", "pranzo", "cena", "dopocena"]) if (vecchio[p] && tieni(vecchio.data, p)) { nuovo[p] = vecchio[p]; tenuti++; }
+      if (tenuti) { if (vecchio.invertito) nuovo.invertito = true; else delete nuovo.invertito; }
+    }
+    const unita = { ...nuova, giorni, rifattaDa: fissi ? da : null };
+    delete unita.penalita;
+    const val = validaSettimana(unita, storia, seguenti);
+    if (!val.ok) continue;
+    if (val.idealeOk) return unita;
+    if (!primo) primo = { ...unita, idealeMancato: true };
+  }
+  return primo;
+}

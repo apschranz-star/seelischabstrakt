@@ -1,5 +1,6 @@
-/* Cibo: the plan (original text and English), the meal builder, her own
-   foods, recipes with filters and her own recipes, swaps, daily web recipes. */
+/* Cibo: ideas (ingredients in, recipes out), the meal builder, her own foods,
+   recipes with filters and her own recipes, the plan (original text and
+   English), swaps, daily web recipes. */
 import { S, cambia, cambiaSilenzioso } from "../store.js";
 import { t, L, lingua } from "../i18n.js";
 import { I, esc, num, dataConAnno } from "../ui.js";
@@ -16,16 +17,20 @@ import { renderComponi } from "./componi.js";
 import * as miei from "./miei.js";
 import * as pianoTesto from "./pianotesto.js";
 import { mieComeRicette } from "./ricettemie.js";
+import * as idee from "./idee.js";
+import { ricettaEsclusi } from "../engine/esclusi.js";
 
-const SEZIONI = [["componi", { it: "Componi", en: "Compose" }], ["miei", { it: "I miei cibi", en: "My foods" }], ["ricette", { it: "Ricette", en: "Recipes" }], ["piano", { it: "Il piano", en: "The plan" }], ["scambi", { it: "Scambi", en: "Swaps" }], ["web", { it: "Dal web", en: "From the web" }]];
+const SEZIONI = [["idee", { it: "Idee", en: "Ideas" }], ["componi", { it: "Componi", en: "Compose" }], ["miei", { it: "I miei cibi", en: "My foods" }], ["ricette", { it: "Ricette", en: "Recipes" }], ["piano", { it: "Il piano", en: "The plan" }], ["scambi", { it: "Scambi", en: "Swaps" }], ["web", { it: "Dal web", en: "From the web" }]];
 let filtro = "tutte", soloPreferite = false, soloMie = false, tempoMax = 0, cercaRic = "", mostraEsclusi = false, cerca = "", pescate = nuovoSeme();
 
 export const titolo = () => t("cibo");
 
 export function render(s, parti) {
   const richiesta = parti[0] === "regole" ? "piano" : parti[0];
-  const sez = SEZIONI.some(([k]) => k === richiesta) ? richiesta : "componi";
+  const sez = SEZIONI.some(([k]) => k === richiesta) ? richiesta : "idee";
+  ultimaSez = sez;
   const seg = `<nav class="seg scorre" aria-label="${esc(t("cibo"))}">${SEZIONI.map(([k, lab]) => `<button class="${sez === k ? "attivo" : ""}" data-az="vai" data-h="#/cibo/${k}" ${sez === k ? 'aria-current="page"' : ""}>${esc(L(lab))}</button>`).join("")}</nav>`;
+  if (sez === "idee") return seg + idee.render(s);
   if (sez === "componi") return seg + renderComponi(s);
   if (sez === "miei") return seg + miei.render(s);
   if (sez === "ricette") return seg + ricette(s);
@@ -34,7 +39,9 @@ export function render(s, parti) {
   return seg + scambi();
 }
 
+let ultimaSez = "idee";
 export function dopo() {
+  if (ultimaSez === "idee") { idee.dopo(); return; }
   const c = document.getElementById("cerca-cibo");
   if (c && cerca && document.activeElement !== c) { c.focus(); c.setSelectionRange(c.value.length, c.value.length); }
 }
@@ -128,7 +135,7 @@ function ricette(s) {
   const ex = new Set(s.pref.escludi || []);
   const q = cercaRic.trim().toLowerCase();
   const tutte = [...mieComeRicette(s), ...RICETTE];
-  const conEsclusi = (r) => r.ingredienti.some((v) => ex.has(v.a));
+  const conEsclusi = (r) => ricettaEsclusi(r, ex).length > 0;
   const lista = tutte.filter((r) => (filtro === "tutte" || r.pasto === filtro)
     && (!soloPreferite || s.preferite.includes(r.id))
     && (!soloMie || r.mia)

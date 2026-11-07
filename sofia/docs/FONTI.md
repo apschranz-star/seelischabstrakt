@@ -58,6 +58,28 @@ URLs, versions and the officers' notes, are in `docs/fonti/`.
 - Weights of pieces the plan counts (a rice cake 8 g, a pot 125 g, an egg 50 g,
   a teaspoon 5 g, an olive 3 g) and 1.03 g per ml of milk are estimates, not
   from a source: they are marked as such and Sofia can change them in Settings.
+- Household measures in the food log (`app/js/data/misure.js`):
+  - LARN, SINU (Società Italiana di Nutrizione Umana), "Standard quantitativi
+    delle porzioni" (IV revision 2014, V revision 2024): glasses 125, 200 and
+    300 mL, cup 250 mL, coffee cup 50 mL, level tablespoon 10 mL, level
+    teaspoon 5 mL; oil 10 mL = 9 g; yogurt pot 125 g; fresh fruit portion
+    150 g; small mozzarella 100 g; nuts portion 30 g; small potato 100 g.
+  - Eggs: EU weight grades for class A eggs (Regulation (EC) 589/2008, now
+    Delegated Regulation (EU) 2023/2465: S under 53 g, M 53-63 g, L 63-73 g,
+    XL from 73 g), middle of each grade times the edible part 88% (USDA
+    FoodData Central, egg, whole, raw: refuse 12% shell): S 42 g, M 51 g,
+    L 60 g, XL 66 g.
+  - Cans, packs and servings: the weight on the label, typed by Sofia, or the
+    package and serving size Open Food Facts computes from the label
+    (`product_quantity`, `serving_quantity`; mL count as g only for drinks).
+  - mL to grams: oil 0.9 (LARN, 10 mL = 9 g), milk and kefir 1.03 (estimate,
+    marked as such in Settings), everything else 1.
+- Day and week targets on Oggi and Settimana (`app/js/engine/giorno.js`):
+  1400 kcal a day (the plan); protein, carbohydrate and fat ranges as the sum
+  of the plan's per-meal ranges; vegetables and fruit as the grams of the
+  planned meals. A logged food counts as vegetable or fruit by the plan's food
+  group, CIQUAL groups 0201 (vegetables) and 0204 (fruit), or the class the
+  food brain gave her own foods.
 - Check: the plan's own meals computed this way come close to the plan's
   calorie figures (lunch and dinner medians about 5% above them; the test in
   `test/cervello.test.mjs` allows 12%).

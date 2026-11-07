@@ -10,7 +10,7 @@
  */
 export const OFF_SEARCH = "https://search.openfoodfacts.org/search";
 export const UA = "SofiaPiano/1.0 (+https://sofia-piano.netlify.app)";
-const CAMPI = ["code", "product_name", "product_name_it", "product_name_en", "generic_name_it", "brands", "quantity", "nutriments", "allergens_tags", "traces_tags", "labels_tags", "categories_tags", "countries_tags", "ingredients_text_it", "ingredients_text"];
+const CAMPI = ["code", "product_name", "product_name_it", "product_name_en", "generic_name_it", "brands", "quantity", "product_quantity", "product_quantity_unit", "serving_size", "serving_quantity", "serving_quantity_unit", "nutriments", "allergens_tags", "traces_tags", "labels_tags", "categories_tags", "countries_tags", "ingredients_text_it", "ingredients_text"];
 
 export function query(q) {
   return String(q || "").normalize("NFC").replace(/[^\p{L}\p{N}' %-]+/gu, " ").replace(/\s+/g, " ").trim().slice(0, 60);
@@ -18,6 +18,14 @@ export function query(q) {
 
 const n = (x) => (x == null || x === "" || Number.isNaN(Number(x)) ? null : Math.round(Number(x) * 1000) / 1000);
 const testo = (x) => String(x == null ? "" : x).replace(/\s+/g, " ").trim();
+/* Pack and serving size in grams (Open Food Facts computes them from the label;
+   mL count as g only for drinks, where 1 mL is about 1 g). */
+const grammiDa = (q, unita) => {
+  const x = n(q);
+  if (!(x > 0) || x > 20000) return null;
+  const u = String(unita || "g").toLowerCase();
+  return u === "g" || u === "ml" ? x : u === "kg" || u === "l" ? x * 1000 : null;
+};
 
 export function normalizza(hit) {
   const nu = hit.nutriments || {};
@@ -30,6 +38,9 @@ export function normalizza(hit) {
     nome: nome.slice(0, 120),
     marca: testo([].concat(hit.brands || [])[0] || "").slice(0, 60),
     quantita: testo(hit.quantity).slice(0, 30),
+    confezione: grammiDa(hit.product_quantity, hit.product_quantity_unit),
+    porzione: grammiDa(hit.serving_quantity, hit.serving_quantity_unit),
+    porzioneTesto: testo(hit.serving_size).slice(0, 40),
     per100: { kcal, prot: n(nu.proteins_100g), carb: n(nu.carbohydrates_100g), fat: n(nu.fat_100g), sug: n(nu.sugars_100g), fib: n(nu.fiber_100g), sat: n(nu["saturated-fat_100g"]), salt },
     allergeni: [].concat(hit.allergens_tags || []).slice(0, 20).map(String),
     tracce: [].concat(hit.traces_tags || []).slice(0, 20).map(String),

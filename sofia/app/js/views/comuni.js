@@ -9,9 +9,10 @@ import { RICETTE } from "../data/ricette.js";
 import { OPZ, vociPasto, rimescolaPasto, invertiPranzoCena, vicine, ETICHETTE_CAT } from "../engine/planner.js";
 import { consiglioRicetta, AGENTI } from "../engine/consiglio.js";
 import { nuovoSeme } from "../engine/rng.js";
-import { valoriVoci, PASTI as PASTI_KCAL } from "../engine/nutrizione.js";
-import { opzioniNutrizione, istantanea, logDi, voceSua, cambiaConAnnulla, nomePasto } from "./diario.js";
+import { valoriVoci, grammi as grammiVoce, PASTI as PASTI_KCAL } from "../engine/nutrizione.js";
+import { opzioniNutrizione, istantanea, logDi, voceSua, cambiaConAnnulla, nomePasto, concorda, nomeVoce as nomeVoceLog } from "./diario.js";
 import { foglioMia } from "./ricettemie.js";
+import { trovaEsclusi } from "../engine/esclusi.js";
 
 export const PASTI_ORDINE = ["colazione", "spuntino", "pranzo", "cena", "dopocena"];
 export const DEF = { colazione: COLAZIONE, spuntino: SPUNTINO, pranzo: PRANZO, cena: CENA, dopocena: DOPOCENA };
@@ -24,15 +25,18 @@ export function settimanaDi(s, data) {
 export function titoloPasto(g, pasto) {
   const p = g[pasto];
   if (!p) return "";
-  if (pasto === "pranzo" && p.tipo === "composto") return `${nome(OPZ[p.carb].voci[0].a, lingua())} + ${nome(OPZ[p.prot].voci[0].a, lingua())}`;
+  /* the plan's vegetables are part of lunch and dinner: the title says so */
+  const verd = ["pranzo", "cena"].includes(pasto) ? vociPasto(g, pasto).find((v) => v.a === "verdure" || v.a === "minestrone") : null;
+  const conVerdure = (t) => (verd && !/verdur|minestron/i.test(t) ? `${t} + ${verd.a === "minestrone" ? nome("minestrone", lingua()).toLowerCase() : L({ it: "verdure", en: "vegetables" })}` : t);
+  if (pasto === "pranzo" && p.tipo === "composto") return conVerdure(`${nome(OPZ[p.carb].voci[0].a, lingua())} + ${nome(OPZ[p.prot].voci[0].a, lingua())}`);
   if (pasto === "cena" && p.tipo === "composto") {
     const v = vociPasto(g, "cena")[0];
-    return nome(v.a, lingua());
+    return conVerdure(nome(v.a, lingua()));
   }
   if (p.tipo === "combinato" || p.tipo === "idea") {
     const o = OPZ[p.id];
-    if (o.testo) return L(o.testo);
-    return vociPasto(g, pasto).filter((v) => !["verdure", "olio_evo", "passata"].includes(v.a)).map((v) => nome(v.a, lingua())).slice(0, 3).join(" + ");
+    if (o.testo) return conVerdure(L(o.testo));
+    return conVerdure(vociPasto(g, pasto).filter((v) => !["verdure", "minestrone", "olio_evo", "passata"].includes(v.a)).map((v) => nome(v.a, lingua())).slice(0, 3).join(" + "));
   }
   return vociPasto(g, pasto).map((v) => (v.testo ? L(v.testo) : nome(v.a, lingua()))).slice(0, 3).join(" + ");
 }
@@ -56,7 +60,7 @@ export function ricettePerPasto(g, pasto) {
   }).concat(pasto === "pranzo" && p.tipo === "composto" ? RICETTE.filter((r) => r.pasto === "pranzo" && r.abbina.prot && r.abbina.prot.includes(p.prot) && !(r.abbina.carb || []).includes(p.carb)) : []);
 }
 
-const ICO = { colazione: I.colazione, spuntino: I.spuntino, pranzo: I.pranzo, cena: I.cena, dopocena: I.dopocena };
+export const ICO = { colazione: I.colazione, spuntino: I.spuntino, pranzo: I.pranzo, cena: I.cena, dopocena: I.dopocena };
 
 export function rigaPasto(g, pasto, { conSpunta = true } = {}) {
   const p = g[pasto];
@@ -68,8 +72,12 @@ export function rigaPasto(g, pasto, { conSpunta = true } = {}) {
   const registrato = logDi(s, g.data)[pasto];
   const voci = vociPasto(g, pasto);
   const kc = valoriVoci(registrato ? registrato.voci : voci, opzioniNutrizione(s));
-  const kcal = `${registrato ? "" : "≈ "}${kc.completo ? "" : "≥ "}${Math.round(kc.tot.kcal)} kcal${registrato && registrato.fonte === "composto" ? " · " + L({ it: "composto da te", en: "composed by you" }) : ""}`;
-  const escluso = voci.some((v) => (s.pref.escludi || []).includes(v.a));
+  const kcal = `${registrato ? "" : "≈ "}${kc.completo ? "" : "≥ "}${Math.round(kc.tot.kcal)} kcal`;
+  /* Logged: the foods she ate, not the plan's dish (the plan stays below, smaller). */
+  const opzN = opzioniNutrizione(s);
+  const mangiati = registrato ? registrato.voci.filter((v) => v.u !== "q.b." && v.q != null).map((v) => { const gr = grammiVoce(v, opzN.pesi).g; return `${nomeVoceLog(v, s)}${gr != null ? " " + Math.round(gr) + " g" : ""}`; }).join(", ") : "";
+  const comePiano = registrato && registrato.fonte === "piano" && !registrato.modificato;
+  const escluso = trovaEsclusi(voci, s.pref.escludi).length > 0;
   const ric = ricettePerPasto(g, pasto)[0];
   const slot = g.invertito && (pasto === "pranzo" || pasto === "cena") ? (pasto === "pranzo" ? "cena" : "pranzo") : pasto;
   const cat = p.cat ? `<span class="cat ${p.cat}" title="${esc(L(ETICHETTE_CAT[p.cat]))}">${esc(L(ETICHETTE_CAT[p.cat]).charAt(0).toUpperCase())}</span>` : "";
@@ -77,10 +85,13 @@ export function rigaPasto(g, pasto, { conSpunta = true } = {}) {
     <div class="ico">${ICO[pasto]}</div>
     <div class="corpo" data-az="apriPasto" data-data="${g.data}" data-pasto="${pasto}" role="button" tabindex="0">
       <div class="nome">${esc(L(DEF[slot].nome))}${def.facoltativo ? ` · ${esc(t("facoltativo"))}` : ""}${g.invertito && slot !== pasto ? ` · ${esc(t("invertito"))}` : ""}</div>
-      <div class="cosa">${cat}${esc(titoloPasto(g, pasto))}</div>
-      <div class="dosi">${esc(dosiBrevi(g, pasto))}</div>
-      <div class="kcal-riga">${esc(kcal)}${escluso ? ` <span class="etichetta terra">${esc(L({ it: "c'è un cibo che non mangi", en: "has a food you skip" }))}</span>` : ""}</div>
-      ${ric ? `<div class="ricetta-link">${I.libro}${esc(L(ric.titolo))}</div>` : ""}
+      ${registrato ? `<div class="mangiato">${I.spunta}<span>${esc(comePiano ? L({ it: "Mangiato come da piano", en: "Eaten as planned" }) : L({ it: "Hai mangiato", en: "You ate" }))}</span></div>
+        <div class="cosa">${esc(comePiano ? titoloPasto(g, pasto) : mangiati)}</div>
+        ${comePiano ? `<div class="dosi">${esc(dosiBrevi(g, pasto))}</div>` : `<div class="dosi">${esc(L({ it: "Nel piano: ", en: "In the plan: " }) + titoloPasto(g, pasto))}</div>`}`
+      : `<div class="cosa">${cat}${esc(titoloPasto(g, pasto))}</div>
+        <div class="dosi">${esc(dosiBrevi(g, pasto))}</div>`}
+      <div class="kcal-riga">${esc(kcal)}${escluso && !registrato ? ` <span class="etichetta terra">${esc(L({ it: "c'è un cibo che non mangi", en: "has a food you skip" }))}</span>` : ""}</div>
+      ${ric && !registrato ? `<div class="ricetta-link">${I.libro}${esc(L(ric.titolo))}</div>` : ""}
     </div>
     ${conSpunta ? `<button class="spunta ${fatto ? "fatto" : ""}" data-az="spunta" data-data="${g.data}" data-pasto="${pasto}" aria-pressed="${fatto}" aria-label="${esc(L({ it: "Segna come mangiato", en: "Mark as eaten" }))}">${I.spunta}</button>` : ""}
   </div>`;
@@ -202,7 +213,7 @@ registra({
     /* Unticking a meal she weighed, composed or corrected removes her work: it can be undone. */
     const e = logDi(S(), d.data)[d.pasto];
     const togli = !!((S().diario[d.data] || {}).pasti || {})[d.pasto];
-    if (togli && voceSua(e)) return cambiaConAnnulla(d.data, d.pasto, 0, L({ it: `${nomePasto(d.pasto)} tolto dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => spunta(s, d));
+    if (togli && voceSua(e)) return cambiaConAnnulla(d.data, d.pasto, 0, L({ it: `${nomePasto(d.pasto)} ${concorda(d.pasto, "tolt")} dal diario`, en: `${nomePasto(d.pasto)} removed from the diary` }), (s) => spunta(s, d));
     cambia((s) => spunta(s, d));
   },
   rimescolaPasto: (d) => {

@@ -15,12 +15,15 @@ The access code and the plain text of the plan are never committed. Both live
 outside the repository: `/home/claude/council/.sofia_code` and
 `/home/claude/council/piano-testo.json`.
 
-1. `node --test test/*.test.mjs` (67 tests on 2026-11-07).
+1. `node --test test/*.test.mjs` (75 tests on 2026-11-07).
 2. Only if the plan text changed or the code was rotated:
    `SOFIA_ACCESS_KEY="$(cat /home/claude/council/.sofia_code)" node tools/cifra-piano.mjs /home/claude/council/piano-testo.json`
    writes `app/data/piano-testo.cifrato.json`. `--decifra` prints the plain JSON back.
-3. Arm the gate: `SOFIA_ACCESS_KEY="$(cat /home/claude/council/.sofia_code)" node tools/gate-sofia.mjs`
-   (only a hash of the code goes into `app/zugang.js`).
+3. Arm the gate with the hash that is online, so a redeploy never changes Sofia's code:
+   `SOFIA_ACCESS_HASH="$(curl -sS https://sofia-piano.netlify.app/zugang.js | grep -o '[0-9a-f]\{64\}' | head -1)" node tools/gate-sofia.mjs`.
+   Only when the code is rotated on purpose: `SOFIA_ACCESS_KEY=... node tools/gate-sofia.mjs`.
+   Since 2026-11-07 15:30 UTC the live gate is the one a Netlify agent deploy set (hash `1c061b15...`);
+   the code in `/home/claude/council/.sofia_code` no longer matches it and must NOT be used to arm.
 4. `app/zugang.js` and `app/zugang.css` are git-ignored and the upload leaves ignored files out:
    back up `.gitignore`, remove those two lines, run the command returned by the Netlify MCP
    `deploy-site` operation from inside `sofia/`, restore `.gitignore`, delete the two generated files.
@@ -74,8 +77,17 @@ encrypted with it, so a new code always means step 2 again.
   check, docs)
 - [x] Round 3 fixes deployed 2026-11-07 14:54 UTC (deploy 6aef3b7d8a8aed0989f6fd7f); auditor re-check: approve
 - [x] Re-check minors fixed: Brussels sprouts not vetoed, Undo restores only the affected meal, sweet potato flour not wheat
+- [x] Sofia's feedback on the home page (2026-11-07): summary rings, three-step "Registra cibo" with household
+  measures and brands, "Cosa hai mangiato oggi", suggestions, ideas page with ingredient signals
+- [x] Week (2026-11-07): bars eaten and left per row (vegetables and fruit included), "Togli ingredienti"
+  with vegetables and fruit, redo the days from today keeping past days and logged meals (`rifaiDa`)
+- [ ] Plan text: the live gate code (set by the Netlify agent) does not open `piano-testo.cifrato.json`,
+  which is encrypted with the earlier code. Needs the code Sofia uses now (from ALX, env var only):
+  step 2 above with it, then redeploy
+- [ ] Corpo 5D: food-specific journey (salmon: EPA and DHA, vitamin D, B12, protein with amounts per
+  portion and the EU claim with its condition), camera and particle tuning
 - [ ] Independent QA review of the overhaul and re-check of S3 (read-only), fix what it finds, redeploy
-- [ ] Visitor access (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
+- [x] Visitor access: ALX switched team login off (2026-11-07). Was: (BLOCKER, seen in the logs 2026-11-07 04:21 UTC: Sofia's iPhone gets 401 on every
       request, runs the old cached version and cannot load the 3D library): team login is on for all deploys.
       Changing it was refused by the permission check; ALX switches it in Netlify:
       Project configuration > General > Visitor access > Project visibility (password protection

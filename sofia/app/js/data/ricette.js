@@ -225,7 +225,7 @@ export const RICETTE = [
   {
     id: "r-pa1", pasto: "pranzo", abbina: { combinato: "pa1" }, minuti: 15, tag: ["veloce"],
     titolo: Q("Pasta al pesto con fagiolini e zucchine", "Pesto pasta with green beans and courgettes"),
-    ingredienti: [{ a: "pasta_saraceno", q: 80, u: "g", testo: Q("o un'altra pasta o riso del piano", "or another pasta or rice from the plan") }, { a: "pesto", q: 30, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("fagiolini e zucchine", "green beans and courgettes") }],
+    ingredienti: [{ a: "pasta_saraceno", q: 80, u: "g", testo: Q("Pasta di grano saraceno, o un'altra pasta o riso del piano", "Buckwheat pasta, or another pasta or rice from the plan") }, { a: "pesto", q: 30, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("fagiolini e zucchine", "green beans and courgettes") }],
     extra: [Q("basilico", "basil")],
     passi: {
       it: ["Cuoci fagiolini e zucchine a pezzetti nella stessa acqua della pasta, qualche minuto prima di lei.", "Scola tutto insieme.", "Condisci con il pesto fuori dal fuoco. Qui niente olio in più: c'è già nel pesto."],
@@ -235,7 +235,7 @@ export const RICETTE = [
   {
     id: "r-pa2", pasto: "pranzo", abbina: { combinato: "pa2" }, minuti: 30, tag: ["meal_prep"],
     titolo: Q("Insalata di riso con tonno, mozzarella e olive", "Rice salad with tuna, mozzarella and olives"),
-    ingredienti: [{ a: "riso_integrale", q: 80, u: "g", testo: Q("o un'altra pasta o riso del piano", "or another pasta or rice from the plan") }, { a: "tonno", q: 30, u: "g" }, { a: "mozzarella_light", q: 30, u: "g" }, { a: "olive", q: 10, u: "pz" }, { a: "verdure", q: 300, u: "g", testo: Q("pomodorini, peperoni, cetrioli", "cherry tomatoes, peppers, cucumber") }, { a: "olio_evo", q: 5, u: "g" }],
+    ingredienti: [{ a: "riso_integrale", q: 80, u: "g", testo: Q("Riso integrale, o un'altra pasta o riso del piano", "Brown rice, or another pasta or rice from the plan") }, { a: "tonno", q: 30, u: "g" }, { a: "mozzarella_light", q: 30, u: "g" }, { a: "olive", q: 10, u: "pz" }, { a: "verdure", q: 300, u: "g", testo: Q("pomodorini, peperoni, cetrioli", "cherry tomatoes, peppers, cucumber") }, { a: "olio_evo", q: 5, u: "g" }],
     extra: [Q("basilico", "basil"), Q("origano", "oregano")],
     passi: {
       it: ["Cuoci il riso, scolalo e allargalo su un piatto a raffreddare.", "Taglia verdure e mozzarella a cubetti, le olive a metà.", "Unisci tutto con il tonno sgocciolato, 5 g di olio ed erbe. Si conserva in frigo un giorno."],
@@ -245,7 +245,7 @@ export const RICETTE = [
   {
     id: "r-pa3", pasto: "pranzo", abbina: { combinato: "pa3" }, minuti: 20, tag: ["meal_prep"],
     titolo: Q("Insalata di pasta con uovo sodo e tonno", "Pasta salad with hard-boiled egg and tuna"),
-    ingredienti: [{ a: "pasta_riso_integrale", q: 80, u: "g", testo: Q("o un'altra pasta o riso del piano", "or another pasta or rice from the plan") }, { a: "uovo", q: 1, u: "pz", testo: Q("uovo sodo", "hard-boiled egg") }, { a: "tonno", q: 30, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("pomodorini, rucola, carote", "cherry tomatoes, rocket, carrots") }, { a: "olio_evo", q: 5, u: "g" }],
+    ingredienti: [{ a: "pasta_riso_integrale", q: 80, u: "g", testo: Q("Pasta di riso integrale, o un'altra pasta o riso del piano", "Brown rice pasta, or another pasta or rice from the plan") }, { a: "uovo", q: 1, u: "pz", testo: Q("uovo sodo", "hard-boiled egg") }, { a: "tonno", q: 30, u: "g" }, { a: "verdure", q: 300, u: "g", testo: Q("pomodorini, rucola, carote", "cherry tomatoes, rocket, carrots") }, { a: "olio_evo", q: 5, u: "g" }],
     extra: [Q("prezzemolo", "parsley")],
     passi: {
       it: ["Cuoci l'uovo 9 minuti da quando l'acqua bolle, poi in acqua fredda.", "Cuoci la pasta, scolala e passala sotto l'acqua fredda.", "Unisci pasta, verdure, tonno e l'uovo a spicchi con 5 g di olio."],

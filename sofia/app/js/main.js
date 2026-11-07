@@ -9,6 +9,7 @@
 import { carica, S, cambia, ascolta, chiediMemoriaPersistente, memoriaNonDisponibile } from "./store.js";
 import { impostaLingua, t, L } from "./i18n.js";
 import { I, LOGO, esc, attivaGrafici, applicaStili, attivaColonne } from "./ui.js";
+import { animaArchi } from "./views/grafici.js";
 import { azioni, impostaRender, ridisegna, chiudiFoglio, foglioAperto, toast } from "./ctx.js";
 import { generaSettimana, isoData, lunediDi, aggiungiGiorni, vicine } from "./engine/planner.js";
 import { nuovoSeme } from "./engine/rng.js";
@@ -78,6 +79,7 @@ function render() {
   attivaGrafici(app);
   attivaColonne(app);
   applicaStili(app);
+  animaArchi(app);
   if (v.dopo) v.dopo(s, r.parti);
 }
 

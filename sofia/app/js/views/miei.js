@@ -14,6 +14,8 @@ import { generaSettimana, isoData, lunediDi } from "../engine/planner.js";
 import { renaleFuoriRange } from "../engine/salute.js";
 import { nomePasto } from "./diario.js";
 import { hash } from "../engine/rng.js";
+import { NON_ESCLUDIBILI, nomeEscluso } from "../engine/esclusi.js";
+import { VERDURE, FRUTTA } from "../data/scelte.js";
 
 let q = "", generici = [], online = { stato: "fermo", lista: [], q: "" }, scelto = null, cercaId = 0;
 
@@ -80,14 +82,16 @@ function cartaMiei(s) {
 }
 
 /* ------------------------------------------------------ do not eat */
-const NON_ESCLUDIBILI = new Set(["verdure", "frutta", "olio_evo", "acqua", "limone", "cannella", "passata"]);
 const GRUPPI = [
+  ["scelte_verdure", { it: "Verdure", en: "Vegetables" }], ["scelte_frutta", { it: "Frutta", en: "Fruit" }],
   ["formaggi", { it: "Formaggi", en: "Cheese" }], ["latticini", { it: "Latte e yogurt", en: "Milk and yogurt" }], ["pesce", { it: "Pesce", en: "Fish" }],
   ["carne", { it: "Carne", en: "Meat" }], ["uova", { it: "Uova", en: "Eggs" }], ["legumi", { it: "Legumi", en: "Legumes" }],
   ["frutta_secca", { it: "Frutta secca", en: "Nuts" }], ["dolci", { it: "Cioccolato, miele, marmellata", en: "Chocolate, honey, jam" }],
   ["cereali", { it: "Cereali e pasta", en: "Grains and pasta" }], ["pane", { it: "Pane, gallette, patate", en: "Bread, rice cakes, potatoes" }],
 ];
-const cibiDelGruppo = (g) => Object.entries(ALIMENTI).filter(([id, a]) => a.gruppo === g && !NON_ESCLUDIBILI.has(id)).map(([id]) => id);
+/* vegetables and fruit: the single ones she can pick (the plan's "verdure" and "frutta" stay a free choice) */
+const cibiDelGruppo = (g) => g === "scelte_verdure" ? VERDURE.map((x) => x.id) : g === "scelte_frutta" ? FRUTTA.map((x) => x.id)
+  : Object.entries(ALIMENTI).filter(([id, a]) => a.gruppo === g && !NON_ESCLUDIBILI.has(id)).map(([id]) => id);
 
 function cartaNonMangio(s) {
   const ex = new Set(s.pref.escludi || []);
@@ -105,9 +109,10 @@ function cartaNonMangio(s) {
       const alcuni = ids.filter((id) => ex.has(id)).length;
       return `<details class="gruppo-non"><summary><span>${esc(L(lab))}</span><span class="minimo">${alcuni ? `${alcuni}/${ids.length}` : ""}</span></summary>
         <div class="interruttore"><span><strong>${esc(L({ it: "Tutto il gruppo", en: "The whole group" }))}</strong></span><input type="checkbox" ${tutti ? "checked" : ""} data-cambia="escludiGruppo" data-g="${g}"></div>
-        ${ids.map((id) => `<div class="interruttore"><span>${esc(nome(id, lingua()))}</span><input type="checkbox" ${ex.has(id) ? "checked" : ""} data-cambia="escludiCibo" data-a="${id}"></div>`).join("")}</details>`;
+        ${ids.map((id) => `<div class="interruttore"><span>${esc(nomeEscluso(id, lingua()))}</span><input type="checkbox" ${ex.has(id) ? "checked" : ""} data-cambia="escludiCibo" data-a="${id}"></div>`).join("")}</details>`;
     }).join("")}
-    ${ex.size ? `<button class="btn piccolo" data-az="rimescolaSettimana" data-inizio="${lunediDi(isoData(new Date()))}">${I.rimescola}${esc(L({ it: "Rifai questa settimana senza questi cibi", en: "Redo this week without these foods" }))}</button>` : ""}
+    ${ex.size ? `<button class="btn piccolo" data-az="rifaiDaOggi" data-inizio="${lunediDi(isoData(new Date()))}">${I.rimescola}${esc(L({ it: "Rifai i giorni da oggi senza questi cibi", en: "Redo the days from today without these foods" }))}</button>` : ""}
+    <p class="minimo">${esc(L({ it: "Lo stesso elenco è in Settimana, alla voce Togli ingredienti.", en: "The same list is in Week, under Remove ingredients." }))}</p>
   </section>`;
 }
 
