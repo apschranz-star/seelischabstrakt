@@ -84,8 +84,12 @@ test("the service worker precaches every app module, so the app works offline", 
    plan's food rules are in the code on purpose. The access code is never committed: the
    generated gate files are git-ignored (the code itself is secret, so no test can name it). */
 test("the letter's personal text stays encrypted and the gate files are not committed", () => {
-  const ignora = readFileSync(join(radice, ".gitignore"), "utf8").split("\n").map((x) => x.trim());
-  assert.ok(ignora.includes("app/zugang.js") && ignora.includes("app/zugang.css"), "the gate files must stay git-ignored");
+  /* Only in a git checkout: the deploy upload removes these two lines on purpose so the armed
+     gate is uploaded (docs/STATO.md), and the build on Netlify runs these tests without .git. */
+  if (existsSync(join(radice, "..", ".git"))) {
+    const ignora = readFileSync(join(radice, ".gitignore"), "utf8").split("\n").map((x) => x.trim());
+    assert.ok(ignora.includes("app/zugang.js") && ignora.includes("app/zugang.css"), "the gate files must stay git-ignored");
+  }
   for (const f of tuttiTesti) {
     if (f.endsWith("piano-testo.cifrato.json")) continue;
     const t = readFileSync(f, "utf8");
