@@ -1,0 +1,54 @@
+name: Sofia checks
+
+on:
+  push:
+    branches: [astryx/sofia-refinement]
+    paths:
+      - "sofia/**"
+      - ".github/workflows/sofia-check.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "sofia/**"
+      - ".github/workflows/sofia-check.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sofia-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sofia
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: sofia/package-lock.json
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Run Sofia's full test suite
+        run: npm test
+      - name: Parse-check all application and test modules
+        run: |
+          find app/js lib netlify/functions tools test -type f \\( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \\) -print0 | xargs -0 -n1 node --check
+      - name: Validate JSON assets
+        run: |
+          node --input-type=module -e '
+            import fs from "node:fs";
+            const files = [
+              "package.json", "package-lock.json", "app/manifest.webmanifest",
+              "app/data/piano-testo.cifrato.json",
+              "docs/fonti/evidence-clinical.json",
+              "docs/fonti/evidence-nutrition.json"
+            ];
+            for (const file of files) JSON.parse(fs.readFileSync(file, "utf8"));
+            console.log("Validated " + files.length + " JSON assets");
+          '
