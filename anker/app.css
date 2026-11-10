@@ -976,3 +976,55 @@ details.netz > .details-inhalt { padding: 6px 18px 20px; }
   summary::after { display: none; }
   .suchzeile { background: none; border: 1px solid #ccc; }
 }
+
+
+/* ------------------------------------------------------- Astryx UX pass
+   Keyboard focus must be visible on every interactive control, not only the
+   primary buttons. Keep the signal clear in both themes and in forced-colour
+   environments. This layer changes presentation only.
+*/
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--neon);
+  outline-offset: 3px;
+}
+
+:where(button, a, summary) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.karte,
+details.rezept,
+details.netz,
+.journal-eintrag,
+.termin {
+  scroll-margin-block: 18px;
+}
+
+@media (prefers-contrast: more) {
+  .karte,
+  .schalter,
+  .leiste,
+  .journal-eintrag,
+  .termin {
+    border-color: var(--tinte-2);
+  }
+
+  .klein,
+  .kicker,
+  .feld > span,
+  .woche-tag small,
+  .kal-wt span {
+    color: var(--tinte-2);
+  }
+}
+
+@media (forced-colors: active) {
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 3px solid Highlight;
+  }
+
+  .leiste a[aria-current="page"],
+  .schalter[aria-pressed="true"] {
+    border: 2px solid Highlight;
+  }
+}
