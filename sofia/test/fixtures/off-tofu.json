@@ -1,0 +1,235 @@
+{
+ "hits": [
+  {
+   "code": "5021554987710",
+   "product_name": "Organic tofu imp",
+   "product_name_it": "Organic tofu",
+   "brands": [
+    "Clearspring"
+   ],
+   "quantity": "300 g",
+   "nutriments": {
+    "carbohydrates_100g": 2.8,
+    "energy-kcal_100g": 61,
+    "fat_100g": 2.7,
+    "proteins_100g": 6.5,
+    "salt_100g": 0,
+    "saturated-fat_100g": 0.5,
+    "sodium_100g": 0,
+    "sugars_100g": 1.1
+   },
+   "allergens_tags": [
+    "en:soybeans"
+   ],
+   "labels_tags": [
+    "en:low-or-no-fat",
+    "en:low-fat",
+    "en:no-gluten",
+    "en:organic",
+    "en:vegetarian",
+    "en:eu-organic",
+    "en:no-gmos",
+    "en:non-eu-agriculture",
+    "en:source-of-proteins",
+    "en:vegan",
+    "en:do-not-freeze",
+    "en:high-proteins",
+    "en:jp-bio-154",
+    "en:soil-association-organic",
+    "en:the-vegan-society"
+   ],
+   "categories_tags": [
+    "en:plant-based-foods-and-beverages",
+    "en:plant-based-foods",
+    "en:legumes-and-their-products",
+    "en:meat-alternatives",
+    "en:meat-analogues",
+    "en:tofu"
+   ],
+   "countries_tags": [
+    "en:france",
+    "en:netherlands",
+    "en:united-kingdom"
+   ]
+  },
+  {
+   "code": "4056489067788",
+   "product_name": "Tofu basil",
+   "product_name_it": "Tofu",
+   "brands": [
+    "Vemondo"
+   ],
+   "quantity": "180 g",
+   "nutriments": {
+    "carbohydrates_100g": 2.3,
+    "energy-kcal_100g": 125,
+    "fat_100g": 7.5,
+    "proteins_100g": 12,
+    "salt_100g": 1,
+    "saturated-fat_100g": 1,
+    "sodium_100g": 0.4,
+    "sugars_100g": 0.5
+   },
+   "allergens_tags": [
+    "en:soybeans"
+   ],
+   "labels_tags": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:vegan",
+    "en:european-vegetarian-union",
+    "en:european-vegetarian-union-vegan",
+    "en:nutriscore",
+    "en:nutriscore-grade-a"
+   ],
+   "categories_tags": [
+    "en:plant-based-foods-and-beverages",
+    "en:plant-based-foods",
+    "en:legumes-and-their-products",
+    "en:meat-alternatives",
+    "en:tofu"
+   ],
+   "countries_tags": [
+    "en:czech-republic",
+    "en:italy",
+    "en:united-kingdom"
+   ]
+  },
+  {
+   "code": "9313727087225",
+   "product_name": "Tofu",
+   "brands": [
+    "Tofu"
+   ],
+   "nutriments": {
+    "carbohydrates_100g": 2.12000007629395,
+    "energy-kcal_100g": 43.2,
+    "fat_100g": 2.32000007629395,
+    "fiber_100g": 0.0400000005960464,
+    "proteins_100g": 3.6,
+    "saturated-fat_100g": 0.4,
+    "sugars_100g": 0.320000004768372
+   },
+   "categories_tags": [
+    "en:plant-based-foods-and-beverages",
+    "en:plant-based-foods",
+    "en:legumes-and-their-products",
+    "en:meat-alternatives",
+    "en:tofu"
+   ],
+   "countries_tags": [
+    "en:australia"
+   ]
+  },
+  {
+   "code": "0850109005020",
+   "product_name": "Tofu",
+   "brands": [
+    "Heiwa tofu"
+   ],
+   "quantity": "16 oz",
+   "nutriments": {
+    "carbohydrates_100g": 3.5087719298246,
+    "energy-kcal_100g": 114.0350877193,
+    "fat_100g": 6.140350877193,
+    "fiber_100g": 1.7543859649123,
+    "proteins_100g": 13.157894736842,
+    "salt_100g": 0,
+    "saturated-fat_100g": 0.87719298245614,
+    "sodium_100g": 0,
+    "sugars_100g": 0.87719298245614
+   },
+   "categories_tags": [
+    "en:plant-based-foods-and-beverages",
+    "en:plant-based-foods",
+    "en:legumes-and-their-products",
+    "en:meat-alternatives",
+    "en:tofu"
+   ],
+   "countries_tags": [
+    "en:united-states"
+   ]
+  },
+  {
+   "code": "3273227588393",
+   "product_name": "Tofu naturale",
+   "product_name_it": "Tofu naturale",
+   "brands": [
+    "Sojasun"
+   ],
+   "quantity": "250g",
+   "nutriments": {
+    "carbohydrates_100g": 0.7,
+    "energy-kcal_100g": 149,
+    "fat_100g": 9,
+    "fiber_100g": 0.8,
+    "proteins_100g": 16,
+    "salt_100g": 0.02,
+    "saturated-fat_100g": 1.5,
+    "sodium_100g": 0.008,
+    "sugars_100g": 0
+   },
+   "allergens_tags": [
+    "en:celery",
+    "en:soybeans"
+   ],
+   "traces_tags": [
+    "en:celery",
+    "en:gluten",
+    "en:mustard",
+    "en:nuts",
+    "en:peanuts",
+    "en:sesame-seeds"
+   ],
+   "labels_tags": [
+    "en:no-gmos",
+    "en:senza-ogm"
+   ],
+   "categories_tags": [
+    "en:plant-based-foods-and-beverages",
+    "en:plant-based-foods",
+    "en:legumes-and-their-products",
+    "en:meat-alternatives",
+    "en:tofu",
+    "en:plain-tofu"
+   ],
+   "countries_tags": [
+    "en:italy"
+   ]
+  },
+  {
+   "code": "0036538812068",
+   "product_name": "Extra Firm Tofu",
+   "brands": [
+    "Ota Tofu"
+   ],
+   "quantity": "14 oz",
+   "nutriments": {
+    "carbohydrates_100g": 2.3529411764706,
+    "energy-kcal_100g": 82.352941176471,
+    "fat_100g": 4.1176470588235,
+    "fiber_100g": 3.5294117647059,
+    "proteins_100g": 9.4117647058824,
+    "salt_100g": 0,
+    "saturated-fat_100g": 0.58823529411765,
+    "sodium_100g": 0,
+    "sugars_100g": 1.1764705882353
+   },
+   "labels_tags": [
+    "en:no-gmos",
+    "en:non-gmo-project"
+   ],
+   "categories_tags": [
+    "en:plant-based-foods-and-beverages",
+    "en:plant-based-foods",
+    "en:legumes-and-their-products",
+    "en:meat-alternatives",
+    "en:tofu"
+   ],
+   "countries_tags": [
+    "en:united-states",
+    "en:world"
+   ]
+  }
+ ]
+}
