@@ -38,7 +38,7 @@ jobs:
         run: npm test
       - name: Parse-check all application and test modules
         run: |
-          find app/js lib netlify/functions tools test -type f \\( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \\) -print0 | xargs -0 -n1 node --check
+          find app/js lib netlify/functions tools test -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \) -print0 | xargs -0 -n1 node --check
       - name: Validate JSON assets
         run: |
           node --input-type=module -e '
