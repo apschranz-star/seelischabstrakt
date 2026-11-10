@@ -66,6 +66,7 @@ function render() {
   const app = document.getElementById("app");
   const titolo = v.titolo ? v.titolo(s, r.parti) : t(r.vista);
   app.innerHTML = `
+    <a class="salta" href="#vista">${esc(L({ it: "Salta al contenuto", en: "Skip to content" }))}</a>
     <header class="top">
       ${LOGO}
       <div><h1>${esc(titolo)}</h1>${v.sottotitolo ? `<div class="sub">${v.sottotitolo(s, r.parti)}</div>` : ""}</div>
@@ -74,7 +75,7 @@ function render() {
       <a class="icon-btn ${r.vista === "impostazioni" ? "attivo" : ""}" href="#/impostazioni" aria-label="${esc(t("impostazioni"))}">${I.impostazioni}</a>
     </header>
     ${memoriaNonDisponibile() ? `<div class="avviso terra">${I.avviso}<div>${esc(L({ it: "Questo browser non permette di salvare i dati (navigazione privata?). Quello che inserisci andrà perso alla chiusura.", en: "This browser does not allow saving data (private mode?). What you enter will be lost when you close it." }))}</div></div>` : ""}
-    <main id="vista">${v.render(s, r.parti)}</main>`;
+    <main id="vista" tabindex="-1">${v.render(s, r.parti)}</main>`;
   document.getElementById("nav").innerHTML = `<ul>${NAV.map(([id, ico]) => `<li><a href="#/${id}" class="${r.vista === id ? "attivo" : ""}" ${r.vista === id ? 'aria-current="page"' : ""}>${ico}<span>${esc(t(id))}</span></a></li>`).join("")}</ul>`;
   attivaGrafici(app);
   attivaColonne(app);
