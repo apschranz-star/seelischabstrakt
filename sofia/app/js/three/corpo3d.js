@@ -214,15 +214,23 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
   etichetta.hidden = true;
   contenitore.appendChild(etichetta);
   const puntatori = new Map();
-  canvas.addEventListener("pointerdown", (e) => { canvas.setPointerCapture(e.pointerId); puntatori.set(e.pointerId, { x: e.clientX, y: e.clientY }); trasc = { x: e.clientX, y: e.clientY, t: performance.now(), mosso: false }; autoRot = false; });
+  canvas.addEventListener("pointerdown", (e) => {
+    canvas.setPointerCapture(e.pointerId);
+    const primo = puntatori.size === 0;
+    puntatori.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (primo) trasc = { x: e.clientX, y: e.clientY, t: performance.now(), mosso: false };
+    else if (trasc) trasc.mosso = true;
+    autoRot = false;
+  });
   canvas.addEventListener("pointermove", (e) => {
     if (!puntatori.has(e.pointerId)) return;
     const prec = puntatori.get(e.pointerId);
     puntatori.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (puntatori.size === 2) {
+      if (trasc) trasc.mosso = true;
       const [a, b] = [...puntatori.values()];
       const d = Math.hypot(a.x - b.x, a.y - b.y);
-      if (pinza) obiettivoCam.z = THREE.MathUtils.clamp(obiettivoCam.z * (pinza / d), 1.2, 7);
+      if (pinza && d > 0) obiettivoCam.z = THREE.MathUtils.clamp(obiettivoCam.z * (pinza / d), 1.2, 7);
       pinza = d;
       return;
     }
@@ -231,13 +239,20 @@ export async function creaCorpo(contenitore, { alTocco = () => {}, ridotto = fal
     if (trasc && Math.hypot(e.clientX - trasc.x, e.clientY - trasc.y) > 6) trasc.mosso = true;
   });
   const fine = (e) => {
+    const singoloTocco = puntatori.size === 1 && trasc && !trasc.mosso && performance.now() - trasc.t < 400;
     puntatori.delete(e.pointerId);
     if (puntatori.size < 2) pinza = null;
-    if (trasc && !trasc.mosso && performance.now() - trasc.t < 400) tocca(e);
+    if (singoloTocco) tocca(e);
+    if (puntatori.size === 0) trasc = null;
+    else if (trasc) trasc.mosso = true;
+  };
+  const annulla = (e) => {
+    puntatori.delete(e.pointerId);
+    pinza = null;
     trasc = null;
   };
   canvas.addEventListener("pointerup", fine);
-  canvas.addEventListener("pointercancel", fine);
+  canvas.addEventListener("pointercancel", annulla);
   canvas.addEventListener("wheel", (e) => { obiettivoCam.z = THREE.MathUtils.clamp(obiettivoCam.z + e.deltaY * 0.003, 1.2, 7); e.preventDefault(); }, { passive: false });
 
   const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
