@@ -111,6 +111,24 @@ a.card.consiglio > svg { width: 20px; height: 20px; color: var(--ink-3); }
 a.card.consiglio .riga svg { width: 26px; height: 26px; color: var(--plum); }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :focus-visible { outline: 2px solid var(--plum); outline-offset: 2px; border-radius: 6px; }
+.salta {
+  position: fixed; z-index: 60; left: 16px; top: calc(-1 * (var(--safe-t) + 64px));
+  padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--surface); color: var(--ink); font-weight: 700; text-decoration: none;
+  box-shadow: var(--shadow);
+}
+.salta:focus { top: calc(var(--safe-t) + 8px); }
+@media (prefers-contrast: more) {
+  :root { --line: #8c7f70; --ink-3: #51483f; }
+  :root[data-tema="scuro"] { --line: #8b8176; --ink-3: #e1d8ce; }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root:where(:not([data-tema="chiaro"])) { --line: #8b8176; --ink-3: #e1d8ce; }
+}
+@media (forced-colors: active) {
+  .salta { color: LinkText; background: Canvas; border-color: ButtonText; }
+  :focus-visible { outline: 2px solid Highlight; outline-offset: 3px; }
+}
 
 /* ----------------------------------------------------------- layout */
 .app { max-width: 620px; margin: 0 auto; padding: calc(var(--safe-t) + 8px) 16px 0; }
