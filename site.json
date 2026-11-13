@@ -184,41 +184,41 @@
   },
   "texts": {
     "heroLead": {
-      "en": "Paintings and drawings from a Vienna studio. Originals on canvas and on paper, each one a single piece, photographed on the carpet in the studio. Editions are in preparation.",
-      "de": "Bilder und Zeichnungen aus einem Wiener Atelier. Originale auf Leinwand und auf Papier, jedes Stück ein Unikat, fotografiert am Teppich im Atelier. Editionen sind in Vorbereitung."
+      "en": "seelisch: of the soul. abstrakt: with the outside left off. Paintings and drawings from a studio in Vienna. Each exists once.",
+      "de": "Seelisch: was innen ist. Abstrakt: das Äußere weggelassen. Bilder und Zeichnungen aus einem Atelier in Wien. Jedes gibt es einmal."
     },
     "heroMeta": {
-      "en": "First works online, more to come",
-      "de": "Erste Werke online, weitere folgen"
+      "en": "First works online. More will follow.",
+      "de": "Erste Werke online. Weitere folgen."
     },
     "worksKicker": {
-      "en": "Originals · photographed on the carpet",
-      "de": "Originale · fotografiert am Teppich"
+      "en": "The carpet is the wall",
+      "de": "Der Teppich ist die Wand"
     },
     "printsLead": {
       "en": "Each edition is signed and numbered and ships flat from Vienna. Editions are limited per size; a sold-out size will not be reprinted.",
       "de": "Jede Edition ist signiert und nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe limitiert; eine ausverkaufte Größe wird nicht nachgedruckt."
     },
     "aboutLead": {
-      "en": "<b>Fragments, surfaces, marks.</b> The hand stays visible.",
-      "de": "<b>Fragmente, Oberflächen, Spuren.</b> Die Hand bleibt sichtbar."
+      "en": "<b>What passes, kept.</b> And the hand left visible in it.",
+      "de": "<b>Was vorbeigeht, aufgehoben.</b> Und die Hand bleibt darin sichtbar."
     },
     "aboutParagraphs": {
       "en": [
-        "I collect fragments: faces, gestures, surfaces, marks, objects, moments that would normally pass without being noticed.",
-        "I like things that show how they were made. A rough edge, a heavy layer of paint, a correction, something slightly out of place. I do not want to make work that feels too resolved. The trace of the hand is part of the work.",
-        "My background is not traditionally academic. I learned through making, building, selling, repairing, organising and starting things from zero. That experience continues to shape how I work. I approach a painting more like a physical problem than an illustration: layer by layer, decision by decision, until something begins to hold.",
-        "Small formats matter to me. They force concentration. A small surface can carry an enormous amount of information when every mark has a reason to exist.",
-        "I am interested in the tension between control and accident, between something carefully constructed and something that arrives unexpectedly.",
-        "The goal is not perfection. The goal is presence."
+        "I collect what would otherwise go unnoticed: a face, a gesture, the surface of a thing, a mark somebody left behind. It passes, and I keep it.",
+        "I trust things that show how they were made. A rough edge. Paint standing too thick. A correction that was allowed to stay. I stop before a picture turns smooth, because the hand that made it should still be in it.",
+        "I did not come to painting through an academy. I learned by making, building, selling, repairing, organising, and by starting from zero. That is why a picture is first of all a physical problem to me: one layer, one decision, the next layer, until it holds.",
+        "Small formats matter to me. A small surface forces me to concentrate. Nothing can hide on it, and every mark needs a reason to be there.",
+        "What I look for lies between control and accident, between the part I built and the part that simply arrived.",
+        "A picture does not have to be perfect. It has to be there when you walk into the room."
       ],
       "de": [
-        "Ich sammle Fragmente: Gesichter, Gesten, Oberflächen, Spuren, Gegenstände, Momente, die sonst vorbeigehen, ohne dass jemand hinschaut.",
-        "Ich mag Dinge, die zeigen, wie sie gemacht wurden. Eine raue Kante, eine dicke Farbschicht, eine Korrektur, etwas, das ein wenig verrutscht ist. Ich will keine Arbeiten machen, die zu fertig wirken. Die Spur der Hand gehört zum Werk.",
-        "Mein Hintergrund ist nicht klassisch akademisch. Ich habe durch Machen gelernt, durch Bauen, Verkaufen, Reparieren, Organisieren und dadurch, Dinge von null weg anzufangen. Diese Erfahrung prägt bis heute, wie ich arbeite. Ein Bild gehe ich eher an wie eine handwerkliche Aufgabe als wie eine Illustration: Schicht für Schicht, Entscheidung für Entscheidung, bis etwas zu halten beginnt.",
-        "Kleine Formate sind mir wichtig. Sie zwingen zur Konzentration. Eine kleine Fläche kann enorm viel tragen, wenn jede Spur einen Grund hat, da zu sein.",
-        "Mich interessiert die Spannung zwischen Kontrolle und Zufall, zwischen etwas sorgfältig Gebautem und etwas, das unerwartet ankommt.",
-        "Es geht nicht um Perfektion. Es geht um Präsenz."
+        "Ich sammle, was sonst unbemerkt bliebe: ein Gesicht, eine Geste, die Oberfläche eines Dings, eine Spur, die jemand zurückgelassen hat. Es geht vorbei, und ich hebe es auf.",
+        "Ich traue Dingen, denen man ansieht, wie sie gemacht wurden. Eine raue Kante. Farbe, die zu dick steht. Eine Korrektur, die bleiben durfte. Ich höre auf, bevor ein Bild glatt wird, denn die Hand, die es gemacht hat, soll noch darin sein.",
+        "Zur Malerei bin ich nicht über eine Akademie gekommen. Gelernt habe ich beim Machen, Bauen, Verkaufen, Reparieren und Organisieren, und dabei, bei null anzufangen. Darum ist ein Bild für mich zuerst eine handfeste Aufgabe: eine Schicht, eine Entscheidung, die nächste Schicht, bis es hält.",
+        "Kleine Formate sind mir wichtig. Eine kleine Fläche zwingt mich zur Konzentration. Auf ihr kann sich nichts verstecken, und jede Spur braucht einen Grund, da zu sein.",
+        "Was ich suche, liegt zwischen Kontrolle und Zufall, zwischen dem, was ich gebaut habe, und dem, was einfach gekommen ist.",
+        "Ein Bild muss nicht perfekt sein. Es muss da sein, wenn man den Raum betritt."
       ]
     },
     "facts": [
@@ -265,27 +265,27 @@
     ],
     "commission": {
       "intro": {
-        "en": "A work made for a specific wall, room and person. Sizes from 20 × 20 cm to 100 × 80 cm. Typical lead time four to eight weeks.",
-        "de": "Ein Werk für eine bestimmte Wand, einen Raum, einen Menschen. Größen von 20 × 20 cm bis 100 × 80 cm. Dauer meist vier bis acht Wochen."
+        "en": "A picture made for one wall and for the person who lives with it. From 20 × 20 cm to 100 × 80 cm. It usually takes four to eight weeks.",
+        "de": "Ein Bild für eine bestimmte Wand und für den Menschen, der damit lebt. Von 20 × 20 cm bis 100 × 80 cm. Meist dauert es vier bis acht Wochen."
       },
       "steps": {
         "en": [
-          "You send a photo of the space and two or three works from this page you respond to.",
-          "We agree on size, direction and price. A 30 percent deposit starts the commission.",
-          "You see the work at the halfway stage and can steer once.",
-          "Final payment on approval, then it ships framed, or you collect in Vienna."
+          "You send a photo of the room and two or three works from this page that stay with you.",
+          "We settle size, direction and price. A deposit of 30 percent starts the work.",
+          "Halfway through you see the picture and can steer once.",
+          "The rest is due when you approve it. Then it ships framed, or you collect it in Vienna."
         ],
         "de": [
-          "Du schickst ein Foto des Raums und zwei, drei Werke von dieser Seite, die dich ansprechen.",
-          "Wir fixieren Größe, Richtung und Preis. Mit 30 Prozent Anzahlung beginnt die Ausführung.",
-          "Du siehst das Werk auf halbem Weg und kannst einmal nachsteuern.",
-          "Restzahlung bei Freigabe, dann Versand gerahmt oder Abholung in Wien."
+          "Du schickst ein Foto vom Raum und zwei, drei Werke von dieser Seite, die bei dir hängen geblieben sind.",
+          "Wir legen Größe, Richtung und Preis fest. Mit 30 Prozent Anzahlung beginnt die Arbeit.",
+          "Auf halbem Weg siehst du das Bild und kannst einmal nachsteuern.",
+          "Der Rest ist fällig, wenn du es freigibst. Dann kommt es gerahmt zu dir, oder du holst es in Wien ab."
         ]
       }
     },
     "contactIntro": {
-      "en": "Questions about a work, studio visits in Vienna, or prices for several works. Replies usually within a day.",
-      "de": "Fragen zu einem Werk, Atelierbesuche in Wien oder Preise für mehrere Werke. Antwort meist innerhalb eines Tages."
+      "en": "Ask about a work, arrange a visit to the studio in Vienna, or ask what several works cost together. I usually answer within a day.",
+      "de": "Frag nach einem Werk, vereinbare einen Besuch im Atelier in Wien oder frag, was mehrere Werke zusammen kosten. Ich antworte meist innerhalb eines Tages."
     },
     "empty": {
       "works": {
@@ -327,13 +327,13 @@
         "lbl.chooseSize": "Edition size",
         "comm.cta": "Enquire about a commission",
         "contact.mail": "Send an email",
-        "notify.text": "A short note when a new work is released. No newsletter, no tracking.",
+        "notify.text": "One short note when a new work is finished. No newsletter, nothing else.",
         "works.empty": "New works will be released soon.",
         "filter.empty": "Nothing in this selection at the moment.",
         "trust": "Signed certificate of authenticity · Ships insured from Vienna · {d} days right of withdrawal · Payment by Revolut",
         "legal.us": "Buyers in the US",
         "price.returns": "{d} days right of withdrawal on originals and editions. Only commissions made to your specification are exempt.",
-        "works.note": "Every work here is a single piece. The price is final, the signed certificate of authenticity is included, shipping is added at checkout."
+        "works.note": "Every work here exists once. The price is final and includes the signed certificate of authenticity. Shipping is added when you order."
       },
       "de": {
         "nav.works": "Werke",
@@ -353,13 +353,13 @@
         "lbl.print": "Edition",
         "lbl.chooseSize": "Editionsgröße",
         "notify.title": "Neue Werke per E-Mail",
-        "notify.text": "Eine kurze Nachricht, wenn ein neues Werk erscheint. Kein Newsletter, kein Tracking.",
+        "notify.text": "Eine kurze Nachricht, wenn ein neues Werk fertig ist. Kein Newsletter, sonst nichts.",
         "works.empty": "Neue Werke folgen in Kürze.",
         "filter.empty": "In dieser Auswahl gibt es derzeit nichts.",
         "trust": "Signiertes Echtheitszertifikat · Versichert aus Wien · {d} Tage Widerrufsrecht · Zahlung per Revolut",
         "legal.us": "Käufer in den USA",
         "price.returns": "{d} Tage Widerrufsrecht bei Originalen und Editionen. Ausgenommen sind nur Auftragswerke nach Kundenwunsch.",
-        "works.note": "Jedes Werk hier ist ein Unikat. Der Preis ist ein Endpreis, das signierte Echtheitszertifikat ist dabei, der Versand kommt im Checkout dazu."
+        "works.note": "Jedes Werk hier gibt es einmal. Der Preis ist ein Endpreis, das signierte Echtheitszertifikat ist dabei. Der Versand kommt bei der Bestellung dazu."
       }
     }
   },
