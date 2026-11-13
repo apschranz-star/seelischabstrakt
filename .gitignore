@@ -2,3 +2,7 @@
 # Wegwerfordner aus Testlaeufen, in denen eine Variable leer war
 undefined/
 **/undefined/
+
+# Storefront build tooling (source in store/, built files are index.html and app/)
+store/node_modules/
+.store-dist/

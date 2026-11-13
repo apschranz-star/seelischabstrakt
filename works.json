@@ -33,7 +33,8 @@
         "en": "A large red eye painted on canvas, black paint running down from the upper lid, blue and grey brushwork around it.",
         "de": "Ein großes rotes Auge auf Leinwand, vom oberen Lid rinnt schwarze Farbe herunter, rundherum blaue und graue Pinselzüge."
       },
-      "webp": true
+      "webp": true,
+      "webpImages": true
     },
     {
       "id": "w12",
@@ -68,7 +69,8 @@
         "en": "A square canvas, the left half crusted with thick paint, the right half open red with black strokes laid across it.",
         "de": "Eine quadratische Leinwand, die linke Hälfte verkrustet mit dicker Farbe, die rechte Hälfte offenes Rot mit schwarzen Strichen darüber."
       },
-      "webp": true
+      "webp": true,
+      "webpImages": true
     },
     {
       "id": "w10",
@@ -104,7 +106,8 @@
         "en": "A head drawn with a marker in one continuous line on pale blue paper, black running from the mouth, the crossed out title above it.",
         "de": "Ein Kopf, mit Marker in einer durchgehenden Linie auf hellblaues Papier gezeichnet, aus dem Mund rinnt Schwarz, darüber der durchgestrichene Titel."
       },
-      "webp": true
+      "webp": true,
+      "webpImages": true
     }
   ]
 }

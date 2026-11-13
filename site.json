@@ -330,9 +330,9 @@
         "notify.text": "A short note when a new work is released. No newsletter, no tracking.",
         "works.empty": "New works will be released soon.",
         "filter.empty": "Nothing in this selection at the moment.",
-        "trust": "Signed certificate of authenticity · Ships insured from Vienna · {d} days to return a work that was in stock · Payment by Revolut",
+        "trust": "Signed certificate of authenticity · Ships insured from Vienna · {d} days right of withdrawal · Payment by Revolut",
         "legal.us": "Buyers in the US",
-        "price.returns": "{d} days right of withdrawal on editions. Commissions made to order are exempt. For originals that were in stock we grant a voluntary return within the same period.",
+        "price.returns": "{d} days right of withdrawal on originals and editions. Only commissions made to your specification are exempt.",
         "works.note": "Every work here is a single piece. The price is final, the signed certificate of authenticity is included, shipping is added at checkout."
       },
       "de": {
@@ -356,9 +356,9 @@
         "notify.text": "Eine kurze Nachricht, wenn ein neues Werk erscheint. Kein Newsletter, kein Tracking.",
         "works.empty": "Neue Werke folgen in Kürze.",
         "filter.empty": "In dieser Auswahl gibt es derzeit nichts.",
-        "trust": "Signiertes Echtheitszertifikat · Versichert aus Wien · {d} Tage Rückgabe bei vorrätigen Werken · Zahlung per Revolut",
+        "trust": "Signiertes Echtheitszertifikat · Versichert aus Wien · {d} Tage Widerrufsrecht · Zahlung per Revolut",
         "legal.us": "Käufer in den USA",
-        "price.returns": "{d} Tage Widerrufsrecht bei Editionen. Auftragswerke nach Kundenwunsch sind ausgenommen. Bei vorrätigen Originalen gewähren wir freiwillig dieselbe Frist zur Rückgabe.",
+        "price.returns": "{d} Tage Widerrufsrecht bei Originalen und Editionen. Ausgenommen sind nur Auftragswerke nach Kundenwunsch.",
         "works.note": "Jedes Werk hier ist ein Unikat. Der Preis ist ein Endpreis, das signierte Echtheitszertifikat ist dabei, der Versand kommt im Checkout dazu."
       }
     }
@@ -387,7 +387,7 @@
     "_help": "Fill these in. They feed the Imprint, Privacy, Terms, Returns and Shipping pages in both languages. Nothing here is legal advice; have a lawyer or the WKO check the final texts.",
     "legalName": "Alexander Schranz",
     "tradeName": "seelischabstrakt",
-    "street": "[Straße und Hausnummer / street and number]",
+    "street": "",
     "zipCity": "1180 Wien",
     "country": "Österreich",
     "email": "a.p.schranz@icloud.com",
@@ -401,7 +401,7 @@
     "returnsDaysPrints": 14,
     "originalsMadeToOrderExempt": false,
     "usPrivacyContactSameAsEmail": true,
-    "lastUpdated": "2026-10-12",
+    "lastUpdated": "2026-11-13",
     "_kleinunternehmer": "commerce.kleinunternehmer is the single switch. true: prices are final, no VAT shown (Austrian small business, currently up to 55,000 EUR turnover). false: 13 % originals / 20 % prints are shown."
   },
   "publish": {
