@@ -1,0 +1,75 @@
+/* Adjustments to Astryx components that the theme file cannot express, and the
+   shop's own form control. Kept small on purpose: what can live in
+   src/theme/seelischTheme.ts lives there. */
+
+/* the native select inside an Astryx Field (components/NativeSelect.tsx) */
+.sa-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: var(--size-element-md);
+  padding: 0 40px 0 12px;
+  border: var(--border-width, 1px) solid var(--color-border-emphasized);
+  border-radius: var(--radius-element);
+  background-color: var(--color-background-surface);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--text-body-size);
+  line-height: 1.3;
+  cursor: pointer;
+}
+.sa-select.sm {
+  min-height: var(--size-element-sm);
+  font-family: var(--font-family-code);
+  font-size: 13px;
+  font-weight: 700;
+}
+.sa-select:focus-visible {
+  outline: var(--focus-outline-width) var(--focus-outline-style, solid) var(--focus-outline-color);
+  outline-offset: var(--focus-outline-offset);
+}
+.sa-select[aria-invalid='true'] {
+  border-color: var(--color-border-error);
+}
+
+/* round controls: the language button on a phone and the mark in the corner */
+.lang-round .astryx-button {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--mat);
+  color: var(--frame);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+.mark .astryx-button {
+  width: 64px;
+  height: 64px;
+  padding: 0 0 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--frame);
+  font: 800 25px/1 var(--f-display);
+  letter-spacing: -0.05em;
+  text-decoration: none;
+}
+@media (max-width: 560px) {
+  .mark .astryx-button {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+}
+
+/* the header is always black, whatever the ground: its controls are cream */
+.nav .astryx-icon-button,
+.burger .astryx-button {
+  color: var(--mat);
+}

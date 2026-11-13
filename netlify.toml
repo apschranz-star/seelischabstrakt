@@ -31,6 +31,13 @@
   to = "/404.html"
   status = 404
 
+# store/ ist der Quelltext des Shops (React, Astryx). Ausgeliefert wird nur das
+# Gebaute: index.html und app/ in der Wurzel. Der Quelltext hat hier nichts zu suchen.
+[[redirects]]
+  from = "/store/*"
+  to = "/404.html"
+  status = 404
+
 # Forms: enable "Form detection" once in Netlify UI (Site configuration → Forms). The static <form name="order"> in index.html is then picked up.
 
 # Security and caching headers

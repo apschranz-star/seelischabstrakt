@@ -1,0 +1,473 @@
+/* Ground rules of the page: the shop's own custom properties, the carpet, and
+   the few element defaults. Astryx brings its styles in cascade layers
+   (reset, astryx-base, astryx-theme). What is written here without a layer
+   wins over all of them; element defaults therefore go into the reset layer,
+   so they never reach into an Astryx component. */
+@layer reset, astryx-base, astryx-theme;
+
+:root {
+  /* Defaults of the carpet preset. site.json overwrites them at runtime
+     (lib/theme.ts); they stand here so the first paint already has them. */
+  --ground: #8c1d1d;
+  --ground-line: #3a0708;
+  --ground-dot: #5c0f10;
+  --section2: #1a1210;
+  --section2-line: #3b2118;
+  --frame: #0d0a0a;
+  --mat: #efe7d8;
+  --ink: #f3ebde;
+  --ink-2: #e2cdbf;
+  --mute: #e3c2b8;
+  --paper: #f1ebe0;
+  --paper-ink: #171212;
+  --accent: #f2b429;
+  --f-display: 'Bricolage Grotesque', 'Arial Narrow', Impact, sans-serif;
+  --f-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --f-mono: 'Courier Prime', 'Courier New', monospace;
+  --shadow: 0 2px 0 rgba(0, 0, 0, 0.35), 0 26px 50px -20px rgba(0, 0, 0, 0.75);
+  --gap-x: clamp(18px, 3vw, 36px);
+  --gap-y: clamp(28px, 4vw, 56px);
+  --gutter: clamp(16px, 4vw, 56px);
+  --pattern: none;
+  --pattern-size: 160px 200px;
+  --pattern2: none;
+  --pattern2-size: 140px 140px;
+  --header-h: 64px;
+}
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  a {
+    color: inherit;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    margin: 0;
+  }
+  img,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ground);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* The carpet. The body carries it, and everything on the page floats on it:
+   that see-through ground is the one fixed design decision of the shop. */
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.55;
+  background-color: var(--ground);
+  background-image: var(--pattern);
+  background-size: var(--pattern-size);
+  padding-inline: var(--gutter);
+  padding-block: 0 80px;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Astryx wraps each themed region in a div. That wrapper must not become a
+   box of its own: the page layout belongs to the elements inside. The two
+   colour modes of the theme are the two surfaces of the shop: "dark" is the
+   carpet, "light" is paper (labels, cards, sheets). */
+div[data-astryx-theme][data-theme] {
+  display: contents;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  background: var(--mat);
+  color: var(--frame);
+  padding: 10px 14px;
+  font-family: var(--f-mono);
+  font-weight: 700;
+  z-index: 80;
+  text-decoration: none;
+}
+.skip:focus {
+  top: 8px;
+}
+
+/* Focus on the page's own links and tiles. Astryx components draw their own
+   ring from the same tokens. */
+.sa-focus:focus-visible,
+.drop:focus-visible,
+.brand:focus-visible,
+.framed .mat:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Type helpers that follow the theme's three voices: display, body, mono. */
+.kicker {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0 0 8px;
+}
+.mono {
+  font-family: var(--f-mono);
+}
+.note {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--mute);
+  margin: 22px 0 0;
+  max-width: 70ch;
+}
+
+/* ---------- ticker ---------- */
+.ticker {
+  margin-inline: calc(-1 * var(--gutter));
+  background: var(--accent);
+  color: var(--frame);
+  overflow: hidden;
+  white-space: nowrap;
+  font: 700 11px/1 var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 0;
+}
+.ticker-track {
+  display: inline-flex;
+  animation: tick 46s linear infinite;
+}
+.ticker-track span {
+  padding-right: 4em;
+}
+@keyframes tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker {
+    white-space: normal;
+    text-align: center;
+    padding-inline: 16px;
+    line-height: 1.5;
+  }
+  .ticker-track {
+    display: block;
+  }
+  .ticker-track span[aria-hidden] {
+    display: none;
+  }
+  .ticker-track span {
+    padding: 0;
+  }
+}
+
+/* ---------- header ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: var(--header-h);
+  padding: 10px 20px;
+  margin-inline: calc(-1 * var(--gutter));
+  background: var(--frame);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.brand {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-decoration: none;
+  background: var(--mat);
+  color: var(--frame);
+  padding: 5px 11px 8px;
+  white-space: nowrap;
+}
+.nav-links {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+.nav-links a,
+.menu-links a {
+  text-decoration: none;
+}
+.nav-links a {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+  padding-block: 8px;
+}
+.nav-links a:hover,
+.nav-links a[aria-current='true'] {
+  color: var(--mat);
+}
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.burger {
+  display: none;
+}
+.lang-round {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    padding: 8px 12px;
+  }
+  .nav > nav {
+    display: none;
+  }
+  .burger {
+    display: inline-flex;
+    justify-self: start;
+  }
+  .nav .brand {
+    justify-self: center;
+    font-size: 22px;
+  }
+  .nav-controls {
+    justify-self: end;
+  }
+  .lang-seg {
+    display: none;
+  }
+  .lang-round {
+    display: inline-flex;
+  }
+}
+
+/* mobile menu, inside an Astryx Drawer */
+.menu-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+.menu-links a {
+  display: block;
+  padding: 16px 4px;
+  font-family: var(--f-display);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--mat);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- sections ---------- */
+main {
+  display: block;
+}
+.sec {
+  padding-block: clamp(40px, 6vw, 80px);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
+section[id],
+#contact {
+  scroll-margin-top: calc(var(--header-h) + 20px);
+}
+.sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+.sec-title {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(34px, 4.5vw, 56px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 0;
+}
+.empty {
+  display: block;
+  width: 100%;
+  overflow-wrap: anywhere;
+  font-family: var(--f-mono);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-align: center;
+  padding: 48px 16px;
+  border: 1px dashed var(--mute);
+  margin: 0;
+}
+
+/* soft reveal: elements slide up and fade in when they enter the viewport */
+html.js body[data-reveal='on'] .reveal {
+  opacity: 0;
+}
+html.js body[data-reveal='on'] .reveal.in {
+  animation: reveal-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--dx, 0px), var(--dy, 28px));
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js body[data-reveal='on'] .reveal {
+    opacity: 1;
+  }
+}
+
+/* ---------- footer ---------- */
+.foot {
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  padding-top: 28px;
+  display: grid;
+  gap: 22px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+.foot-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px 28px;
+  flex-wrap: wrap;
+}
+.foot-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px 24px;
+  flex-wrap: wrap;
+}
+.foot a {
+  color: var(--ink-2);
+}
+.legal-links {
+  display: flex;
+  gap: 4px 18px;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.legal-links button {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  font: inherit;
+  color: var(--ink-2);
+}
+.legal-links button:hover {
+  color: var(--mat);
+}
+.legal-links button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- the round mark ---------- */
+.mark {
+  position: fixed;
+  right: clamp(14px, 3vw, 28px);
+  bottom: clamp(14px, 3vw, 28px);
+  z-index: 55;
+  opacity: 0;
+  transform: translateY(24px) scale(0.8);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.mark.on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* ---------- error state ---------- */
+.fatal {
+  min-height: 60vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  text-align: center;
+  font-family: var(--f-mono);
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+    padding: 0;
+  }
+  .ticker,
+  .nav,
+  main,
+  .foot,
+  .mark {
+    display: none !important;
+  }
+}
