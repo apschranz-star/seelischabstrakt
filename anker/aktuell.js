@@ -3,7 +3,7 @@
  * Nicht von Hand aendern, der naechste Lauf ueberschreibt die Datei.
  */
 window.ANKER_AKTUELL = {
- "stand": "2026-10-04",
+ "stand": "2026-11-01",
  "quelle": "PubMed (NCBI E-utilities)",
  "forschung": {
   "zoeliakie": {
@@ -23,6 +23,13 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
+     "pmid": "41587026",
+     "titel": "IgA Nephropathy in Adults: A Review.",
+     "zeitschrift": "JAMA",
+     "datum": "2026-03-03",
+     "art": "uebersicht"
+    },
+    {
      "pmid": "41950475",
      "titel": "Celiac Disease.",
      "zeitschrift": "The New England journal of medicine",
@@ -34,13 +41,6 @@ window.ANKER_AKTUELL = {
      "titel": "Chronic, Noninfectious Diarrhea: A Review.",
      "zeitschrift": "JAMA",
      "datum": "2026-04-14",
-     "art": "uebersicht"
-    },
-    {
-     "pmid": "41587026",
-     "titel": "IgA Nephropathy in Adults: A Review.",
-     "zeitschrift": "JAMA",
-     "datum": "2026-03-03",
      "art": "uebersicht"
     },
     {
@@ -58,10 +58,10 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "41093604",
-     "titel": "Advances in the pathophysiology, diagnosis, and management of celiac disease.",
-     "zeitschrift": "BMJ (Clinical research ed.)",
-     "datum": "2025-10-15",
+     "pmid": "41254953",
+     "titel": "Oral Lichen Planus and Systemic Diseases.",
+     "zeitschrift": "Journal of dental research",
+     "datum": "2026-01-01",
      "art": "uebersicht"
     }
    ],
@@ -84,13 +84,6 @@ window.ANKER_AKTUELL = {
      "art": "leitlinie"
     },
     {
-     "pmid": "41092329",
-     "titel": "A Phase 3 Trial of Telitacicept for Systemic Lupus Erythematosus.",
-     "zeitschrift": "The New England journal of medicine",
-     "datum": "2025-10-16",
-     "art": "studie"
-    },
-    {
      "pmid": "40907995",
      "titel": "ERS/EULAR clinical practice guidelines for connective tissue disease-associated interstitial lung disease.",
      "zeitschrift": "The European respiratory journal",
@@ -105,6 +98,13 @@ window.ANKER_AKTUELL = {
      "art": "studie"
     },
     {
+     "pmid": "41204012",
+     "titel": "Cutaneous lupus erythematosus - from pathogenesis to targeted therapy.",
+     "zeitschrift": "Nature reviews. Rheumatology",
+     "datum": "2025-12-01",
+     "art": "uebersicht"
+    },
+    {
      "pmid": "41841532",
      "titel": "Systemic lupus erythematosus: one year in review 2026.",
      "zeitschrift": "Clinical and experimental rheumatology",
@@ -112,21 +112,14 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "41204012",
-     "titel": "Cutaneous lupus erythematosus - from pathogenesis to targeted therapy.",
-     "zeitschrift": "Nature reviews. Rheumatology",
-     "datum": "2025-12-01",
-     "art": "uebersicht"
+     "pmid": "41466456",
+     "titel": "Efficacy and Safety of Subcutaneous Anifrolumab in Systemic Lupus Erythematosus: A Randomized, Phase 3 Study.",
+     "zeitschrift": "Arthritis & rheumatology (Hoboken, N.J.)",
+     "datum": "2026-06-01",
+     "art": "studie"
     }
    ],
    "alltag": [
-    {
-     "pmid": "41934146",
-     "titel": "Pathogenesis-directed lupus therapeutics.",
-     "zeitschrift": "Current opinion in rheumatology",
-     "datum": "2026-07-01",
-     "art": "uebersicht"
-    },
     {
      "pmid": "42336388",
      "titel": "The 2026 British Society for Rheumatology guideline for the management of children, young people and adults with systemic lupus erythematosus.",
@@ -135,17 +128,17 @@ window.ANKER_AKTUELL = {
      "art": "leitlinie"
     },
     {
-     "pmid": "41569403",
-     "titel": "A preliminary proof-of-concept trial on the effects of ketamine on fatigue: a randomized crossover trial.",
-     "zeitschrift": "Pharmacological reports : PR",
-     "datum": "2026-04-01",
-     "art": "studie"
+     "pmid": "41258446",
+     "titel": "Insights into the pathogenesis of childhood-onset SLE in the past decade.",
+     "zeitschrift": "Nature reviews. Rheumatology",
+     "datum": "2026-01-01",
+     "art": "uebersicht"
     },
     {
-     "pmid": "41439574",
-     "titel": "Are lupus outcomes improving?",
+     "pmid": "41934146",
+     "titel": "Pathogenesis-directed lupus therapeutics.",
      "zeitschrift": "Current opinion in rheumatology",
-     "datum": "2026-03-01",
+     "datum": "2026-07-01",
      "art": "uebersicht"
     },
     {
@@ -154,6 +147,13 @@ window.ANKER_AKTUELL = {
      "zeitschrift": "Lupus",
      "datum": "2025-12-01",
      "art": "artikel"
+    },
+    {
+     "pmid": "41439574",
+     "titel": "Are lupus outcomes improving?",
+     "zeitschrift": "Current opinion in rheumatology",
+     "datum": "2026-03-01",
+     "art": "uebersicht"
     }
    ]
   },
@@ -167,6 +167,13 @@ window.ANKER_AKTUELL = {
      "art": "studie"
     },
     {
+     "pmid": "41903163",
+     "titel": "Ixekizumab With Tirzepatide Achieved Greater Disease Control Than Ixekizumab Alone in Adults With Psoriatic Arthritis and Overweight or Obesity: Results From a Randomized Clinical Trial.",
+     "zeitschrift": "Arthritis & rheumatology (Hoboken, N.J.)",
+     "datum": "2026-10-01",
+     "art": "studie"
+    },
+    {
      "pmid": "40991259",
      "titel": "Mediterranean Diet and Patients With Psoriasis: The MEDIPSO Randomized Clinical Trial.",
      "zeitschrift": "JAMA dermatology",
@@ -174,11 +181,18 @@ window.ANKER_AKTUELL = {
      "art": "studie"
     },
     {
-     "pmid": "41903163",
-     "titel": "Ixekizumab With Tirzepatide Achieved Greater Disease Control Than Ixekizumab Alone in Adults With Psoriatic Arthritis and Overweight or Obesity: Results From a Randomized Clinical Trial.",
-     "zeitschrift": "Arthritis & rheumatology (Hoboken, N.J.)",
-     "datum": "2026-10-01",
-     "art": "studie"
+     "pmid": "42526473",
+     "titel": "Psoriasis.",
+     "zeitschrift": "Lancet (London, England)",
+     "datum": "2026-08-22",
+     "art": "uebersicht"
+    },
+    {
+     "pmid": "40685883",
+     "titel": "Systemic treatment of immune checkpoint inhibitor-induced psoriasis: Inference-based guidance.",
+     "zeitschrift": "Journal of the European Academy of Dermatology and Venereology : JEADV",
+     "datum": "2025-11-01",
+     "art": "uebersicht"
     },
     {
      "pmid": "41191932",
@@ -195,25 +209,11 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "42526473",
-     "titel": "Psoriasis.",
-     "zeitschrift": "Lancet (London, England)",
-     "datum": "2026-08-22",
-     "art": "uebersicht"
-    },
-    {
-     "pmid": "41200832",
-     "titel": "Inflammatory niches as spatial drivers of disease mechanisms and targets for personalized treatment.",
-     "zeitschrift": "Journal of the European Academy of Dermatology and Venereology : JEADV",
-     "datum": "2026-03-01",
-     "art": "uebersicht"
-    },
-    {
-     "pmid": "40545752",
-     "titel": "Switching biologic agent in patients with psoriasis: a systematic review and meta-analysis.",
-     "zeitschrift": "The Journal of dermatological treatment",
-     "datum": "2025-12-01",
-     "art": "metaanalyse"
+     "pmid": "41531416",
+     "titel": "S3 Guideline for the treatment of psoriasis vulgaris, adapted from EuroGuiDerm - part 1: Treatment recommendations and monitoring.",
+     "zeitschrift": "Journal der Deutschen Dermatologischen Gesellschaft = Journal of the German Society of Dermatology : JDDG",
+     "datum": "2026-01-01",
+     "art": "leitlinie"
     }
    ],
    "alltag": [
@@ -232,10 +232,10 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "40930460",
-     "titel": "Global Burden of Psoriasis from 1990 to 2021 and Potential Factors: A Systematic Analysis.",
-     "zeitschrift": "The Journal of investigative dermatology",
-     "datum": "2026-04-01",
+     "pmid": "40889467",
+     "titel": "Advancing insights into psoriasis: from pathogenesis to current and emerging therapies.",
+     "zeitschrift": "International immunopharmacology",
+     "datum": "2025-11-14",
      "art": "uebersicht"
     }
    ]
@@ -257,24 +257,10 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "41228508",
-     "titel": "Effects of Gluten-Free Diet in Non-Celiac Hashimoto's Thyroiditis: A Systematic Review and Meta-Analysis.",
-     "zeitschrift": "Nutrients",
-     "datum": "2025-10-31",
-     "art": "metaanalyse"
-    },
-    {
-     "pmid": "41254953",
-     "titel": "Oral Lichen Planus and Systemic Diseases.",
-     "zeitschrift": "Journal of dental research",
-     "datum": "2026-01-01",
-     "art": "uebersicht"
-    },
-    {
-     "pmid": "30000797",
-     "titel": "Liotrix.",
-     "zeitschrift": "",
-     "datum": "2026-06-15",
+     "pmid": "42843400",
+     "titel": "Hashimoto's thyroiditis: two decades on.",
+     "zeitschrift": "The lancet. Diabetes & endocrinology",
+     "datum": "2026-10-07",
      "art": "uebersicht"
     },
     {
@@ -285,34 +271,55 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "41105204",
-     "titel": "An update on novel taxa and revised taxonomic status of bacteria isolated from human clinical specimens described in 2024.",
-     "zeitschrift": "Journal of clinical microbiology",
-     "datum": "2025-12-17",
+     "pmid": "41254953",
+     "titel": "Oral Lichen Planus and Systemic Diseases.",
+     "zeitschrift": "Journal of dental research",
+     "datum": "2026-01-01",
      "art": "uebersicht"
     },
     {
-     "pmid": "41089714",
-     "titel": "Autoimmune Hepatitis Associated with Other Autoimmune Diseases: A Critical Review.",
-     "zeitschrift": "Journal of clinical and translational hepatology",
-     "datum": "2025-10-28",
+     "pmid": "30000063",
+     "titel": "Liothyronine.",
+     "zeitschrift": "",
+     "datum": "2026-10-15",
      "art": "uebersicht"
+    },
+    {
+     "pmid": "30000797",
+     "titel": "Liotrix.",
+     "zeitschrift": "",
+     "datum": "2026-10-15",
+     "art": "uebersicht"
+    },
+    {
+     "pmid": "41499723",
+     "titel": "Systematic Review and Meta-Analysis of the Clinical Features Associated With Seronegative Autoimmune Encephalitis.",
+     "zeitschrift": "Neurology(R) neuroimmunology & neuroinflammation",
+     "datum": "2026-03-01",
+     "art": "metaanalyse"
     }
    ],
    "alltag": [
     {
-     "pmid": "41228460",
-     "titel": "Probiotic Supplementation Enhances the Effects of a Nutritional Intervention on Quality of Life in Women with Hashimoto's Thyroiditis-A Double-Blind Randomised Study.",
-     "zeitschrift": "Nutrients",
-     "datum": "2025-10-28",
+     "pmid": "41329567",
+     "titel": "The Combined Effects of an Anti-Inflammatory Diet and Curcumin Supplementation on Thyroid Function and Lipid Profile in Patients With Hashimoto's Thyroiditis: A Double Blind Randomised Clinical Trial.",
+     "zeitschrift": "Endocrinology, diabetes & metabolism",
+     "datum": "2026-01-01",
      "art": "studie"
     },
     {
-     "pmid": "42147111",
-     "titel": "Beyond celiac disease: the potential role of gluten in Hashimoto's thyroiditis.",
-     "zeitschrift": "Frontiers in endocrinology",
-     "datum": "2026-05-01",
+     "pmid": "41206976",
+     "titel": "Selenium status and supplementation in thyroid disorders: A narrative review of current evidence.",
+     "zeitschrift": "Journal of trace elements in medicine and biology : organ of the Society for Minerals and Trace Elements (GMS)",
+     "datum": "2025-12-01",
      "art": "uebersicht"
+    },
+    {
+     "pmid": "40568843",
+     "titel": "The influence of identity-oriented psychotrauma therapy on Hashimoto disease activity: a randomised controlled trial.",
+     "zeitschrift": "European journal of psychotraumatology",
+     "datum": "2025-12-01",
+     "art": "studie"
     }
    ]
   },
@@ -333,13 +340,6 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "41226627",
-     "titel": "Rheumatoid Arthritis: Biomarkers and the Latest Breakthroughs.",
-     "zeitschrift": "International journal of molecular sciences",
-     "datum": "2025-10-30",
-     "art": "uebersicht"
-    },
-    {
      "pmid": "41327784",
      "titel": "Clinical Practice Guideline for Evaluation and Management of Peripheral Nervous System Manifestations in Sjögren's Disease.",
      "zeitschrift": "Arthritis care & research",
@@ -354,18 +354,25 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
+     "pmid": "42248165",
+     "titel": "Rheumatoid arthritis-associated interstitial lung disease: screening, diagnosis, and treatment-an expert group consensus statement.",
+     "zeitschrift": "The Lancet. Respiratory medicine",
+     "datum": "2026-09-01",
+     "art": "uebersicht"
+    },
+    {
+     "pmid": "42298194",
+     "titel": "Diagnostic, prognostic and therapeutic biomarkers in rheumatoid arthritis.",
+     "zeitschrift": "Nature reviews. Rheumatology",
+     "datum": "2026-08-01",
+     "art": "uebersicht"
+    },
+    {
      "pmid": "41188120",
      "titel": "Difficult-to-treat rheumatoid arthritis: systematic review and meta-analysis on global prevalence.",
      "zeitschrift": "Annals of the rheumatic diseases",
      "datum": "2026-03-01",
      "art": "metaanalyse"
-    },
-    {
-     "pmid": "42315602",
-     "titel": "Lung disease in rheumatoid arthritis.",
-     "zeitschrift": "Nature reviews. Rheumatology",
-     "datum": "2026-09-01",
-     "art": "uebersicht"
     }
    ],
    "alltag": [
@@ -384,11 +391,11 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "40839209",
-     "titel": "Effect of an intensive smoking cessation intervention on smoking cessation and disease activity in patients with RA: a randomized controlled trial.",
-     "zeitschrift": "Rheumatology (Oxford, England)",
-     "datum": "2026-01-08",
-     "art": "studie"
+     "pmid": "42516809",
+     "titel": "An Updated Review on Iron Deficiency Anemia: From Epidemiology to Diagnosis, Etiology, Prevention and Treatment.",
+     "zeitschrift": "Journal of blood medicine",
+     "datum": "2026-07-23",
+     "art": "uebersicht"
     },
     {
      "pmid": "41107118",
@@ -409,17 +416,17 @@ window.ANKER_AKTUELL = {
   "ced": {
    "neu": [
     {
-     "pmid": "40190259",
-     "titel": "Precision microbiota therapy for IBD: premise and promise.",
-     "zeitschrift": "Gut microbes",
-     "datum": "2025-12-01",
-     "art": "uebersicht"
-    },
-    {
      "pmid": "41419296",
      "titel": "Medical management of inflammatory bowel diseases.",
      "zeitschrift": "BMJ (Clinical research ed.)",
      "datum": "2025-12-19",
+     "art": "uebersicht"
+    },
+    {
+     "pmid": "40190259",
+     "titel": "Precision microbiota therapy for IBD: premise and promise.",
+     "zeitschrift": "Gut microbes",
+     "datum": "2025-12-01",
      "art": "uebersicht"
     },
     {
@@ -430,18 +437,18 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
+     "pmid": "42618885",
+     "titel": "Management of pediatric Crohn's disease: an ECCO-ESPGHAN guideline update.",
+     "zeitschrift": "Journal of Crohn's & colitis",
+     "datum": "2026-08-05",
+     "art": "leitlinie"
+    },
+    {
      "pmid": "41274746",
      "titel": "AGA Living Clinical Practice Guideline on the Pharmacologic Management of Moderate-to-Severe Crohn's Disease.",
      "zeitschrift": "Gastroenterology",
      "datum": "2025-12-01",
      "art": "leitlinie"
-    },
-    {
-     "pmid": "41173014",
-     "titel": "Ulcerative colitis: moving beyond the mucosal dogma.",
-     "zeitschrift": "The lancet. Gastroenterology & hepatology",
-     "datum": "2026-02-01",
-     "art": "uebersicht"
     },
     {
      "pmid": "40213833",
@@ -451,17 +458,17 @@ window.ANKER_AKTUELL = {
      "art": "uebersicht"
     },
     {
-     "pmid": "42618885",
-     "titel": "Management of pediatric Crohn's disease: an ECCO-ESPGHAN guideline update.",
-     "zeitschrift": "Journal of Crohn's & colitis",
-     "datum": "2026-08-05",
-     "art": "leitlinie"
+     "pmid": "41340115",
+     "titel": "Pyroptosis in ulcerative colitis: biomarkers and therapeutic targets.",
+     "zeitschrift": "Journal of biomedical science",
+     "datum": "2025-12-03",
+     "art": "uebersicht"
     },
     {
-     "pmid": "41114682",
-     "titel": "Comparative Efficacy of Advanced Therapies for Management of Moderate-to-Severe Crohn's Disease: 2025 AGA Evidence Synthesis.",
-     "zeitschrift": "Gastroenterology",
-     "datum": "2025-12-01",
+     "pmid": "41173014",
+     "titel": "Ulcerative colitis: moving beyond the mucosal dogma.",
+     "zeitschrift": "The lancet. Gastroenterology & hepatology",
+     "datum": "2026-02-01",
      "art": "uebersicht"
     }
    ],
@@ -493,18 +500,18 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "33846604",
-    "titel": "Does the epithelial barrier hypothesis explain the increase in allergy, autoimmunity and other chronic conditions?",
-    "zeitschrift": "Nature reviews. Immunology",
-    "datum": "2021-11-01",
+    "pmid": "36142642",
+    "titel": "Gut Dysbiosis and Fecal Microbiota Transplantation in Autoimmune Diseases.",
+    "zeitschrift": "International journal of molecular sciences",
+    "datum": "2022-09-14",
     "art": "uebersicht"
    },
    {
-    "pmid": "38438886",
-    "titel": "Autoimmune diseases and adverse pregnancy outcomes: an umbrella review.",
-    "zeitschrift": "BMC medicine",
-    "datum": "2024-03-05",
-    "art": "uebersicht"
+    "pmid": "30085534",
+    "titel": "Arthritis.",
+    "zeitschrift": "",
+    "datum": "2023-06-20",
+    "art": "artikel"
    }
   ],
   "psoriasis+zoeliakie": [
@@ -516,13 +523,6 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "40262193",
-    "titel": "The phenotypic and genetic association between endometriosis and immunological diseases.",
-    "zeitschrift": "Human reproduction (Oxford, England)",
-    "datum": "2025-06-01",
-    "art": "artikel"
-   },
-   {
     "pmid": "37603630",
     "titel": "Enteropathic Arthritis.",
     "zeitschrift": "",
@@ -530,11 +530,18 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "40237450",
-    "titel": "Early Childhood Antibiotics and Chronic Pediatric Conditions: A Retrospective Cohort Study.",
-    "zeitschrift": "The Journal of infectious diseases",
-    "datum": "2025-09-15",
+    "pmid": "40262193",
+    "titel": "The phenotypic and genetic association between endometriosis and immunological diseases.",
+    "zeitschrift": "Human reproduction (Oxford, England)",
+    "datum": "2025-06-01",
     "art": "artikel"
+   },
+   {
+    "pmid": "35021114",
+    "titel": "Antibiotic exposure and adverse long-term health outcomes in children: A systematic review and meta-analysis.",
+    "zeitschrift": "The Journal of infection",
+    "datum": "2022-09-01",
+    "art": "metaanalyse"
    }
   ],
   "hashimoto+zoeliakie": [
@@ -546,16 +553,16 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "38460606",
-    "titel": "Celiac Disease-Related Conditions: Who to Test?",
-    "zeitschrift": "Gastroenterology",
+    "pmid": "38913142",
+    "titel": "Down Syndrome and Autoimmune Disease.",
+    "zeitschrift": "Clinical reviews in allergy & immunology",
     "datum": "2024-06-01",
     "art": "uebersicht"
    },
    {
-    "pmid": "38913142",
-    "titel": "Down Syndrome and Autoimmune Disease.",
-    "zeitschrift": "Clinical reviews in allergy & immunology",
+    "pmid": "38460606",
+    "titel": "Celiac Disease-Related Conditions: Who to Test?",
+    "zeitschrift": "Gastroenterology",
     "datum": "2024-06-01",
     "art": "uebersicht"
    },
@@ -576,13 +583,6 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "39340718",
-    "titel": "Intestinal permeability disturbances: causes, diseases and therapy.",
-    "zeitschrift": "Clinical and experimental medicine",
-    "datum": "2024-09-28",
-    "art": "uebersicht"
-   },
-   {
     "pmid": "37997130",
     "titel": "Autoimmune diseases and adverse pregnancy outcomes: an umbrella review.",
     "zeitschrift": "Lancet (London, England)",
@@ -590,11 +590,18 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "33846604",
-    "titel": "Does the epithelial barrier hypothesis explain the increase in allergy, autoimmunity and other chronic conditions?",
-    "zeitschrift": "Nature reviews. Immunology",
-    "datum": "2021-11-01",
+    "pmid": "39340718",
+    "titel": "Intestinal permeability disturbances: causes, diseases and therapy.",
+    "zeitschrift": "Clinical and experimental medicine",
+    "datum": "2024-09-28",
     "art": "uebersicht"
+   },
+   {
+    "pmid": "30085534",
+    "titel": "Arthritis.",
+    "zeitschrift": "",
+    "datum": "2023-06-20",
+    "art": "artikel"
    }
   ],
   "ced+zoeliakie": [
@@ -606,13 +613,6 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "37389240",
-    "titel": "Epidemiology of small intestinal bacterial overgrowth.",
-    "zeitschrift": "World journal of gastroenterology",
-    "datum": "2023-06-14",
-    "art": "uebersicht"
-   },
-   {
     "pmid": "39567783",
     "titel": "Single-cell integration reveals metaplasia in inflammatory gut diseases.",
     "zeitschrift": "Nature",
@@ -620,10 +620,17 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "37836377",
-    "titel": "Zinc Deficiency and Therapeutic Value of Zinc Supplementation in Pediatric Gastrointestinal Diseases.",
-    "zeitschrift": "Nutrients",
-    "datum": "2023-09-22",
+    "pmid": "37389240",
+    "titel": "Epidemiology of small intestinal bacterial overgrowth.",
+    "zeitschrift": "World journal of gastroenterology",
+    "datum": "2023-06-14",
+    "art": "uebersicht"
+   },
+   {
+    "pmid": "38438886",
+    "titel": "Autoimmune diseases and adverse pregnancy outcomes: an umbrella review.",
+    "zeitschrift": "BMC medicine",
+    "datum": "2024-03-05",
     "art": "uebersicht"
    }
   ],
@@ -636,24 +643,24 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "38481799",
-    "titel": "Exosomes: The emerging mechanisms and potential clinical applications in dermatology.",
-    "zeitschrift": "International journal of biological sciences",
-    "datum": "2024-02-25",
+    "pmid": "37189455",
+    "titel": "Vitamin D and Autoimmune Rheumatic Diseases.",
+    "zeitschrift": "Biomolecules",
+    "datum": "2023-04-21",
     "art": "uebersicht"
    },
    {
-    "pmid": "38908373",
-    "titel": "Cellular spermine targets JAK signaling to restrain cytokine-mediated autoimmunity.",
-    "zeitschrift": "Immunity",
-    "datum": "2024-08-13",
-    "art": "artikel"
+    "pmid": "38467779",
+    "titel": "TYK2: an emerging therapeutic target in rheumatic disease.",
+    "zeitschrift": "Nature reviews. Rheumatology",
+    "datum": "2024-04-01",
+    "art": "uebersicht"
    },
    {
-    "pmid": "34635393",
-    "titel": "RORγt protein modifications and IL-17-mediated inflammation.",
-    "zeitschrift": "Trends in immunology",
-    "datum": "2021-11-01",
+    "pmid": "36252553",
+    "titel": "JAK: Not Just Another Kinase.",
+    "zeitschrift": "Molecular cancer therapeutics",
+    "datum": "2022-12-02",
     "art": "uebersicht"
    }
   ],
@@ -673,27 +680,27 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "39286340",
-    "titel": "Incidence and prevalence of autoimmune diseases in China: A systematic review and meta-analysis of epidemiological studies.",
-    "zeitschrift": "Global epidemiology",
-    "datum": "2024-08-09",
+    "pmid": "37781409",
+    "titel": "Clinical features of myasthenia gravis with neurological and systemic autoimmune diseases.",
+    "zeitschrift": "Frontiers in immunology",
+    "datum": "2023-09-14",
     "art": "uebersicht"
    },
    {
-    "pmid": "39550874",
-    "titel": "Environmental triggers and future risk of developing autoimmune diseases: Molecular mechanism and network toxicology analysis of bisphenol A.",
-    "zeitschrift": "Ecotoxicology and environmental safety",
-    "datum": "2024-12-01",
-    "art": "artikel"
+    "pmid": "37670700",
+    "titel": "Role of Th17 and IL-17 Cytokines on Inflammatory and Auto-immune Diseases.",
+    "zeitschrift": "Current pharmaceutical design",
+    "datum": "2023-01-01",
+    "art": "uebersicht"
    }
   ],
   "ra+sle": [
    {
-    "pmid": "36231212",
-    "titel": "Oral Manifestations of Systemic Lupus Erythematosus: A Systematic Review.",
-    "zeitschrift": "International journal of environmental research and public health",
-    "datum": "2022-09-21",
-    "art": "uebersicht"
+    "pmid": "40907995",
+    "titel": "ERS/EULAR clinical practice guidelines for connective tissue disease-associated interstitial lung disease.",
+    "zeitschrift": "The European respiratory journal",
+    "datum": "2026-01-22",
+    "art": "leitlinie"
    },
    {
     "pmid": "35718887",
@@ -703,17 +710,17 @@ window.ANKER_AKTUELL = {
     "art": "leitlinie"
    },
    {
+    "pmid": "36231212",
+    "titel": "Oral Manifestations of Systemic Lupus Erythematosus: A Systematic Review.",
+    "zeitschrift": "International journal of environmental research and public health",
+    "datum": "2022-09-21",
+    "art": "uebersicht"
+   },
+   {
     "pmid": "38110617",
     "titel": "Epidemiology of Sjögren syndrome.",
     "zeitschrift": "Nature reviews. Rheumatology",
     "datum": "2024-03-01",
-    "art": "uebersicht"
-   },
-   {
-    "pmid": "39390260",
-    "titel": "Epstein-Barr virus as a potentiator of autoimmune diseases.",
-    "zeitschrift": "Nature reviews. Rheumatology",
-    "datum": "2024-11-01",
     "art": "uebersicht"
    }
   ],
@@ -726,10 +733,10 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "37950021",
-    "titel": "Deciphering the different phases of preclinical inflammatory bowel disease.",
-    "zeitschrift": "Nature reviews. Gastroenterology & hepatology",
-    "datum": "2024-02-01",
+    "pmid": "36252553",
+    "titel": "JAK: Not Just Another Kinase.",
+    "zeitschrift": "Molecular cancer therapeutics",
+    "datum": "2022-12-02",
     "art": "uebersicht"
    },
    {
@@ -740,10 +747,10 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "39297883",
-    "titel": "Targeting TNF/TNFR superfamilies in immune-mediated inflammatory diseases.",
-    "zeitschrift": "The Journal of experimental medicine",
-    "datum": "2024-11-04",
+    "pmid": "37950021",
+    "titel": "Deciphering the different phases of preclinical inflammatory bowel disease.",
+    "zeitschrift": "Nature reviews. Gastroenterology & hepatology",
+    "datum": "2024-02-01",
     "art": "uebersicht"
    }
   ],
@@ -763,33 +770,33 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "41123771",
-    "titel": "IgG4-related disease with comorbid autoimmune diseases: a retrospective study from a large cohort.",
-    "zeitschrift": "Clinical rheumatology",
-    "datum": "2025-12-01",
-    "art": "artikel"
+    "pmid": "35222423",
+    "titel": "Helicobacter Pylori and Autoimmune Diseases: Involving Multiple Systems.",
+    "zeitschrift": "Frontiers in immunology",
+    "datum": "2022-02-10",
+    "art": "uebersicht"
    },
    {
-    "pmid": "34455910",
-    "titel": "Association between alopecia areata and thyroid dysfunction.",
-    "zeitschrift": "Postgraduate medicine",
-    "datum": "2021-11-01",
+    "pmid": "37654906",
+    "titel": "Coexistence of Autoimmune Thyroiditis and Juvenile Idiopathic Arthritis.",
+    "zeitschrift": "Cureus",
+    "datum": "2023-08-30",
     "art": "artikel"
    }
   ],
   "psoriasis+ra": [
    {
-    "pmid": "37189455",
-    "titel": "Vitamin D and Autoimmune Rheumatic Diseases.",
-    "zeitschrift": "Biomolecules",
-    "datum": "2023-04-21",
-    "art": "uebersicht"
-   },
-   {
     "pmid": "36364048",
     "titel": "Effect of Ginger on Inflammatory Diseases.",
     "zeitschrift": "Molecules (Basel, Switzerland)",
     "datum": "2022-10-25",
+    "art": "uebersicht"
+   },
+   {
+    "pmid": "37189455",
+    "titel": "Vitamin D and Autoimmune Rheumatic Diseases.",
+    "zeitschrift": "Biomolecules",
+    "datum": "2023-04-21",
     "art": "uebersicht"
    },
    {
@@ -800,26 +807,26 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "37195862",
-    "titel": "Psoriatic and rheumatoid arthritis joints differ in the composition of CD8+ tissue-resident memory T cell subsets.",
-    "zeitschrift": "Cell reports",
-    "datum": "2023-05-30",
+    "pmid": "36870080",
+    "titel": "Glucagon-Like Peptide 1 Receptor Agonists in Patients With Inflammatory Arthritis or Psoriasis: A Scoping Review.",
+    "zeitschrift": "Journal of clinical rheumatology : practical reports on rheumatic & musculoskeletal diseases",
+    "datum": "2024-01-01",
     "art": "artikel"
    }
   ],
   "ced+psoriasis": [
    {
-    "pmid": "39630439",
-    "titel": "Axial Spondyloarthritis: A Review.",
-    "zeitschrift": "JAMA",
-    "datum": "2025-02-04",
-    "art": "uebersicht"
-   },
-   {
     "pmid": "36902329",
     "titel": "Psoriatic Arthritis: Pathogenesis and Targeted Therapies.",
     "zeitschrift": "International journal of molecular sciences",
     "datum": "2023-03-03",
+    "art": "uebersicht"
+   },
+   {
+    "pmid": "39630439",
+    "titel": "Axial Spondyloarthritis: A Review.",
+    "zeitschrift": "JAMA",
+    "datum": "2025-02-04",
     "art": "uebersicht"
    },
    {
@@ -860,10 +867,10 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "39850611",
-    "titel": "Autoimmune protocol diet: A personalized elimination diet for patients with autoimmune diseases.",
-    "zeitschrift": "Metabolism open",
-    "datum": "2024-12-30",
+    "pmid": "37493210",
+    "titel": "Immune-related adverse events after immune check point inhibitors: Understanding the intersection with autoimmunity.",
+    "zeitschrift": "Immunological reviews",
+    "datum": "2023-09-01",
     "art": "uebersicht"
    }
   ],
@@ -890,11 +897,11 @@ window.ANKER_AKTUELL = {
     "art": "artikel"
    },
    {
-    "pmid": "41089714",
-    "titel": "Autoimmune Hepatitis Associated with Other Autoimmune Diseases: A Critical Review.",
-    "zeitschrift": "Journal of clinical and translational hepatology",
-    "datum": "2025-10-28",
-    "art": "uebersicht"
+    "pmid": "40922038",
+    "titel": "Association of autoimmune disease with melanoma and nonmelanoma skin cancers.",
+    "zeitschrift": "Clinical and experimental dermatology",
+    "datum": "2025-11-25",
+    "art": "artikel"
    }
   ],
   "ced+ra": [
@@ -920,10 +927,10 @@ window.ANKER_AKTUELL = {
     "art": "uebersicht"
    },
    {
-    "pmid": "34651581",
-    "titel": "Fibroblast pathology in inflammatory diseases.",
-    "zeitschrift": "The Journal of clinical investigation",
-    "datum": "2021-10-15",
+    "pmid": "36364048",
+    "titel": "Effect of Ginger on Inflammatory Diseases.",
+    "zeitschrift": "Molecules (Basel, Switzerland)",
+    "datum": "2022-10-25",
     "art": "uebersicht"
    }
   ]

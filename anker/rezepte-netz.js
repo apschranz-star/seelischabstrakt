@@ -4,8 +4,129 @@
  * Zubereitung steht auf der jeweiligen Originalseite, hier nur die Zutaten.
  */
 window.ANKER_NETZREZEPTE = {
- "stand": "2026-10-09",
+ "stand": "2026-11-01",
  "rezepte": [
+  {
+   "id": "netz-meaningfuleats-com-gluten-free-banoffee-pie",
+   "name": "Gluten-Free Banoffee Pie",
+   "quelle": "Meaningful Eats",
+   "url": "https://meaningfuleats.com/gluten-free-banoffee-pie/",
+   "autor": "",
+   "sprache": "en",
+   "minuten": 105,
+   "vorbereitung": 25,
+   "kochen": 20,
+   "portionen": "8 -10 servings",
+   "zutaten": [
+    "1½ cups (158g) gluten-free graham cracker crumbs (one 5.6oz box of Schar graham crackers)",
+    "¼ cup (53g) brown sugar",
+    "1 tablespoon (9g) gluten-free measure-for-measure flour",
+    "4 tablespoons (56g) butter, (melted and slightly cooled)",
+    "½ cup (113g) butter",
+    "½ cup (106g) brown sugar",
+    "1 7-ounce can (198g) sweetened condensed milk",
+    "Pinch of kosher salt",
+    "½ teaspoon vanilla extract",
+    "1 cup (240ml) heavy cream",
+    "3 tablespoons (23g) powdered sugar",
+    "½ teaspoon vanilla extract",
+    "2 –3 bananas (sliced)",
+    "Chocolate shavings (for garnish)"
+   ],
+   "schritte": 13,
+   "kategorie": "Dessert",
+   "tags": [],
+   "pruefen": [],
+   "packung": [
+    "1½ cups (158g) gluten-free graham cracker crumbs (one 5.6oz box of Schar graham crackers)",
+    "1 tablespoon (9g) gluten-free measure-for-measure flour",
+    "1 7-ounce can (198g) sweetened condensed milk",
+    "½ teaspoon vanilla extract",
+    "3 tablespoons (23g) powdered sugar",
+    "½ teaspoon vanilla extract",
+    "Chocolate shavings (for garnish)"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-28"
+  },
+  {
+   "id": "netz-meaningfuleats-com-gluten-free-sour-cream-cornbread-loaf",
+   "name": "Gluten-Free Sour Cream Cornbread Loaf",
+   "quelle": "Meaningful Eats",
+   "url": "https://meaningfuleats.com/gluten-free-sour-cream-cornbread-loaf/",
+   "autor": "",
+   "sprache": "en",
+   "minuten": 45,
+   "vorbereitung": 10,
+   "kochen": 30,
+   "portionen": "8 -10 slices",
+   "zutaten": [
+    "½ cup (113g) butter, (melted)",
+    "1¼ cups (187g) gluten-free measure-for-measure flour",
+    "½ cup (60g) medium-grind yellow cornmeal",
+    "¼ cup (50g) granulated sugar",
+    "1 tablespoon baking powder",
+    "½ teaspoon kosher salt",
+    "½ cup (120ml) whole milk, (at room temperature)",
+    "½ cup (120g) sour cream",
+    "1 large egg, (at room temperature)"
+   ],
+   "schritte": 8,
+   "kategorie": "Bread",
+   "tags": [
+    "eisen",
+    "eiweiss"
+   ],
+   "pruefen": [],
+   "packung": [
+    "1¼ cups (187g) gluten-free measure-for-measure flour",
+    "½ cup (60g) medium-grind yellow cornmeal",
+    "1 tablespoon baking powder",
+    "½ cup (120g) sour cream"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-21"
+  },
+  {
+   "id": "netz-meaningfuleats-com-gluten-free-mini-powdered-sugar-donuts",
+   "name": "Gluten-Free Mini Powdered Sugar Donuts",
+   "quelle": "Meaningful Eats",
+   "url": "https://meaningfuleats.com/gluten-free-mini-powdered-sugar-donuts/",
+   "autor": "",
+   "sprache": "en",
+   "minuten": 24,
+   "vorbereitung": 15,
+   "kochen": 9,
+   "portionen": "24 mini donuts",
+   "zutaten": [
+    "1½ cups (225g) gluten-free measure-for-measure flour",
+    "⅔ cup (133g) granulated sugar",
+    "2 teaspoons baking powder",
+    "¾ teaspoon kosher salt",
+    "¼ teaspoon ground nutmeg",
+    "2 large eggs",
+    "2 teaspoons vanilla extract",
+    "1 teaspoon apple cider vinegar",
+    "¾ cup (180ml) milk of choice",
+    "½ cup (120ml) neutral oil",
+    "2 cups (240g) powdered sugar"
+   ],
+   "schritte": 6,
+   "kategorie": "Breakfast",
+   "tags": [
+    "vegetarisch"
+   ],
+   "pruefen": [],
+   "packung": [
+    "1½ cups (225g) gluten-free measure-for-measure flour",
+    "2 teaspoons baking powder",
+    "2 teaspoons vanilla extract",
+    "¾ cup (180ml) milk of choice",
+    "2 cups (240g) powdered sugar"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-14"
+  },
   {
    "id": "netz-meaningfuleats-com-gluten-free-black-bottom-cupcakes",
    "name": "Gluten-Free Black Bottom Cupcakes",
@@ -184,7 +305,7 @@ window.ANKER_NETZREZEPTE = {
     "1½ cups (180g) powdered sugar, (sifted)"
    ],
    "geprueft": true,
-   "datum": "2026-09-10"
+   "datum": "2026-09-09"
   },
   {
    "id": "netz-meaningfuleats-com-gluten-free-pumpkin-crumb-cake",
@@ -243,430 +364,248 @@ window.ANKER_NETZREZEPTE = {
    "datum": "2026-09-02"
   },
   {
-   "id": "netz-meaningfuleats-com-gluten-free-vermont-style-donut-holes",
-   "name": "Gluten-Free Vermont-Style Donut Holes",
-   "quelle": "Meaningful Eats",
-   "url": "https://meaningfuleats.com/gluten-free-vermont-style-donut-holes/",
+   "id": "netz-mamaknowsglutenfree-com-vegan-caramel-sauce",
+   "name": "Vegan Caramel Sauce",
+   "quelle": "Mama Knows Gluten Free",
+   "url": "https://www.mamaknowsglutenfree.com/vegan-caramel-sauce/",
    "autor": "",
+   "sprache": "en",
+   "minuten": 20,
+   "vorbereitung": 5,
+   "kochen": 15,
+   "portionen": "10 servings (1.25 cups)",
+   "zutaten": [
+    "1 cup canned coconut cream (thick smooth part at the top of the can only, full fat)",
+    "¾ cup light brown sugar (packed)",
+    "¼ tsp salt"
+   ],
+   "schritte": 6,
+   "kategorie": "Dessert",
+   "tags": [
+    "vegetarisch"
+   ],
+   "pruefen": [],
+   "packung": [
+    "1 cup canned coconut cream (thick smooth part at the top of the can only, full fat)"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-28"
+  },
+  {
+   "id": "netz-mamaknowsglutenfree-com-gluten-free-cranberry-muffins",
+   "name": "Gluten-Free Cranberry Muffins",
+   "quelle": "Mama Knows Gluten Free",
+   "url": "https://www.mamaknowsglutenfree.com/gluten-free-cranberry-muffins/",
+   "autor": "",
+   "sprache": "en",
+   "minuten": 39,
+   "vorbereitung": 15,
+   "kochen": 24,
+   "portionen": "12 servings",
+   "zutaten": [
+    "2 cups gluten-free all-purpose flour blend",
+    "1 tsp baking powder",
+    "½ tsp baking soda",
+    "½ tsp salt",
+    "½ cup unsalted butter (melted )",
+    "1 cup granulated sugar",
+    "3 large eggs",
+    "1 tsp vanilla extract",
+    "1 Tbsp orange zest",
+    "2 Tbsp orange juice",
+    "¼ cup Greek yogurt",
+    "1 cup dried sweet cranberries"
+   ],
+   "schritte": 7,
+   "kategorie": "Baking",
+   "tags": [
+    "kalzium",
+    "eiweiss",
+    "vegetarisch"
+   ],
+   "pruefen": [],
+   "packung": [
+    "2 cups gluten-free all-purpose flour blend",
+    "1 tsp baking powder",
+    "1 tsp vanilla extract",
+    "¼ cup Greek yogurt"
+   ],
+   "geprueft": true,
+   "datum": "2026-10-21"
+  },
+  {
+   "id": "netz-mamaknowsglutenfree-com-gluten-free-cinnamon-coffee-cake",
+   "name": "Gluten-Free Cinnamon Coffee Cake",
+   "quelle": "Mama Knows Gluten Free",
+   "url": "https://www.mamaknowsglutenfree.com/gluten-free-cinnamon-coffee-cake/",
+   "autor": "",
+   "sprache": "en",
+   "minuten": 110,
+   "vorbereitung": 20,
+   "kochen": 45,
+   "portionen": "9 servings",
+   "zutaten": [
+    "1 tbsp + 1½ tsp white vinegar",
+    "¾ cups + 2 tbsp milk (dairy-free use unsweetened almond milk, cashew, or coconut milk)",
+    "1 cup all-purpose gluten-free flour with xanthan gum (I used King Arthurs GF Measure for Measure Flour)",
+    "1 tsp baking powder",
+    "⅓ cup granulated sugar",
+    "3 tbsp + 1 tsp light brown sugar (packed)",
+    "1 tsp pure vanilla extract",
+    "⅓ cup butter (melted, for dairy-free use Smart Balance butter)",
+    "1 large egg (room temperature)",
+    "1 egg yolk",
+    "⅓ cup light brown sugar (packed)",
+    "1 tsp ground cinnamon",
+    "⅓ cup light brown sugar (packed)",
+    "3 tbsp + 1 tsp granulated sugar",
+    "6 tbsp all-purpose gluten-free flour with xanthan gum",
+    "1 tsp ground cinnamon",
+    "3 tbsp + 1 tsp butter (melted, for dairy-free use Smart Balance butter)"
+   ],
+   "schritte": 14,
+   "kategorie": "Breakfast",
+   "tags": [
+    "vegetarisch",
+    "ohneMilch"
+   ],
+   "pruefen": [],
+   "packung": [
+    "¾ cups + 2 tbsp milk (dairy-free use unsweetened almond milk, cashew, or coconut milk)",
+    "1 cup all-purpose gluten-free flour with xanthan gum (I used King Arthurs GF Measure for Measure Flour)",
+    "1 tsp baking powder",
+    "1 tsp pure vanilla extract",
+    "⅓ cup butter (melted, for dairy-free use Smart Balance butter)",
+    "6 tbsp all-purpose gluten-free flour with xanthan gum",
+    "3 tbsp + 1 tsp butter (melted, for dairy-free use Smart Balance butter)"
+   ],
+   "geprueft": true,
+   "datum": "2025-07-01"
+  },
+  {
+   "id": "netz-dishbydish-net-cilantro-lime-chicken-thighs",
+   "name": "Cilantro Lime Chicken Thighs (Gluten-Free, Dairy-Free)",
+   "quelle": "Dish by Dish",
+   "url": "https://www.dishbydish.net/cilantro-lime-chicken-thighs/",
+   "autor": "Felicia Lim",
+   "sprache": "en",
+   "minuten": 30,
+   "vorbereitung": 15,
+   "kochen": 15,
+   "portionen": "4 servings",
+   "zutaten": [
+    "6 boneless, skinless chicken thighs",
+    "1/4 cup olive oil",
+    "Juice of 2 limes",
+    "Zest of 1 lime",
+    "1/3 cup fresh cilantro, chopped",
+    "2 garlic cloves, minced",
+    "1/4 teaspoon ground black pepper",
+    "1/2 teaspoon salt",
+    "Fresh lime slices, for serving"
+   ],
+   "schritte": 4,
+   "kategorie": "chicken",
+   "tags": [
+    "eiweiss",
+    "ohneMilch",
+    "mediterran"
+   ],
+   "pruefen": [],
+   "packung": [],
+   "geprueft": true,
+   "datum": "2026-10-27"
+  },
+  {
+   "id": "netz-dishbydish-net-oatmeal-cranberry-cookies",
+   "name": "Oatmeal Cranberry Cookies (Gluten-Free, Dairy-Free)",
+   "quelle": "Dish by Dish",
+   "url": "https://www.dishbydish.net/oatmeal-cranberry-cookies/",
+   "autor": "Felicia Lim",
    "sprache": "en",
    "minuten": 25,
    "vorbereitung": 10,
    "kochen": 15,
-   "portionen": "16 donut holes",
+   "portionen": "16 cookies",
    "zutaten": [
-    "1½ cups (225g) gluten-free measure-for-measure flour",
-    "2 teaspoons baking powder",
-    "½ teaspoon kosher salt",
-    "½ teaspoon ground nutmeg",
-    "⅓ cup (67g) granulated sugar",
-    "½ cup (120ml) milk of choice",
-    "1 tablespoon neutral oil",
-    "1 large egg",
-    "5-6 cups neutral oil",
-    "½ cup (100g) granulated sugar + 1 tablespoon ground cinnamon",
-    "½ cup (60g) powdered sugar"
-   ],
-   "schritte": 9,
-   "kategorie": "Breakfast",
-   "tags": [
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1½ cups (225g) gluten-free measure-for-measure flour",
-    "2 teaspoons baking powder",
-    "½ cup (120ml) milk of choice",
-    "½ cup (60g) powdered sugar"
-   ],
-   "geprueft": true,
-   "datum": "2026-08-26"
-  },
-  {
-   "id": "netz-meaningfuleats-com-gluten-free-swedish-pancakes",
-   "name": "Gluten-Free Swedish Pancakes with Lemon Sugar",
-   "quelle": "Meaningful Eats",
-   "url": "https://meaningfuleats.com/gluten-free-swedish-pancakes/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 50,
-   "vorbereitung": 5,
-   "kochen": 15,
-   "portionen": "10 -12 pancakes",
-   "zutaten": [
-    "3 large eggs",
-    "1¾ cups whole milk",
-    "¾ cup (113g) gluten-free measure-for-measure flour",
-    "3 tablespoons butter (melted, plus more for cooking)",
-    "2 tablespoons granulated sugar",
-    "½ teaspoon kosher salt",
-    "Lemon juice",
-    "Granulated sugar",
-    "Lingonberry or blueberry jam",
-    "Plain yogurt",
-    "Whipped cream"
-   ],
-   "schritte": 5,
-   "kategorie": "Breakfast",
-   "tags": [
-    "kalzium",
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "¾ cup (113g) gluten-free measure-for-measure flour",
-    "Lingonberry or blueberry jam",
-    "Plain yogurt",
-    "Whipped cream"
-   ],
-   "geprueft": true,
-   "datum": "2026-08-19"
-  },
-  {
-   "id": "netz-meaningfuleats-com-gluten-free-chocolate-chip-yogurt-loaf",
-   "name": "Gluten-Free Chocolate Chip Yogurt Loaf",
-   "quelle": "Meaningful Eats",
-   "url": "https://meaningfuleats.com/gluten-free-chocolate-chip-yogurt-loaf/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 60,
-   "vorbereitung": 15,
-   "kochen": 45,
-   "portionen": "8 -10 slices",
-   "zutaten": [
-    "1 ½ cups (225g) gluten-free measure-for-measure flour",
-    "½ cup (50g) almond flour",
-    "1 ½ teaspoons baking powder",
-    "½ teaspoon baking soda",
-    "½ teaspoon kosher salt",
-    "¼ teaspoon ground nutmeg",
+    "½ cup (1 stick) dairy-free butter, melted",
+    "¼ cup white sugar",
+    "½ cup brown sugar",
+    "1 egg",
+    "1 teaspoon vanilla extract",
+    "1 ½ cups gluten-free 1:1 flour",
+    "½ teaspoon xanthan gum (omit if your gluten-free flour blend already includes it)",
+    "¾ cup gluten-free old fashioned rolled oats",
     "¼ teaspoon ground cinnamon",
-    "2 large eggs",
-    "¾ cup (150g) granulated sugar",
-    "½ cup (120ml) neutral oil",
-    "1 teaspoon lemon juice",
-    "1 teaspoon vanilla extract",
-    "1 cup (240g) whole milk yogurt",
-    "¾ cup (135g) mini chocolate chips"
+    "¼ teaspoon salt",
+    "½ cup chopped walnuts",
+    "½ cup dried cranberries"
    ],
    "schritte": 9,
    "kategorie": "Breakfast",
    "tags": [
-    "kalzium",
-    "vegetarisch"
+    "omega3",
+    "ballaststoffe",
+    "vegetarisch",
+    "ohneMilch"
    ],
    "pruefen": [],
    "packung": [
-    "1 ½ cups (225g) gluten-free measure-for-measure flour",
-    "½ cup (50g) almond flour",
-    "1 ½ teaspoons baking powder",
+    "½ cup (1 stick) dairy-free butter, melted",
     "1 teaspoon vanilla extract",
-    "1 cup (240g) whole milk yogurt",
-    "¾ cup (135g) mini chocolate chips"
+    "1 ½ cups gluten-free 1:1 flour",
+    "½ teaspoon xanthan gum (omit if your gluten-free flour blend already includes it)",
+    "¾ cup gluten-free old fashioned rolled oats"
    ],
    "geprueft": true,
-   "datum": "2026-08-12"
+   "datum": "2026-10-20"
   },
   {
-   "id": "netz-mamaknowsglutenfree-com-gluten-free-corn-muffins",
-   "name": "Gluten-Free Corn Muffins",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/gluten-free-corn-muffins/",
-   "autor": "",
+   "id": "netz-dishbydish-net-chicken-cordon-bleu",
+   "name": "Chicken Cordon Bleu (Gluten-Free)",
+   "quelle": "Dish by Dish",
+   "url": "https://www.dishbydish.net/chicken-cordon-bleu/",
+   "autor": "Felicia Lim",
    "sprache": "en",
-   "minuten": 22,
-   "vorbereitung": 8,
-   "kochen": 14,
-   "portionen": "12 servings",
+   "minuten": 85,
+   "vorbereitung": 55,
+   "kochen": 30,
+   "portionen": "2 servings",
    "zutaten": [
-    "1 cup 1:1 GF flour blend",
-    "1 cup yellow cornmeal",
-    "1 tbsp baking powder",
-    "¾ tsp fine sea salt",
-    "½ cup butter (melted and slightly cooled)",
-    "1 large egg (room temperature)",
-    "1 cup buttermilk (room temperature)",
-    "¼ cup honey",
-    "1 ½ tbsp butter (softened)",
-    "1 tbsp honey"
+    "For the Chicken:",
+    "2 boneless, skinless chicken breasts",
+    "2 tablespoons Dijon mustard",
+    "1/2 teaspoon salt",
+    "1/4 teaspoon black pepper",
+    "4 thin slices of ham",
+    "4 slices of Gruyere cheese",
+    "For the Panko Coating:",
+    "1/2 cup gluten-free panko breadcrumbs",
+    "1/4 cup grated Parmesan cheese",
+    "3 tablespoons unsalted butter, melted",
+    "For the Honey Mustard Sauce:",
+    "1/4 cup mayonnaise",
+    "2 tablespoons honey",
+    "1 tablespoon Dijon mustard",
+    "1 tablespoon fresh lemon juice"
    ],
-   "schritte": 7,
-   "kategorie": "Baking",
+   "schritte": 10,
+   "kategorie": "Main Dishes",
    "tags": [
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1 cup 1:1 GF flour blend",
-    "1 cup yellow cornmeal",
-    "1 tbsp baking powder"
-   ],
-   "geprueft": true,
-   "datum": "2026-10-07"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-dairy-free-ricotta",
-   "name": "Dairy-Free Ricotta",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/dairy-free-ricotta/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 5,
-   "vorbereitung": 5,
-   "kochen": null,
-   "portionen": "8 servings (2 cups)",
-   "zutaten": [
-    "14 oz. block firm tofu (drained)",
-    "2 tbsp lemon juice (fresh lemon gives the brightest flavor, though bottled works in a pinch)",
-    "1 tbsp apple cider vinegar (white wine vinegar is a good swap)",
-    "1 tbsp nutritional yeast",
-    "1 tbsp olive oil",
-    "1 tsp salt (or to taste)"
-   ],
-   "schritte": 5,
-   "kategorie": "condiments",
-   "tags": [
-    "eisen",
     "kalzium",
     "eiweiss",
-    "vegetarisch",
-    "ohneMilch"
+    "ballaststoffe"
    ],
    "pruefen": [],
    "packung": [
-    "2 tbsp lemon juice (fresh lemon gives the brightest flavor, though bottled works in a pinch)",
-    "1 tbsp nutritional yeast"
+    "2 tablespoons Dijon mustard",
+    "4 thin slices of ham",
+    "1/2 cup gluten-free panko breadcrumbs",
+    "1/4 cup mayonnaise",
+    "1 tablespoon Dijon mustard"
    ],
    "geprueft": true,
-   "datum": "2026-10-03"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-gluten-free-apple-cider-donuts",
-   "name": "Gluten-Free Apple Cider Donuts",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/gluten-free-apple-cider-donuts/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 35,
-   "vorbereitung": 20,
-   "kochen": 15,
-   "portionen": "9 servings",
-   "zutaten": [
-    "1½ cups gluten-free all-purpose flour blend (with xanthan gum )",
-    "1¼ tsp baking powder",
-    "½ tsp baking soda",
-    "1 tsp ground cinnamon",
-    "¼ tsp ground nutmeg",
-    "¼ tsp salt",
-    "¾ cup apple cider (fresh, unfiltered apple cider)",
-    "6 tbsp unsalted butter (melted )",
-    "⅔ cup brown sugar",
-    "2 large eggs",
-    "1 tsp vanilla extract",
-    "¼ cup granulated sugar",
-    "1 tsp ground cinnamon"
-   ],
-   "schritte": 7,
-   "kategorie": "Baking",
-   "tags": [
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1½ cups gluten-free all-purpose flour blend (with xanthan gum )",
-    "1¼ tsp baking powder",
-    "1 tsp vanilla extract"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-30"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-almond-flour-cornbread",
-   "name": "Almond Flour Cornbread",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/almond-flour-cornbread/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 35,
-   "vorbereitung": 10,
-   "kochen": 25,
-   "portionen": "12 servings",
-   "zutaten": [
-    "1¼ cups blanched superfine almond flour (not almond meal)",
-    "1 cup gluten-free cornmeal (fine or medium grind)",
-    "2 tsp baking powder",
-    "½ tsp baking soda",
-    "¼ tsp salt",
-    "1 large egg (room temperature)",
-    "¼ cup butter (melted and slightly cooled, coconut oil or dairy-free butter also works)",
-    "1 cup buttermilk (room temperature, or 1 cup milk plus 1 tbsp lemon juice)",
-    "2 tbsp honey (maple syrup works as a 1:1 swap)"
-   ],
-   "schritte": 5,
-   "kategorie": "Baking",
-   "tags": [
-    "eisen",
-    "eiweiss"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1¼ cups blanched superfine almond flour (not almond meal)",
-    "1 cup gluten-free cornmeal (fine or medium grind)",
-    "2 tsp baking powder",
-    "¼ cup butter (melted and slightly cooled, coconut oil or dairy-free butter also works)",
-    "2 tbsp honey (maple syrup works as a 1:1 swap)"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-26"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-gluten-free-phyllo-dough-filo-pastry",
-   "name": "Gluten-Free Phyllo Dough / Filo Pastry",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/gluten-free-phyllo-dough-filo-pastry/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 60,
-   "vorbereitung": 60,
-   "kochen": null,
-   "portionen": "4 sheets",
-   "zutaten": [
-    "2 cups gluten-free all-purpose flour",
-    "2 tsp xanthan gum (reduce to 1 tsp if your blend already contains it)",
-    "¼ cup cornstarch",
-    "2 tsp sugar",
-    "1 tsp salt",
-    "¾ cup lukewarm water",
-    "2 tbsp unsalted butter (melted)"
-   ],
-   "schritte": 7,
-   "kategorie": "Baking",
-   "tags": [
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "2 cups gluten-free all-purpose flour",
-    "2 tsp xanthan gum (reduce to 1 tsp if your blend already contains it)"
-   ],
-   "geprueft": true,
-   "datum": "2024-10-04"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-flourless-mug-cake",
-   "name": "Flourless Mug Cake",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/flourless-mug-cake/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 3,
-   "vorbereitung": 2,
-   "kochen": 1,
-   "portionen": "1 serving",
-   "zutaten": [
-    "1 large egg (beaten)",
-    "2 tbsp semi-sweet chocolate chips",
-    "2 tbsp unsweetened cocoa powder",
-    "1 tbsp granulated sugar",
-    "1 tbsp vegetable oil",
-    "¼ tsp baking powder"
-   ],
-   "schritte": 5,
-   "kategorie": "Dessert",
-   "tags": [
-    "ballaststoffe",
-    "vegetarisch",
-    "ohneMilch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "2 tbsp semi-sweet chocolate chips",
-    "2 tbsp unsweetened cocoa powder",
-    "¼ tsp baking powder"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-19"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-gluten-free-broccoli-cheddar-soup",
-   "name": "Gluten-Free Broccoli Cheddar Soup",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/gluten-free-broccoli-cheddar-soup/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 40,
-   "vorbereitung": 10,
-   "kochen": 30,
-   "portionen": "4 servings",
-   "zutaten": [
-    "2 Tbsp butter",
-    "1 small yellow onion (diced)",
-    "2 cloves garlic (minced)",
-    "3 cups broccoli florets (chopped)",
-    "1 cup shredded carrots",
-    "3 cups gluten-free vegetable broth",
-    "2 cups half and half",
-    "2 cups shredded white or yellow sharp cheddar cheese",
-    "2 Tbsp cornstarch",
-    "2 Tbsp water",
-    "½ tsp salt",
-    "¼ tsp black pepper"
-   ],
-   "schritte": 5,
-   "kategorie": "Dinner",
-   "tags": [
-    "kalzium",
-    "ballaststoffe",
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "3 cups gluten-free vegetable broth"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-16"
-  },
-  {
-   "id": "netz-mamaknowsglutenfree-com-crustless-pizza-bowl",
-   "name": "Crustless Pizza Bowl",
-   "quelle": "Mama Knows Gluten Free",
-   "url": "https://www.mamaknowsglutenfree.com/crustless-pizza-bowl/",
-   "autor": "",
-   "sprache": "en",
-   "minuten": 35,
-   "vorbereitung": 10,
-   "kochen": 25,
-   "portionen": "5 servings",
-   "zutaten": [
-    "1 tbsp olive oil",
-    "1 small red onion (diced )",
-    "small green bell pepper (diced)",
-    "1 lb Italian sausage",
-    "1½ cups marinara sauce",
-    "1 tsp Italian herbs",
-    "½ tsp dried oregano",
-    "½ tsp garlic powder",
-    "¼ tsp red pepper flakes",
-    "1½ cups shredded mozzarella cheese",
-    "¼ cup grated Parmesan cheese",
-    "½ cup sliced pepperoni (chopped or mini )"
-   ],
-   "schritte": 6,
-   "kategorie": "Dinner",
-   "tags": [
-    "kalzium",
-    "mediterran"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1 lb Italian sausage",
-    "1½ cups marinara sauce",
-    "1 tsp Italian herbs",
-    "½ tsp garlic powder",
-    "¼ tsp red pepper flakes",
-    "½ cup sliced pepperoni (chopped or mini )"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-12"
+   "datum": "2026-10-12"
   },
   {
    "id": "netz-dishbydish-net-almond-flour-pumpkin-bread",
@@ -713,224 +652,6 @@ window.ANKER_NETZREZEPTE = {
    "datum": "2026-09-23"
   },
   {
-   "id": "netz-dishbydish-net-creamy-chicken-soup",
-   "name": "Creamy Chicken Soup (Gluten-Free, Dairy-Free)",
-   "quelle": "Dish by Dish",
-   "url": "https://www.dishbydish.net/creamy-chicken-soup/",
-   "autor": "Felicia Lim",
-   "sprache": "en",
-   "minuten": 55,
-   "vorbereitung": 15,
-   "kochen": 40,
-   "portionen": "6 servings",
-   "zutaten": [
-    "1.5 pounds skinless, boneless chicken thighs",
-    "2 tablespoons olive oil",
-    "2 tablespoons dairy-free butter",
-    "1 onion, diced",
-    "2 celery stalks, diced",
-    "1 carrots, diced",
-    "3 garlic cloves, minced",
-    "2 tablespoons gluten-free all-purpose flour",
-    "1 cup dairy-free heavy cream",
-    "4 cups gluten-free chicken broth",
-    "1 pound baby potatoes",
-    "4 sprigs fresh thyme",
-    "½ cup frozen corn",
-    "½ cup frozen peas",
-    "Salt and pepper, to taste"
-   ],
-   "schritte": 9,
-   "kategorie": "Appetizer",
-   "tags": [
-    "eiweiss",
-    "ohneMilch",
-    "mediterran"
-   ],
-   "pruefen": [],
-   "packung": [
-    "2 tablespoons dairy-free butter",
-    "2 tablespoons gluten-free all-purpose flour",
-    "1 cup dairy-free heavy cream",
-    "4 cups gluten-free chicken broth"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-21"
-  },
-  {
-   "id": "netz-dishbydish-net-creamy-tuscan-chicken",
-   "name": "Creamy Tuscan Chicken (Gluten-Free, Dairy-Free)",
-   "quelle": "Dish by Dish",
-   "url": "https://www.dishbydish.net/creamy-tuscan-chicken/",
-   "autor": "Felicia Lim",
-   "sprache": "en",
-   "minuten": 30,
-   "vorbereitung": 5,
-   "kochen": 25,
-   "portionen": "4 servings",
-   "zutaten": [
-    "4 boneless, skinless chicken breasts (approx. 1.5 to 2 pounds)",
-    "1 teaspoon Italian seasoning",
-    "Salt and pepper, to taste",
-    "3 tablespoons olive oil, divided",
-    "1 shallot, thinly sliced",
-    "4 garlic cloves, minced",
-    "½ cup sun-dried tomatoes, sliced",
-    "½ cup cherry tomatoes",
-    "2 cups baby spinach",
-    "1½ cups dairy-free heavy cream",
-    "¼ cup dairy-free parmesan cheese",
-    "¼ teaspoon dried red pepper flakes",
-    "Fresh basil, to garnish"
-   ],
-   "schritte": 7,
-   "kategorie": "chicken",
-   "tags": [
-    "eisen",
-    "kalzium",
-    "eiweiss",
-    "ohneMilch",
-    "mediterran"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1 teaspoon Italian seasoning",
-    "½ cup sun-dried tomatoes, sliced",
-    "1½ cups dairy-free heavy cream",
-    "¼ cup dairy-free parmesan cheese",
-    "¼ teaspoon dried red pepper flakes"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-15"
-  },
-  {
-   "id": "netz-dishbydish-net-almond-flour-pumpkin-muffins",
-   "name": "Almond Flour Pumpkin Muffins (Gluten-Free, Dairy-Free)",
-   "quelle": "Dish by Dish",
-   "url": "https://www.dishbydish.net/almond-flour-pumpkin-muffins/",
-   "autor": "Felicia Lim",
-   "sprache": "en",
-   "minuten": 45,
-   "vorbereitung": 20,
-   "kochen": 25,
-   "portionen": "12 muffins",
-   "zutaten": [
-    "2 ½ cups blanched almond flour",
-    "1 cup pumpkin puree",
-    "2 eggs",
-    "½ cup brown sugar",
-    "¼ cup unsalted dairy-free butter, melted",
-    "1 ½ teaspoons baking powder",
-    "½ teaspoon salt",
-    "1 teaspoon vanilla extract",
-    "1 teaspoon ground cinnamon",
-    "½ teaspoon ground ginger",
-    "½ teaspoon ground nutmeg",
-    "¼ teaspoon ground cloves",
-    "¼ cup pecans, chopped",
-    "1 cup blanched almond flour",
-    "2 tablespoons unsalted dairy-free butter, cold",
-    "¼ cup brown sugar",
-    "½ teaspoon ground cinnamon"
-   ],
-   "schritte": 9,
-   "kategorie": "Muffins",
-   "tags": [
-    "vegetarisch",
-    "ohneMilch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "2 ½ cups blanched almond flour",
-    "¼ cup unsalted dairy-free butter, melted",
-    "1 ½ teaspoons baking powder",
-    "1 teaspoon vanilla extract",
-    "1 cup blanched almond flour",
-    "2 tablespoons unsalted dairy-free butter, cold"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-14"
-  },
-  {
-   "id": "netz-dishbydish-net-gluten-free-teriyaki-chicken",
-   "name": "Gluten-Free Teriyaki Chicken (Dairy-Free)",
-   "quelle": "Dish by Dish",
-   "url": "https://www.dishbydish.net/gluten-free-teriyaki-chicken/",
-   "autor": "Felicia Lim",
-   "sprache": "en",
-   "minuten": 30,
-   "vorbereitung": 15,
-   "kochen": 15,
-   "portionen": "4 servings",
-   "zutaten": [
-    "1½ pounds boneless chicken thighs, cut into even bite-sized pieces",
-    "1 tablespoon sesame oil",
-    "4 garlic cloves, minced",
-    "1 tablespoon fresh ginger, grated",
-    "½ cup gluten-free soy sauce (gluten-free tamari sauce)",
-    "¼ cup honey",
-    "2 tablespoons rice vinegar",
-    "2 tablespoons light brown sugar",
-    "2 tablespoons cornstarch",
-    "2 tablespoons water"
-   ],
-   "schritte": 6,
-   "kategorie": "chicken",
-   "tags": [
-    "eiweiss",
-    "ohneMilch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "½ cup gluten-free soy sauce (gluten-free tamari sauce)"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-09"
-  },
-  {
-   "id": "netz-dishbydish-net-almond-flour-pumpkin-cookies",
-   "name": "Almond Flour Pumpkin Cookies (Gluten-Free, Dairy-Free)",
-   "quelle": "Dish by Dish",
-   "url": "https://www.dishbydish.net/almond-flour-pumpkin-cookies/",
-   "autor": "Felicia Lim",
-   "sprache": "en",
-   "minuten": 26,
-   "vorbereitung": 10,
-   "kochen": 16,
-   "portionen": "18 cookies",
-   "zutaten": [
-    "2 1/2 cups blanched almond flour",
-    "1/2 cup pumpkin puree",
-    "1 egg",
-    "1/2 cup unsalted dairy-free butter (1 stick)",
-    "3/4 cup sugar",
-    "1 teaspoon vanilla extract",
-    "1 1/2 teaspoons ground cinnamon",
-    "1/2 teaspoon ground ginger",
-    "1/4 teaspoon ground nutmeg",
-    "1/8 teaspoon ground cloves",
-    "1 teaspoon baking powder",
-    "1/4 teaspoon salt",
-    "1/2 cup dairy-free chocolate chips + more for topping"
-   ],
-   "schritte": 9,
-   "kategorie": "Cookies",
-   "tags": [
-    "vegetarisch",
-    "ohneMilch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "2 1/2 cups blanched almond flour",
-    "1/2 cup unsalted dairy-free butter (1 stick)",
-    "1 teaspoon vanilla extract",
-    "1 teaspoon baking powder",
-    "1/2 cup dairy-free chocolate chips + more for topping"
-   ],
-   "geprueft": true,
-   "datum": "2026-09-07"
-  },
-  {
    "id": "netz-minimalistbaker-com-honey-almond-snack-cake",
    "name": "1-Bowl Honey Almond Snack Cake (GF/DF)",
    "quelle": "Minimalist Baker",
@@ -972,36 +693,6 @@ window.ANKER_NETZREZEPTE = {
    ],
    "geprueft": true,
    "datum": "2026-09-08"
-  },
-  {
-   "id": "netz-glutenfreepalate-com-lemon-curd",
-   "name": "Lemon Curd",
-   "quelle": "Gluten Free Palate",
-   "url": "https://www.glutenfreepalate.com/lemon-curd/",
-   "autor": "Gluten-Free Palate",
-   "sprache": "en",
-   "minuten": 82,
-   "vorbereitung": 10,
-   "kochen": 12,
-   "portionen": "1",
-   "zutaten": [
-    "3 egg yolks",
-    "1/2 cup lemon juice (fresh squeezed or bottled)",
-    "1/2 cup granulated sugar",
-    "5 tablespoons butter (unsalted)",
-    "2 tablespoons lemon zest"
-   ],
-   "schritte": 5,
-   "kategorie": "Desserts",
-   "tags": [
-    "vegetarisch"
-   ],
-   "pruefen": [],
-   "packung": [
-    "1/2 cup lemon juice (fresh squeezed or bottled)"
-   ],
-   "geprueft": true,
-   "datum": "2026-04-29"
   },
   {
    "id": "netz-kochtrotz-de-rezepte-quitteneis-ninja-creami-rezept",

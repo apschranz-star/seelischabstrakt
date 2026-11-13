@@ -1,0 +1,3610 @@
+{
+  "generated": "2026-11-06",
+  "officer": "clinical-evidence",
+  "sections_done": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+  ],
+  "diet_points": [
+    {
+      "id": "lupus_alfalfa",
+      "condition": "lupus",
+      "type": "avoid",
+      "foods": [
+        "alfalfa sprouts",
+        "alfalfa seeds",
+        "alfalfa tablets"
+      ],
+      "statement_it": "Evita germogli, semi e compresse di erba medica (alfalfa): contengono L-canavanina, che in studi su primati e in rari casi umani è stata associata a un quadro simile al lupus; la Johns Hopkins Lupus Center consiglia di evitarli completamente.",
+      "statement_en": "Avoid alfalfa sprouts, seeds and tablets: they contain L-canavanine, which was linked to a lupus-like syndrome in primate feeding studies and in rare human case reports; the Johns Hopkins Lupus Center advises avoiding them completely.",
+      "evidence": "patient-org-advice",
+      "sources": [
+        {
+          "title": "5 Things to Avoid if You Have Lupus (page modified 2019-07-29)",
+          "publisher": "Johns Hopkins Lupus Center",
+          "year": 2019,
+          "url": "https://www.hopkinslupus.org/lupus-info/lifestyle-additional-information/avoid/"
+        },
+        {
+          "title": "Systemic lupus erythematosus-like syndrome in monkeys fed alfalfa sprouts: role of a nonprotein amino acid (Malinow MR et al., Science 1982;216:415-417)",
+          "publisher": "PubMed",
+          "year": 1982,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7071589/"
+        },
+        {
+          "title": "Dietary amino acid-induced systemic lupus erythematosus (Montanaro A, Bardana EJ, Rheum Dis Clin North Am 1991;17:323-332)",
+          "publisher": "PubMed",
+          "year": 1991,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1862241/"
+        },
+        {
+          "title": "Role of non-protein amino acid L-canavanine in autoimmunity (Akaogi J et al., Autoimmun Rev 2006;5:429-435)",
+          "publisher": "PubMed",
+          "year": 2006,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16890899/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Underlying data are primate feeding studies and case reports; Akaogi 2006 states that human induction or exacerbation by alfalfa tablets remains controversial and epidemiological data are sparse."
+    },
+    {
+      "id": "lupus_raw_sprouts_immunosuppressed",
+      "condition": "lupus",
+      "type": "avoid",
+      "foods": [
+        "raw or lightly cooked sprouts of any kind (alfalfa, clover, radish, mung bean, onion)"
+      ],
+      "statement_it": "Se assumi immunosoppressori: niente germogli crudi o poco cotti di nessun tipo. La FDA indica che le persone con sistema immunitario indebolito sono più vulnerabili alle infezioni alimentari e dovrebbero evitarli.",
+      "statement_en": "If you take immunosuppressants: no raw or lightly cooked sprouts of any kind. The FDA states that people with weakened immune systems are more vulnerable to foodborne illness and should avoid them.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "Selecting and Serving Produce Safely (content current as of 03/05/2024)",
+          "publisher": "U.S. Food and Drug Administration",
+          "year": 2024,
+          "url": "https://www.fda.gov/food/buy-store-serve-safe-food/selecting-and-serving-produce-safely"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "FDA consumer food-safety guidance; it names transplant, HIV/AIDS, cancer and diabetes as examples of weakened immunity, not lupus specifically.",
+      "applies_if": "on immunosuppressive therapy (confirm with doctor)"
+    },
+    {
+      "id": "lupus_garlic",
+      "condition": "lupus",
+      "type": "check_with_doctor",
+      "foods": [
+        "garlic",
+        "garlic supplements"
+      ],
+      "statement_it": "Aglio: la Johns Hopkins Lupus Center suggerisce di evitarlo in cucina perché allicina, ajoene e tiosulfinati stimolerebbero i globuli bianchi, ma precisa che una piccolissima quantità non fa male. Le prove sono di laboratorio, non studi clinici sul lupus. Gli integratori di aglio vanno discussi con il medico.",
+      "statement_en": "Garlic: the Johns Hopkins Lupus Center suggests avoiding cooking with garlic because allicin, ajoene and thiosulfinates may stimulate white blood cells, while stating that a tiny amount will not harm. The evidence is mechanistic, not clinical studies in lupus. Discuss garlic supplements with the doctor.",
+      "evidence": "patient-org-advice",
+      "sources": [
+        {
+          "title": "5 Things to Avoid if You Have Lupus (page modified 2019-07-29)",
+          "publisher": "Johns Hopkins Lupus Center",
+          "year": 2019,
+          "url": "https://www.hopkinslupus.org/lupus-info/lifestyle-additional-information/avoid/"
+        },
+        {
+          "title": "Identifying immunostimulatory herbal supplements that may flare autoimmune skin diseases: a systematic scoping review (Weiner JD et al., Lupus Sci Med 2025)",
+          "publisher": "PubMed",
+          "year": 2025,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41475897/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Weiner 2025 lists garlic among the 15 herbs with the most robust immunostimulatory evidence (in vitro, animal and human immune studies), not lupus flare outcomes. A PubMed search on 2026-11-06 (garlic AND systemic lupus erythematosus) returned no clinical trial."
+    },
+    {
+      "id": "lupus_immunostimulant_supplements",
+      "condition": "lupus",
+      "type": "avoid",
+      "foods": [
+        "echinacea",
+        "alfalfa",
+        "ashwagandha",
+        "astragalus",
+        "chlorella",
+        "garlic supplements",
+        "ginseng",
+        "green tea extract",
+        "Indian mulberry (noni)",
+        "liquorice",
+        "mistletoe",
+        "reishi mushroom",
+        "skullcap",
+        "spirulina",
+        "tinospora"
+      ],
+      "statement_it": "Evita gli integratori 'per le difese immunitarie' senza il consenso del medico. La monografia EMA sull'echinacea ne sconsiglia l'uso in caso di malattie autoimmuni, immunodeficienze e immunosoppressione; una revisione sistematica del 2025 elenca 15 erbe con le prove più solide di effetto immunostimolante (tra cui echinacea, alfalfa, spirulina, clorella, ginseng, astragalo).",
+      "statement_en": "Avoid 'immune-boosting' supplements unless the doctor agrees. The EMA echinacea monograph advises against use in autoimmune diseases, immunodeficiencies and immunosuppression; a 2025 systematic scoping review lists 15 herbs with the strongest immunostimulatory evidence (including echinacea, alfalfa, spirulina, chlorella, ginseng and astragalus).",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "European Union herbal monograph on Echinacea purpurea (L.) Moench, herba recens (EMA/HMPC/48704/2014 Corr 1), section 4.4",
+          "publisher": "European Medicines Agency, Committee on Herbal Medicinal Products",
+          "year": 2015,
+          "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/final-european-union-herbal-monograph-echinacea-purpurea-l-moench-herba-recens_en.pdf"
+        },
+        {
+          "title": "Identifying immunostimulatory herbal supplements that may flare autoimmune skin diseases: a systematic scoping review (Weiner JD et al., Lupus Sci Med 2025)",
+          "publisher": "PubMed",
+          "year": 2025,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41475897/"
+        },
+        {
+          "title": "5 Things to Avoid if You Have Lupus (page modified 2019-07-29)",
+          "publisher": "Johns Hopkins Lupus Center",
+          "year": 2019,
+          "url": "https://www.hopkinslupus.org/lupus-info/lifestyle-additional-information/avoid/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "EMA wording (well-established use, section 4.4): 'The use is not recommended in cases of progressive systemic disorders, autoimmune diseases, immunodeficiencies, immunosuppression and diseases of the white blood cell system.' The herb list comes from the scoping review (immunostimulation evidence, not flare outcomes)."
+    },
+    {
+      "id": "lupus_omega3",
+      "condition": "lupus",
+      "type": "check_with_doctor",
+      "foods": [
+        "omega-3 supplement (fish oil, EPA/DHA)"
+      ],
+      "statement_it": "Integratore di omega-3: una meta-analisi di 5 RCT (274 pazienti, dosi fino a 3 g al giorno) ha trovato una piccola riduzione dell'attività del lupus (circa 0,9 punti SLEDAI), con certezza delle prove bassa. Da iniziare solo con il consenso del medico, soprattutto se assumi anticoagulanti o antinfiammatori (FANS): gli omega-3 possono interagire con i farmaci che agiscono sulla coagulazione.",
+      "statement_en": "Omega-3 supplement: a meta-analysis of 5 RCTs (274 patients, doses up to 3 g/day) found a small reduction in lupus activity (about 0.9 SLEDAI points), with low-certainty evidence. Start only with the doctor's approval, especially if you take anticoagulants or NSAIDs, because omega-3 supplements may interact with drugs that affect blood clotting.",
+      "evidence": "meta-analysis",
+      "sources": [
+        {
+          "title": "Effect of omega-3 fatty acids on systemic lupus erythematosus disease activity: a systematic review and meta-analysis (Duarte-García A et al., Autoimmun Rev 2020;19:102688)",
+          "publisher": "PubMed",
+          "year": 2020,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/33131703/"
+        },
+        {
+          "title": "Things To Know About Omegas for Heart Disease",
+          "publisher": "NIH National Center for Complementary and Integrative Health (NCCIH)",
+          "year": null,
+          "url": "https://www.nccih.nih.gov/health/tips/things-to-know-about-omegas-for-heart-disease"
+        },
+        {
+          "title": "Lupus Diet (page modified 2022-07-15)",
+          "publisher": "Johns Hopkins Lupus Center",
+          "year": 2022,
+          "url": "https://www.hopkinslupus.org/lupus-info/lifestyle-additional-information/lupus-diet/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Duarte-García 2020: SMD -0.33 (95% CI -0.57 to -0.09), low certainty; follow-up 12 to 52 weeks. Johns Hopkins (2022) states omega-3s have not been adequately studied in lupus."
+    },
+    {
+      "id": "lupus_vitamin_d",
+      "condition": "lupus",
+      "type": "monitor",
+      "foods": [
+        "vitamin D supplement"
+      ],
+      "statement_it": "Vitamina D: KDIGO 2024 raccomanda calcio e vitamina D per proteggere le ossa nella nefrite lupica ed EULAR raccomanda di verificare l'apporto di calcio e vitamina D in tutti i pazienti con lupus. L'effetto sull'attività del lupus è incerto: le meta-analisi di RCT danno risultati discordanti. Dose e controlli del 25-OH vitamina D li decide il medico.",
+      "statement_en": "Vitamin D: KDIGO 2024 recommends calcium and vitamin D for bone protection in lupus nephritis, and EULAR advises checking calcium and vitamin D intake in all people with lupus. The effect on lupus activity is uncertain: meta-analyses of RCTs disagree. Dose and 25-OH vitamin D checks are for the doctor to decide.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "Efficacy and Safety of Vitamin D Supplementation in Patients With Systemic Lupus Erythematosus: A Meta-analysis of Randomized Controlled Trials (Zheng R et al., Am J Med Sci 2019;358:104-114)",
+          "publisher": "PubMed",
+          "year": 2019,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31331447/"
+        },
+        {
+          "title": "A Systematic Review and Meta-Analysis of the Effects of Vitamin D on Systemic Lupus Erythematosus (El Kababi S et al., Nutrients 2025;17:2794)",
+          "publisher": "PubMed",
+          "year": 2025,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40944182/"
+        },
+        {
+          "title": "Effects of vitamin D supplementation on patients with systemic lupus erythematosus: a systematic review and meta-analysis (Lu J et al., Autoimmun Rev 2026;25:104057)",
+          "publisher": "PubMed",
+          "year": 2026,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41951148/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Zheng 2019 (5 RCTs, 490 participants): no significant effect on SLEDAI or anti-dsDNA, possible fatigue benefit. El Kababi 2025 (21 studies) and Lu 2026 (10 RCTs, 847 participants) report lower disease activity. Inconsistent, so no efficacy claim."
+    },
+    {
+      "id": "ln_sodium",
+      "condition": "lupus_nephritis",
+      "type": "limit",
+      "foods": [
+        "table salt",
+        "high-sodium processed and ultra-processed foods"
+      ],
+      "statement_it": "Sale: KDIGO indica sodio inferiore a 2 g al giorno (meno di 90 mmol, cioè meno di 5 g di sale) nelle malattie glomerulari, per controllare pressione, edemi e proteinuria; la linea guida KDIGO 2024 sulla nefrite lupica indica di evitare una dieta ricca di sodio.",
+      "statement_en": "Salt: KDIGO advises dietary sodium below 2 g/day (below 90 mmol/day, i.e. below 5 g of salt) in glomerular disease to help control blood pressure, oedema and proteinuria; the KDIGO 2024 lupus nephritis guideline lists avoiding a high-sodium diet.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "KDIGO GD 2021 Practice Points 1.14.1 and 1.5.8; KDIGO CKD 2024 Recommendation 3.3.2.1 (2C) gives the 5 g sodium chloride equivalence; KDIGO LN 2024 Figure 3."
+    },
+    {
+      "id": "ln_blood_pressure",
+      "condition": "lupus_nephritis",
+      "type": "monitor",
+      "foods": [],
+      "statement_it": "Pressione arteriosa: KDIGO suggerisce, se tollerata, una pressione sistolica inferiore a 120 mmHg misurata in modo standardizzato in ambulatorio, insieme a meno sale, peso normale, attività fisica regolare e niente fumo.",
+      "statement_en": "Blood pressure: KDIGO suggests, when tolerated, a systolic pressure below 120 mmHg using standardised office measurement, together with less salt, normal weight, regular exercise and no smoking.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "KDIGO GD 2021 Practice Points 1.5.2 and 1.5.8; KDIGO CKD 2024 Recommendation 3.4.1 (2B). The target is set by her nephrologist."
+    },
+    {
+      "id": "ln_protein",
+      "condition": "lupus_nephritis",
+      "type": "monitor",
+      "foods": [
+        "protein foods (fish, poultry, eggs, dairy, legumes)"
+      ],
+      "statement_it": "Proteine: con proteinuria (nefrosica nella figura KDIGO) KDIGO 2021 suggerisce da 0,8 a 1,0 g/kg al giorno calcolati sul peso ideale; con eGFR sotto 60 ml/min/1,73 m2 circa 0,8 g/kg al giorno, senza scendere sotto 0,6 g/kg; nella malattia renale cronica a rischio di progressione va evitato più di 1,3 g/kg al giorno. Non abbiamo trovato una restrizione KDIGO per eGFR normale senza proteinuria: il piano attuale (circa 1 g/kg) va rivisto dal nefrologo se cambiano eGFR o proteinuria.",
+      "statement_en": "Protein: with proteinuria (nephrotic-range in the KDIGO figure) KDIGO 2021 suggests 0.8 to 1.0 g/kg/day based on ideal body weight; with eGFR below 60 ml/min/1.73 m2 about 0.8 g/kg/day and never below 0.6 g/kg/day; in CKD at risk of progression avoid more than 1.3 g/kg/day. We found no KDIGO protein restriction for normal eGFR without proteinuria: the current plan (about 1 g/kg) should be reviewed by the nephrologist if eGFR or proteinuria change.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "KDIGO GD 2021 Practice Points 1.14.2 and 1.14.3 (Figure 16, per ideal body weight) and section 1.14 text; KDIGO CKD 2024 Recommendation 3.3.1.1 (0.8 g/kg/day for CKD G3 to G5, 2C) and Practice Point 3.3.1.1 (avoid above 1.3 g/kg/day). Open point: the nutritionist's 1 g/kg may be per actual, not ideal, body weight."
+    },
+    {
+      "id": "ln_potassium_phosphorus",
+      "condition": "lupus_nephritis",
+      "type": "monitor",
+      "foods": [
+        "processed foods rich in bioavailable potassium",
+        "phosphate additives"
+      ],
+      "statement_it": "Potassio e fosforo: KDIGO consiglia di limitare i cibi ricchi di potassio biodisponibile (per esempio alimenti trasformati) nella malattia renale cronica da G3 a G5 con precedenti di iperkaliemia o nei periodi a rischio, e di limitare il fosfato alimentare per trattare un fosfato alto nella malattia renale cronica da G3a a G5D. Con funzione renale e valori normali queste linee guida non prevedono restrizioni; il potassio va però ricontrollato quando si iniziano o aumentano ACE-inibitori o sartani, e con inibitori della calcineurina.",
+      "statement_en": "Potassium and phosphorus: KDIGO advises limiting foods rich in bioavailable potassium (for example processed foods) in CKD G3 to G5 with a history of hyperkalaemia or during high-risk periods, and limiting dietary phosphate to treat high phosphate in CKD G3a to G5D. With normal kidney function and normal levels these guidelines set no restriction; potassium should be rechecked when ACE inhibitors or ARBs are started or increased, and with calcineurin inhibitors.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "KDIGO 2017 Clinical Practice Guideline Update for CKD-Mineral and Bone Disorder (Kidney Int Suppl 2017;7:1-59)",
+          "publisher": "KDIGO",
+          "year": 2017,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/2017-KDIGO-CKD-MBD-GL-Update.pdf"
+        },
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "LUPKYNIS (voclosporin) capsules, US prescribing information (DailyMed version dated Aug 27, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9f489295-1156-52c7-5fd0-5c4c52f9b813"
+        },
+        {
+          "title": "PROGRAF (tacrolimus), US prescribing information (DailyMed version dated Mar 21, 2025)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2025,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f667de1-9dfa-4bd6-8ba0-15ee2d78873b"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "KDIGO CKD 2024 Practice Points 3.3.2, 3.11.5.1, 3.11.5.2 and 3.6.2 (check potassium within 2 to 4 weeks of RASi start or dose increase); KDIGO CKD-MBD 2017 Recommendation 4.1.8 (2D); KDIGO GD 2021 Practice Point 1.5.5; voclosporin and tacrolimus labels warn about hyperkalaemia."
+    },
+    {
+      "id": "ln_plant_based",
+      "condition": "lupus_nephritis",
+      "type": "prefer",
+      "foods": [
+        "vegetables",
+        "legumes",
+        "fruit",
+        "naturally gluten-free whole grains"
+      ],
+      "statement_it": "Nella malattia renale cronica KDIGO 2024 consiglia una dieta varia con più alimenti vegetali che animali e meno alimenti ultra-processati; KDIGO 2021 indica di favorire, quando possibile, le proteine vegetali.",
+      "statement_en": "In CKD, KDIGO 2024 advises a varied diet with more plant-based than animal-based foods and fewer ultra-processed foods; KDIGO 2021 advises favouring plant protein sources when possible.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "KDIGO CKD 2024 Practice Point 3.3.1; KDIGO GD 2021 section 1.14. Written for CKD and glomerular disease; applies to her only as general kidney-friendly advice."
+    },
+    {
+      "id": "ln_weight_activity",
+      "condition": "lupus_nephritis",
+      "type": "prefer",
+      "foods": [],
+      "statement_it": "Peso e movimento: KDIGO 2021 indica la riduzione calorica per raggiungere un BMI normale e ridurre il grasso addominale nelle malattie glomerulari; KDIGO 2024 raccomanda nella malattia renale cronica almeno 150 minuti a settimana di attività moderata (il piano prevede 5 volte 30 minuti); EULAR 2023 include esercizio regolare e dieta equilibrata tra le misure non farmacologiche del lupus.",
+      "statement_en": "Weight and activity: KDIGO 2021 advises calorie restriction to reach a normal BMI and limit central adiposity in glomerular disease; KDIGO 2024 recommends at least 150 minutes per week of moderate activity in CKD (the plan has 5 x 30 minutes); EULAR 2023 lists regular exercise and a healthy balanced diet among non-drug measures in lupus.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "EULAR recommendations for the management of systemic lupus erythematosus: 2023 update (Fanouriakis A et al., Ann Rheum Dis 2024;83:15-29); full text read from the Leiden University repository copy https://hdl.handle.net/1887/3750414",
+          "publisher": "EULAR",
+          "year": 2024,
+          "url": "https://doi.org/10.1136/ard-2023-224762"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "KDIGO GD 2021 Practice Point 1.14.4; KDIGO CKD 2024 Recommendation 3.2.2.1 (1D) and Practice Point 3.2.2.4; EULAR 2023 overarching principle D."
+    },
+    {
+      "id": "drug_grapefruit_cni",
+      "condition": "lupus_nephritis",
+      "type": "avoid",
+      "foods": [
+        "grapefruit",
+        "grapefruit juice",
+        "pomelo",
+        "Seville (bitter) orange and its marmalade",
+        "tangelo"
+      ],
+      "statement_it": "Se assumi ciclosporina, tacrolimus o voclosporina: niente pompelmo né succo di pompelmo (lo indicano le schede tecniche). La FDA avverte che anche pomelo, arancia amara di Siviglia (usata per la marmellata) e tangelo possono avere lo stesso effetto; un caso clinico ha descritto un forte aumento del tacrolimus nel sangue dopo il pomelo.",
+      "statement_en": "If you take cyclosporine, tacrolimus or voclosporin: no grapefruit or grapefruit juice (stated in the drug labels). The FDA warns that pomelo, Seville orange (used for marmalade) and tangelo may have the same effect; a case report described a marked rise in blood tacrolimus after pomelo.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "NEORAL (cyclosporine), US prescribing information (DailyMed version dated Aug 11, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=94461af3-11f1-4670-95d4-2965b9538ae3"
+        },
+        {
+          "title": "PROGRAF (tacrolimus), US prescribing information (DailyMed version dated Mar 21, 2025)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2025,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f667de1-9dfa-4bd6-8ba0-15ee2d78873b"
+        },
+        {
+          "title": "LUPKYNIS (voclosporin) capsules, US prescribing information (DailyMed version dated Aug 27, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9f489295-1156-52c7-5fd0-5c4c52f9b813"
+        },
+        {
+          "title": "Grapefruit Juice and Some Drugs Don't Mix (content current as of 07/01/2021)",
+          "publisher": "U.S. Food and Drug Administration",
+          "year": 2021,
+          "url": "https://www.fda.gov/consumers/consumer-updates/grapefruit-juice-and-some-drugs-dont-mix"
+        },
+        {
+          "title": "Pomelo-induced increase in the blood level of tacrolimus in a renal transplant patient (Egashira K et al., Transplantation 2003;75:1057)",
+          "publisher": "PubMed",
+          "year": 2003,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12698101/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Lemon is the plan's vitamin C source and is not in the FDA list; hydroxychloroquine, mycophenolate, azathioprine and prednisone labels reviewed here contain no grapefruit warning.",
+      "applies_if": "taking cyclosporine, tacrolimus or voclosporin"
+    },
+    {
+      "id": "drug_st_johns_wort",
+      "condition": "lupus_nephritis",
+      "type": "avoid",
+      "foods": [
+        "St John's wort (Hypericum) supplements"
+      ],
+      "statement_it": "Con ciclosporina evita l'iperico (erba di San Giovanni): la scheda riporta una forte riduzione dei livelli di ciclosporina nel sangue. Con tacrolimus o voclosporina chiedi al medico prima di qualsiasi integratore, perché le schede avvertono sugli induttori del CYP3A4.",
+      "statement_en": "With cyclosporine avoid St John's wort: the label reports a marked fall in blood cyclosporine levels. With tacrolimus or voclosporin ask the doctor before any supplement, because their labels warn about CYP3A4 inducers.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "NEORAL (cyclosporine), US prescribing information (DailyMed version dated Aug 11, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=94461af3-11f1-4670-95d4-2965b9538ae3"
+        },
+        {
+          "title": "LUPKYNIS (voclosporin) capsules, US prescribing information (DailyMed version dated Aug 27, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9f489295-1156-52c7-5fd0-5c4c52f9b813"
+        },
+        {
+          "title": "PROGRAF (tacrolimus), US prescribing information (DailyMed version dated Mar 21, 2025)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2025,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f667de1-9dfa-4bd6-8ba0-15ee2d78873b"
+        }
+      ],
+      "verified": true,
+      "applies_if": "taking a calcineurin inhibitor"
+    },
+    {
+      "id": "drug_cni_meal_timing",
+      "condition": "lupus_nephritis",
+      "type": "check_with_doctor",
+      "foods": [
+        "meal timing",
+        "high-fat meals"
+      ],
+      "statement_it": "Voclosporina: a stomaco vuoto, 1 ora prima o 2 ore dopo un pasto, circa ogni 12 ore. Tacrolimus: il cibo, soprattutto un pasto grasso, ne riduce l'assorbimento; se lo prendi con il cibo, fallo sempre allo stesso modo.",
+      "statement_en": "Voclosporin: on an empty stomach, 1 hour before or 2 hours after a meal, about every 12 hours. Tacrolimus: food, especially a high-fat meal, reduces absorption; if taken with food, always take it the same way.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "LUPKYNIS (voclosporin) capsules, US prescribing information (DailyMed version dated Aug 27, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9f489295-1156-52c7-5fd0-5c4c52f9b813"
+        },
+        {
+          "title": "PROGRAF (tacrolimus), US prescribing information (DailyMed version dated Mar 21, 2025)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2025,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f667de1-9dfa-4bd6-8ba0-15ee2d78873b"
+        }
+      ],
+      "verified": true,
+      "applies_if": "taking voclosporin or tacrolimus"
+    },
+    {
+      "id": "drug_hcq_food",
+      "condition": "lupus",
+      "type": "check_with_doctor",
+      "foods": [
+        "food or milk at dosing",
+        "antacids",
+        "kaolin"
+      ],
+      "statement_it": "Idrossiclorochina: la scheda USA indica di assumerla con cibo o latte. Antiacidi e caolino riducono l'assorbimento della clorochina (intervallo di almeno 4 ore) e per l'idrossiclorochina l'interazione non può essere esclusa.",
+      "statement_en": "Hydroxychloroquine: the US label says to take it with food or milk. Antacids and kaolin reduce chloroquine absorption (keep at least 4 hours apart) and an interaction with hydroxychloroquine cannot be ruled out.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "PLAQUENIL (hydroxychloroquine sulfate), US prescribing information (DailyMed version dated May 21, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=34496b43-05a2-45fb-a769-52b12e099341"
+        }
+      ],
+      "verified": true,
+      "applies_if": "taking hydroxychloroquine"
+    },
+    {
+      "id": "drug_mycophenolate_timing",
+      "condition": "lupus_nephritis",
+      "type": "check_with_doctor",
+      "foods": [
+        "meal timing",
+        "antacids with magnesium or aluminium hydroxide"
+      ],
+      "statement_it": "Micofenolato mofetile (CellCept): la scheda raccomanda di assumerlo a stomaco vuoto. Acido micofenolico (Myfortic): 1 ora prima o 2 ore dopo il cibo. Gli antiacidi con idrossido di magnesio o di alluminio ne riducono l'assorbimento: non prenderli insieme (per CellCept l'antiacido almeno 2 ore dopo).",
+      "statement_en": "Mycophenolate mofetil (CellCept): the label recommends taking it on an empty stomach. Mycophenolic acid (Myfortic): 1 hour before or 2 hours after food. Antacids with magnesium or aluminium hydroxide reduce absorption: do not take them together (for CellCept the antacid at least 2 hours later).",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "CELLCEPT (mycophenolate mofetil), US prescribing information (DailyMed version dated Aug 10, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=37241e87-4af4-4dc3-a1aa-ea6f20d8dc40"
+        },
+        {
+          "title": "MYFORTIC (mycophenolic acid) delayed-release tablets, US prescribing information (DailyMed version dated Aug 11, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=eed26501-890d-4ff6-88e7-6dbea4726e53"
+        }
+      ],
+      "verified": true,
+      "applies_if": "taking mycophenolate"
+    },
+    {
+      "id": "drug_azathioprine_meals",
+      "condition": "lupus",
+      "type": "check_with_doctor",
+      "foods": [
+        "meal timing"
+      ],
+      "statement_it": "Azatioprina: secondo la scheda, i disturbi di stomaco spesso si riducono dividendo la dose e/o assumendola dopo i pasti.",
+      "statement_en": "Azathioprine: per the label, stomach upset can often be reduced by divided doses and/or taking it after meals.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "IMURAN (azathioprine), US prescribing information (DailyMed version dated Sep 14, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4d62b6e4-a9d4-4818-e063-6394a90aa208"
+        }
+      ],
+      "verified": true,
+      "applies_if": "taking azathioprine"
+    },
+    {
+      "id": "drug_glucocorticoids_salt_sugar_bone",
+      "condition": "lupus",
+      "type": "check_with_doctor",
+      "foods": [
+        "salt",
+        "sugars and sweets",
+        "calcium-rich foods",
+        "potassium"
+      ],
+      "statement_it": "Cortisonici (per esempio prednisone): la scheda riporta ritenzione di sodio e liquidi, perdita di potassio, aumento dell'escrezione di calcio e ridotta tolleranza al glucosio, e indica che possono servire meno sale e potassio supplementare. KDIGO 2024 raccomanda nella nefrite lupica calcio (apporto ottimale da 1000 a 1200 mg al giorno) e vitamina D; EULAR consiglia controlli della glicemia più frequenti in chi assume cortisonici.",
+      "statement_en": "Glucocorticoids (for example prednisone): the label lists sodium and fluid retention, potassium loss, increased calcium excretion and decreased glucose tolerance, and says dietary salt restriction and potassium supplementation may be necessary. KDIGO 2024 recommends calcium (optimal intake 1000 to 1200 mg/day) and vitamin D in lupus nephritis; EULAR advises more frequent glucose checks for people on glucocorticoids.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "Prednisone tablets USP (generic), US label (DailyMed version dated Nov 05, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c21be016-6b25-4e09-b253-23b58884ccb6"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "The prednisone label adds that salt and water retention and potassium loss are less likely with synthetic derivatives such as prednisone except at large doses; the app should not present salt or potassium changes as automatic.",
+      "applies_if": "taking glucocorticoids"
+    },
+    {
+      "id": "celiac_strict_gfd",
+      "condition": "celiac",
+      "type": "avoid",
+      "foods": [
+        "wheat",
+        "barley",
+        "rye",
+        "spelt",
+        "farro",
+        "khorasan (Kamut)",
+        "einkorn",
+        "triticale",
+        "bulgur",
+        "seitan",
+        "oats not labelled gluten-free"
+      ],
+      "statement_it": "Dieta senza glutine rigorosa e per tutta la vita (raccomandazione forte ESsCD): niente frumento, orzo, segale e loro varietà (farro, spelta, Kamut, monococco, triticale, bulgur, seitan) né avena non certificata.",
+      "statement_en": "Strict lifelong gluten-free diet (strong ESsCD recommendation): no wheat, barley, rye or their varieties (farro, spelt, Kamut, einkorn, triticale, bulgur, seitan) and no non-certified oats.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "European Society for the Study of Coeliac Disease (ESsCD) guideline for coeliac disease and other gluten-related disorders (Al-Toma A et al., United European Gastroenterol J 2019;7(5):583-613; PMC6545713); full text read from a publisher PDF copy",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2019,
+          "url": "https://doi.org/10.1177/2050640619844125"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "I cereali vietati (page modified 2026-03-12)",
+          "publisher": "AIC Associazione Italiana Celiachia",
+          "year": 2026,
+          "url": "https://www.celiachia.it/dieta-senza-glutine/gestire-dieta-senza-glutine/i-cereali-vietati/"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "celiac_oats",
+      "condition": "celiac",
+      "type": "check_with_doctor",
+      "foods": [
+        "oats",
+        "oat flakes",
+        "oat bran"
+      ],
+      "statement_it": "Avena: solo avena certificata senza glutine (in etichetta 'senza glutine'); l'avena comune è spesso contaminata. ESsCD 2025 la raccomanda già dalla diagnosi (una piccola minoranza può reagire all'avenina) e ACG 2023 la raccomanda con monitoraggio della tolleranza. AIC la ritiene idonea per chi è in remissione clinica e sierologica e ha escluso anche l'avena da almeno sei mesi, iniziando sotto controllo medico.",
+      "statement_en": "Oats: only certified gluten-free oats (labelled 'gluten-free'); ordinary oats are often contaminated. ESsCD 2025 recommends them from diagnosis (a small subset may react to avenin) and ACG 2023 recommends them with monitoring of tolerance. AIC considers them suitable for people in clinical and serological remission who have also excluded oats for at least six months, starting under medical supervision.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "American College of Gastroenterology Guidelines Update: Diagnosis and Management of Celiac Disease (Rubio-Tapia A et al., Am J Gastroenterol 2023;118:59-76; PubMed 36602836); full text read from a publisher PDF copy",
+          "publisher": "American College of Gastroenterology (ACG)",
+          "year": 2023,
+          "url": "https://doi.org/10.14309/ajg.0000000000002075"
+        },
+        {
+          "title": "European Society for the Study of Coeliac Disease (ESsCD) guideline for coeliac disease and other gluten-related disorders (Al-Toma A et al., United European Gastroenterol J 2019;7(5):583-613; PMC6545713); full text read from a publisher PDF copy",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2019,
+          "url": "https://doi.org/10.1177/2050640619844125"
+        },
+        {
+          "title": "I cereali permessi (includes the current AIC position on oats; page modified 2026-03-07)",
+          "publisher": "AIC Associazione Italiana Celiachia",
+          "year": 2026,
+          "url": "https://www.celiachia.it/dieta-senza-glutine/gestire-dieta-senza-glutine/i-cereali-permessi/"
+        },
+        {
+          "title": "I cereali vietati (page modified 2026-03-12)",
+          "publisher": "AIC Associazione Italiana Celiachia",
+          "year": 2026,
+          "url": "https://www.celiachia.it/dieta-senza-glutine/gestire-dieta-senza-glutine/i-cereali-vietati/"
+        },
+        {
+          "title": "Oats and the gluten free diet (accessed 2026-11-06; no publication date shown)",
+          "publisher": "Coeliac UK",
+          "year": null,
+          "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/oats/"
+        },
+        {
+          "title": "Commission Implementing Regulation (EU) No 828/2014 on the requirements for the provision of information to consumers on the absence or reduced presence of gluten in food, Annex",
+          "publisher": "EUR-Lex, European Union",
+          "year": 2014,
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014R0828"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "ESsCD 2025: 'Only certified gluten-free oats are safe and should be recommended for people with CeD and can be included from diagnosis' (moderate certainty, strong). ACG 2023: strong recommendation, moderate quality. ESsCD 2019: cautious introduction with monitoring. AIC 2021 PDF said two years; the live AIC page (modified 2026-03) says six months."
+    },
+    {
+      "id": "celiac_eu_labels",
+      "condition": "celiac",
+      "type": "prefer",
+      "foods": [
+        "packaged foods labelled 'senza glutine' / 'gluten-free' / 'glutenfrei'"
+      ],
+      "statement_it": "Etichette UE: 'senza glutine' solo se il glutine non supera 20 mg/kg; 'con contenuto di glutine molto basso' indica fino a 100 mg/kg e non equivale a 'senza glutine'. L'avena in un prodotto 'senza glutine' deve essere prodotta in modo da evitare contaminazioni e non superare 20 mg/kg.",
+      "statement_en": "EU labels: 'gluten-free' only if gluten is no more than 20 mg/kg; 'very low gluten' means up to 100 mg/kg and is not the same as gluten-free. Oats in a gluten-free product must be produced to avoid contamination and contain no more than 20 mg/kg.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "Commission Implementing Regulation (EU) No 828/2014 on the requirements for the provision of information to consumers on the absence or reduced presence of gluten in food, Annex",
+          "publisher": "EUR-Lex, European Union",
+          "year": 2014,
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014R0828"
+        },
+        {
+          "title": "Regolamento di esecuzione (UE) n. 828/2014 della Commissione, Allegato (testo italiano)",
+          "publisher": "EUR-Lex, Unione europea",
+          "year": 2014,
+          "url": "https://eur-lex.europa.eu/legal-content/IT/TXT/HTML/?uri=CELEX:32014R0828"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "German wording: 'glutenfrei' and 'sehr geringer Glutengehalt'. ESsCD 2025 calls the 20 ppm label standard and the 10 mg/day intake threshold the most evidence-based definitions."
+    },
+    {
+      "id": "celiac_naturally_gf_grains",
+      "condition": "celiac",
+      "type": "prefer",
+      "foods": [
+        "rice (brown, basmati, black)",
+        "maize",
+        "buckwheat",
+        "quinoa",
+        "millet",
+        "sorghum",
+        "teff",
+        "amaranth"
+      ],
+      "statement_it": "Cereali e pseudocereali naturalmente senza glutine (riso, mais, grano saraceno, quinoa, miglio, sorgo, teff, amaranto) sono adatti, ma i prodotti a base di cereali possono essere contaminati: preferisci quelli con la dicitura 'senza glutine'.",
+      "statement_en": "Naturally gluten-free grains and pseudo-cereals (rice, maize, buckwheat, quinoa, millet, sorghum, teff, amaranth) are suitable, but grain products can be contaminated: prefer those labelled gluten-free.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "I cereali permessi (includes the current AIC position on oats; page modified 2026-03-07)",
+          "publisher": "AIC Associazione Italiana Celiachia",
+          "year": 2026,
+          "url": "https://www.celiachia.it/dieta-senza-glutine/gestire-dieta-senza-glutine/i-cereali-permessi/"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "celiac_nutrient_deficiencies",
+      "condition": "celiac",
+      "type": "monitor",
+      "foods": [
+        "iron sources",
+        "calcium sources",
+        "folate sources",
+        "vitamin B12 sources"
+      ],
+      "statement_it": "Nella celiachia le carenze sono frequenti: ferro (dal 7% all'80% dei nuovi diagnosticati), vitamina D e altre vitamine liposolubili, calcio, B12, folati, zinco e rame; anche una dieta senza glutine sbilanciata può causarne. ESsCD raccomanda una valutazione nutrizionale e un dietista esperto in celiachia.",
+      "statement_en": "Deficiencies are common in celiac disease: iron (7% to 80% of newly diagnosed patients), vitamin D and other fat-soluble vitamins, calcium, B12, folate, zinc and copper; a poorly balanced gluten-free diet can also cause them. ESsCD recommends a nutritional assessment and a dietitian experienced in celiac disease.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "European Society for the Study of Coeliac Disease (ESsCD) guideline for coeliac disease and other gluten-related disorders (Al-Toma A et al., United European Gastroenterol J 2019;7(5):583-613; PMC6545713); full text read from a publisher PDF copy",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2019,
+          "url": "https://doi.org/10.1177/2050640619844125"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "celiac_followup_labs",
+      "condition": "celiac",
+      "type": "monitor",
+      "foods": [],
+      "statement_it": "Controlli suggeriti da ESsCD 2025 negli adulti: alla diagnosi emocromo, stato del ferro, folati, B12, funzione tiroidea, enzimi epatici, albumina, calcio, fosfato, vitamina D e glicemia; dopo 4 a 6 mesi ripetere gli esami alterati; a 12 mesi sierologia (anti-TG2 IgA); poi ogni 1 o 2 anni sierologia (facoltativa se già negativizzata) e funzione tiroidea.",
+      "statement_en": "ESsCD 2025 suggested adult follow-up: at diagnosis full blood count, iron status, folate, B12, thyroid function, liver enzymes, albumin, calcium, phosphate, vitamin D and glucose; at 4 to 6 months repeat abnormal tests; at 12 months serology (IgA anti-TG2); then every 1 to 2 years serology (optional once negative) and thyroid function.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "ESsCD 2025 Part 2, Table 5; serology does not need routine repetition within the first year of the gluten-free diet."
+    },
+    {
+      "id": "celiac_ttg_interpretation",
+      "condition": "celiac",
+      "type": "monitor",
+      "foods": [],
+      "statement_it": "Anti-TG2 (tTG) IgA nel follow-up: un valore positivo durante la dieta senza glutine suggerisce esposizione al glutine o scarsa aderenza; un valore negativo non dimostra un'aderenza perfetta né la guarigione della mucosa. Di solito si normalizza entro circa 12 mesi.",
+      "statement_en": "IgA anti-TG2 (tTG) in follow-up: a positive value on a gluten-free diet suggests gluten exposure or poor adherence; a negative value does not prove strict adherence or mucosal healing. It usually normalises within about 12 months.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "celiac_lactose",
+      "condition": "celiac",
+      "type": "check_with_doctor",
+      "foods": [
+        "milk",
+        "lactose-containing dairy"
+      ],
+      "statement_it": "Alla diagnosi, se persistono sintomi intestinali per carenza secondaria di lattasi, una restrizione temporanea del lattosio può aiutare (raccomandazione condizionale ESsCD 2025); la dieta deve comunque includere latticini o alternative fortificate.",
+      "statement_en": "At diagnosis, if gut symptoms persist because of secondary lactase deficiency, temporary lactose restriction can help (conditional ESsCD 2025 recommendation); the diet should still include dairy or fortified alternatives.",
+      "evidence": "guideline",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "general_vitamin_c_iron",
+      "condition": "general",
+      "type": "prefer",
+      "foods": [
+        "lemon juice",
+        "vitamin C-rich fruit and vegetables"
+      ],
+      "statement_it": "Limone su verdure e legumi: la vitamina C (acido ascorbico) è il più efficace favorente dell'assorbimento del ferro non-eme; si degrada con la cottura, quindi meglio aggiungere il limone a crudo. In una dieta varia l'effetto è più modesto.",
+      "statement_en": "Lemon on vegetables and legumes: vitamin C (ascorbic acid) is the most effective enhancer of non-haem iron absorption; it degrades with cooking, so add lemon raw. In a varied diet the effect is more modest.",
+      "evidence": "expert-opinion",
+      "sources": [
+        {
+          "title": "Enhancers of iron absorption: ascorbic acid and other organic acids (Teucher B et al., Int J Vitam Nutr Res 2004;74:403-419)",
+          "publisher": "PubMed",
+          "year": 2004,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/15743017/"
+        },
+        {
+          "title": "Iron bioavailability and dietary reference values (Hurrell R, Egli I, Am J Clin Nutr 2010;91:1461S-1467S)",
+          "publisher": "PubMed",
+          "year": 2010,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/20200263/"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Narrative reviews of human iron-absorption (isotope) studies; Hurrell 2010 notes single-component effects are smaller in multimeal studies."
+    },
+    {
+      "id": "general_mineral_water",
+      "condition": "general",
+      "type": "prefer",
+      "foods": [
+        "natural mineral water labelled 'calcica' / 'contains calcium'",
+        "natural mineral water labelled 'indicata per le diete povere di sodio'"
+      ],
+      "statement_it": "Acqua minerale: per legge UE la dicitura 'Calcica' (in tedesco 'Calciumhaltig') indica calcio superiore a 150 mg/l; 'Indicata per le diete povere di sodio' indica sodio inferiore a 20 mg/l, utile con il sale moderato; 'Sodica' indica sodio superiore a 200 mg/l.",
+      "statement_en": "Mineral water: under EU law the indication 'Contains calcium' (Italian 'Calcica', German 'Calciumhaltig') means calcium above 150 mg/l; 'Suitable for a low-sodium diet' means sodium below 20 mg/l, useful with moderate salt; 'Contains sodium' means sodium above 200 mg/l.",
+      "evidence": "regulation",
+      "sources": [
+        {
+          "title": "Directive 2009/54/EC on the exploitation and marketing of natural mineral waters (Recast), Annex III",
+          "publisher": "EUR-Lex, European Union",
+          "year": 2009,
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32009L0054"
+        },
+        {
+          "title": "Direttiva 2009/54/CE sull'utilizzazione e la commercializzazione delle acque minerali naturali (rifusione), Allegato III (testo italiano)",
+          "publisher": "EUR-Lex, Unione europea",
+          "year": 2009,
+          "url": "https://eur-lex.europa.eu/legal-content/IT/TXT/HTML/?uri=CELEX:32009L0054"
+        },
+        {
+          "title": "Richtlinie 2009/54/EG über die Gewinnung von und den Handel mit natürlichen Mineralwässern (Neufassung), Anhang III (deutscher Text)",
+          "publisher": "EUR-Lex, Europäische Union",
+          "year": 2009,
+          "url": "https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32009L0054"
+        }
+      ],
+      "verified": true,
+      "evidence_note": "Directive 2009/54/EC Annex III: the criterion is strictly 'greater than 150 mg/l', not 'at least 150 mg/l'; the Italian indication is 'Calcica', not 'contenente calcio'."
+    }
+  ],
+  "labs": [
+    {
+      "id": "creatinine",
+      "name_it": "Creatinina",
+      "name_en": "Creatinine",
+      "name_de": "Kreatinin",
+      "aliases": [
+        "Creatinina",
+        "Creatinina sierica",
+        "Creatininemia",
+        "CREA",
+        "CREAT",
+        "Crea",
+        "sCr",
+        "Kreatinin",
+        "Kreatinin i.S.",
+        "KREA",
+        "Krea",
+        "Creatinine"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 88.4,
+          "canonical": "µmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        },
+        {
+          "unit": "µmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "µmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "µmol/l",
+            "umol/L",
+            "μmol/L"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "muscle"
+      ],
+      "direction": "high_bad",
+      "why_it": "Principale marcatore nel sangue della filtrazione renale, usato per seguire la nefrite lupica; dipende anche dalla massa muscolare, quindi variazioni della massa muscolare possono spostarlo senza cambiamenti della funzione renale.",
+      "why_en": "Main blood marker of kidney filtration used to follow lupus nephritis; it also depends on muscle mass, so changes in muscle mass can move it without any change in kidney function.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "CKD-EPI needs mg/dL: divide µmol/L by 88.4."
+    },
+    {
+      "id": "egfr",
+      "name_it": "Velocità di filtrazione glomerulare stimata (eGFR)",
+      "name_en": "Estimated glomerular filtration rate (eGFR)",
+      "name_de": "Geschätzte glomeruläre Filtrationsrate (eGFR)",
+      "aliases": [
+        "eGFR",
+        "VFG",
+        "VFGe",
+        "GFR stimato",
+        "Filtrato glomerulare stimato",
+        "eGFR (CKD-EPI)",
+        "GFR CKD-EPI",
+        "eGFR (EKFC)",
+        "eGFR (MDRD)",
+        "GFR (geschätzt)",
+        "GFR nach CKD-EPI",
+        "Glomeruläre Filtrationsrate"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mL/min/1.73 m2",
+          "to_canonical_factor": 1,
+          "canonical": "mL/min/1.73 m2",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "ml/min/1,73m²",
+            "ml/min/1.73m2",
+            "mL/min/1,73 m²"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [],
+      "direction": "low_bad",
+      "why_it": "Stima della filtrazione renale calcolata da creatinina, età e sesso; i laboratori possono usare equazioni diverse (CKD-EPI 2009, CKD-EPI 2021, EKFC), quindi vanno confrontati valori ottenuti con la stessa equazione.",
+      "why_en": "Estimated kidney filtration calculated from creatinine, age and sex; labs may use different equations (CKD-EPI 2009, CKD-EPI 2021, EKFC), so values should be compared only when calculated with the same equation.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "CKD-EPI Creatinine Equation (2021)",
+          "publisher": "National Kidney Foundation",
+          "year": 2021,
+          "url": "https://www.kidney.org/professionals/ckd-epi-creatinine-equation-2021"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Store the equation name with each value; KDIGO 2024 Practice Point 1.2.4.1 asks for one equation within a region. Do not mix MDRD, CKD-EPI and EKFC values in one trend line."
+    },
+    {
+      "id": "cystatin_c",
+      "name_it": "Cistatina C",
+      "name_en": "Cystatin C",
+      "name_de": "Cystatin C",
+      "aliases": [
+        "Cistatina C",
+        "Cystatin C",
+        "CYSC",
+        "Cys-C"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mg/L",
+          "to_canonical_factor": 1,
+          "canonical": "mg/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/l"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [],
+      "direction": "high_bad",
+      "why_it": "Marcatore alternativo della filtrazione, meno legato alla massa muscolare; KDIGO segnala che infiammazione elevata e uso di cortisonici possono alterare le stime basate sulla cistatina C, aspetto rilevante nel lupus.",
+      "why_en": "Alternative filtration marker less tied to muscle mass; KDIGO notes that very high inflammation and steroid use can distort cystatin C based estimates, which matters in lupus.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "upcr",
+      "name_it": "Rapporto proteine/creatinina urinaria (UPCR)",
+      "name_en": "Urine protein-to-creatinine ratio (UPCR)",
+      "name_de": "Protein/Kreatinin-Quotient im Urin",
+      "aliases": [
+        "UPCR",
+        "uPCR",
+        "Rapporto proteine/creatinina urinaria",
+        "Proteine/creatinina (urine)",
+        "Proteinuria/creatininuria",
+        "Protein/Kreatinin-Quotient",
+        "Protein-Kreatinin-Ratio",
+        "Eiweiß/Kreatinin-Quotient (Harn)"
+      ],
+      "specimen": "urine",
+      "units": [
+        {
+          "unit": "mg/mmol",
+          "to_canonical_factor": 1,
+          "canonical": "mg/mmol",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)"
+        },
+        {
+          "unit": "mg/g",
+          "to_canonical_factor": 0.113,
+          "canonical": "mg/mmol",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf",
+          "unit_aliases": [
+            "mg/g Krea",
+            "mg/g creatinina"
+          ]
+        },
+        {
+          "unit": "g/g",
+          "to_canonical_factor": 113,
+          "canonical": "mg/mmol",
+          "factor_verified": true,
+          "factor_basis": "derived exactly from KDIGO factor 0.113 per mg/g (1 g/g = 1000 mg/g)",
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf",
+          "unit_aliases": [
+            "mg/mg"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [],
+      "direction": "high_bad",
+      "why_it": "Misura su un campione di urina la perdita di proteine; KDIGO la include nel pannello di controllo renale di routine nel lupus per individuare e seguire la nefrite lupica.",
+      "why_en": "Spot-urine measure of protein loss; KDIGO includes it in the routine kidney testing panel in lupus to detect and follow lupus nephritis.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Alias collision: in Italian 'PCR' means C-reactive protein (blood). Never map a bare 'PCR' to this urine test; use specimen and unit to disambiguate."
+    },
+    {
+      "id": "uacr",
+      "name_it": "Rapporto albumina/creatinina urinaria (ACR)",
+      "name_en": "Urine albumin-to-creatinine ratio (UACR)",
+      "name_de": "Albumin/Kreatinin-Quotient im Urin",
+      "aliases": [
+        "ACR",
+        "UACR",
+        "uACR",
+        "Rapporto albumina/creatinina",
+        "Albumina/creatinina urinaria",
+        "Microalbuminuria/creatininuria",
+        "Albumin/Kreatinin-Quotient",
+        "Albumin-Kreatinin-Ratio",
+        "AKR",
+        "Mikroalbumin/Kreatinin"
+      ],
+      "specimen": "urine",
+      "units": [
+        {
+          "unit": "mg/mmol",
+          "to_canonical_factor": 1,
+          "canonical": "mg/mmol",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)"
+        },
+        {
+          "unit": "mg/g",
+          "to_canonical_factor": 0.113,
+          "canonical": "mg/mmol",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+          "unit_aliases": [
+            "mg/g Krea",
+            "µg/mg"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "heart_vessels"
+      ],
+      "direction": "high_bad",
+      "why_it": "Misura la perdita di albumina nelle urine e definisce le categorie di albuminuria (da A1 ad A3) usate da KDIGO per stimare il rischio renale.",
+      "why_en": "Measures albumin leakage into urine and defines the albuminuria categories (A1 to A3) that KDIGO uses for kidney risk staging.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "proteinuria_24h",
+      "name_it": "Proteinuria delle 24 ore",
+      "name_en": "24-hour urine protein",
+      "name_de": "Eiweiß im 24-Stunden-Urin",
+      "aliases": [
+        "Proteinuria 24h",
+        "Proteinuria delle 24 ore",
+        "Proteine urinarie 24h",
+        "Proteinuria/die",
+        "24h-Proteinurie",
+        "Gesamteiweiß im Sammelharn",
+        "Eiweiß/24h"
+      ],
+      "specimen": "urine",
+      "units": [
+        {
+          "unit": "g/24h",
+          "to_canonical_factor": 1,
+          "canonical": "g/24h",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "g/die",
+            "g/24 h",
+            "g/d"
+          ]
+        },
+        {
+          "unit": "mg/24h",
+          "to_canonical_factor": 0.001,
+          "canonical": "g/24h",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/die",
+            "mg/d"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [],
+      "direction": "high_bad",
+      "why_it": "Proteine perse con le urine in 24 ore; una proteinuria sopra 0,5 g/24 ore è uno dei segni renali del lupus e KDIGO raccomanda di quantificarla perché guida prognosi e decisioni terapeutiche.",
+      "why_en": "Protein lost in a 24-hour urine collection; proteinuria above 0.5 g/24 h is one of the kidney features of lupus, and KDIGO advises quantifying it because it guides prognosis and treatment decisions.",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "urine_rbc",
+      "name_it": "Emazie nel sedimento urinario",
+      "name_en": "Urine red blood cells (sediment)",
+      "name_de": "Erythrozyten im Urinsediment",
+      "aliases": [
+        "Emazie (urine)",
+        "Eritrociti urinari",
+        "Sedimento urinario: emazie",
+        "Ematuria",
+        "Emazie dismorfiche",
+        "Acantociti",
+        "Erythrozyten (Harn)",
+        "Ery (Sediment)",
+        "Hämaturie",
+        "dysmorphe Erythrozyten",
+        "Akanthozyten"
+      ],
+      "specimen": "urine",
+      "units": [
+        {
+          "unit": "/µL",
+          "to_canonical_factor": null,
+          "canonical": "/µL",
+          "factor_verified": false,
+          "factor_basis": "method-dependent; no valid conversion to /HPF",
+          "unit_aliases": [
+            "/ul",
+            "/mcL"
+          ]
+        },
+        {
+          "unit": "/HPF",
+          "to_canonical_factor": null,
+          "canonical": "/HPF",
+          "factor_verified": false,
+          "factor_basis": "method-dependent; no valid conversion to /µL",
+          "unit_aliases": [
+            "/campo",
+            "per campo",
+            "/GF"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [],
+      "direction": "high_bad",
+      "why_it": "Globuli rossi nel sedimento, soprattutto dismorfici (acantociti) o cilindri eritrocitari, possono indicare un'infiammazione glomerulare attiva nella nefrite lupica.",
+      "why_en": "Red cells in the urine sediment, especially dysmorphic cells (acanthocytes) or red cell casts, can signal active glomerular inflammation in lupus nephritis.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": false,
+      "notes": "Trend only within the same unit and method."
+    },
+    {
+      "id": "albumin_serum",
+      "name_it": "Albumina sierica",
+      "name_en": "Serum albumin",
+      "name_de": "Albumin im Serum",
+      "aliases": [
+        "Albumina",
+        "Albumina sierica",
+        "ALB",
+        "Albumin",
+        "Albumin i.S."
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "g/L",
+          "to_canonical_factor": 1,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "g/l"
+          ]
+        },
+        {
+          "unit": "g/dL",
+          "to_canonical_factor": 10,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf",
+          "unit_aliases": [
+            "g/dl"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "liver",
+        "gut"
+      ],
+      "direction": "low_bad",
+      "why_it": "Un'albumina bassa può riflettere una forte perdita di proteine con le urine (sindrome nefrosica) oppure malnutrizione e malassorbimento nella celiachia; il valore dipende dal metodo del laboratorio (BCG o BCP).",
+      "why_en": "Low serum albumin can reflect heavy urinary protein loss (nephrotic syndrome) or malnutrition and malabsorption in celiac disease; the value depends on the lab method (BCG or BCP).",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "KDIGO GD 2021: thresholds of 25 or 32 g/L with bromocresol green correspond to 20 or 30 g/L with bromocresol purple or immunoassay. Do not compare across methods."
+    },
+    {
+      "id": "potassium",
+      "name_it": "Potassio",
+      "name_en": "Potassium",
+      "name_de": "Kalium",
+      "aliases": [
+        "Potassio",
+        "Potassiemia",
+        "K",
+        "K+",
+        "Kalium",
+        "Kalium i.S."
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mEq/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact for a monovalent ion (1 mEq = 1 mmol)",
+          "unit_aliases": [
+            "mEq/l"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "heart_vessels",
+        "muscle"
+      ],
+      "direction": "both",
+      "why_it": "Può salire con una funzione renale ridotta o con farmaci usati nella nefrite lupica (ACE-inibitori, sartani, inibitori della calcineurina) e scendere con i cortisonici; KDIGO consiglia limiti al potassio alimentare nella malattia renale cronica da G3 a G5 con precedenti di potassio alto o nei periodi a rischio.",
+      "why_en": "Can rise with reduced kidney function or with drugs used in lupus nephritis (ACE inhibitors, ARBs, calcineurin inhibitors) and fall with glucocorticoids; KDIGO advises dietary potassium limits in CKD G3 to G5 with a history of high potassium or during high-risk periods.",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        },
+        {
+          "title": "LUPKYNIS (voclosporin) capsules, US prescribing information (DailyMed version dated Aug 27, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9f489295-1156-52c7-5fd0-5c4c52f9b813"
+        },
+        {
+          "title": "PROGRAF (tacrolimus), US prescribing information (DailyMed version dated Mar 21, 2025)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2025,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f667de1-9dfa-4bd6-8ba0-15ee2d78873b"
+        },
+        {
+          "title": "Prednisone tablets USP (generic), US label (DailyMed version dated Nov 05, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c21be016-6b25-4e09-b253-23b58884ccb6"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "KDIGO CKD 2024 Practice Point 3.11.1.1: potassium results vary with diurnal and seasonal factors and plasma versus serum sampling."
+    },
+    {
+      "id": "sodium",
+      "name_it": "Sodio",
+      "name_en": "Sodium",
+      "name_de": "Natrium",
+      "aliases": [
+        "Sodio",
+        "Sodiemia",
+        "Na",
+        "Na+",
+        "Natrium"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mEq/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact for a monovalent ion (1 mEq = 1 mmol)",
+          "unit_aliases": [
+            "mEq/l"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "brain"
+      ],
+      "direction": "both",
+      "why_it": "Elettrolita di routine nei controlli renali e nella valutazione della celiachia; l'aderenza al limite di sale si valuta invece con il sodio nelle urine delle 24 ore.",
+      "why_en": "Routine electrolyte in kidney and celiac work-ups; adherence to the salt limit is assessed instead with 24-hour urinary sodium.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "urine_sodium_24h",
+      "name_it": "Sodio urinario delle 24 ore",
+      "name_en": "24-hour urine sodium",
+      "name_de": "Natrium im 24-Stunden-Urin",
+      "aliases": [
+        "Sodiuria 24h",
+        "Sodio urinario 24 ore",
+        "Natriuresi",
+        "Natrium im 24h-Urin",
+        "Natriumausscheidung"
+      ],
+      "specimen": "urine",
+      "units": [
+        {
+          "unit": "mmol/24h",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/24h",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/die",
+            "mmol/d"
+          ]
+        },
+        {
+          "unit": "mEq/24h",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/24h",
+          "factor_verified": true,
+          "factor_basis": "exact for a monovalent ion (1 mEq = 1 mmol)",
+          "unit_aliases": [
+            "mEq/die"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "heart_vessels"
+      ],
+      "direction": "high_bad",
+      "why_it": "Riflette il sale assunto con la dieta; KDIGO suggerisce di misurarlo quando si dubita dell'aderenza alla restrizione di sodio (meno di 2 g, cioè meno di 90 mmol al giorno).",
+      "why_en": "Reflects dietary salt intake; KDIGO suggests measuring it when adherence to the sodium restriction (below 2 g, i.e. below 90 mmol per day) is in doubt.",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "phosphate",
+      "name_it": "Fosfato (fosforo)",
+      "name_en": "Phosphate",
+      "name_de": "Phosphat",
+      "aliases": [
+        "Fosforo",
+        "Fosfato",
+        "Fosforemia",
+        "Fosfato inorganico",
+        "P",
+        "PHOS",
+        "Phosphat",
+        "Phosphor (anorganisch)"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.3229,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "bones",
+      "secondary_organs": [
+        "kidneys"
+      ],
+      "direction": "both",
+      "why_it": "Fa parte degli esami di base nella celiachia e del controllo minerale nella malattia renale cronica; KDIGO suggerisce di limitare il fosfato alimentare solo per trattare un fosfato alto nella malattia renale cronica da G3a a G5D.",
+      "why_en": "Part of the celiac baseline work-up and of CKD mineral monitoring; KDIGO suggests limiting dietary phosphate only to treat high phosphate in CKD G3a to G5D.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "KDIGO 2017 Clinical Practice Guideline Update for CKD-Mineral and Bone Disorder (Kidney Int Suppl 2017;7:1-59)",
+          "publisher": "KDIGO",
+          "year": 2017,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/2017-KDIGO-CKD-MBD-GL-Update.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "calcium",
+      "name_it": "Calcio",
+      "name_en": "Calcium (total)",
+      "name_de": "Calcium",
+      "aliases": [
+        "Calcio",
+        "Calcemia",
+        "Calcio totale",
+        "Ca",
+        "Calcium",
+        "Kalzium",
+        "Calcium gesamt"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.2495,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "bones",
+      "secondary_organs": [
+        "kidneys",
+        "gut"
+      ],
+      "direction": "both",
+      "why_it": "Marcatore per la salute delle ossa: i cortisonici aumentano l'eliminazione di calcio e il calcio è spesso carente nella celiachia; KDIGO raccomanda nella nefrite lupica calcio (da 1000 a 1200 mg al giorno) e vitamina D.",
+      "why_en": "Bone-health marker: glucocorticoids increase calcium excretion and calcium is often deficient in celiac disease; KDIGO recommends calcium (1000 to 1200 mg/day) and vitamin D in lupus nephritis.",
+      "sources": [
+        {
+          "title": "Prednisone tablets USP (generic), US label (DailyMed version dated Nov 05, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c21be016-6b25-4e09-b253-23b58884ccb6"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Ionised calcium is a different test (KDIGO CKD-MBD 2017 lists mg/dL x 0.25 = mmol/L for ionised calcium); do not merge."
+    },
+    {
+      "id": "uric_acid",
+      "name_it": "Acido urico",
+      "name_en": "Uric acid (urate)",
+      "name_de": "Harnsäure",
+      "aliases": [
+        "Acido urico",
+        "Uricemia",
+        "URIC",
+        "UA",
+        "Harnsäure",
+        "Urat"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "µmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "µmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "µmol/l",
+            "umol/L"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 59.48,
+          "canonical": "µmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "kidneys",
+      "secondary_organs": [
+        "joints",
+        "metabolism"
+      ],
+      "direction": "high_bad",
+      "why_it": "Si controlla nella malattia renale; KDIGO raccomanda farmaci ipouricemizzanti per l'iperuricemia sintomatica (gotta) ma suggerisce di non trattare l'acido urico alto senza sintomi per rallentare la malattia renale.",
+      "why_en": "Monitored in kidney disease; KDIGO recommends urate-lowering treatment for symptomatic hyperuricaemia (gout) but suggests not treating asymptomatic high uric acid to slow CKD.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "anti_dsdna",
+      "name_it": "Anticorpi anti-DNA nativo (anti-dsDNA)",
+      "name_en": "Anti-double-stranded DNA antibodies (anti-dsDNA)",
+      "name_de": "Anti-dsDNA-Antikörper",
+      "aliases": [
+        "Anti-dsDNA",
+        "Anti-ds-DNA",
+        "Anticorpi anti-dsDNA",
+        "Anticorpi anti-DNA nativo",
+        "Anti-DNA a doppia elica",
+        "dsDNA-Ak",
+        "Anti-dsDNA-Antikörper",
+        "ds-DNS-Antikörper",
+        "nDNA-Ak"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "IU/mL",
+          "to_canonical_factor": null,
+          "canonical": "as reported",
+          "factor_verified": false,
+          "factor_basis": "assay-specific; no conversion between methods or kits",
+          "unit_aliases": [
+            "UI/mL",
+            "IE/ml"
+          ]
+        },
+        {
+          "unit": "U/mL",
+          "to_canonical_factor": null,
+          "canonical": "as reported",
+          "factor_verified": false,
+          "factor_basis": "assay-specific; no conversion between methods or kits",
+          "unit_aliases": [
+            "U/ml",
+            "E/ml"
+          ]
+        }
+      ],
+      "organ": "immune",
+      "secondary_organs": [
+        "kidneys"
+      ],
+      "direction": "high_bad",
+      "why_it": "Anticorpo specifico del lupus seguito insieme al complemento nella nefrite lupica; molti pazienti restano positivi anche quando la proteinuria si risolve, quindi conta l'andamento, e i test hanno specificità diverse.",
+      "why_en": "Lupus-specific antibody followed together with complement in lupus nephritis; many patients stay positive even after proteinuria resolves, so the trend matters, and assays differ in specificity.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": false,
+      "notes": "Trend only within the same lab and method; consider storing value divided by the report's upper limit."
+    },
+    {
+      "id": "c3",
+      "name_it": "Complemento C3",
+      "name_en": "Complement C3",
+      "name_de": "Komplement C3",
+      "aliases": [
+        "Complemento C3",
+        "C3",
+        "C3c",
+        "Komplement C3",
+        "Komplementfaktor C3"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "g/L",
+          "to_canonical_factor": 1,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "g/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.01,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "immune",
+      "secondary_organs": [
+        "kidneys"
+      ],
+      "direction": "low_bad",
+      "why_it": "Proteina del complemento che si consuma quando il lupus è attivo; C3 o C4 bassi sono un segno del lupus e KDIGO ed EULAR li includono nel monitoraggio della nefrite lupica.",
+      "why_en": "Complement protein consumed when lupus is active; low C3 or C4 is a lupus feature, and KDIGO and EULAR include complement in lupus nephritis monitoring.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "c4",
+      "name_it": "Complemento C4",
+      "name_en": "Complement C4",
+      "name_de": "Komplement C4",
+      "aliases": [
+        "Complemento C4",
+        "C4",
+        "Komplement C4",
+        "Komplementfaktor C4"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "g/L",
+          "to_canonical_factor": 1,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "g/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.01,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "immune",
+      "secondary_organs": [
+        "kidneys"
+      ],
+      "direction": "low_bad",
+      "why_it": "Proteina del complemento che si consuma quando il lupus è attivo; C3 o C4 bassi sono un segno del lupus e KDIGO ed EULAR li includono nel monitoraggio della nefrite lupica.",
+      "why_en": "Complement protein consumed when lupus is active; low C3 or C4 is a lupus feature, and KDIGO and EULAR include complement in lupus nephritis monitoring.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "crp",
+      "name_it": "Proteina C reattiva (PCR)",
+      "name_en": "C-reactive protein (CRP)",
+      "name_de": "C-reaktives Protein (CRP)",
+      "aliases": [
+        "PCR",
+        "Proteina C reattiva",
+        "PCR (siero)",
+        "CRP",
+        "C-reaktives Protein",
+        "hs-CRP",
+        "PCR hs"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mg/L",
+          "to_canonical_factor": 1,
+          "canonical": "mg/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 10,
+          "canonical": "mg/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "immune",
+      "secondary_organs": [
+        "heart_vessels"
+      ],
+      "direction": "high_bad",
+      "why_it": "Marcatore di infiammazione spesso poco alto nell'attività del lupus; EULAR indica che un aumento marcato, soprattutto sopra 50 mg/L, deve far escludere un'infezione.",
+      "why_en": "Inflammation marker that is often only mildly raised by lupus activity; EULAR notes that a marked rise, especially above 50 mg/L, should prompt a check for infection.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Italian and Austrian labs often report mg/dL: 0.5 mg/dL = 5 mg/L. In Italian 'PCR' is CRP (see upcr note)."
+    },
+    {
+      "id": "esr",
+      "name_it": "Velocità di eritrosedimentazione (VES)",
+      "name_en": "Erythrocyte sedimentation rate (ESR)",
+      "name_de": "Blutsenkungsgeschwindigkeit (BSG)",
+      "aliases": [
+        "VES",
+        "Velocità di eritrosedimentazione",
+        "BSG",
+        "BSR",
+        "Blutsenkung",
+        "Blutkörperchensenkungsgeschwindigkeit",
+        "ESR",
+        "Senkung"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mm/h",
+          "to_canonical_factor": 1,
+          "canonical": "mm/h",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mm/1h",
+            "mm/1. Std.",
+            "mm/ora"
+          ]
+        }
+      ],
+      "organ": "immune",
+      "secondary_organs": [
+        "blood"
+      ],
+      "direction": "high_bad",
+      "why_it": "Marcatore aspecifico di infiammazione che EULAR include nel monitoraggio di routine del lupus ogni 6 a 12 mesi.",
+      "why_en": "Non-specific inflammation marker that EULAR includes in routine lupus monitoring every 6 to 12 months.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "hemoglobin",
+      "name_it": "Emoglobina",
+      "name_en": "Haemoglobin",
+      "name_de": "Hämoglobin",
+      "aliases": [
+        "Emoglobina",
+        "HGB",
+        "Hb",
+        "HB",
+        "Hämoglobin"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "g/L",
+          "to_canonical_factor": 1,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "g/l"
+          ]
+        },
+        {
+          "unit": "g/dL",
+          "to_canonical_factor": 10,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2016/10/KDIGO-2012-Anemia-Guideline-English.pdf",
+          "unit_aliases": [
+            "g/dl"
+          ]
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "gut",
+        "kidneys"
+      ],
+      "direction": "low_bad",
+      "why_it": "Rileva l'anemia, che può dipendere dal lupus, dai reni o da carenze di ferro, folati o B12 nella celiachia; KDIGO considera il miglioramento dell'emoglobina tra i parametri di risposta nella nefrite lupica.",
+      "why_en": "Detects anaemia, which can come from lupus, the kidneys or iron, folate or B12 deficiency in celiac disease; KDIGO lists haemoglobin improvement among lupus nephritis response parameters.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        },
+        {
+          "title": "IMURAN (azathioprine), US prescribing information (DailyMed version dated Sep 14, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4d62b6e4-a9d4-4818-e063-6394a90aa208"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Hb in mmol/L (used in some countries) not included: factor not verified."
+    },
+    {
+      "id": "wbc",
+      "name_it": "Leucociti (globuli bianchi)",
+      "name_en": "White blood cells (leukocytes)",
+      "name_de": "Leukozyten",
+      "aliases": [
+        "Leucociti",
+        "Globuli bianchi",
+        "GB",
+        "WBC",
+        "Leukozyten",
+        "LEUKO",
+        "Leuko"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "10^9/L",
+          "to_canonical_factor": 1,
+          "canonical": "10^9/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "G/L",
+            "G/l",
+            "x10^9/L",
+            "10^3/µL",
+            "x10^3/µL",
+            "/nL",
+            "/nl",
+            "Tsd/µl",
+            "10^3/mm3",
+            "x10^3/mm³",
+            "K/µL"
+          ]
+        },
+        {
+          "unit": "/µL",
+          "to_canonical_factor": 0.001,
+          "canonical": "10^9/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "/mm3",
+            "/mm³",
+            "cell/µL"
+          ]
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "immune"
+      ],
+      "direction": "both",
+      "why_it": "Globuli bianchi bassi possono essere un segno del lupus (sotto 4000 per mm3 nei criteri classificativi) o un effetto di immunosoppressori come l'azatioprina, che richiede emocromi regolari.",
+      "why_en": "Low white cell counts can be a lupus feature (below 4,000 per mm3 in the classification criteria) or a side effect of immunosuppressants such as azathioprine, which requires regular blood counts.",
+      "sources": [
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "IMURAN (azathioprine), US prescribing information (DailyMed version dated Sep 14, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4d62b6e4-a9d4-4818-e063-6394a90aa208"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "platelets",
+      "name_it": "Piastrine",
+      "name_en": "Platelets",
+      "name_de": "Thrombozyten",
+      "aliases": [
+        "Piastrine",
+        "PLT",
+        "Thrombozyten",
+        "THROMBO",
+        "Thrombo",
+        "Blutplättchen"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "10^9/L",
+          "to_canonical_factor": 1,
+          "canonical": "10^9/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "G/L",
+            "G/l",
+            "x10^9/L",
+            "10^3/µL",
+            "x10^3/µL",
+            "/nL",
+            "/nl",
+            "Tsd/µl",
+            "10^3/mm3",
+            "K/µL"
+          ]
+        },
+        {
+          "unit": "/µL",
+          "to_canonical_factor": 0.001,
+          "canonical": "10^9/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "/mm3",
+            "/mm³"
+          ]
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "immune"
+      ],
+      "direction": "both",
+      "why_it": "Piastrine basse (sotto 100000 per mm3 nei criteri classificativi) possono essere un segno del lupus o un effetto dei farmaci, per questo fanno parte dell'emocromo di controllo.",
+      "why_en": "Low platelets (below 100,000 per mm3 in the classification criteria) can be a lupus feature or a drug effect, so they are part of routine blood counts.",
+      "sources": [
+        {
+          "title": "2019 EULAR/ACR Classification Criteria for Systemic Lupus Erythematosus (Aringer M et al., Arthritis Rheumatol 2019;71:1400-1412)",
+          "publisher": "EULAR / ACR (PMC full text)",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/"
+        },
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "IMURAN (azathioprine), US prescribing information (DailyMed version dated Sep 14, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4d62b6e4-a9d4-4818-e063-6394a90aa208"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "ferritin",
+      "name_it": "Ferritina",
+      "name_en": "Ferritin",
+      "name_de": "Ferritin",
+      "aliases": [
+        "Ferritina",
+        "FERR",
+        "Ferritin"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "µg/L",
+          "to_canonical_factor": 1,
+          "canonical": "µg/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "ug/L",
+            "µg/l",
+            "mcg/L"
+          ]
+        },
+        {
+          "unit": "ng/mL",
+          "to_canonical_factor": 1,
+          "canonical": "µg/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2016/10/KDIGO-2012-Anemia-Guideline-English.pdf",
+          "unit_aliases": [
+            "ng/ml"
+          ]
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "gut",
+        "immune"
+      ],
+      "direction": "both",
+      "why_it": "Indica le riserve di ferro, utile per la carenza di ferro frequente nella celiachia; sale anche con l'infiammazione (proteina di fase acuta), quindi va interpretata con cautela durante una riacutizzazione.",
+      "why_en": "Iron-store marker for the iron deficiency that is common in celiac disease; it also rises with inflammation (acute phase reactant), so interpret it with caution during a flare.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "KDIGO Clinical Practice Guideline for Anemia in Chronic Kidney Disease (Kidney Int Suppl 2012;2:279-335)",
+          "publisher": "KDIGO",
+          "year": 2012,
+          "url": "https://kdigo.org/wp-content/uploads/2016/10/KDIGO-2012-Anemia-Guideline-English.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "transferrin_saturation",
+      "name_it": "Saturazione della transferrina",
+      "name_en": "Transferrin saturation (TSAT)",
+      "name_de": "Transferrinsättigung",
+      "aliases": [
+        "Saturazione della transferrina",
+        "Saturazione transferrinica",
+        "Sat. transferrina",
+        "TSAT",
+        "Transferrinsättigung",
+        "TfS"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "%",
+          "to_canonical_factor": 1,
+          "canonical": "%",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)"
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "gut"
+      ],
+      "direction": "both",
+      "why_it": "Secondo indicatore dello stato del ferro, usato insieme alla ferritina; aiuta quando l'infiammazione rende la ferritina difficile da interpretare.",
+      "why_en": "Second iron-status marker used together with ferritin; helpful when inflammation makes ferritin hard to interpret.",
+      "sources": [
+        {
+          "title": "KDIGO Clinical Practice Guideline for Anemia in Chronic Kidney Disease (Kidney Int Suppl 2012;2:279-335)",
+          "publisher": "KDIGO",
+          "year": 2012,
+          "url": "https://kdigo.org/wp-content/uploads/2016/10/KDIGO-2012-Anemia-Guideline-English.pdf"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "folate",
+      "name_it": "Folati (acido folico)",
+      "name_en": "Folate",
+      "name_de": "Folsäure (Folat)",
+      "aliases": [
+        "Acido folico",
+        "Folati",
+        "Folati sierici",
+        "Folato",
+        "FOL",
+        "Folsäure",
+        "Folat"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "ng/mL",
+          "to_canonical_factor": null,
+          "canonical": "as reported",
+          "factor_verified": false,
+          "factor_basis": "ng/mL to nmol/L factor not verified from an authoritative source in this session",
+          "unit_aliases": [
+            "ng/ml",
+            "µg/L"
+          ]
+        },
+        {
+          "unit": "nmol/L",
+          "to_canonical_factor": null,
+          "canonical": "as reported",
+          "factor_verified": false,
+          "factor_basis": "not verified",
+          "unit_aliases": [
+            "nmol/l"
+          ]
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "gut"
+      ],
+      "direction": "low_bad",
+      "why_it": "La carenza di folati è frequente nella celiachia e la dieta senza glutine ne è tipicamente povera; ESsCD include i folati negli esami di base.",
+      "why_en": "Folate deficiency is common in celiac disease and a gluten-free diet is typically low in folate; ESsCD includes folate in the baseline work-up.",
+      "sources": [
+        {
+          "title": "European Society for the Study of Coeliac Disease (ESsCD) guideline for coeliac disease and other gluten-related disorders (Al-Toma A et al., United European Gastroenterol J 2019;7(5):583-613; PMC6545713); full text read from a publisher PDF copy",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2019,
+          "url": "https://doi.org/10.1177/2050640619844125"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": false,
+      "notes": "Trend only within the same unit until a verified conversion factor is supplied."
+    },
+    {
+      "id": "vitamin_b12",
+      "name_it": "Vitamina B12",
+      "name_en": "Vitamin B12 (cobalamin)",
+      "name_de": "Vitamin B12",
+      "aliases": [
+        "Vitamina B12",
+        "B12",
+        "Cobalamina",
+        "Vit. B12",
+        "Vitamin B12",
+        "Cobalamin"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "pg/mL",
+          "to_canonical_factor": 1,
+          "canonical": "pg/mL",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "pg/ml"
+          ]
+        },
+        {
+          "unit": "ng/L",
+          "to_canonical_factor": 1,
+          "canonical": "pg/mL",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "ng/l"
+          ]
+        },
+        {
+          "unit": "pmol/L",
+          "to_canonical_factor": null,
+          "canonical": "pg/mL",
+          "factor_verified": false,
+          "factor_basis": "pmol/L to pg/mL factor not verified from an authoritative source in this session",
+          "unit_aliases": [
+            "pmol/l"
+          ]
+        }
+      ],
+      "organ": "blood",
+      "secondary_organs": [
+        "gut",
+        "brain"
+      ],
+      "direction": "low_bad",
+      "why_it": "La carenza di B12 è presente nel 5% fino al 41% della celiachia non trattata; ESsCD include la B12 negli esami di base.",
+      "why_en": "B12 deficiency is found in 5% to 41% of untreated celiac disease; ESsCD includes B12 in the baseline work-up.",
+      "sources": [
+        {
+          "title": "European Society for the Study of Coeliac Disease (ESsCD) guideline for coeliac disease and other gluten-related disorders (Al-Toma A et al., United European Gastroenterol J 2019;7(5):583-613; PMC6545713); full text read from a publisher PDF copy",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2019,
+          "url": "https://doi.org/10.1177/2050640619844125"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": false,
+      "notes": "Do not convert pmol/L values; holotranscobalamin (active B12) is a different test."
+    },
+    {
+      "id": "ttg_iga",
+      "name_it": "Anticorpi anti-transglutaminasi IgA (tTG-IgA)",
+      "name_en": "Anti-tissue transglutaminase IgA (tTG-IgA, anti-TG2 IgA)",
+      "name_de": "Gewebs-Transglutaminase-IgA-Antikörper (tTG-IgA)",
+      "aliases": [
+        "Anti-transglutaminasi IgA",
+        "Anti-tTG IgA",
+        "tTG-IgA",
+        "Anticorpi anti-transglutaminasi tissutale IgA",
+        "anti-TG2 IgA",
+        "Transglutaminase-IgA-Ak",
+        "tTG-IgA-Antikörper",
+        "Gewebstransglutaminase-IgA",
+        "t-TG IgA"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "U/mL",
+          "to_canonical_factor": null,
+          "canonical": "as reported",
+          "factor_verified": false,
+          "factor_basis": "kit-specific; no conversion between assays",
+          "unit_aliases": [
+            "U/ml",
+            "UA/mL",
+            "CU",
+            "EliA U/mL",
+            "AU/mL",
+            "RU/mL"
+          ]
+        }
+      ],
+      "organ": "gut",
+      "secondary_organs": [
+        "immune"
+      ],
+      "direction": "high_bad",
+      "why_it": "Principale anticorpo della celiachia nel follow-up: positivo durante la dieta senza glutine suggerisce esposizione al glutine, ma negativo non dimostra aderenza perfetta né guarigione della mucosa; le unità dipendono dal kit.",
+      "why_en": "Main celiac antibody in follow-up: positive on a gluten-free diet suggests gluten exposure, but negative does not prove strict adherence or mucosal healing; units are kit-specific.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 1: Diagnostic Approach (Al-Toma A et al., United European Gastroenterol J 2025;13(10):1855-1886); full text read from https://eprints.whiterose.ac.uk/id/eprint/232335/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2025,
+          "url": "https://doi.org/10.1002/ueg2.70119"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": false,
+      "notes": "ESsCD uses multiples of the upper limit of normal (ULN), for example 10 x ULN for diagnosis; store value divided by the report's ULN to compare labs."
+    },
+    {
+      "id": "total_iga",
+      "name_it": "IgA totali",
+      "name_en": "Total IgA",
+      "name_de": "Gesamt-IgA",
+      "aliases": [
+        "IgA totali",
+        "Immunoglobuline A",
+        "IgA",
+        "Gesamt-IgA",
+        "Immunglobulin A",
+        "IgA gesamt"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "g/L",
+          "to_canonical_factor": 1,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "g/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.01,
+          "canonical": "g/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "immune",
+      "secondary_organs": [
+        "gut"
+      ],
+      "direction": "low_bad",
+      "why_it": "Si misura insieme alle tTG-IgA perché il deficit di IgA, più frequente nella celiachia, può rendere falsamente negativi i test basati sulle IgA.",
+      "why_en": "Measured together with tTG-IgA because IgA deficiency, more common in celiac disease, can make IgA-based celiac tests falsely negative.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 1: Diagnostic Approach (Al-Toma A et al., United European Gastroenterol J 2025;13(10):1855-1886); full text read from https://eprints.whiterose.ac.uk/id/eprint/232335/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2025,
+          "url": "https://doi.org/10.1002/ueg2.70119"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "alt",
+      "name_it": "ALT (GPT)",
+      "name_en": "Alanine aminotransferase (ALT)",
+      "name_de": "ALT (GPT)",
+      "aliases": [
+        "ALT",
+        "GPT",
+        "ALT (GPT)",
+        "ALAT",
+        "SGPT",
+        "Alanina aminotransferasi",
+        "Transaminasi GPT",
+        "Alanin-Aminotransferase"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "U/L",
+          "to_canonical_factor": 1,
+          "canonical": "U/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "U/l",
+            "IU/L",
+            "UI/L"
+          ]
+        }
+      ],
+      "organ": "liver",
+      "secondary_organs": [
+        "gut"
+      ],
+      "direction": "high_bad",
+      "why_it": "Enzima epatico incluso negli esami di base della celiachia; un rialzo inspiegato delle transaminasi è un motivo per cercare la celiachia.",
+      "why_en": "Liver enzyme included in the celiac baseline work-up; unexplained raised liver enzymes are an indication to test for celiac disease.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 1: Diagnostic Approach (Al-Toma A et al., United European Gastroenterol J 2025;13(10):1855-1886); full text read from https://eprints.whiterose.ac.uk/id/eprint/232335/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2025,
+          "url": "https://doi.org/10.1002/ueg2.70119"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Reference ranges depend on assay temperature and method; use the report's range."
+    },
+    {
+      "id": "ast",
+      "name_it": "AST (GOT)",
+      "name_en": "Aspartate aminotransferase (AST)",
+      "name_de": "AST (GOT)",
+      "aliases": [
+        "AST",
+        "GOT",
+        "AST (GOT)",
+        "ASAT",
+        "SGOT",
+        "Aspartato aminotransferasi",
+        "Transaminasi GOT",
+        "Aspartat-Aminotransferase"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "U/L",
+          "to_canonical_factor": 1,
+          "canonical": "U/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "U/l",
+            "IU/L",
+            "UI/L"
+          ]
+        }
+      ],
+      "organ": "liver",
+      "secondary_organs": [
+        "muscle"
+      ],
+      "direction": "high_bad",
+      "why_it": "Enzima epatico incluso negli esami di base della celiachia; un rialzo inspiegato delle transaminasi è un motivo per cercare la celiachia.",
+      "why_en": "Liver enzyme included in the celiac baseline work-up; unexplained raised liver enzymes are an indication to test for celiac disease.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 1: Diagnostic Approach (Al-Toma A et al., United European Gastroenterol J 2025;13(10):1855-1886); full text read from https://eprints.whiterose.ac.uk/id/eprint/232335/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2025,
+          "url": "https://doi.org/10.1002/ueg2.70119"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "tsh",
+      "name_it": "TSH (tireotropina)",
+      "name_en": "Thyroid-stimulating hormone (TSH)",
+      "name_de": "TSH (Thyreotropin)",
+      "aliases": [
+        "TSH",
+        "Tireotropina",
+        "Ormone tireostimolante",
+        "TSH reflex",
+        "Thyreotropin",
+        "basales TSH",
+        "TSH basal"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mU/L",
+          "to_canonical_factor": 1,
+          "canonical": "mU/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mIU/L",
+            "mUI/L",
+            "µIU/mL",
+            "µU/mL",
+            "uIU/mL",
+            "µUI/mL"
+          ]
+        }
+      ],
+      "organ": "metabolism",
+      "secondary_organs": [],
+      "direction": "both",
+      "why_it": "Test della tiroide che ESsCD raccomanda alla diagnosi e ogni 1 o 2 anni nel follow-up della celiachia, perché le malattie autoimmuni tendono ad associarsi.",
+      "why_en": "Thyroid test that ESsCD recommends at diagnosis and every 1 to 2 years in celiac follow-up, because autoimmune conditions tend to cluster.",
+      "sources": [
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "glucose",
+      "name_it": "Glicemia (glucosio)",
+      "name_en": "Glucose",
+      "name_de": "Glukose",
+      "aliases": [
+        "Glicemia",
+        "Glicemia a digiuno",
+        "Glucosio",
+        "GLU",
+        "Glucose",
+        "Glukose",
+        "Nüchternglukose",
+        "Blutzucker",
+        "BZ"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.0555,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2022/10/KDIGO-2022-Clinical-Practice-Guideline-for-Diabetes-Management-in-CKD.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "metabolism",
+      "secondary_organs": [],
+      "direction": "both",
+      "why_it": "I cortisonici possono ridurre la tolleranza al glucosio; EULAR consiglia la glicemia almeno una volta l'anno nel lupus, più spesso in chi assume cortisonici.",
+      "why_en": "Glucocorticoids can reduce glucose tolerance; EULAR advises checking glucose at least yearly in lupus, more often in people taking glucocorticoids.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "Prednisone tablets USP (generic), US label (DailyMed version dated Nov 05, 2026)",
+          "publisher": "U.S. FDA-approved label via NIH NLM DailyMed",
+          "year": 2026,
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c21be016-6b25-4e09-b253-23b58884ccb6"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "hba1c",
+      "name_it": "Emoglobina glicata (HbA1c)",
+      "name_en": "Glycated haemoglobin (HbA1c)",
+      "name_de": "Glykiertes Hämoglobin (HbA1c)",
+      "aliases": [
+        "HbA1c",
+        "Emoglobina glicata",
+        "Hb glicata",
+        "Glykohämoglobin",
+        "HbA1c (IFCC)",
+        "HbA1c (DCCT/NGSP)",
+        "A1C"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/mol",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/mol",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)"
+        },
+        {
+          "unit": "%",
+          "to_canonical_factor": null,
+          "canonical": "mmol/mol",
+          "factor_verified": true,
+          "factor_basis": "IFCC-DCCT master equation as printed by KDIGO 2022",
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2022/10/KDIGO-2022-Clinical-Practice-Guideline-for-Diabetes-Management-in-CKD.pdf",
+          "to_canonical_formula": "mmol/mol = (percent - 2.15) x 10.929"
+        }
+      ],
+      "organ": "metabolism",
+      "secondary_organs": [
+        "blood"
+      ],
+      "direction": "high_bad",
+      "why_it": "Riflette la glicemia media nel corso della vita dei globuli rossi; anemia e terapia con ferro possono abbassarla falsamente, aspetto rilevante con la carenza di ferro della celiachia.",
+      "why_en": "Reflects average glucose over the lifespan of red blood cells; anaemia and iron replacement can lower it falsely, which matters with celiac-related iron deficiency.",
+      "sources": [
+        {
+          "title": "KDIGO 2022 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease (Kidney Int 2022;102(5S)), conversion factors and HbA1c conversion chart",
+          "publisher": "KDIGO",
+          "year": 2022,
+          "url": "https://kdigo.org/wp-content/uploads/2022/10/KDIGO-2022-Clinical-Practice-Guideline-for-Diabetes-Management-in-CKD.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "total_cholesterol",
+      "name_it": "Colesterolo totale",
+      "name_en": "Total cholesterol",
+      "name_de": "Gesamtcholesterin",
+      "aliases": [
+        "Colesterolo totale",
+        "Colesterolo",
+        "CHOL",
+        "TC",
+        "Cholesterin",
+        "Gesamtcholesterin",
+        "Cholesterin gesamt"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.0259,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-2013-Lipids-Guideline-English.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "heart_vessels",
+      "secondary_organs": [
+        "metabolism"
+      ],
+      "direction": "high_bad",
+      "why_it": "Il rischio cardiovascolare è una priorità nel lupus: EULAR consiglia il colesterolo almeno una volta l'anno e KDIGO include la gestione della dislipidemia tra le misure nella nefrite lupica.",
+      "why_en": "Cardiovascular risk is a priority in lupus: EULAR advises checking cholesterol at least yearly and KDIGO lists dyslipidaemia management among lupus nephritis measures.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "ldl",
+      "name_it": "Colesterolo LDL",
+      "name_en": "LDL cholesterol",
+      "name_de": "LDL-Cholesterin",
+      "aliases": [
+        "Colesterolo LDL",
+        "LDL",
+        "LDL-C",
+        "LDL colesterolo (calcolato)",
+        "LDL-Cholesterin",
+        "LDL direkt"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.0259,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-2013-Lipids-Guideline-English.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "heart_vessels",
+      "secondary_organs": [
+        "metabolism"
+      ],
+      "direction": "high_bad",
+      "why_it": "Il colesterolo LDL è il principale lipide considerato nella gestione del rischio cardiovascolare; KDIGO include la gestione della dislipidemia tra le misure nella nefrite lupica.",
+      "why_en": "LDL cholesterol is the main lipid used in cardiovascular risk management; KDIGO lists dyslipidaemia management among lupus nephritis measures.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Labs may report calculated or directly measured LDL; store the method if printed."
+    },
+    {
+      "id": "hdl",
+      "name_it": "Colesterolo HDL",
+      "name_en": "HDL cholesterol",
+      "name_de": "HDL-Cholesterin",
+      "aliases": [
+        "Colesterolo HDL",
+        "HDL",
+        "HDL-C",
+        "HDL-Cholesterin"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.0259,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-2013-Lipids-Guideline-English.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "heart_vessels",
+      "secondary_organs": [
+        "metabolism"
+      ],
+      "direction": "low_bad",
+      "why_it": "Fa parte del profilo lipidico usato per valutare il rischio cardiovascolare, che EULAR raccomanda di controllare almeno una volta l'anno nel lupus.",
+      "why_en": "Part of the lipid profile used for cardiovascular risk assessment, which EULAR recommends checking at least yearly in lupus.",
+      "sources": [
+        {
+          "title": "EULAR recommendations for monitoring patients with systemic lupus erythematosus in clinical practice and in observational studies (Mosca M et al., Ann Rheum Dis 2010;69:1269-1274)",
+          "publisher": "EULAR / Annals of the Rheumatic Diseases (PMC full text)",
+          "year": 2010,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2952401/"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "triglycerides",
+      "name_it": "Trigliceridi",
+      "name_en": "Triglycerides",
+      "name_de": "Triglyzeride",
+      "aliases": [
+        "Trigliceridi",
+        "TRIG",
+        "TG",
+        "Triglyceride",
+        "Triglyzeride"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "mmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "mmol/l"
+          ]
+        },
+        {
+          "unit": "mg/dL",
+          "to_canonical_factor": 0.0113,
+          "canonical": "mmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-2013-Lipids-Guideline-English.pdf",
+          "unit_aliases": [
+            "mg/dl"
+          ]
+        }
+      ],
+      "organ": "heart_vessels",
+      "secondary_organs": [
+        "metabolism"
+      ],
+      "direction": "high_bad",
+      "why_it": "Fa parte del profilo lipidico; nelle malattie glomerulari con colesterolo alto KDIGO suggerisce una dieta per la salute del cuore con grassi sotto il 30% delle calorie.",
+      "why_en": "Part of the lipid profile; for glomerular disease with high cholesterol KDIGO suggests a heart-healthy diet with fat below 30% of calories.",
+      "sources": [
+        {
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases (Kidney Int 2021;100(4S):S1-S276)",
+          "publisher": "KDIGO",
+          "year": 2021,
+          "url": "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Glomerular-Diseases-Guideline-2021-English.pdf"
+        },
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true
+    },
+    {
+      "id": "vitamin_d_25oh",
+      "name_it": "25-OH vitamina D",
+      "name_en": "25-hydroxyvitamin D (25(OH)D)",
+      "name_de": "25-OH-Vitamin D",
+      "aliases": [
+        "25-OH vitamina D",
+        "25(OH)D",
+        "Vitamina D 25-OH",
+        "25-idrossivitamina D",
+        "25-OH-Vitamin D",
+        "25-Hydroxy-Vitamin D",
+        "Vitamin D3 (25-OH)",
+        "Calcidiolo",
+        "Calcidiol",
+        "Calcifediol"
+      ],
+      "specimen": "blood",
+      "units": [
+        {
+          "unit": "nmol/L",
+          "to_canonical_factor": 1,
+          "canonical": "nmol/L",
+          "factor_verified": true,
+          "factor_basis": "exact unit identity (SI prefixes or definition)",
+          "unit_aliases": [
+            "nmol/l"
+          ]
+        },
+        {
+          "unit": "ng/mL",
+          "to_canonical_factor": 2.496,
+          "canonical": "nmol/L",
+          "factor_verified": true,
+          "factor_source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6365669/",
+          "unit_aliases": [
+            "ng/ml",
+            "µg/L",
+            "ug/L"
+          ]
+        }
+      ],
+      "organ": "bones",
+      "secondary_organs": [
+        "immune",
+        "muscle"
+      ],
+      "direction": "low_bad",
+      "why_it": "Lo stato della vitamina D conta per le ossa con i cortisonici e con il malassorbimento della celiachia; KDIGO raccomanda vitamina D nella nefrite lupica ed ESsCD la include negli esami di base della celiachia.",
+      "why_en": "Vitamin D status matters for bone health with glucocorticoids and celiac malabsorption; KDIGO recommends vitamin D in lupus nephritis and ESsCD includes it in the celiac baseline work-up.",
+      "sources": [
+        {
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Lupus Nephritis (Kidney Int 2024;105(1S):S1-S69)",
+          "publisher": "KDIGO",
+          "year": 2024,
+          "url": "https://kdigo.org/wp-content/uploads/2024/01/KDIGO_2024_Lupus_Nephritis_Guideline.pdf"
+        },
+        {
+          "title": "ESsCD 2025 Updated Guidelines on the Diagnosis and Management of Coeliac Disease in Adults. Part 2: Management, Follow-up, and Complex Disease Courses (Al-Toma A et al., United European Gastroenterol J 2026;14(2):e70195); full text read from https://eprints.whiterose.ac.uk/id/eprint/239170/",
+          "publisher": "European Society for the Study of Coeliac Disease (ESsCD)",
+          "year": 2026,
+          "url": "https://doi.org/10.1002/ueg2.70195"
+        },
+        {
+          "title": "Vitamin D testing and treatment: a narrative review of current evidence (Pilz S et al., Endocr Connect 2019;8:R27-R43), states 'multiply by 2.496 to convert ng/mL to nmol/L'",
+          "publisher": "PubMed Central",
+          "year": 2019,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6365669/"
+        }
+      ],
+      "verified": true,
+      "conversion_verified": true,
+      "notes": "Do not map 1,25-dihydroxyvitamin D (calcitriol, '1,25(OH)2D') to this marker. Very high values can occur with excess supplementation; the direction flag only covers deficiency."
+    }
+  ],
+  "egfr_ckd_epi_2021": {
+    "formula_text": "eGFRcr = 142 x min(Scr/kappa, 1)^alpha x max(Scr/kappa, 1)^-1.200 x 0.9938^Age x 1.012 [if female]. Scr = standardized serum creatinine in mg/dL (divide µmol/L by 88.4); Age in years; result in mL/min/1.73 m2. min(Scr/kappa, 1) is the smaller of Scr/kappa and 1; max(Scr/kappa, 1) is the larger. No race coefficient.",
+    "female": {
+      "kappa": 0.7,
+      "alpha": -0.241,
+      "factor": 1.012
+    },
+    "male": {
+      "kappa": 0.9,
+      "alpha": -0.302,
+      "factor": 1
+    },
+    "constant": 142,
+    "exp_above": -1.2,
+    "age_base": 0.9938,
+    "sources": [
+      {
+        "title": "New Creatinine- and Cystatin C-Based Equations to Estimate GFR without Race (Inker LA et al., N Engl J Med 2021;385:1737-1749), Table 2",
+        "publisher": "New England Journal of Medicine (PMC author manuscript)",
+        "year": 2021,
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8822996/"
+      },
+      {
+        "title": "CKD-EPI Creatinine Equation (2021)",
+        "publisher": "National Kidney Foundation",
+        "year": 2021,
+        "url": "https://www.kidney.org/professionals/ckd-epi-creatinine-equation-2021"
+      },
+      {
+        "title": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease (Kidney Int 2024;105(4S):S117-S314)",
+        "publisher": "KDIGO",
+        "year": 2024,
+        "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf"
+      }
+    ],
+    "verified": true,
+    "verification_note": "Coefficients read in Inker 2021 Table 2 (2021 CKD-EPI creatinine, eGFRcr(AS): intercept 142, a1 F -0.241 / M -0.302, a2 -1.200, age 0.9938, female 1.012; kappa 0.7 F / 0.9 M) and identical on the NKF page. KDIGO 2024 CKD Recommendation 1.2.4.1 (validated equation), Practice Point 1.2.4.1 (same equation within a region) and 1.2.4.2 (avoid race).",
+    "test_vectors_computed": [
+      {
+        "sex": "female",
+        "age": 30,
+        "scr_mg_dl": 0.7,
+        "egfr": 119.2
+      },
+      {
+        "sex": "female",
+        "age": 30,
+        "scr_mg_dl": 0.9,
+        "egfr": 88.2
+      },
+      {
+        "sex": "female",
+        "age": 30,
+        "scr_mg_dl": 1.2,
+        "egfr": 62.5
+      },
+      {
+        "sex": "male",
+        "age": 50,
+        "scr_mg_dl": 1.3,
+        "egfr": 66.9
+      }
+    ],
+    "test_vectors_note": "Computed in this session from the verified formula for unit tests; these numbers are not printed in the sources.",
+    "app_rules": "Prefer the eGFR printed on the report and store its equation name; compute CKD-EPI 2021 only when the report has creatinine but no eGFR, and label it as app-calculated. European labs may report EKFC or CKD-EPI 2009 (KDIGO 2024 discusses EKFC); do not mix equations in one trend."
+  },
+  "bmi_who": {
+    "categories": [
+      {
+        "min": 0,
+        "max": 18.5,
+        "label_en": "Underweight",
+        "label_it": "Sottopeso"
+      },
+      {
+        "min": 18.5,
+        "max": 25.0,
+        "label_en": "Normal range",
+        "label_it": "Normopeso"
+      },
+      {
+        "min": 25.0,
+        "max": 30.0,
+        "label_en": "Pre-obese (overweight)",
+        "label_it": "Sovrappeso (pre-obesità)"
+      },
+      {
+        "min": 30.0,
+        "max": 35.0,
+        "label_en": "Obese class I",
+        "label_it": "Obesità di classe I"
+      },
+      {
+        "min": 35.0,
+        "max": 40.0,
+        "label_en": "Obese class II",
+        "label_it": "Obesità di classe II"
+      },
+      {
+        "min": 40.0,
+        "max": null,
+        "label_en": "Obese class III",
+        "label_it": "Obesità di classe III"
+      }
+    ],
+    "boundary_rule": "min inclusive, max exclusive; max null means no upper bound. WHO TRS 894 Table 2.1 prints: underweight <18.50; normal range 18.50 to 24.99; overweight >=25.00 (pre-obese 25.00 to 29.99); obese class I 30.00 to 34.99; class II 35.00 to 39.99; class III >=40.00.",
+    "formula": "BMI = weight (kg) / height (m)^2",
+    "notes": "WHO: cut-offs are age-independent and the same for both sexes; BMI may not reflect the same fatness in all populations and fat distribution (waist circumference) also matters. The WHO fact sheet confirms overweight >=25 and obesity >=30 for adults. Italian labels sottopeso, normopeso, sovrappeso and obesità are verified on ISS EpiCentro; the Italian class I to III wording is a translation, not checked against an Italian source.",
+    "sources": [
+      {
+        "title": "Obesity: preventing and managing the global epidemic. Report of a WHO Consultation (WHO Technical Report Series 894), Table 2.1",
+        "publisher": "World Health Organization",
+        "year": 2000,
+        "url": "https://iris.who.int/handle/10665/42330"
+      },
+      {
+        "title": "Obesity and overweight, fact sheet",
+        "publisher": "World Health Organization",
+        "year": null,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight"
+      },
+      {
+        "title": "Obesità (EpiCentro), classi di peso per gli adulti indicate dal BMI",
+        "publisher": "Istituto Superiore di Sanità (ISS)",
+        "year": null,
+        "url": "https://www.epicentro.iss.it/obesita/"
+      }
+    ],
+    "verified": true
+  },
+  "biological_variation": {
+    "accessible": true,
+    "usable_in_app": false,
+    "access_note": "biologicalvariation.eu was reachable, but its copyright statement (site footer and /disclaimer page) says: 'Systematic extraction, reproduction or redistribution of database content, incorporation of the content into another database, software application, digital product or service, or commercial use requires prior written permission from EFLM and a written agreement with EFLM and will be subject to a fee.' Therefore no CVI or analytical performance specification was extracted or included. Permission requests go to the EFLM Office named on the site.",
+    "rcv_formula": {
+      "text": "RCV (%) = sqrt(2) x Z x sqrt(CVA^2 + CVI^2), with CVA = analytical CV of the lab method and CVI = within-subject biological CV, both in %. Z = 1.96 for a bidirectional change at the 5% significance level. Log-normal (asymmetric) RCV variants exist; their exact formula was not verified here.",
+      "sources": [
+        {
+          "title": "Reference change values (Fraser CG, Clin Chem Lab Med 2011;50:807-812)",
+          "publisher": "PubMed",
+          "year": 2011,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21958344/"
+        },
+        {
+          "title": "Biological variation and reference change value of the estimated glomerular filtration rate in humans: a systematic review and meta-analysis (Thöni S et al., Front Med 2022;9:1009358)",
+          "publisher": "PubMed Central",
+          "year": 2022,
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9583397/"
+        }
+      ]
+    },
+    "items": [],
+    "alternative_peer_reviewed": [
+      {
+        "lab_id": "creatinine",
+        "cvi_percent": 5.2,
+        "cvi_ci95_percent": [
+          4.6,
+          5.8
+        ],
+        "cvi_percent_after_outlier_exclusion": 5.0,
+        "note": "Random-effects meta-analysis of 37 studies (high heterogeneity, I2 82.3%); some studies were retrieved from the EFLM database but the figure is the paper's own estimate. Not from the EFLM database.",
+        "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9583397/"
+      },
+      {
+        "lab_id": "egfr",
+        "rcv_percent_bidirectional": 16.5,
+        "rcv_percent_minimum_conservative": 12.5,
+        "assumed_cva_percent": 1.1,
+        "note": "Overall RCV for eGFR of plus or minus 16.5% assuming CVA 1.1%; plus or minus 12.5% after excluding outlier studies. Same paper.",
+        "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9583397/"
+      }
+    ],
+    "sources": [
+      {
+        "title": "EFLM Biological Variation Database, copyright and terms of use statement (site footer and /disclaimer)",
+        "publisher": "European Federation of Clinical Chemistry and Laboratory Medicine (EFLM)",
+        "year": null,
+        "url": "https://biologicalvariation.eu/disclaimer"
+      }
+    ]
+  },
+  "mineral_water_calcium": {
+    "threshold_mg_per_l": 150,
+    "comparison": "greater_than",
+    "label_it": "Calcica",
+    "label_en": "Contains calcium",
+    "label_de": "Calciumhaltig",
+    "criterion_text_en": "Calcium content greater than 150 mg/l",
+    "criterion_text_it": "Il tenore di calcio è superiore a 150 mg/l",
+    "criterion_text_de": "Der Calciumgehalt beträgt mehr als 150 mg/l",
+    "related_indications": [
+      {
+        "label_en": "Suitable for a low-sodium diet",
+        "label_it": "Indicata per le diete povere di sodio",
+        "label_de": "Geeignet für natriumarme Ernährung",
+        "criterion": "sodium less than 20 mg/l"
+      },
+      {
+        "label_en": "Contains sodium",
+        "label_it": "Sodica",
+        "label_de": "Natriumhaltig",
+        "criterion": "sodium greater than 200 mg/l"
+      },
+      {
+        "label_en": "Contains magnesium",
+        "label_it": "Magnesiaca",
+        "label_de": "Magnesiumhaltig",
+        "criterion": "magnesium greater than 50 mg/l"
+      }
+    ],
+    "correction_to_brief": "The brief said 'at least 150 mg/l' and 'contenente calcio'. EUR-Lex Annex III says 'greater than 150 mg/l' (IT 'superiore a 150 mg/l', DE 'mehr als 150 mg/l') and the Italian indication is 'Calcica'. A water with exactly 150 mg/l does not qualify.",
+    "legal_status_note": "EUR-Lex lists only the original consolidated version (16/07/2009) for this Directive, so Annex III is unchanged as published.",
+    "sources": [
+      {
+        "title": "Directive 2009/54/EC on the exploitation and marketing of natural mineral waters (Recast), Annex III",
+        "publisher": "EUR-Lex, European Union",
+        "year": 2009,
+        "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32009L0054"
+      },
+      {
+        "title": "Direttiva 2009/54/CE sull'utilizzazione e la commercializzazione delle acque minerali naturali (rifusione), Allegato III (testo italiano)",
+        "publisher": "EUR-Lex, Unione europea",
+        "year": 2009,
+        "url": "https://eur-lex.europa.eu/legal-content/IT/TXT/HTML/?uri=CELEX:32009L0054"
+      },
+      {
+        "title": "Richtlinie 2009/54/EG über die Gewinnung von und den Handel mit natürlichen Mineralwässern (Neufassung), Anhang III (deutscher Text)",
+        "publisher": "EUR-Lex, Europäische Union",
+        "year": 2009,
+        "url": "https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32009L0054"
+      }
+    ],
+    "verified": true
+  },
+  "open_questions": [
+    "Which drugs does Sofia take now (hydroxychloroquine, mycophenolate, azathioprine, tacrolimus, voclosporin, cyclosporine, prednisone, ACE inhibitor or ARB, anticoagulant or aspirin)? Drug-food points carry an applies_if field and must be switched on per medication.",
+    "Is she considered immunosuppressed? This switches on the FDA raw-sprout rule and any wider raw-food safety rules the doctor wants.",
+    "Oats: AIC (live page, modified 2026-03) asks for clinical and serological remission, at least six months of oat-free diet and medical supervision; ESsCD 2025 and ACG 2023 allow certified gluten-free oats from diagnosis with tolerance monitoring. Which position does her gastroenterologist follow?",
+    "Protein: KDIGO 2021 expresses 0.8 to 1.0 g/kg/day per ideal body weight. Is the nutritionist's 1 g/kg per actual or ideal weight?",
+    "Garlic: only patient-organisation advice with mechanistic reasoning. Does her rheumatologist want culinary garlic limited? The app should not label garlic as dangerous.",
+    "Omega-3 supplement: dose, product and any anticoagulant, antiplatelet or NSAID use need the doctor's approval before the app shows it as active.",
+    "Vitamin D: target and dose are for her doctor; disease-activity benefit is uncertain.",
+    "EFLM biological variation data: request written permission from EFLM, or ship the app without CVI-based RCV (or let the lab provide CVA and CVI).",
+    "Analytical CV (CVA) for RCV must come from her laboratory; it is method specific.",
+    "Folate (ng/mL vs nmol/L) and vitamin B12 (pg/mL vs pmol/L) conversion factors were not verified from an authoritative source: trend within one unit only.",
+    "Urea / BUN ('Azotemia', 'Harnstoff', 'Harnstoff-N') was left out on purpose: urea and urea nitrogen units differ and no authoritative conversion was verified. Treat as a custom marker without conversion if she wants it.",
+    "tTG-IgA and anti-dsDNA are kit specific; store value divided by the report's upper limit of normal for cross-lab comparison.",
+    "Alias collision: Italian 'PCR' = C-reactive protein (blood) while KDIGO 'PCR' = urine protein-creatinine ratio. Disambiguate by specimen and unit.",
+    "Albumin depends on method (bromocresol green vs bromocresol purple or immunoassay); store the method if printed.",
+    "Which eGFR equation does each of her labs print (CKD-EPI 2009, CKD-EPI 2021, EKFC)?",
+    "Aliases were compiled from common Italian, Austrian and German report wording and are not individually sourced; validate them against her real reports.",
+    "Not verified (full text not retrieved): ACR 2022 glucocorticoid-induced osteoporosis guideline (abstract only), EULAR 2022 cardiovascular risk and 2021 lifestyle recommendations (paywalled), NIH ODS fact sheets (HTTP 403). Equivalent points were sourced from KDIGO, EULAR 2010/2023 and peer-reviewed papers instead.",
+    "Plan items outside this brief were not reviewed: 3 coffees/day, 2 to 3 L water/day, tuna and swordfish limits (mercury)."
+  ],
+  "notes": {
+    "canonical_units": "Canonical unit = SI unit where a conversion is verified (conventional unit x factor = SI unit, as in KDIGO tables). factor null means no valid or verified conversion; trend within the same unit only.",
+    "extra_fields": "Added beyond the requested schema: sections_done, notes; diet_points.evidence_note, diet_points.applies_if; labs.conversion_verified, labs.notes; units.factor_verified, units.factor_basis, units.factor_source_url, units.unit_aliases, units.to_canonical_formula (HbA1c percent). bmi_who.max may be null (open upper bound). biological_variation.usable_in_app and alternative_peer_reviewed.",
+    "reference_ranges": "No reference ranges are provided by design; the app must use the range printed on each report.",
+    "aliases_basis": "Report-name aliases are compiled from common Italian, Austrian and German lab nomenclature and are not individually sourced.",
+    "access_date": "All sources were opened and read on 2026-11-06."
+  }
+}

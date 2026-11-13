@@ -1,0 +1,365 @@
+/* Corpo 5D: space (3D), time (her data over time), food (what reaches which system). */
+import { S } from "../store.js";
+import { t, L, lingua } from "../i18n.js";
+import { I, esc, dataConAnno, statoHtml, num, numAuto, applicaStili } from "../ui.js";
+import { registra, apriFoglio } from "../ctx.js";
+import { ORGANI, statoCorpo, dateDati, punteggioOrgano, renaleFuoriRange } from "../engine/salute.js";
+import { ESAME } from "../data/esami.js";
+import { impattiCibo, organiDelCibo, cibiPerOrgano, CIBI_5D, massimoNelPiano, viaggioCibo } from "../engine/impatti.js";
+import { valoriVoci } from "../engine/nutrizione.js";
+import { ALIMENTI, nome } from "../data/alimenti.js";
+import { isoData } from "../engine/planner.js";
+
+let modo = "salute", cibo = null, indiceTempo = null, istanza = null, involucro = null, gioco = null, fase = null, scelto = null;
+
+/* What each part is, in plain words (general physiology, no claims about her). */
+const COSA_E = {
+  brain: { it: "Il cervello guida pensieri, memoria, umore e sonno. Usa molta energia, soprattutto zuccheri, e ha bisogno di grassi buoni come il DHA.", en: "The brain runs thinking, memory, mood and sleep. It uses a lot of energy, mostly sugar, and needs good fats such as DHA." },
+  heart_vessels: { it: "Il cuore pompa il sangue in tutto il corpo attraverso arterie e vene; la pressione e i grassi nel sangue dicono come stanno.", en: "The heart pumps blood round the body through arteries and veins; blood pressure and blood fats show how they are doing." },
+  kidneys: { it: "I reni filtrano il sangue: tolgono scorie e acqua in più con l'urina e aiutano a tenere giusta la pressione. Nel lupus si controllano con creatinina, eGFR ed esame delle urine.", en: "The kidneys filter the blood: they remove waste and extra water in the urine and help keep blood pressure right. In lupus they are checked with creatinine, eGFR and urine tests." },
+  gut: { it: "L'intestino assorbe i nutrienti del cibo. Nella celiachia il glutine lo infiamma: senza glutine si ripara.", en: "The gut absorbs the nutrients in food. In coeliac disease gluten inflames it: without gluten it heals." },
+  blood: { it: "Il sangue porta ossigeno e nutrienti a ogni cellula e riporta indietro le scorie. Globuli rossi, ferro e vitamina B12 servono a portare l'ossigeno.", en: "Blood carries oxygen and nutrients to every cell and takes waste away. Red cells, iron and vitamin B12 are needed to carry oxygen." },
+  immune: { it: "Il sistema immunitario difende il corpo dai germi. Nel lupus si rivolge per errore contro il corpo stesso: per questo ci sono i farmaci e gli esami.", en: "The immune system defends the body from germs. In lupus it turns against the body by mistake: that is why there are medicines and tests." },
+  joints: { it: "Le articolazioni uniscono le ossa e permettono di muoversi. Nel lupus possono fare male o gonfiarsi.", en: "Joints link the bones and let you move. In lupus they can ache or swell." },
+  skin: { it: "La pelle protegge il corpo. Nel lupus può reagire al sole: la protezione solare aiuta.", en: "The skin protects the body. In lupus it can react to sunlight: sun protection helps." },
+  bones: { it: "Le ossa sostengono il corpo e conservano il calcio. Calcio, vitamina D e proteine le tengono forti.", en: "Bones hold the body up and store calcium. Calcium, vitamin D and protein keep them strong." },
+  metabolism: { it: "Il metabolismo è come il corpo usa l'energia del cibo. Peso e girovita mostrano l'equilibrio tra calorie mangiate e usate.", en: "Metabolism is how the body uses the energy in food. Weight and waist show the balance between calories eaten and used." },
+  liver: { it: "Il fegato smista i nutrienti che arrivano dall'intestino, fa da magazzino e pulisce il sangue da molte sostanze, anche dai farmaci.", en: "The liver sorts the nutrients that arrive from the gut, stores energy and clears many substances from the blood, medicines too." },
+  muscle: { it: "I muscoli muovono il corpo e consumano energia. Le proteine li mantengono, il movimento li rinforza.", en: "Muscles move the body and use energy. Protein maintains them, movement makes them stronger." },
+};
+/* The steps of the journey, in plain words. */
+const PASSI = [
+  { it: ["Bocca e stomaco", "Masticato e mescolato con i succhi dello stomaco, il cibo diventa una crema."], en: ["Mouth and stomach", "Chewed and mixed with stomach juices, food turns into a paste."] },
+  { it: ["Intestino", "Nell'intestino tenue proteine, grassi e carboidrati vengono spezzati in pezzi piccolissimi che passano nel sangue. Le fibre vanno avanti fino al colon e nutrono i batteri buoni."], en: ["Gut", "In the small intestine protein, fat and carbohydrate are broken into tiny pieces that pass into the blood. Fibre goes on to the colon and feeds the good bacteria."] },
+  { it: ["Sangue e fegato", "Il sangue porta i nutrienti al fegato, che li smista, e poi a tutto il corpo."], en: ["Blood and liver", "The blood takes the nutrients to the liver, which sorts them, and then round the whole body."] },
+];
+const nomeOrgano = (id) => L(ORGANI.find((o) => o.id === id) || { it: id, en: id });
+const COLORE = { ok: "#7be0a0", attenzione: "#ffc96b", male: "#ff7a6b", nd: "#8f86a8" };
+
+export const titolo = () => t("corpo");
+export const sottotitolo = () => esc(L({ it: "Spazio, tempo e cibo: il tuo corpo dai tuoi dati", en: "Space, time and food: your body from your data" }));
+
+function dataScelta(s) {
+  const date = dateDati(s);
+  if (!date.length) return isoData(new Date());
+  const i = indiceTempo == null ? date.length - 1 : Math.min(indiceTempo, date.length - 1);
+  return date[i];
+}
+
+export function render(s) {
+  const date = dateDati(s);
+  const quando = dataScelta(s);
+  const stati = statoCorpo(s, quando);
+  const sopra = `<div class="sopra"><div class="seg" role="tablist">
+      <button class="${modo === "salute" ? "attivo" : ""}" data-az="modo5d" data-m="salute">${esc(L({ it: "Salute", en: "Health" }))}</button>
+      <button class="${modo === "cibo" ? "attivo" : ""}" data-az="modo5d" data-m="cibo">${esc(L({ it: "Cibo", en: "Food" }))}</button>
+      <button class="${modo === "cervello" ? "attivo" : ""}" data-az="modo5d" data-m="cervello">${esc(L({ it: "Mente", en: "Mind" }))}</button></div></div>`;
+  const nota = `<div class="nota5d">${esc(modo === "cibo" ? L({ it: "Scegli un alimento e segui il suo viaggio.", en: "Pick a food and follow its journey." }) : L({ it: "Trascina per ruotare, tocca una parte per sapere cos'è.", en: "Drag to rotate, tap a part to see what it is." }))}</div>
+    <div class="viaggio5d" id="viaggio5d" aria-live="polite" ${modo === "cibo" && cibo ? "" : "hidden"}>${didascalia()}</div>`;
+  const sotto = modo === "cibo"
+    ? `<div class="sotto"><div class="cibi">${CIBI_5D.map((id) => `<button class="${cibo === id ? "attivo" : ""}" data-az="cibo5d" data-id="${id}">${esc(nome(id, lingua()).split(" (")[0])}</button>`).join("")}</div></div>`
+    : `<div class="sotto"><div class="tempo"><button class="play" data-az="play5d" aria-label="${esc(gioco ? L({ it: "Pausa", en: "Pause" }) : L({ it: "Riproduci nel tempo", en: "Play over time" }))}">${gioco ? I.pausa : I.play}</button>
+        <input type="range" min="0" max="${Math.max(0, date.length - 1)}" value="${date.length ? date.indexOf(quando) : 0}" data-input="tempo5d" aria-label="${esc(L({ it: "Data", en: "Date" }))}" ${date.length < 2 ? "disabled" : ""}>
+        <span class="quando" id="quando5d">${esc(date.length ? dataConAnno(quando) : L({ it: "nessun dato", en: "no data" }))}</span></div></div>`;
+  return `<div class="corpo5d" id="scena5d">${sopra}${nota}${sotto}</div>
+    <div class="parti5d" role="group" aria-label="${esc(L({ it: "Parti del corpo", en: "Body parts" }))}">${ORGANI.map((o) => `<button class="chip ${scelto === o.id ? "attivo" : ""}" data-az="organo5d" data-id="${o.id}"><i class="pallino-mini" data-bg="${COLORE[stati[o.id].stato]}"></i>${esc(L(o))}</button>`).join("")}</div>
+    <div class="legenda5d"><span><i data-bg="${COLORE.ok}"></i>${esc(L({ it: "in ordine", en: "in order" }))}</span><span><i data-bg="${COLORE.attenzione}"></i>${esc(L({ it: "da guardare", en: "worth a look" }))}</span><span><i data-bg="${COLORE.male}"></i>${esc(L({ it: "fuori intervallo", en: "out of range" }))}</span><span><i data-bg="${COLORE.nd}"></i>${esc(L({ it: "nessun dato", en: "no data" }))}</span></div>
+    <div id="pannello5d">${modo === "cibo" ? pannelloCibo() : pannelloSalute(stati)}</div>
+    <p class="minimo" data-s="sd6f2a">${esc(L({ it: "5D: tre dimensioni di spazio, il tempo dei tuoi dati e il cibo. I colori riassumono i tuoi valori rispetto agli intervalli del tuo laboratorio e agli obiettivi del piano; non sono una diagnosi. I collegamenti cibo-organo usano solo indicazioni sulla salute autorizzate dall'UE (Reg. 432/2012) e alimenti che sono davvero \"fonte\" di quel nutriente.", en: "5D: three dimensions of space, the time of your data and food. Colours summarise your values against your lab's ranges and the plan's targets; they are not a diagnosis. Food-organ links use only EU-authorised health claims (Reg. 432/2012) and foods that really are a \"source\" of that nutrient." }))}</p>`;
+}
+
+function pannelloSalute(stati) {
+  const lista = modo === "cervello" ? ORGANI.filter((o) => o.id === "brain") : ORGANI;
+  return lista.map((o) => {
+    const r = stati[o.id];
+    return `<div class="card piatta organo-card" data-az="organo5d" data-id="${o.id}" role="button" tabindex="0" data-s="sd2c17">
+      <span class="pallino" data-bg="${COLORE[r.stato]}"></span>
+      <div data-s="s97445"><div class="riga tra"><strong>${esc(L(o))}</strong>${statoHtml(r.stato)}</div>
+      <div class="minimo">${r.parti.length ? esc(r.parti.slice(0, 4).map(descriviParte).join(" · ")) : esc(L({ it: "Nessun dato ancora: inserisci esami o compila il diario.", en: "No data yet: add results or fill in the diary." }))}</div></div></div>`;
+  }).join("");
+}
+
+function descriviParte(p) {
+  if (p.tipo === "esame") return `${L(ESAME[p.marker] || { it: p.marker })} ${numAuto(p.valore)} ${p.unita}`;
+  if (p.tipo === "diario") return `${t(p.chiave === "glutine" ? "glutineSospetto" : p.chiave)} ${numAuto(p.valore)}`;
+  if (p.tipo === "abitudine") return p.chiave === "acqua" ? `${t("acqua")} ${numAuto(p.valore)} L` : `${t("camminata")} ${numAuto(p.valore)} min`;
+  if (p.tipo === "peso") return `${t("peso")} ${numAuto(p.valore)} kg`;
+  return "";
+}
+
+function porzioneDelPiano(id) {
+  const g = massimoNelPiano(id);
+  if (g) return { a: id, q: g, u: "g" };
+  if (id === "uovo") return { a: id, q: 1, u: "pz" };
+  return null;
+}
+/* The food's own journey (engine/impatti.viaggioCibo), cached per food. */
+let viaggioCache = { id: null, v: null };
+const viaggioDi = (id) => {
+  if (viaggioCache.id !== id) viaggioCache = { id, v: viaggioCibo(id, { renaleFuoriRange: renaleFuoriRange(S(), isoData(new Date())), pesi: S().pesiUnita }) };
+  return viaggioCache.v;
+};
+const metePer = (id) => viaggioDi(id).mete.map((m) => m.organo);
+
+/* "Vitamina D" -> "vitamina D" inside a sentence; acronyms (DHA, EPA, ALA) stay as they are. */
+const minuscola = (t) => (/^[A-ZÀ-Ý][a-zà-ÿ]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
+
+/* Particle colour of each stop: the nutrient that leads it (presentation only). */
+const COLORE_NUTRIENTE = {
+  omega3_epa_dha: 0xffc35c, dha_40mg_per_100g_and_100kcal: 0xffd98a, omega3_ala: 0xe8d36a, vitamin_d: 0xfff27a, vitamin_b12: 0xff7aa8,
+  protein: 0x8fd3ff, potassium: 0xc59bff, calcium: 0xf2f2f2, iron: 0xe0805a, magnesium: 0x7ad9c8, folate: 0x9be07a, vitamin_c: 0xffa64d,
+  high_fibre: 0xb5d96b, low_sodium: 0x9fd8ff, selenium: 0xd6c3ff, zinc: 0xb8c4d6, iodine: 0x9fb6ff, vitamin_e: 0xffe08a, vitamin_b6: 0xffb3d1,
+};
+
+/* One nutrient at one stop, in plain words: amount in the portion, share of the EU reference, daily amount of the claim. */
+function righeNutriente(n, por) {
+  const quanto = por ? (por.u === "pz" ? L({ it: "in 1 pezzo", en: "in 1 piece" }) : L({ it: `in ${por.q} g`, en: `in ${por.q} g` })) : "";
+  const q = n.quantita != null ? `${numAuto(n.quantita)} ${n.unita} ${quanto}` : n.insieme != null ? L({ it: `da solo non è nei dati (EPA e DHA insieme: ${numAuto(n.insieme)} mg ${quanto})`, en: `not in the data on its own (EPA and DHA together: ${numAuto(n.insieme)} mg ${quanto})` }) : L({ it: "quantità: informazione mancante nei dati", en: "amount: information missing in the data" });
+  const extra = [];
+  if (n.nrvPct != null) extra.push(L({ it: `${num(n.nrvPct)}% del valore di riferimento UE al giorno`, en: `${num(n.nrvPct)}% of the EU daily reference value` }));
+  else if (n.almenoPct != null) extra.push(L({ it: `almeno il ${num(n.almenoPct)}% del valore di riferimento UE (è "fonte di")`, en: `at least ${num(n.almenoPct)}% of the EU reference value (it is a "source of")` }));
+  if (n.giorno) extra.push(n.raggiunto === true ? L({ it: `l'effetto si ottiene con ${num(n.giorno)} ${n.unita} al giorno: questa porzione basta`, en: `the effect needs ${num(n.giorno)} ${n.unita} a day: this portion is enough` })
+    : n.raggiunto === false ? L({ it: `l'effetto si ottiene con ${num(n.giorno)} ${n.unita} al giorno: questa porzione ne dà ${numAuto(n.quantita)}`, en: `the effect needs ${num(n.giorno)} ${n.unita} a day: this portion gives ${numAuto(n.quantita)}` })
+    : L({ it: `l'effetto si ottiene con ${num(n.giorno)} ${n.unita} al giorno: non verificabile con questi dati`, en: `the effect needs ${num(n.giorno)} ${n.unita} a day: cannot be checked with these data` }));
+  return { titolo: `${L(n.nome)}: ${q}`, claim: L(n.claim.testo), extra };
+}
+function didascalia() {
+  if (!cibo) return "";
+  const n = nome(cibo, lingua()).split(" (")[0];
+  if (fase == null) return `<strong>${esc(n)}</strong><div>${esc(L({ it: "Premi Ripeti per seguire il viaggio.", en: "Press Replay to follow the journey." }))}</div>`;
+  if (fase.i === -1) return `<strong>${esc(n)}</strong><div>${esc(L({ it: "Fine del viaggio. Sotto trovi tutto, passo per passo.", en: "End of the journey. Below you find it all, step by step." }))}</div><button class="btn piccolo" data-az="ripetiViaggio">${I.play}${esc(L({ it: "Ripeti", en: "Replay" }))}</button>`;
+  const v = viaggioDi(cibo);
+  const avanti = `<button class="btn-testo avanti5d" data-az="avantiViaggio" aria-label="${esc(L({ it: "Passo successivo", en: "Next step" }))}">${esc(L({ it: "Avanti", en: "Next" }))} ›</button>`;
+  if (fase.organo && fase.i >= 3) {
+    const meta = v.mete.find((m) => m.organo === fase.organo);
+    /* the stop's leading nutrient over the body; the others are named and detailed in the panel below */
+    const r = meta ? righeNutriente(meta.nutrienti[0], v.porzione) : null;
+    const anche = meta ? [...new Set(meta.nutrienti.slice(1).map((n) => minuscola(L(n.nome))))] : [];
+    return `<div class="riga tra"><div class="minimo">${fase.i + 1}. ${esc(nomeOrgano(fase.organo))}</div>${avanti}</div>
+      ${r ? `<div class="nutr5d"><strong>${esc(r.titolo)}</strong><div>«${esc(r.claim)}»</div>${r.extra.length ? `<div class="minimo">${esc(r.extra.join(" · "))}</div>` : ""}</div>` : ""}
+      ${anche.length ? `<div class="minimo">${esc(L({ it: "Anche: ", en: "Also: " }) + anche.join(", "))}</div>` : ""}`;
+  }
+  const p = PASSI[Math.min(fase.i, 2)][lingua() === "en" ? "en" : "it"];
+  const propri = [v.bocca, v.intestino, v.sangue][Math.min(fase.i, 2)] || [];
+  return `<div class="riga tra"><div class="minimo">${fase.i + 1}. ${esc(p[0])}</div>${avanti}</div><div>${esc(propri.length ? propri.map(L).join(" ") : p[1])}</div>`;
+}
+function avviaViaggio() {
+  if (!cibo) return;
+  if (!istanza) { viaggioTesto(); return; }
+  const mete = metePer(cibo);
+  const nomi = Object.fromEntries([...mete, "gut", "blood"].map((id) => [id, nomeOrgano(id)]));
+  const v = viaggioDi(cibo);
+  const colori = Object.fromEntries(v.mete.map((m) => [m.organo, COLORE_NUTRIENTE[m.nutrienti[0].chiave] || 0xfff1c9]));
+  istanza.viaggio(["gut", "blood", ...mete], (i, organo) => {
+    fase = { i, organo };
+    const el = document.getElementById("viaggio5d");
+    if (el) { el.hidden = false; el.innerHTML = didascalia(); }
+    for (const li of document.querySelectorAll(".passi-viaggio li")) li.classList.toggle("ora", Number(li.dataset.i) === i);
+  }, nomi, { colori });
+}
+
+function pannelloCibo() {
+  if (!cibo) return `<div class="card vuoto"><div class="grande">${esc(L({ it: "Scegli un alimento del piano", en: "Pick a food from the plan" }))}</div><p class="piccolo">${esc(L({ it: "Vedrai il suo viaggio nel corpo: stomaco, intestino, sangue e i sistemi a cui serve.", en: "You will see its journey through the body: stomach, gut, blood and the systems it serves." }))}</p></div>`;
+  const imp = impattiCibo(cibo, { renaleFuoriRange: renaleFuoriRange(S(), isoData(new Date())) });
+  const por = porzioneDelPiano(cibo);
+  const val = por ? valoriVoci([por]) : null;
+  const v = viaggioDi(cibo);
+  /* key nutrients of the portion with real numbers (the "why" of this food) */
+  const chiave = [];
+  for (const o of v.organi) for (const n of o.nutrienti) if (n.quantita != null && !chiave.some((x) => x.chiave === n.chiave) && n.chiave !== "protein" && n.chiave !== "low_sodium") chiave.push(n);
+  chiave.sort((a, b) => b.forza - a.forza);
+  const ruoli = val && val.completo ? `<div class="card piatta" data-s="sd2c17"><strong>${esc(L({ it: "Cosa porta una porzione del piano", en: "What one plan portion brings" }))} (${esc(por.u === "pz" ? `${por.q} ${L({ it: "pezzo", en: "piece" })}` : `${por.q} g`)})</strong>
+      <ul class="piccolo">
+        <li>${esc(L({ it: `Energia: circa ${Math.round(val.tot.kcal)} kcal`, en: `Energy: about ${Math.round(val.tot.kcal)} kcal` }))}</li>
+        ${val.tot.prot >= 1 ? `<li>${esc(L({ it: `Proteine ${Math.round(val.tot.prot)} g: i mattoni di muscoli e tessuti`, en: `Protein ${Math.round(val.tot.prot)} g: building blocks for muscles and tissues` }))}</li>` : ""}
+        ${val.tot.carb >= 1 ? `<li>${esc(L({ it: `Carboidrati ${Math.round(val.tot.carb)} g: energia, soprattutto per cervello e muscoli`, en: `Carbohydrate ${Math.round(val.tot.carb)} g: energy, above all for brain and muscles` }))}</li>` : ""}
+        ${val.tot.fat >= 1 ? `<li>${esc(L({ it: `Grassi ${Math.round(val.tot.fat)} g: energia di riserva; aiutano ad assorbire le vitamine A, D, E e K`, en: `Fat ${Math.round(val.tot.fat)} g: stored energy; they help absorb vitamins A, D, E and K` }))}</li>` : ""}
+        ${val.tot.fib >= 1 ? `<li>${esc(L({ it: `Fibre ${Math.round(val.tot.fib)} g: nutrono i batteri buoni dell'intestino e saziano`, en: `Fibre ${Math.round(val.tot.fib)} g: they feed the good gut bacteria and keep you full` }))}</li>` : ""}
+        ${chiave.slice(0, 5).map((n) => `<li>${esc(`${L(n.nome)} ${numAuto(n.quantita)} ${n.unita}`)}${n.nrvPct != null ? ` <span class="minimo">${esc(L({ it: `(${num(n.nrvPct)}% del valore di riferimento UE)`, en: `(${num(n.nrvPct)}% of the EU reference value)` }))}</span>` : ""}${n.giorno ? ` <span class="minimo">${esc(L({ it: `(effetto con ${num(n.giorno)} ${n.unita} al giorno)`, en: `(effect with ${num(n.giorno)} ${n.unita} a day)` }))}</span>` : ""}</li>`).join("")}
+      </ul><p class="fonte">${esc(L({ it: "Valori: tabelle CREA, CIQUAL e USDA del consiglio", en: "Values: CREA, CIQUAL and USDA tables checked by the council" }))}</p></div>` : "";
+  const altri = v.organi.filter((o) => !v.mete.some((m) => m.organo === o.organo));
+  const passi = `<div class="card piatta" data-s="sd2c17"><strong>${esc(L({ it: "Il viaggio nel corpo", en: "The journey through the body" }))}</strong>
+      <ol class="piccolo passi-viaggio">${PASSI.map((p, i) => { const propri = [v.bocca, v.intestino, v.sangue][i] || []; return `<li data-i="${i}" class="${fase && fase.i === i ? "ora" : ""}"><strong>${esc(p[lingua() === "en" ? "en" : "it"][0])}</strong>: ${esc(propri.length ? propri.map(L).join(" ") : p[lingua() === "en" ? "en" : "it"][1])}</li>`; }).join("")}
+      ${v.mete.map((m, k) => `<li data-i="${k + 3}" class="${fase && fase.organo === m.organo && fase.i >= 3 ? "ora" : ""}"><strong>${esc(nomeOrgano(m.organo))}</strong>${m.nutrienti.slice(0, 3).map((n) => { const r = righeNutriente(n, v.porzione); return `<div>${esc(r.titolo)}. «${esc(r.claim)}»${r.extra.length ? ` <span class="minimo">${esc(r.extra.join(" · "))}</span>` : ""}</div>`; }).join("")}</li>`).join("")}</ol>
+      ${altri.length ? `<p class="minimo">${esc(L({ it: "Raggiunge anche: ", en: "Also reaches: " }) + altri.map((o) => `${nomeOrgano(o.organo)} (${[...new Set(o.nutrienti.map((n) => minuscola(L(n.nome))))].join(", ")})`).join("; "))}</p>` : ""}
+      <button class="btn piccolo" data-az="ripetiViaggio">${I.play}${esc(L({ it: "Guarda il viaggio", en: "Watch the journey" }))}</button></div>`;
+
+  const gl = (ALIMENTI[cibo] || {}).glutine;
+  const intestino = gl === "certificata"
+    ? { it: "Solo se certificato senza glutine: così protegge l'intestino nella celiachia (dieta senza glutine rigorosa, ESsCD).", en: "Only if certified gluten free: then it protects the gut in coeliac disease (strict gluten-free diet, ESsCD)." }
+    : gl === "etichetta"
+      ? { it: "Se comprato con la dicitura senza glutine: così protegge l'intestino nella celiachia (dieta senza glutine rigorosa, ESsCD).", en: "If bought labelled gluten free: then it protects the gut in coeliac disease (strict gluten-free diet, ESsCD)." }
+      : { it: "Naturalmente senza glutine: protegge l'intestino nella celiachia (dieta senza glutine rigorosa, ESsCD).", en: "Naturally gluten free: it protects the gut in coeliac disease (strict gluten-free diet, ESsCD)." };
+  const perOrgano = {};
+  for (const x of imp) (perOrgano[x.organo] = perOrgano[x.organo] || []).push(x);
+  return `<h2 class="sez">${esc(nome(cibo, lingua()))}</h2>
+    ${passi}${ruoli}
+    <div class="card piatta" data-s="sd2c17"><strong>${esc(L({ it: "Intestino", en: "Gut" }))}</strong><div class="piccolo">${esc(L(intestino))}</div></div>
+    ${Object.entries(perOrgano).map(([o, lista]) => `<div class="card piatta" data-s="sd2c17"><strong>${esc(L(ORGANI.find((x) => x.id === o) || { it: o, en: o }))}</strong>
+      ${lista.map((x) => `<div class="piccolo" data-s="sfe7b4">${x.stato === "ok" ? "✓" : x.stato === "quantita" ? "≈" : "?"} ${esc(L(x.claim.testo))}${x.varianti.length ? ` <span class="minimo">(${esc(x.varianti.join(", ").replace(/_/g, " "))})</span>` : ""}
+        ${x.nota ? `<div class="minimo">${esc(L(x.nota))}</div>` : ""}</div>`).join("")}
+      <p class="fonte">${esc(lista[0].claim.atto)}</p></div>`).join("") || `<p class="muted">${esc(L({ it: "Nessuna indicazione sulla salute autorizzata soddisfatta da questo alimento in queste dosi.", en: "No authorised health claim is met by this food at these amounts." }))}</p>`}`;
+}
+
+function foglioOrgano(id) {
+  const s = S();
+  const o = ORGANI.find((x) => x.id === id) || { id: "skin", it: "Pelle", en: "Skin" };
+  const r = punteggioOrgano(s, o, dataScelta(s));
+  const cibi = cibiPerOrgano(id).slice(0, 8);
+  return `<button class="icon-btn chiudi" data-az="chiudiFoglio" aria-label="${esc(t("chiudi"))}">${I.chiudi}</button>
+    <h2>${esc(L(o))}</h2>
+    <p class="piccolo">${esc(L(COSA_E[o.id] || { it: "", en: "" }))}</p>
+    <div>${statoHtml(r.stato)} ${r.punteggio != null ? `<span class="minimo">${r.punteggio}/100</span>` : ""}</div>
+    <h3 data-s="s56f43">${esc(L({ it: "Da cosa nasce il colore", en: "Where the colour comes from" }))}</h3>
+    ${r.parti.length ? `<ul class="piccolo">${r.parti.map((p) => `<li>${esc(descriviParte(p))}${p.data ? ` (${esc(dataConAnno(p.data))})` : ""}: ${p.punteggio}/100</li>`).join("")}</ul>` : `<p class="piccolo muted">${esc(L({ it: "Nessun dato.", en: "No data." }))}</p>`}
+    ${cibi.length ? `<h3>${esc(L({ it: "Alimenti del piano che lo sostengono", en: "Plan foods that support it" }))}</h3><ul class="piccolo">${cibi.map((c) => `<li><strong>${esc(nome(c.id, lingua()))}</strong>: ${esc([...new Set(c.claims.map((x) => L(x.nutriente)))].join(", "))}</li>`).join("")}</ul><p class="fonte">${esc(L({ it: "Indicazioni sulla salute autorizzate, Reg. (UE) 432/2012", en: "Authorised health claims, Reg. (EU) 432/2012" }))}</p>` : `<p class="piccolo muted">${esc(L({ it: "Per questo sistema non esistono indicazioni sulla salute autorizzate dall'UE legate agli alimenti del piano: l'app non inventa collegamenti.", en: "For this system there are no EU-authorised health claims linked to the plan's foods: the app does not invent links." }))}</p>`}`;
+}
+
+/* Mount the 3D scene after each render, reusing the same canvas. */
+export async function dopo(s) {
+  const posto = document.getElementById("scena5d");
+  if (!posto) return;
+  if (!istanza && senza3d) { mostraSenza3d(posto); return; }
+  if (!involucro) { involucro = document.createElement("div"); involucro.style.position = "absolute"; involucro.style.inset = "0"; }
+  posto.prepend(involucro);
+  if (!istanza) {
+    try {
+      const { creaCorpo } = await import("../three/corpo3d.js");
+      const ridotto = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      istanza = await creaCorpo(involucro, { ridotto, alTocco: (id) => { scelto = id; istanza.seleziona(id, nomeOrgano(id)); aggiornaChip(); apriFoglio(() => foglioOrgano(id)); } });
+    } catch (e) {
+      senza3d = await motivo3d(e);
+      mostraSenza3d(document.getElementById("scena5d"));
+      return;
+    }
+  }
+  istanza.aggiorna(statoCorpo(s, dataScelta(s)));
+  istanza.vista(modo === "cervello" ? "cervello" : "corpo");
+  if (scelto && modo !== "cibo") istanza.seleziona(scelto, nomeOrgano(scelto));
+}
+
+/* Why the 3D model is missing, in words Sofia can act on; the rest of the
+   screen (parts, what they are, the food journey) works without it. */
+let senza3d = null;
+async function motivo3d(err) {
+  const dopo = { it: " Sotto trovi tutto: le parti del corpo, cosa sono e il viaggio del cibo.", en: " Below you find it all: the body parts, what they are and the food journey." };
+  const con = (x) => ({ it: x.it + dopo.it, en: x.en + dopo.en });
+  if (err && err.message === "webgl") return con({ it: "Questo telefono non mostra il 3D (WebGL non disponibile).", en: "This phone cannot show 3D (WebGL not available)." });
+  /* If the library is on the phone, the network is not the problem. */
+  try {
+    if (window.caches && (await caches.match("vendor/three.min.js", { ignoreSearch: true }))) return con({ it: "Il modello 3D è sul telefono ma non si è avviato.", en: "The 3D model is on the phone but did not start." });
+  } catch (e) { /* no cache access */ }
+  if (navigator.onLine === false) return con({ it: "Sei offline e il modello 3D non è ancora sul telefono: si scarica alla prima connessione e poi resta.", en: "You are offline and the 3D model is not on the phone yet: it downloads on the first connection and then stays." });
+  try {
+    const r = await fetch("vendor/three.min.js", { method: "HEAD", cache: "no-store", credentials: "same-origin" });
+    if (r.status === 401 || r.status === 403) return con({ it: `Il sito ha rifiutato il modello 3D (codice ${r.status}, accesso non autorizzato): l'accesso al sito va riaperto, chiedi ad ALX.`, en: `The site refused the 3D model (code ${r.status}, not authorised): site access must be reopened, ask ALX.` });
+    if (!r.ok) return con({ it: `Il modello 3D non si è scaricato (codice ${r.status}).`, en: `The 3D model did not download (code ${r.status}).` });
+  } catch (e) {
+    return con({ it: "Il modello 3D non si è scaricato: il sito non risponde.", en: "The 3D model did not download: the site does not answer." });
+  }
+  return con({ it: "Il modello 3D non si è avviato su questo telefono.", en: "The 3D model did not start on this phone." });
+}
+
+function mostraSenza3d(posto) {
+  if (involucro) { involucro.remove(); involucro = null; }
+  if (!posto || posto.querySelector(".no-webgl")) return;
+  posto.classList.add("senza3d");
+  posto.insertAdjacentHTML("beforeend", `<div class="no-webgl" role="status"><p>${esc(L(senza3d))}</p><button class="btn piccolo" data-az="riprova5d">${esc(L({ it: "Riprova", en: "Try again" }))}</button></div>`);
+}
+
+/* Without 3D the journey runs as text: the same steps, one after the other,
+   with time to read (longer at the organs) and "Avanti" to move on. */
+let passoTesto = null, avantiTesto = () => {};
+function viaggioTesto() {
+  if (passoTesto) { clearTimeout(passoTesto); passoTesto = null; }
+  const tappe = [0, 1, 2, ...metePer(cibo).map((o, i) => ({ i: 3 + i, organo: o }))];
+  let k = 0;
+  const mostra = () => {
+    if (passoTesto) { clearTimeout(passoTesto); passoTesto = null; }
+    if (k >= tappe.length) fase = { i: -1 };
+    else { const x = tappe[k++]; fase = typeof x === "number" ? { i: x, organo: null } : x; }
+    const el = document.getElementById("viaggio5d");
+    if (el) { el.hidden = false; el.innerHTML = didascalia(); }
+    for (const li of document.querySelectorAll(".passi-viaggio li")) li.classList.toggle("ora", Number(li.dataset.i) === fase.i);
+    if (fase.i >= 0) passoTesto = setTimeout(mostra, fase.organo ? 6500 : 5000);
+  };
+  avantiTesto = mostra;
+  mostra();
+}
+
+function aggiornaChip() {
+  for (const b of document.querySelectorAll(".parti5d .chip")) b.classList.toggle("attivo", b.dataset.id === scelto);
+}
+
+export function lascia() {
+  if (gioco) { clearInterval(gioco); gioco = null; }
+  if (passoTesto) { clearTimeout(passoTesto); passoTesto = null; }
+  if (istanza) { istanza.distruggi(); istanza = null; }
+  involucro = null;
+}
+
+registra({
+  riprova5d: () => { location.reload(); },
+  modo5d: (d) => {
+    modo = d.m;
+    fase = null;
+    if (istanza) { istanza.fermaViaggio(); istanza.deseleziona(); }
+    if (istanza) istanza.vista(modo === "cervello" ? "cervello" : "corpo");
+    rinfresca();
+  },
+  cibo5d: (d) => {
+    cibo = d.id;
+    fase = null;
+    if (istanza) istanza.deseleziona();
+    rinfresca();
+    avviaViaggio();
+  },
+  ripetiViaggio: () => { fase = null; avviaViaggio(); },
+  avantiViaggio: () => { if (istanza && istanza.prossimo && istanza.prossimo()) return; if (passoTesto) avantiTesto(); },
+  organo5d: (d) => {
+    scelto = d.id;
+    if (istanza) { istanza.evidenzia([d.id]); istanza.seleziona(d.id, nomeOrgano(d.id)); }
+    aggiornaChip();
+    apriFoglio(() => foglioOrgano(d.id));
+  },
+  tempo5d: (d, el) => {
+    indiceTempo = Number(el.value);
+    const s = S();
+    const q = dataScelta(s);
+    const out = document.getElementById("quando5d");
+    if (out) out.textContent = dataConAnno(q);
+    if (istanza) istanza.aggiorna(statoCorpo(s, q));
+    const p = document.getElementById("pannello5d");
+    if (p) { p.innerHTML = pannelloSalute(statoCorpo(s, q)); applicaStili(p); }
+  },
+  play5d: () => {
+    if (gioco) { clearInterval(gioco); gioco = null; rinfresca(); return; }
+    const s = S();
+    const date = dateDati(s);
+    if (date.length < 2) return;
+    indiceTempo = 0;
+    gioco = setInterval(() => {
+      indiceTempo++;
+      if (indiceTempo >= date.length) { clearInterval(gioco); gioco = null; indiceTempo = date.length - 1; }
+      const q = date[Math.min(indiceTempo, date.length - 1)];
+      const sl = document.querySelector('[data-input="tempo5d"]');
+      if (sl) sl.value = String(indiceTempo);
+      const out = document.getElementById("quando5d");
+      if (out) out.textContent = dataConAnno(q);
+      if (istanza) istanza.aggiorna(statoCorpo(s, q));
+      const p = document.getElementById("pannello5d");
+      if (p) { p.innerHTML = pannelloSalute(statoCorpo(s, q)); applicaStili(p); }
+      if (!gioco) rinfresca();
+    }, 900);
+    rinfresca();
+  },
+});
+
+function rinfresca() {
+  const s = S();
+  const vista = document.getElementById("vista");
+  if (!vista || !location.hash.startsWith("#/corpo")) return;
+  vista.innerHTML = render(s);
+  applicaStili(vista);
+  dopo(s);
+}
