@@ -66,6 +66,10 @@
       "CH",
       "US"
     ],
+    "deliveryDays": {
+      "original": 10,
+      "print": 10
+    },
     "shippingNote": {
       "en": "Shipping is shown at checkout as a flat rate by region. Austria: 9 EUR for editions, 19 EUR for originals. EU: 19 and 39 EUR. UK and Switzerland: 29 and 59 EUR. USA: 39 and 89 EUR. Rest of world: 49 and 119 EUR. Pickup in Vienna is free. Outside the EU, duties and import taxes are not included and are paid by the buyer on delivery.",
       "de": "Versand wird im Checkout als Pauschale je Region angezeigt. Österreich: 9 EUR für Editionen, 19 EUR für Originale. EU: 19 und 39 EUR. UK und Schweiz: 29 und 59 EUR. USA: 39 und 89 EUR. Übrige Welt: 49 und 119 EUR. Abholung in Wien ist kostenlos. Außerhalb der EU sind Zoll und Einfuhrabgaben nicht enthalten und werden vom Käufer bei Lieferung bezahlt."

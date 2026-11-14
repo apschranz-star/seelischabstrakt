@@ -3,13 +3,14 @@
 Du hilfst Alexander Schranz, den Shop seelischabstrakt zu pflegen. Lies das hier zuerst, dann handle.
 
 ## Was der Shop ist
-Eine statische Website (kein Framework, kein Build, keine Datenbank) in einem GitHub-Repository, das Netlify automatisch veröffentlicht. Jede Änderung an einer Datei im Repository ist etwa eine Minute später live.
+Eine Website in einem GitHub-Repository, das Netlify automatisch veröffentlicht, ohne Datenbank. Der Inhalt (Werke, Preise, Texte, Farben) steht in works.json und site.json und wird beim Aufruf geladen: Eine Änderung dort ist etwa eine Minute später live, ohne Build. Das Gerüst des Shops ist in store/ geschrieben (React und das Designsystem Astryx) und wird gebaut; das Gebaute, index.html und app/, liegt im Repository. Du änderst es nie von Hand.
 
 ## Dateien und was du damit tun darfst
 - works.json: die Produkte. Hier kommen neue Werke hinein, Preise, "available": false für verkauft, Captions in EN und DE. Struktur nie ändern, nur Werte und Einträge. Feld "img" zeigt auf eine Datei in img/.
 - site.json: alle Texte (EN/DE), Farben, Schriften, Layout, Versandkosten, Steuerflag, rechtliche Angaben. Werte ändern erlaubt, Schlüssel nicht umbenennen.
 - img/: Fotos. Dateinamen klein, mit Bindestrichen, .jpg, maximal 1600 px lange Seite.
-- index.html, admin.html, add.html, netlify/functions/works.js, netlify.toml: Code. Nur ändern, wenn Alexander ausdrücklich eine Design- oder Funktionsänderung wünscht. Dann immer die ganze Datei zurückgeben, nie Ausschnitte. Nie index.html und admin.html im selben Schritt umbauen.
+- admin.html, add.html, netlify/functions/works.js, netlify.toml: Code. Nur ändern, wenn Alexander ausdrücklich eine Design- oder Funktionsänderung wünscht. Dann immer die ganze Datei zurückgeben, nie Ausschnitte. Nie store/ und admin.html im selben Schritt umbauen.
+- store/ (Quelltext des Shops), index.html und app/ (das Gebaute daraus), legal/ (Mitteilung der EU zur gesetzlichen Gewährleistung): Änderungen am Shop-Gerüst nur über store/, danach im Ordner store `npm run build` und das Gebaute mit einchecken. Die Regeln dafür stehen in store/AGENTS.md. Der Workflow store-check.yml schlägt fehl, wenn das Gebaute nicht zum Quelltext passt.
 - README.md: Anleitung für Menschen. Dieses Dokument: Anleitung für dich.
 
 ## Wenn du keine Action hast: der Block für /add
@@ -28,7 +29,7 @@ Wenn du keine Action hast: erzeuge den fertigen JSON-Block für works.json und s
 Atelier in Wien, kleine Formate, Teppich als Bühne. Sätze kurz. Deutsch in österreichischer Färbung, Englisch schlicht. Keine Gedankenstriche im Text.
 
 ## Was du nie tust
-- Preise oder Rechtstexte erfinden. Bei Unsicherheit fragen.
+- Preise oder Rechtstexte erfinden. Bei Unsicherheit fragen. Die Rechtstexte stehen in store/src/legal/LegalText.tsx, die Widerrufsbelehrung folgt dem gesetzlichen Muster (Anhang I FAGG), die Mitteilung zur Gewährleistung ist die der EU und wird nicht verändert.
 - Den Desk-Schlüssel oder Tokens irgendwo hinschreiben.
 - Werke löschen, ohne dass Alexander es ausdrücklich sagt (verkauft = "available": false, nicht löschen).
 - Die Struktur von works.json oder site.json verändern.

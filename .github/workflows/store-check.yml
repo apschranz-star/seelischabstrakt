@@ -1,0 +1,51 @@
+# The shop's front end is written in store/ (React 19 and Astryx) and built into
+# index.html and app/ in the repository root, because Netlify serves the root as it is
+# and has no build step. This check fails when the committed build no longer matches
+# the source, which would otherwise show only after publishing: the shop would keep
+# running the old code while the source says something else.
+#
+# Fix for a failure: cd store && npm ci && npm run build, then commit index.html and app/.
+name: Check the storefront build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "store/**"
+      - "index.html"
+      - "app/**"
+      - ".github/workflows/store-check.yml"
+  pull_request:
+    paths:
+      - "store/**"
+      - "index.html"
+      - "app/**"
+      - ".github/workflows/store-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: store
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: store/package-lock.json
+      - name: Install the pinned packages
+        run: npm ci
+      - name: Rebuild the Astryx theme and compare with the committed files
+        run: |
+          npm run theme
+          git diff --exit-code -- src/theme
+      - name: Type check
+        run: npm run typecheck
+      - name: Compare the committed build with a fresh one
+        run: npm run check

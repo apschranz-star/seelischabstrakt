@@ -1,5 +1,7 @@
-# Publishes the art shop (index.html, site.json, works.json, img/) to the branch gh-pages
-# under shop/, so the catalogue can be viewed on GitHub Pages without Netlify.
+# Publishes the art shop (index.html, app/, legal/, site.json, works.json, img/, fonts/) to
+# the branch gh-pages under shop/, so the catalogue can be viewed on GitHub Pages without
+# Netlify. index.html and app/ are the built storefront (source in store/, see
+# store-check.yml for the check that the committed build matches the source).
 #
 # The shop is the one public site, so no access gate here.
 #
@@ -15,6 +17,8 @@ on:
     paths:
       - "index.html"
       - "404.html"
+      - "app/**"
+      - "legal/**"
       - "site.json"
       - "works.json"
       - "img/**"
@@ -46,6 +50,8 @@ jobs:
           rm -rf pages/shop
           mkdir -p pages/shop
           cp index.html 404.html site.json works.json pages/shop/
+          cp -R app pages/shop/app
+          cp -R legal pages/shop/legal
           cp -R img pages/shop/img
           cp -R fonts pages/shop/fonts
           touch pages/.nojekyll

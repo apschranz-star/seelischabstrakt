@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+<title>seelischabstrakt</title>
+<script>
+/* Start fetching the content now, while the app code is still downloading.
+   src/lib/shop.tsx picks the promise up; without it, it fetches by itself. */
+(function () {
+  try {
+    var v = '?v=' + Date.now();
+    var get = function (f) {
+      return fetch(f + v).then(function (r) {
+        if (!r.ok) throw new Error(f + ': HTTP ' + r.status);
+        return r.json();
+      });
+    };
+    window.__saContent = Promise.all([get('site.json'), get('works.json')]);
+    window.__saContent.catch(function () {});
+  } catch (e) {}
+})();
+</script>
+<link rel="preload" href="fonts/bricolage-grotesque-latin-normal-300-800.woff2" as="font" type="font/woff2" crossorigin vite-ignore>
+<link rel="stylesheet" href="fonts/fonts.css" vite-ignore>
+<meta name="description" content="seelischabstrakt. Paintings and drawings by Alexander Schranz from a studio in Vienna. Each original exists once.">
+<meta property="og:title" content="seelischabstrakt">
+<meta property="og:description" content="Original paintings by Alexander Schranz, Wien.">
+<meta property="og:image" content="https://seelischabstrakt.netlify.app/img/og-carpet.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="seelischabstrakt. Alexander Schranz, Wien.">
+<meta name="twitter:image" content="https://seelischabstrakt.netlify.app/img/og-carpet.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238C1D1D'/%3E%3Crect x='6' y='6' width='20' height='20' fill='%230D0A0A'/%3E%3Crect x='9' y='9' width='14' height='14' fill='%23EFE7D8'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://seelischabstrakt.netlify.app/">
+<meta name="theme-color" content="#F2B429">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://seelischabstrakt.netlify.app/">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="de_AT">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://seelischabstrakt.netlify.app/?lang=en">
+<link rel="alternate" hreflang="de" href="https://seelischabstrakt.netlify.app/?lang=de">
+<script type="application/ld+json" id="ld-org">{"@context":"https://schema.org","@type":"ProfessionalService","name":"seelischabstrakt","alternateName":"Alexander Schranz","url":"https://seelischabstrakt.netlify.app/","image":"https://seelischabstrakt.netlify.app/img/og-carpet.jpg","address":{"@type":"PostalAddress","addressLocality":"Wien","postalCode":"1180","addressCountry":"AT"},"sameAs":["https://www.instagram.com/seelischabstrakt/"],"founder":{"@type":"Person","name":"Alexander Schranz"}}</script>
+<script type="application/ld+json" id="ld-products">{}</script>
+</head>
+<body data-hero="split" data-density="normal" data-works="single" data-reveal="off">
+<div id="root">
+  <!-- First paint, before the script is here: header and wordmark as plain
+       HTML. React replaces everything inside #root once the content files
+       have loaded. Keep the class names equal to src/components. -->
+  <header class="nav">
+    <span class="burger"></span>
+    <a class="brand" href="#top">seelischabstrakt</a>
+    <span></span>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div><h1 class="wordmark"><span class="lo">seelisch</span><span>abstrakt</span></h1></div>
+      <div class="hero-side"></div>
+    </section>
+    <noscript>
+      <div class="fatal">
+        <p>seelischabstrakt: original paintings by Alexander Schranz, Wien. This shop needs JavaScript to show the works and to take an order.</p>
+        <p>Originale Bilder von Alexander Schranz, Wien. Der Shop braucht JavaScript, um die Werke zu zeigen und Bestellungen anzunehmen.</p>
+        <p><a href="mailto:a.p.schranz@icloud.com">a.p.schranz@icloud.com</a> · <a href="https://www.instagram.com/seelischabstrakt/">Instagram</a></p>
+      </div>
+    </noscript>
+  </main>
+</div>
+
+<!-- Netlify registers a form only when it finds it as HTML at deploy time. The
+     shop sends each of them with fetch (src/lib/forms.ts); these copies are
+     never shown. The field "website" is the trap for spam bots. -->
+<form name="order" data-netlify="true" netlify-honeypot="website" hidden>
+  <input name="ref"><input name="date"><input name="work"><input name="variant"><input name="price"><input name="shipping"><input name="total"><input name="name"><input name="email"><input name="address"><input name="country"><textarea name="message"></textarea><input name="lang"><input name="website">
+</form>
+<form name="notify" data-netlify="true" hidden><input name="email"><input name="lang"><input name="consent"></form>
+<form name="contact" data-netlify="true" netlify-honeypot="website" hidden>
+  <input name="name"><input name="email"><input name="subject"><textarea name="message"></textarea><input name="lang"><input name="website">
+</form>
+<form name="withdrawal" data-netlify="true" netlify-honeypot="website" hidden>
+  <input name="name"><input name="order"><input name="email"><input name="part"><textarea name="statement"></textarea><input name="received"><input name="lang"><input name="website">
+</form>
+
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

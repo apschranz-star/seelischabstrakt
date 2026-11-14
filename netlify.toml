@@ -31,6 +31,13 @@
   to = "/404.html"
   status = 404
 
+# store/ ist der Quelltext des Shops (React, Astryx). Ausgeliefert wird nur das
+# Gebaute: index.html und app/ in der Wurzel. Der Quelltext hat hier nichts zu suchen.
+[[redirects]]
+  from = "/store/*"
+  to = "/404.html"
+  status = 404
+
 # Forms: enable "Form detection" once in Netlify UI (Site configuration → Forms). The static <form name="order"> in index.html is then picked up.
 
 # Security and caching headers
@@ -63,6 +70,19 @@
   for = "/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Das Gebaute des Shops (store/ -> app/). Jede Datei traegt einen Hash im
+  # Namen, eine geaenderte Datei ist also eine andere Datei.
+  for = "/app/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Die Mitteilung der EU zur gesetzlichen Gewaehrleistung (Bild und PDF/SVG).
+  for = "/legal/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
 
 [[headers]]
   for = "/*.json"
@@ -143,9 +163,34 @@
   from = "/terms"
   to = "/#terms"
   status = 301
+# Kurzlinks auf die Fenster des Shops: Widerruf (Funktion nach § 13a FAGG), Widerrufsbelehrung, Gewaehrleistung, Barrierefreiheit
 [[redirects]]
   from = "/shipping"
   to = "/#shipping"
+  status = 301
+[[redirects]]
+  from = "/widerruf"
+  to = "/#widerruf"
+  status = 301
+[[redirects]]
+  from = "/withdraw"
+  to = "/#widerruf"
+  status = 301
+[[redirects]]
+  from = "/widerrufsbelehrung"
+  to = "/#withdrawal"
+  status = 301
+[[redirects]]
+  from = "/gewaehrleistung"
+  to = "/#guarantee"
+  status = 301
+[[redirects]]
+  from = "/barrierefreiheit"
+  to = "/#access"
+  status = 301
+[[redirects]]
+  from = "/accessibility"
+  to = "/#access"
   status = 301
 # Studio desk behind a password (function desk.js, env DESK_PASSWORD). force = true shadows the static file.
 [[redirects]]

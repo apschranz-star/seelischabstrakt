@@ -2,7 +2,9 @@
 
 This folder is the whole website. No Claude, no server, no database. Inside:
 
-    index.html    the page. Never needs editing.
+    index.html    the page, together with the folder app/. Built from store/ (React and the design system Astryx). Never needs editing by hand.
+    store/        the source of the page. Only touched for a design or function change, then `npm run build` in this folder (see store/AGENTS.md).
+    legal/        the European Union's notice on the legal guarantee, shown in the shop as the law prescribes.
     admin.html    the Studio desk: edit works, texts, design, shop rules and legal data through forms, with live preview.
     site.json     everything except products (texts EN/DE, colours, fonts, layout, taxes, legal identity).
     works.json    your products.
@@ -17,7 +19,7 @@ Legal tab: your identity once, and the site generates Impressum, Privacy (DSGVO 
 
 ## Publish from your phone (recommended setup, 20 minutes once)
 
-1. github.com: create a free account and a new repository, e.g. "seelischabstrakt" (public or private, both fine). Upload the contents of this folder (index.html, admin.html, site.json, works.json, README.md and the img folder). GitHub's web upload accepts drag and drop.
+1. github.com: create a free account and a new repository, e.g. "seelischabstrakt" (public or private, both fine). Upload the contents of this folder (index.html, admin.html, site.json, works.json, README.md and the folders img, app, legal and fonts). GitHub's web upload accepts drag and drop.
 2. netlify.com: Add new site → Import an existing project → GitHub → pick the repository. Build command: none. Publish directory: "/" (root). Deploy. You get yoursite.netlify.app.
 3. Netlify → Site configuration → Forms → Enable form detection (off by default on new sites), then redeploy once. After the first order the form "order" appears under Forms; add your email under Notifications so every order lands in your inbox.
 4. github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate: Only select repositories → your repo → Repository permissions → Contents: Read and write. Copy the token.
@@ -25,7 +27,7 @@ Legal tab: your identity once, and the site generates Impressum, Privacy (DSGVO 
 
 From now on: open admin.html on the phone, "Take photo" on a work (or "Choose photo"), fill title, size, price, tap "Publish to site". The photo and the data are written to GitHub, Netlify rebuilds, the shop is updated in about a minute. Bookmark admin.html on the home screen.
 
-Optional: rename admin.html to something private like desk-7f3k.html and update the footer link in index.html, so nobody stumbles on the editor. It cannot change anything without your token, but tidier is tidier.
+Optional: rename admin.html to something private like desk-7f3k.html, so nobody stumbles on the editor. The shop does not link to it. It cannot change anything without your token, but tidier is tidier.
 
 ## Posting works from ChatGPT, from the phone in one tap, or from Claude (the shop API)
 
@@ -82,7 +84,7 @@ Alternative, also free: GitHub Pages (needs a GitHub account and a repo), or Clo
 
 ## What netlify.toml does (already in the folder)
 
-Security headers (CSP, HSTS, no-sniff, referrer policy), long caching for photos in img/, short caching for the JSON files so edits show within a minute, noindex for admin.html, friendly redirects (/shop, /prints, /impressum, /datenschutz, /agb, /desk) and a 404 page. robots.txt and sitemap.xml point search engines at the shop and away from the desk. Structured data (schema.org Product list) is generated from works.json so Google can show works with prices. When you move to your own domain, replace seelischabstrakt.netlify.app in index.html (canonical, og:url, hreflang), robots.txt and sitemap.xml.
+Security headers (CSP, HSTS, no-sniff, referrer policy), long caching for photos in img/, short caching for the JSON files so edits show within a minute, noindex for admin.html, friendly redirects (/shop, /prints, /impressum, /datenschutz, /agb, /desk) and a 404 page. robots.txt and sitemap.xml point search engines at the shop and away from the desk. Structured data (schema.org Product list) is generated from works.json so Google can show works with prices. When you move to your own domain, replace seelischabstrakt.netlify.app in store/index.html (canonical, og:url, hreflang, then `npm run build` in store/), robots.txt and sitemap.xml.
 
 ## Own domain (optional, about 10 to 15 EUR per year)
 
@@ -128,7 +130,7 @@ Commas matter: every block and every field is separated by a comma, except the l
 - Keep the carpet in the photo if nomat is true.
 - JPG, 1600 px on the long side is plenty. Smaller files load faster. squoosh.app compresses for free in the browser.
 - Name files simply: kopf-rot.jpg, not IMG_4821.JPG.
-- The preview picture for shared links is img/og-carpet.jpg, 1200 × 630. Replacing it needs a new file name, otherwise WhatsApp keeps showing the old one from its cache. New name, then the two og:image lines and the twitter:image line in index.html.
+- The preview picture for shared links is img/og-carpet.jpg, 1200 × 630. Replacing it needs a new file name, otherwise WhatsApp keeps showing the old one from its cache. New name, then the two og:image lines and the twitter:image line in store/index.html, then `npm run build` in store/.
 
 ## Taking money
 
