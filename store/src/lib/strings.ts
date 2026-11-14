@@ -19,6 +19,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
     'nav.main': 'Main',
+    'ticker.label': 'Shop information',
     'lang.label': 'Language',
     'lang.en': 'English',
     'lang.de': 'Deutsch',
@@ -126,7 +127,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'order.err.email': 'Please enter a valid email address.',
     'order.err.country': 'Please select a country.',
     'order.err.fix': 'Some details are missing. Please check the marked fields.',
-    'order.fail': 'The order could not be sent automatically. Your email app will open instead.',
+    'order.fail': 'The order could not be sent automatically. Please send it by email with the button here; nothing you typed is lost.',
     'order.failBtn': 'Send order by email',
     'order.thanks': 'Order received',
     'order.number': 'Order number',
@@ -136,6 +137,8 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'order.payText':
       'Open the link, send the total and put the order number in the message. If the amount is not prefilled, type it in.',
     'order.payBtn': 'Pay {amount} on Revolut',
+    'order.payNote':
+      'You can pay now or wait for our confirmation. If we cannot accept the order, you get your money back at once.',
     'order.after': 'The work ships after payment is received. Questions: {email}.',
     'order.withdrawHint':
       'Changed your mind? You can withdraw within {d} days of receiving the work, online under "Withdraw from contract" at the foot of every page.',
@@ -147,7 +150,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'order.summary': 'Order summary',
 
     'notify.title': 'New works by email',
-    'notify.text': 'One short email when a new piece goes up. No newsletter, no tracking.',
+    'notify.text': 'One short note when a new work is finished. No newsletter, nothing else.',
     'notify.btn': 'Notify me',
     'notify.ok': 'Thanks, you are on the list.',
     'notify.fail': 'That did not work. Please write a short email instead.',
@@ -157,7 +160,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
       'Yes, email me when a new work goes up. I can unsubscribe at any time with a short email.',
 
     'cform.title': 'Write to the studio',
-    'cform.lead': 'Questions about a work, a studio visit in Vienna or a commission.',
+    'cform.lead': 'About a work, a visit to the studio in Vienna, or a picture made for you.',
     'cform.name': 'Name',
     'cform.email': 'Email',
     'cform.subject': 'Subject',
@@ -165,7 +168,8 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'cform.privacy': 'Your details are used only to answer you. More in the privacy policy.',
     'cform.send': 'Send message',
     'cform.done': 'Thank you. Your message has arrived. The reply comes by email, usually within a day.',
-    'cform.fail': 'The message could not be sent. Your email app will open instead.',
+    'cform.fail': 'The message could not be sent. Please send it by email with the button here.',
+    'cform.failBtn': 'Send by email',
     'cform.subject.work': 'Question about "{title}"',
     'cform.subject.commission': 'Commission enquiry',
 
@@ -187,12 +191,14 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
       'Your withdrawal reached us on {date} at {time}. We send the acknowledgement of receipt to {email} without delay; it names the address for the return. Keep this confirmation until then.',
     'withdraw.record': 'What you declared',
     'withdraw.fail':
-      'The withdrawal could not be transmitted. Your email app opens with the finished text: send that email and the withdrawal is declared.',
+      'The withdrawal could not be transmitted from this page. Send it by email with the button here: once that email is sent, the withdrawal is declared.',
     'withdraw.failBtn': 'Send withdrawal by email',
     'withdraw.next': 'What happens next',
     'withdraw.nextText':
       'Send the work back within 14 days, well packed. We refund every payment, standard delivery included, within 14 days of your withdrawal; we may wait until the work is back or you have shown that you sent it.',
     'withdraw.terms': 'Read the withdrawal notice',
+    'withdraw.save': 'Save confirmation',
+    'withdraw.received': 'Received',
 
     'guarantee.title': 'Legal guarantee',
     'guarantee.lead':
@@ -202,17 +208,18 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'guarantee.alt':
       'EU notice "Legal guarantee". Minimum two-year legal guarantee protection for goods sold in the European Union. Consumers can claim their rights under the legal guarantee of conformity, for example if goods do not match the description or do not function as intended. Sellers are liable for any lack of conformity which existed when the goods were delivered, and which becomes apparent within the legal guarantee period. Sellers in such a situation are required to offer free repair or free replacement; in some cases, a price reduction or full reimbursement. Some countries have a longer legal guarantee period. For second-hand goods, a shorter period may apply, but not less than one year. For more information on your rights in a specific country, scan the QR code or ask the seller: europa.eu/youreurope/guarantees. What to do if you receive non-conforming goods: 1. Contact the seller as soon as possible to report the issue; 2. Provide proof of purchase, such as a receipt, invoice, or bank statement. Sellers and producers may also offer commercial guarantees, which apply independently from the legal guarantee. For example, you may see this GARAN label representing a commercial guarantee of durability offered by the producer at no additional cost and covering the entire good.',
 
-    'buy.title': 'Good to know',
-    'buy.kicker': 'Before you buy',
-    'buy.unique.t': 'One of one',
-    'buy.unique.d': 'Every original is a single piece. It comes with a signed certificate of authenticity.',
-    'buy.ship.t': 'Shipped from Vienna',
-    'buy.ship.d': 'Insured, at a flat rate by region that you see before you order. Collection in Vienna is free.',
-    'buy.back.t': '{d} days to decide',
+    'buy.title': 'How a picture gets to you',
+    'buy.kicker': 'Buying',
+    'buy.unique.t': 'There is only one',
+    'buy.unique.d': 'Every original exists once. It comes with a certificate of authenticity that I sign.',
+    'buy.ship.t': 'It travels insured',
+    'buy.ship.d':
+      'I pack every work myself and send it insured from Vienna, at a flat rate you see before you order. Or you collect it here.',
+    'buy.back.t': '{d} days to live with it',
     'buy.back.d':
-      'Originals and editions carry the statutory right of withdrawal. Only commissions made to your specification are excluded.',
-    'buy.pay.t': 'Pay after ordering',
-    'buy.pay.d': 'You order first and pay by Revolut payment link. The work leaves the studio once payment is in.',
+      'If it is not right on your wall, you can withdraw within {d} days of receiving it. That is your statutory right for originals and editions. Only commissions made to your specification are excluded.',
+    'buy.pay.t': 'You order, then you pay',
+    'buy.pay.d': 'After ordering you get a Revolut payment link. The work leaves the studio once the payment has arrived.',
     'buy.more.shipping': 'Shipping and taxes',
     'buy.more.withdrawal': 'Withdrawal notice',
 
@@ -238,7 +245,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'drop.new': 'New work|{y}',
     'drop.studio': 'The studio',
     'drop.comm': 'Commissions|open',
-    'drop.commSub': 'Made for your wall',
+    'drop.commSub': 'A picture for one wall',
     'drops.label': 'Highlights',
     'load.error': 'The shop could not load its content. Please reload the page.',
     'load.retry': 'Reload',
@@ -253,6 +260,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'nav.contact': 'Kontakt',
     'nav.menu': 'Menü',
     'nav.main': 'Hauptnavigation',
+    'ticker.label': 'Hinweise zum Shop',
     'lang.label': 'Sprache',
     'lang.en': 'English',
     'lang.de': 'Deutsch',
@@ -362,7 +370,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'order.err.country': 'Bitte wähle ein Land.',
     'order.err.fix': 'Es fehlen Angaben. Bitte prüfe die markierten Felder.',
     'order.fail':
-      'Die Bestellung konnte nicht automatisch gesendet werden. Stattdessen öffnet sich dein E-Mail-Programm.',
+      'Die Bestellung konnte nicht automatisch gesendet werden. Bitte sende sie mit dem Knopf hier per E-Mail; von deinen Angaben geht nichts verloren.',
     'order.failBtn': 'Bestellung per E-Mail senden',
     'order.thanks': 'Bestellung eingegangen',
     'order.number': 'Bestellnummer',
@@ -372,6 +380,8 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'order.payText':
       'Link öffnen, Gesamtbetrag senden und die Bestellnummer in die Nachricht schreiben. Falls der Betrag nicht vorausgefüllt ist, bitte eintippen.',
     'order.payBtn': '{amount} über Revolut zahlen',
+    'order.payNote':
+      'Du kannst gleich zahlen oder unsere Bestätigung abwarten. Können wir die Bestellung nicht annehmen, bekommst du dein Geld sofort zurück.',
     'order.after': 'Versand nach Zahlungseingang. Fragen: {email}.',
     'order.withdrawHint':
       'Anders überlegt? Du kannst binnen {d} Tagen ab Erhalt des Werks widerrufen, online unter „Vertrag widerrufen“ am Fuß jeder Seite.',
@@ -383,7 +393,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'order.summary': 'Zusammenfassung der Bestellung',
 
     'notify.title': 'Neue Arbeiten per E-Mail',
-    'notify.text': 'Eine kurze Mail, wenn ein neues Stück online geht. Kein Newsletter, kein Tracking.',
+    'notify.text': 'Eine kurze Nachricht, wenn ein neues Werk fertig ist. Kein Newsletter, sonst nichts.',
     'notify.btn': 'Benachrichtigen',
     'notify.ok': 'Danke, du bist auf der Liste.',
     'notify.fail': 'Das hat nicht geklappt. Bitte schreib stattdessen eine kurze E-Mail.',
@@ -393,7 +403,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
       'Ja, schreib mir, wenn ein neues Werk online geht. Abmelden kann ich mich jederzeit mit einer kurzen E-Mail.',
 
     'cform.title': 'Schreib dem Atelier',
-    'cform.lead': 'Fragen zu einem Werk, zu einem Atelierbesuch in Wien oder zu einem Auftrag.',
+    'cform.lead': 'Zu einem Werk, zu einem Besuch im Atelier in Wien oder zu einem Bild, das für dich entsteht.',
     'cform.name': 'Name',
     'cform.email': 'E-Mail',
     'cform.subject': 'Betreff',
@@ -401,7 +411,8 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'cform.privacy': 'Deine Angaben verwenden wir nur, um dir zu antworten. Mehr in der Datenschutzerklärung.',
     'cform.send': 'Nachricht senden',
     'cform.done': 'Danke. Deine Nachricht ist angekommen. Die Antwort kommt per E-Mail, meist innerhalb eines Tages.',
-    'cform.fail': 'Die Nachricht konnte nicht gesendet werden. Stattdessen öffnet sich dein E-Mail-Programm.',
+    'cform.fail': 'Die Nachricht konnte nicht gesendet werden. Bitte sende sie mit dem Knopf hier per E-Mail.',
+    'cform.failBtn': 'Per E-Mail senden',
     'cform.subject.work': 'Frage zu „{title}“',
     'cform.subject.commission': 'Anfrage Auftragsarbeit',
 
@@ -423,12 +434,14 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
       'Dein Widerruf ist am {date} um {time} Uhr bei uns eingegangen. Die Eingangsbestätigung senden wir unverzüglich an {email}; darin steht die Adresse für die Rücksendung. Bewahre bis dahin diese Bestätigung auf.',
     'withdraw.record': 'Was du erklärt hast',
     'withdraw.fail':
-      'Der Widerruf konnte nicht übermittelt werden. Dein E-Mail-Programm öffnet sich mit dem fertigen Text: Sende diese E-Mail ab, dann ist der Widerruf erklärt.',
+      'Der Widerruf konnte von dieser Seite nicht übermittelt werden. Sende ihn mit dem Knopf hier per E-Mail: Sobald diese E-Mail abgeschickt ist, ist der Widerruf erklärt.',
     'withdraw.failBtn': 'Widerruf per E-Mail senden',
     'withdraw.next': 'Wie es weitergeht',
     'withdraw.nextText':
       'Sende das Werk binnen 14 Tagen gut verpackt zurück. Wir erstatten alle Zahlungen einschließlich der Standardlieferung binnen 14 Tagen ab deinem Widerruf; wir dürfen damit warten, bis das Werk zurück ist oder du die Absendung nachgewiesen hast.',
     'withdraw.terms': 'Widerrufsbelehrung lesen',
+    'withdraw.save': 'Bestätigung sichern',
+    'withdraw.received': 'Eingegangen',
 
     'guarantee.title': 'Gesetzliche Gewährleistung',
     'guarantee.lead':
@@ -438,19 +451,19 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'guarantee.alt':
       'EU-Mitteilung „Gesetzliche Gewährleistung“. Mindestens zwei Jahre gesetzliche Gewährleistung der Vertragsmäßigkeit für Waren, die in der Europäischen Union verkauft werden. Verbraucherinnen und Verbraucher können ihre Rechte im Rahmen des gesetzlichen Gewährleistungsrechts geltend machen, z. B. wenn die Waren nicht der Beschreibung entsprechen oder nicht bestimmungsgemäß funktionieren. Verkäufer haften für jede Vertragswidrigkeit, die zum Zeitpunkt der Lieferung der Waren bestand und innerhalb des Zeitraums der gesetzlichen Gewährleistung erkennbar wird. Verkäufer müssen in solchen Fällen Folgendes anbieten: kostenlose Nachbesserung oder kostenlose Ersatzlieferung, in bestimmten Fällen eine Preisminderung oder eine vollständige Erstattung des Kaufpreises. In einigen Ländern gilt ein längerer Zeitraum für die gesetzliche Gewährleistung. Für gebrauchte Waren kann ein kürzerer Zeitraum gelten, jedoch nicht weniger als ein Jahr. Für weitere Informationen zu Ihren Rechten in einem bestimmten Land scannen Sie den QR-Code oder fragen Sie den Verkäufer: europa.eu/youreurope/garantien. Was ist zu tun, wenn Sie vertragswidrige Waren erhalten? 1. Melden Sie dem Verkäufer das Problem so bald wie möglich. 2. Legen Sie einen Kaufnachweis vor, z. B. die Quittung, Rechnung oder einen Kontoauszug. Verkäufer und Hersteller können auch gewerbliche Garantien gewähren, die unabhängig von der gesetzlichen Gewährleistung gelten. Diese GARAN-Kennzeichnung zeigt beispielsweise, dass der Hersteller eine gewerbliche Haltbarkeitsgarantie ohne zusätzliche Kosten gewährt, die die gesamte Ware abdeckt.',
 
-    'buy.title': 'Gut zu wissen',
-    'buy.kicker': 'Vor dem Kauf',
-    'buy.unique.t': 'Eins von eins',
-    'buy.unique.d': 'Jedes Original ist ein Unikat. Dazu gehört ein signiertes Echtheitszertifikat.',
-    'buy.ship.t': 'Versand aus Wien',
+    'buy.title': 'Wie ein Bild zu dir kommt',
+    'buy.kicker': 'Kaufen',
+    'buy.unique.t': 'Es gibt nur eines',
+    'buy.unique.d': 'Jedes Original gibt es ein einziges Mal. Dazu gehört ein Echtheitszertifikat, das ich unterschreibe.',
+    'buy.ship.t': 'Es reist versichert',
     'buy.ship.d':
-      'Versichert, zu einer Pauschale je Region, die du vor der Bestellung siehst. Abholung in Wien ist kostenlos.',
-    'buy.back.t': '{d} Tage Bedenkzeit',
+      'Ich verpacke jedes Werk selbst und schicke es versichert aus Wien, zu einer Pauschale, die du vor der Bestellung siehst. Oder du holst es hier ab.',
+    'buy.back.t': '{d} Tage, um damit zu leben',
     'buy.back.d':
-      'Für Originale und Editionen gilt das gesetzliche Widerrufsrecht. Ausgenommen sind nur Auftragsarbeiten nach deinen Vorgaben.',
+      'Wenn es an deiner Wand nicht stimmt, kannst du binnen {d} Tagen ab Erhalt widerrufen. Das ist dein gesetzliches Recht bei Originalen und Editionen. Ausgenommen sind nur Auftragswerke nach deinen Vorgaben.',
     'buy.pay.t': 'Erst bestellen, dann zahlen',
     'buy.pay.d':
-      'Du bestellst zuerst und zahlst über einen Revolut-Zahlungslink. Nach Zahlungseingang verlässt das Werk das Atelier.',
+      'Nach der Bestellung bekommst du einen Revolut-Zahlungslink. Sobald die Zahlung da ist, verlässt das Werk das Atelier.',
     'buy.more.shipping': 'Versand und Steuern',
     'buy.more.withdrawal': 'Widerrufsbelehrung',
 
@@ -477,7 +490,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'drop.new': 'Neue Arbeiten|{y}',
     'drop.studio': 'Das Atelier',
     'drop.comm': 'Aufträge|jetzt anfragen',
-    'drop.commSub': 'Für deine Wand gemacht',
+    'drop.commSub': 'Ein Bild für eine Wand',
     'drops.label': 'Höhepunkte',
     'load.error': 'Der Shop konnte seine Inhalte nicht laden. Bitte lade die Seite neu.',
     'load.retry': 'Neu laden',

@@ -1,5 +1,5 @@
 /* The frame around the page: ticker, header, footer and the round mark. */
-import {useEffect, useState} from 'react';
+import {useEffect, useState, type SVGProps} from 'react';
 import {Button} from '@astryxdesign/core/Button';
 import {Icon} from '@astryxdesign/core/Icon';
 import {IconButton} from '@astryxdesign/core/IconButton';
@@ -36,7 +36,7 @@ export function Ticker() {
   const text = t('trust', {d: withdrawalDays});
   if (hidden('trust') || !text) return null;
   return (
-    <div className="ticker" role="note">
+    <div className="ticker" role="region" aria-label={t('ticker.label')}>
       <div className="ticker-track">
         {[0, 1, 2, 3].map((i) => (
           <span key={i} aria-hidden={i > 0 ? true : undefined}>
@@ -45,6 +45,16 @@ export function Ticker() {
         ))}
       </div>
     </div>
+  );
+}
+
+/** The menu sign: two heavy bars, drawn for this shop. */
+function Bars(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true" {...props}>
+      <rect x="2" y="6.5" width="20" height="3.5" />
+      <rect x="2" y="14" width="20" height="3.5" />
+    </svg>
   );
 }
 
@@ -58,7 +68,7 @@ export function Header() {
       <div className="burger">
         <IconButton
           label={t('nav.menu')}
-          icon={<Icon icon="menu" />}
+          icon={<Icon icon={Bars} />}
           variant="ghost"
           aria-haspopup="dialog"
           aria-expanded={overlay?.type === 'menu'}
@@ -147,7 +157,11 @@ export function Footer() {
     and leads to the contact section. */
 export function Mark() {
   const {t, hidden} = useShop();
-  const [on, setOn] = useState(false);
+  const {overlay} = useUi();
+  const [seen, setSeen] = useState(false);
+  /* hidden while a sheet is open: it only leads back to the page behind it */
+  const on = seen && !overlay;
+  const setOn = setSeen;
   useEffect(() => {
     const hero = document.querySelector('.hero');
     if (!hero || !('IntersectionObserver' in window)) {
@@ -160,7 +174,7 @@ export function Mark() {
   }, []);
   if (hidden('contact')) return null;
   return (
-    <div className={on ? 'mark on' : 'mark'}>
+    <div className={on ? 'mark on' : 'mark'} aria-hidden={on ? undefined : true}>
       <Button label={t('nav.contact')} variant="primary" elevation="high" href="#contact" tabIndex={on ? 0 : -1}>
         sa
       </Button>

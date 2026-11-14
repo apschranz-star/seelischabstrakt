@@ -582,10 +582,6 @@
     --astryx-section-padding: var(--spacing-3);
   }
 
-  .astryx-icon-button {
-    border-radius: 0;
-  }
-
   .astryx-dialog {
     border-width: 8px;
     border-style: solid;

@@ -135,9 +135,6 @@ export const seelischTheme = defineTheme({
       },
       'size:sm': {fontSize: '12px'},
     },
-    'icon-button': {
-      base: {borderRadius: '0'},
-    },
     /* Filter and language switch: a row of cut labels. The chosen one is
        inverted, like the logo box in the header. */
     'segmented-control': {

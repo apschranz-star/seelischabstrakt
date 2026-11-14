@@ -9,6 +9,7 @@ import './styles/page.css';
 import {createRoot} from 'react-dom/client';
 import {App} from './App';
 import {loadShop} from './lib/shop';
+import {renderLegacy, supportsShop} from './lib/legacy';
 
 document.documentElement.classList.add('js');
 const root = document.getElementById('root')!;
@@ -16,7 +17,10 @@ const root = document.getElementById('root')!;
 /* index.html already shows header and wordmark as plain HTML. It stays on
    screen until the content files are here; then React takes the page over. */
 loadShop()
-  .then((initial) => createRoot(root).render(<App initial={initial} />))
+  .then((initial) => {
+    if (!supportsShop()) return renderLegacy(initial.site, initial.works);
+    createRoot(root).render(<App initial={initial} />);
+  })
   .catch((err) => {
     console.error(err);
     const de = (navigator.language || '').toLowerCase().startsWith('de');

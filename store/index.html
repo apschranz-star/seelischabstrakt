@@ -4,6 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
 <title>seelischabstrakt</title>
+<script>
+/* Start fetching the content now, while the app code is still downloading.
+   src/lib/shop.tsx picks the promise up; without it, it fetches by itself. */
+(function () {
+  try {
+    var v = '?v=' + Date.now();
+    var get = function (f) {
+      return fetch(f + v).then(function (r) {
+        if (!r.ok) throw new Error(f + ': HTTP ' + r.status);
+        return r.json();
+      });
+    };
+    window.__saContent = Promise.all([get('site.json'), get('works.json')]);
+    window.__saContent.catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <link rel="preload" href="fonts/bricolage-grotesque-latin-normal-300-800.woff2" as="font" type="font/woff2" crossorigin vite-ignore>
 <link rel="stylesheet" href="fonts/fonts.css" vite-ignore>
 <meta name="description" content="seelischabstrakt. Paintings and drawings by Alexander Schranz from a studio in Vienna. Each original exists once.">

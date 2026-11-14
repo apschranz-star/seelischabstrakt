@@ -476,11 +476,6 @@ export const seelischTheme = {
         "padding": "var(--spacing-3)"
       }
     },
-    "icon-button": {
-      "base": {
-        "borderRadius": "0"
-      }
-    },
     "dialog": {
       "base": {
         "borderWidth": "8px",

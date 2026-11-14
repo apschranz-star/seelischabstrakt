@@ -41,7 +41,7 @@ export function Works() {
     <section className="sec" id="works" tabIndex={-1}>
       <div className="sec-head reveal">
         <div>
-          <p className="kicker">{L(site.texts?.worksKicker)}</p>
+          <Text as="p" className="kicker">{L(site.texts?.worksKicker)}</Text>
           <Heading level={2} className="sec-title">
             {t('works.title')}
           </Heading>
@@ -62,11 +62,11 @@ export function Works() {
           ))}
         </div>
       ) : (
-        <p className="empty reveal" aria-live="polite">
+        <Text as="p" className="empty reveal" aria-live="polite">
           {emptyText(soon || !works.length ? 'works' : 'filter')}
-        </p>
+        </Text>
       )}
-      {note && <p className="note reveal">{note}</p>}
+      {note && <Text as="p" className="note reveal">{note}</Text>}
     </section>
   );
 }

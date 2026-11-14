@@ -79,9 +79,9 @@ export function Page() {
         <About />
         <Buying />
         <CommissionAndContact />
+        <Mark />
       </main>
       <Footer />
-      <Mark />
       {overlay && (
         <Suspense fallback={null}>
           <Overlays />

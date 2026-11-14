@@ -293,7 +293,7 @@ div[data-astryx-theme][data-theme] {
 .menu-links {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 8px 0 24px;
   display: grid;
 }
 .menu-links a {
@@ -470,4 +470,64 @@ html.js body[data-reveal='on'] .reveal.in {
   .mark {
     display: none !important;
   }
+}
+
+/* the plain page shown if the app fails (App.tsx) */
+.fail {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 96px 20px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 18px;
+  line-height: 1.55;
+}
+.fail h1 {
+  font-family: var(--f-display);
+  font-size: 40px;
+  margin: 0 0 16px;
+}
+.fail a {
+  color: inherit;
+}
+.fail button {
+  margin-top: 16px;
+  padding: 12px 18px;
+  font: 700 13px/1 var(--f-mono);
+  background: var(--frame);
+  color: var(--mat);
+  border: 0;
+  cursor: pointer;
+}
+
+/* the plain page for browsers too old for the shop (lib/legacy.ts) */
+.legacy {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 18px;
+  line-height: 1.55;
+}
+.legacy h1 {
+  font-family: var(--f-display);
+  font-size: 42px;
+  margin: 0 0 16px;
+}
+.legacy-works {
+  list-style: none;
+  margin: 24px 0;
+  padding: 0;
+}
+.legacy-works li {
+  padding: 12px 0;
+  border-top: 1px solid currentColor;
+}
+.legacy a {
+  color: inherit;
+}
+.legacy-foot {
+  margin-top: 32px;
+  font-size: 15px;
 }

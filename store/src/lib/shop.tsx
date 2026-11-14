@@ -36,15 +36,27 @@ export function useShop(): Shop {
   return shop;
 }
 
+declare global {
+  interface Window {
+    /** started by the inline script in index.html */
+    __saContent?: Promise<[unknown, unknown]>;
+  }
+}
+
 export async function loadShop(): Promise<ShopData> {
-  const bust = '?v=' + Date.now();
   const get = async (file: string) => {
-    const r = await fetch(file + bust);
+    const r = await fetch(file + '?v=' + Date.now());
     if (!r.ok) throw new Error(`${file}: HTTP ${r.status}`);
     return r.json();
   };
-  const [site, works] = await Promise.all([get('site.json'), get('works.json')]);
-  return {site: site as Site, works: ((works as {works?: Work[]}).works || []) as Work[]};
+  let site: unknown;
+  let works: unknown;
+  try {
+    [site, works] = await (window.__saContent ?? Promise.reject(new Error('no early fetch')));
+  } catch {
+    [site, works] = await Promise.all([get('site.json'), get('works.json')]);
+  }
+  return {site: site as Site, works: (((works as {works?: Work[]}) || {}).works || []) as Work[]};
 }
 
 export function initialLang(site: Site): Lang {

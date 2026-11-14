@@ -73,3 +73,10 @@
 .burger .astryx-button {
   color: var(--mat);
 }
+
+/* Astryx Text sets no display of its own, so a paragraph-level Text would run
+   on inline into the one after it. In this shop a Text rendered as p is a
+   paragraph. */
+p.astryx-text {
+  display: block;
+}

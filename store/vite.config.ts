@@ -12,7 +12,11 @@ export default defineConfig({
     outDir: '../.store-dist',
     emptyOutDir: true,
     assetsDir: 'app',
-    target: 'es2022',
+    /* The script is transpiled down to Safari 14, so that an older phone still
+       parses it and can show the plain fallback page (src/lib/legacy.ts). The
+       CSS is left as it is: Astryx's styles are for current browsers only. */
+    target: ['es2020', 'safari14', 'chrome87', 'firefox78'],
+    cssTarget: 'esnext',
     cssCodeSplit: true,
     sourcemap: false,
     modulePreload: {polyfill: false},

@@ -39,17 +39,17 @@ export function Hero() {
             </>
           )}
         </Heading>
-        {b.motto && <p className="motto reveal">{b.motto}</p>}
+        {b.motto && <Text as="p" className="motto reveal">{b.motto}</Text>}
       </div>
       <div className="hero-side">
         <Text as="p" type="large" className="hero-lead reveal" style={{'--d': '110ms'} as React.CSSProperties}>
           {L(site.texts?.heroLead)}
         </Text>
-        <p className="hero-meta reveal" style={{'--d': '220ms'} as React.CSSProperties}>
+        <Text as="p" className="hero-meta reveal" style={{'--d': '220ms'} as React.CSSProperties}>
           <span>{b.artist}</span>
           <span>{b.city}</span>
           <span>{L(site.texts?.heroMeta)}</span>
-        </p>
+        </Text>
         <div className="hero-actions reveal" style={{'--d': '330ms'} as React.CSSProperties}>
           <Button label={t('hero.cta1')} variant="primary" size="lg" href="#works" />
           {instagram && (

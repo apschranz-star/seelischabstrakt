@@ -194,6 +194,8 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
         <label><span>VAT originals %</span><input type="number" data-path="commerce.vatOriginals"></label>
         <label><span>VAT prints %</span><input type="number" data-path="commerce.vatPrints"></label>
         <label><span>Ship regions (comma separated)</span><input data-path="commerce.shipRegions" data-list="1"></label>
+        <label><span>Working days until an original ships</span><input type="number" data-path="commerce.deliveryDays.original"></label>
+        <label><span>Working days until an edition ships</span><input type="number" data-path="commerce.deliveryDays.print"></label>
         <label><span>Commission deposit link (Stripe)</span><input data-path="commerce.commissionLink"></label>
       </fieldset>
       <fieldset><legend>Payment and orders</legend>
@@ -233,6 +235,7 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
       <h2>Legal</h2>
       <p class="hint">Fill these once. The site builds Imprint, Privacy (GDPR + CCPA), Terms with withdrawal form, Shipping and taxes, US buyers and Accessibility pages from them, in both languages. The generated texts are templates: have the WKO or a lawyer confirm them before you take the first order.</p>
       <fieldset><legend>Identity (Impressum)</legend>
+        <p class="hint full">The shop runs without street and phone and then shows name, place and e-mail only. Be aware: § 5 ECG asks for the address where you are established, and for a webshop § 4 Abs 1 Z 2 FAGG asks for address, phone and e-mail before a consumer orders. Ask the WKO whether a studio or c/o address that receives post reliably is enough. Once you fill the fields below, the imprint, the terms and the withdrawal notice show them.</p>
         <label><span>Legal name</span><input data-path="legal.legalName"></label>
         <label><span>Trade name</span><input data-path="legal.tradeName"></label>
         <label><span>Street</span><input data-path="legal.street"></label>
@@ -249,16 +252,19 @@ input[type=checkbox]{width:auto;justify-self:start;transform:scale(1.2)}
       <fieldset><legend>Providers and policies</legend>
         <label class="full"><span>Hosting provider</span><input data-path="legal.hosting"></label>
         <label class="full"><span>Payment providers</span><input data-path="legal.payment"></label>
+        <label><span>I take part in dispute resolution (Internet Ombudsstelle)</span><input type="checkbox" data-path="legal.adrParticipates"></label>
         <label><span>Return days for prints</span><input type="number" data-path="legal.returnsDaysPrints"></label>
         <label><span>Originals made to order exempt from withdrawal</span><input type="checkbox" data-path="legal.originalsMadeToOrderExempt"></label>
       </fieldset>
       <h2>Compliance checklist</h2>
       <ul class="checklist hint">
-        <li>EU: Impressum complete (ECG § 5), Datenschutzerklärung (DSGVO Art 13), AGB with Widerrufsbelehrung and Muster-Widerrufsformular (FAGG), price incl. VAT and shipping shown before checkout (PAngV/PrAG), no ODR link any more (platform closed 20 July 2025), button text "Buy" is unambiguous (§ 8 FAGG "zahlungspflichtig bestellen" is handled by Stripe's checkout button).</li>
+        <li>EU / Austria: imprint (ECG § 5, MedienG § 25), privacy policy (GDPR Art 13), terms with withdrawal notice and model form (FAGG Annex I), price and shipping shown before ordering, order button "Order with obligation to pay" (§ 8 FAGG), the EU notice on the legal guarantee (§ 4 Abs 1 Z 12 FAGG, from 27 Sep 2026), the "Withdraw from contract" function (§ 13a FAGG, from 1 Oct 2026). No ODR link any more (the platform closed on 20 July 2025).</li>
+        <li>Withdrawal by the online function: you must send an acknowledgement by e-mail without delay, with the content, date and time of the declaration (§ 13a FAGG). The shop shows the receipt on screen and offers a saved copy; the e-mail itself you send, or an e-mail service sends. Order confirmations too: on a durable medium, at the latest at delivery, with the legal-guarantee notice (§ 7 Abs 3 FAGG).</li>
+        <li>Forms: in Netlify, Forms, set the e-mail notification to "Any form", so that orders, withdrawals, messages and sign-ups from this shop reach you (names in index.html: order, contact, withdrawal, notify).</li>
         <li>EU tax: originals 13 % / prints 20 % in Austria, or Kleinunternehmer up to 55.000 EUR turnover (2025 rules, check current threshold). Over 10.000 EUR EU distance sales per year: register for OSS in FinanzOnline.</li>
         <li>EU accessibility: European Accessibility Act applies to e-commerce since 28.06.2025; Accessibility statement is generated.</li>
         <li>US: no sales tax nexus as a foreign seller with low volume; state economic-nexus thresholds start at 100.000 USD per state, revisit if you approach that. CCPA/CPRA notice generated (you are far below the applicability thresholds, but the notice costs nothing). Customs: HTS 9701 artworks duty-free; state it.</li>
-        <li>Both: Stripe Tax can compute VAT/sales tax automatically once turned on in Stripe; Stripe also stores card data so you never touch it (PCI).</li>
+        <li>Only if you use Stripe links: Stripe Tax can compute VAT/sales tax automatically once turned on; Stripe also stores card data so you never touch it (PCI).</li>
         <li>Before first sale: register the Gewerbe (Kunsthandel) or confirm the artist exemption with WKO, add the site to your Instagram bio.</li>
       </ul>
     </section>

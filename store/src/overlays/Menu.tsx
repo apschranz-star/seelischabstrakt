@@ -1,5 +1,5 @@
 /* The menu on a phone: the sections of the page in large type. */
-import {Drawer} from '@astryxdesign/core/Drawer';
+import {Drawer, DrawerHeader} from '@astryxdesign/core/Drawer';
 import {Link} from '@astryxdesign/core/Link';
 import {useNav} from '../components/Shell';
 import {useShop} from '../lib/shop';
@@ -11,6 +11,7 @@ export function Menu() {
   const nav = useNav();
   return (
     <Drawer isOpen onOpenChange={(open) => !open && close()} label={t('nav.menu')} side="start" width={420} padding={4}>
+      <DrawerHeader title={t('nav.menu')} onOpenChange={(open) => !open && close()} />
       <nav aria-label={t('nav.main')}>
         <ul className="menu-links">
           {nav.map((n) => (

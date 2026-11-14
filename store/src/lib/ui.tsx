@@ -6,13 +6,12 @@ import {createContext, useCallback, useContext, useEffect, useMemo, useState, ty
 import type {LegalKind, OrderVariant} from './types';
 
 export type Overlay =
-  | {type: 'work'; id: string}
+  | {type: 'work'; id: string; index?: number}
   | {type: 'order'; id: string; variant: OrderVariant}
   | {type: 'legal'; kind: LegalKind}
   | {type: 'withdraw'}
   | {type: 'contact'; subject?: string}
   | {type: 'photo'; id: string; index: number}
-  | {type: 'notice'}
   | {type: 'menu'}
   | null;
 

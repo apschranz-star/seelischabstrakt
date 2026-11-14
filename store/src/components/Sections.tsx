@@ -19,7 +19,7 @@ export function Editions() {
     <section className="sec" id="prints" tabIndex={-1}>
       <div className="sec-head reveal">
         <div>
-          <p className="kicker">{t('prints.kicker')}</p>
+          <Text as="p" className="kicker">{t('prints.kicker')}</Text>
           <Heading level={2} className="sec-title">
             {t('prints.title')}
           </Heading>
@@ -44,7 +44,7 @@ export function Editions() {
           ))}
         </div>
       ) : (
-        <p className="empty reveal">{L(site.texts?.empty?.prints) || t('prints.empty')}</p>
+        <Text as="p" className="empty reveal">{L(site.texts?.empty?.prints) || t('prints.empty')}</Text>
       )}
     </section>
   );
@@ -61,7 +61,7 @@ export function About() {
     <section className="sec shawl" id="about" tabIndex={-1}>
       <div className="about">
         <div>
-          <p className="lead reveal">{richText(L(x.aboutLead))}</p>
+          <Text as="p" className="lead reveal">{richText(L(x.aboutLead))}</Text>
           {image && (
             <figure className="portrait reveal">
               <img src={image} alt={L(x.aboutImage?.alt) || site.brand.artist || ''} loading="lazy" decoding="async" />
@@ -71,7 +71,7 @@ export function About() {
         </div>
         <div className="body reveal">
           {paragraphs.map((p, i) => (
-            <p key={i}>{p}</p>
+            <Text as="p" key={i}>{p}</Text>
           ))}
           {!hidden('facts') && !!x.facts?.length && (
             <dl className="facts">
@@ -98,14 +98,14 @@ export function Buying() {
   const items = [
     {t: t('buy.unique.t'), d: t('buy.unique.d')},
     {t: t('buy.ship.t'), d: t('buy.ship.d')},
-    {t: t('buy.back.t', {d: withdrawalDays}), d: t('buy.back.d')},
+    {t: t('buy.back.t', {d: withdrawalDays}), d: t('buy.back.d', {d: withdrawalDays})},
     {t: t('buy.pay.t'), d: t('buy.pay.d')},
   ];
   return (
     <section className="sec" id="buying" tabIndex={-1}>
       <div className="sec-head reveal">
         <div>
-          <p className="kicker">{t('buy.kicker')}</p>
+          <Text as="p" className="kicker">{t('buy.kicker')}</Text>
           <Heading level={2} className="sec-title">
             {t('buy.title')}
           </Heading>
@@ -114,7 +114,7 @@ export function Buying() {
       <div className="know">
         {items.map((it, i) => (
           <div className="know-item reveal" key={i} style={{'--d': `${i * 90}ms`} as React.CSSProperties}>
-            <p className="know-n">0{i + 1}</p>
+            <Text as="p" className="know-n">0{i + 1}</Text>
             <Heading level={3} className="know-t">
               {it.t}
             </Heading>
@@ -131,14 +131,14 @@ export function Buying() {
       </div>
       <Paper>
         <div className="guarantee reveal">
-          <button type="button" className="guarantee-thumb" aria-label={t('guarantee.open')} onClick={() => open({type: 'notice'})}>
+          <button type="button" className="guarantee-thumb" aria-label={t('guarantee.open')} onClick={() => open({type: 'legal', kind: 'guarantee'})}>
             <img src={notice.preview} alt="" width={794} height={1123} loading="lazy" decoding="async" />
           </button>
           <div>
             <Heading level={3}>{t('guarantee.title')}</Heading>
             <Text as="p">{t('guarantee.lead')}</Text>
             <div className="guarantee-actions">
-              <Button label={t('guarantee.open')} variant="primary" onClick={() => open({type: 'notice'})} />
+              <Button label={t('guarantee.open')} variant="primary" onClick={() => open({type: 'legal', kind: 'guarantee'})} />
               <Button label={t('guarantee.download')} variant="secondary" href={notice.file} target="_blank" />
             </div>
           </div>
@@ -203,9 +203,9 @@ export function CommissionAndContact() {
                 {email && <Button label={t('contact.mail')} variant="secondary" href={`mailto:${email}`} />}
                 {instagram && <Button label="Instagram" variant="secondary" href={instagram} target="_blank" rel="noopener" />}
               </div>
-              <p className="terms">
+              <Text as="p" className="terms">
                 {vat} {L(c.shippingNote)} {t('price.returns', {d: withdrawalDays})}
-              </p>
+              </Text>
               {c.notify?.enabled && <Notify />}
             </div>
           )}
@@ -272,9 +272,9 @@ function Notify() {
         onChange={setConsent}
         status={error.consent ? {type: 'error', message: error.consent} : undefined}
       />
-      <p className="terms" role="status" aria-live="polite">
+      <Text as="p" className="terms" role="status" aria-live="polite">
         {state === 'done' ? t('notify.ok') : state === 'failed' ? t('notify.fail') : ''}
-      </p>
+      </Text>
     </form>
   );
 }

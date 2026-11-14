@@ -119,8 +119,8 @@ Actions, Create new action, Import from URL, dort https://seelischabstrakt.netli
 - Fotos direkt aus dem Chat hochladen. Für Werke im Shop: /add am Handy für ein neues Werk, der Studio desk für ein bestehendes. Für die persönliche Seite siehe den nächsten Punkt.
 - Fotos für die persönliche Seite vom iPad. Dafür gibt es keinen Knopf. Weg: github.com, dein Repository, Ordner portfolio/img öffnen, Add file, Upload files, Foto auswählen, Commit. Dann dem GPT sagen, wie die Datei heißt, exakt so wie hochgeladen, also zum Beispiel img/mein-foto.jpg. Groß- und Kleinschreibung zählt. Die API prüft, ob die Datei existiert, und weist einen falschen Namen zurück.
 - Die Kommentare der Leser lesen. Die stehen in Netlify unter Forms und in deiner Mail. Du liest sie dort und sagst dem GPT, welcher auf die Seite darf.
-- Die Rechtstexte im Fließtext ändern, also Impressum, AGB, Datenschutz. Die stehen in index.html und werden aus den Feldern erzeugt.
-- Das Layout im Code ändern, also index.html, admin.html, add.html, netlify.toml.
+- Die Rechtstexte im Fließtext ändern, also Impressum, AGB, Datenschutz. Die stehen in store/src/legal/LegalText.tsx und werden aus den Feldern erzeugt.
+- Das Layout im Code ändern, also store/ (danach neu bauen), admin.html, add.html, netlify.toml.
 - Etwas an Netlify einstellen. Environment variables, Domains und Formulare bleiben Handarbeit.
 - Eine Bestellung bearbeiten. Rechnung und Versand machst du selbst.
 
