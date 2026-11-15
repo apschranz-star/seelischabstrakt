@@ -6,6 +6,7 @@ import {LegalSheet} from './LegalSheet';
 import {Menu} from './Menu';
 import {OrderSheet} from './OrderSheet';
 import {PhotoViewer} from './PhotoViewer';
+import {Walk} from './Walk';
 import {WithdrawSheet} from './WithdrawSheet';
 import {WorkSheet} from './WorkSheet';
 
@@ -27,6 +28,8 @@ export default function Overlays() {
       return <WithdrawSheet />;
     case 'contact':
       return <ContactSheet subject={overlay.subject} />;
+    case 'walk':
+      return <Walk index={overlay.index} />;
     default:
       return null;
   }

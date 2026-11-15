@@ -1,6 +1,7 @@
 import {Component, type ReactNode} from 'react';
 import {Theme} from '@astryxdesign/core/theme';
 import {Page} from './components/Page';
+import {MotionProvider} from './lib/motion';
 import {ShopProvider, type ShopData} from './lib/shop';
 import {UiProvider} from './lib/ui';
 import {seelischTheme} from './theme/seelisch';
@@ -41,13 +42,15 @@ class Guard extends Component<{email: string; children: ReactNode}, {failed: boo
 export function App({initial}: {initial: ShopData}) {
   return (
     <Guard email={initial.site.legal?.email || ''}>
-      <ShopProvider initial={initial}>
-        <UiProvider>
-          <Theme theme={seelischTheme} mode="dark">
-            <Page />
-          </Theme>
-        </UiProvider>
-      </ShopProvider>
+      <MotionProvider>
+        <ShopProvider initial={initial}>
+          <UiProvider>
+            <Theme theme={seelischTheme} mode="dark">
+              <Page />
+            </Theme>
+          </UiProvider>
+        </ShopProvider>
+      </MotionProvider>
     </Guard>
   );
 }

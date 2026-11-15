@@ -212,10 +212,11 @@ function Privacy() {
           einen anderen fremden Server.
         </li>
         <li>
-          <b>Sprachwahl:</b> Deine Sprache legen wir im lokalen Speicher deines Browsers ab (Schlüssel
-          „sa-lang“), damit die Seite beim nächsten Besuch in derselben Sprache öffnet. Der Wert bleibt auf deinem
-          Gerät. Das ist für die von dir gewählte Einstellung technisch nötig (§ 165 Abs 3 TKG 2021); eine
-          Einwilligung braucht es dafür nicht.
+          <b>Sprache und Bewegung:</b> Deine Sprache legen wir im lokalen Speicher deines Browsers ab (Schlüssel
+          „sa-lang“), damit die Seite beim nächsten Besuch in derselben Sprache öffnet. Schaltest du die Bewegung
+          auf der Seite aus oder ein, merkt sich der Browser auch das (Schlüssel „sa-motion“). Beide Werte bleiben
+          auf deinem Gerät. Sie sind für die von dir gewählten Einstellungen technisch nötig (§ 165 Abs 3 TKG
+          2021); eine Einwilligung braucht es dafür nicht.
         </li>
         <li>
           <b>Bestellung:</b> Das Bestellformular übermittelt Bestellnummer, Datum, Werk, Variante, Preis,
@@ -329,9 +330,10 @@ function Privacy() {
           site and are loaded from there. From this page no request goes to Google or to any other outside server.
         </li>
         <li>
-          <b>Language choice:</b> we store your language in your browser (key "sa-lang") so the site opens in the
-          same language next time. The value stays on your device. It is technically necessary for the setting you
-          chose (§ 165 (3) Austrian Telecommunications Act 2021); no consent is needed for it.
+          <b>Language and motion:</b> we store your language in your browser (key "sa-lang") so the site opens in
+          the same language next time. If you switch the motion on the page off or on, the browser keeps that too
+          (key "sa-motion"). Both values stay on your device. They are technically necessary for the settings you
+          chose (§ 165 (3) Austrian Telecommunications Act 2021); no consent is needed for them.
         </li>
         <li>
           <b>Order:</b> the order form sends order number, date, work, variant, price, shipping, total, name,
@@ -824,8 +826,15 @@ function Access() {
     <>
       <Text as="p">
         Diese Seite soll für alle benutzbar sein. Maßstab sind die WCAG 2.1, Stufe AA: Bedienung mit der Tastatur,
-        sichtbarer Fokus, ausreichende Kontraste, Alternativtexte für alle Werke, gekennzeichnete Sprache, nichts,
-        das von selbst abspielt, und Rücksicht auf die Einstellung „Bewegung reduzieren“.
+        sichtbarer Fokus, ausreichende Kontraste, Alternativtexte für alle Werke und gekennzeichnete Sprache.
+      </Text>
+      <Heading level={3}>Bewegung</Heading>
+      <Text as="p">
+        Auf der Seite bewegt sich einiges von selbst: das gelbe Band oben, Licht und Staub auf dem Teppich, die
+        Bilder, die sich auf den Teppich legen und leicht schweben. Ein Schalter hält all das an, oben im gelben
+        Band und am Fuß jeder Seite; der Browser merkt sich die Wahl. Ist an deinem Gerät „Bewegung reduzieren“
+        eingestellt, steht die Seite von Anfang an still. Nichts blinkt, und nichts geht von selbst weiter: Im
+        Rundgang bestimmst du jeden Schritt, mit Wischen, den Pfeiltasten, Pos1 und Ende; Escape schließt ihn.
       </Text>
       <Heading level={3}>Was noch nicht ganz stimmt</Heading>
       <ul>
@@ -835,7 +844,7 @@ function Access() {
         </li>
         <li>
           Das Farbspiel im Wort „abstrakt“ ist Schmuck. Der Schriftzug selbst bleibt als Text in der Seite; mit
-          „Bewegung reduzieren“ steht das Bild still.
+          ausgeschalteter Bewegung steht das Bild still.
         </li>
       </ul>
       <Heading level={3}>Rechtlicher Rahmen</Heading>
@@ -852,8 +861,15 @@ function Access() {
     <>
       <Text as="p">
         This site should be usable by everyone. The measure is WCAG 2.1, level AA: keyboard operation, visible
-        focus, sufficient contrast, alternative text for every work, marked language, nothing that plays by
-        itself, and respect for the "reduce motion" setting.
+        focus, sufficient contrast, alternative text for every work and marked language.
+      </Text>
+      <Heading level={3}>Motion</Heading>
+      <Text as="p">
+        Some things on this page move by themselves: the yellow band at the top, light and dust on the carpet,
+        the pictures that settle onto the carpet and float a little. One switch stops all of it, in the yellow
+        band and at the foot of every page; the browser remembers the choice. If your device is set to "reduce
+        motion", the page is still from the start. Nothing flashes, and nothing moves on by itself: in the
+        walk-through you take every step, by swiping, with the arrow keys, Home and End; Escape closes it.
       </Text>
       <Heading level={3}>What is not quite there yet</Heading>
       <ul>
@@ -863,7 +879,7 @@ function Access() {
         </li>
         <li>
           The play of colour in the word "abstrakt" is decoration. The word itself stays in the page as text; with
-          "reduce motion" the image stands still.
+          motion switched off the image stands still.
         </li>
       </ul>
       <Heading level={3}>Legal frame</Heading>

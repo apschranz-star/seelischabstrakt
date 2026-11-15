@@ -6,6 +6,7 @@ import '@astryxdesign/core/astryx.css';
 import './theme/seelisch.css';
 import './styles/theme-extra.css';
 import './styles/page.css';
+import './styles/motion.css';
 import {createRoot} from 'react-dom/client';
 import {App} from './App';
 import {loadShop} from './lib/shop';
