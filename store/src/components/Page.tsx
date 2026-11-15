@@ -1,8 +1,11 @@
 /* The page, top to bottom. */
 import {lazy, Suspense, useEffect} from 'react';
+import {useMotion} from '../lib/motion';
 import {useShop} from '../lib/shop';
+import {mountTilt} from '../lib/tilt';
 import {writeStructuredData} from '../lib/seo';
 import {useUi} from '../lib/ui';
+import {Atmosphere} from './Atmosphere';
 import {Drops} from './Drops';
 import {Hero} from './Hero';
 import {About, Buying, CommissionAndContact, Editions} from './Sections';
@@ -52,7 +55,16 @@ function useReveal(enabled: boolean) {
 export function Page() {
   const shop = useShop();
   const {overlay} = useUi();
+  const {on: moving} = useMotion();
+  const immersive = shop.site.theme?.layout?.immersive !== false;
   useReveal(shop.site.theme?.layout?.reveal !== false);
+
+  /* on a computer the pictures lean toward the mouse (lib/tilt.ts) */
+  useEffect(() => {
+    if (!moving || !immersive) return;
+    const root = document.getElementById('root');
+    return root ? mountTilt(root) : undefined;
+  }, [moving, immersive]);
 
   useEffect(() => {
     writeStructuredData(shop);
@@ -66,6 +78,7 @@ export function Page() {
 
   return (
     <>
+      <Atmosphere />
       <a className="skip" href="#works">
         {shop.t('skip')}
       </a>

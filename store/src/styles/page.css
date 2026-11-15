@@ -72,6 +72,7 @@ body[data-hero='minimal'] .wordmark {
 }
 .hero-lead {
   margin: 0;
+  text-shadow: 0 1px 14px rgba(18, 4, 4, 0.45);
   font-size: clamp(17px, 1.5vw, 19px);
   line-height: 1.5;
   color: var(--ink-2);
@@ -383,7 +384,9 @@ body[data-works='single'] .work:nth-child(even) {
 body[data-works='single'] .work:nth-child(odd) {
   --dx: -48px;
 }
-html.js body[data-reveal='on'][data-works='single'] .work.in .framed {
+/* the plain float; with the immersive layer on, motion.css lays the works
+   down and lets them float with their shadow instead */
+html.js body[data-reveal='on'][data-works='single']:not([data-immersive='on']) .work.in .framed {
   animation: float 7s ease-in-out 1s infinite;
 }
 @keyframes float {

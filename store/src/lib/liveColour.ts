@@ -4,7 +4,7 @@
    drags them along and leaves a smear that slowly closes again. Purely for the
    look. The real text stays in the page (transparent) for screen readers,
    search and selection. theme.layout.liveColour:false turns it off; with
-   reduced motion the word gets one still frame of colour.
+   motion off (lib/motion.tsx) the word gets one still frame of colour.
 
    Plain canvas code on purpose, outside React: it runs every frame and must
    never cause a render. mountLiveColour returns the function that removes it. */
@@ -15,11 +15,14 @@ interface Blob {
   c: string; hx: number; hy: number; x: number; y: number; vx: number; vy: number; r: number; ph: number; sp: number;
 }
 
-export function mountLiveColour(host: HTMLElement, span: HTMLElement): () => void {
+export function mountLiveColour(
+  host: HTMLElement,
+  span: HTMLElement,
+  still = matchMedia('(prefers-reduced-motion: reduce)').matches,
+): () => void {
   const cv = document.createElement('canvas');
   const ctx = cv.getContext('2d');
   if (!ctx) return () => {};
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   cv.className = 'wm-live';
   cv.setAttribute('aria-hidden', 'true');
   const low = document.createElement('canvas');

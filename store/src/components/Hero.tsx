@@ -4,19 +4,24 @@ import {Button} from '@astryxdesign/core/Button';
 import {Heading} from '@astryxdesign/core/Heading';
 import {Text} from '@astryxdesign/core/Text';
 import {mountLiveColour} from '../lib/liveColour';
+import {useMotion} from '../lib/motion';
+import {useUi} from '../lib/ui';
 import {safeUrl, useShop} from '../lib/shop';
 
 export function Hero() {
-  const {site, t, L} = useShop();
+  const {site, works, t, L, soon} = useShop();
+  const {open} = useUi();
+  const {on: moving} = useMotion();
   const b = site.brand;
+  const walk = site.theme?.layout?.walkthrough !== false && !soon && works.length > 0;
   const host = useRef<HTMLHeadingElement>(null);
   const word = useRef<HTMLSpanElement>(null);
   const live = site.theme?.layout?.liveColour !== false && !b.logo;
 
   useEffect(() => {
     if (!live || !host.current || !word.current) return;
-    return mountLiveColour(host.current, word.current);
-  }, [live, b.wordmarkBottom]);
+    return mountLiveColour(host.current, word.current, !moving);
+  }, [live, b.wordmarkBottom, moving]);
 
   const instagram = safeUrl(b.instagram);
   const handle = instagram ? '@' + instagram.replace(/\/$/, '').split('/').pop() : '';
@@ -52,8 +57,9 @@ export function Hero() {
         </Text>
         <div className="hero-actions reveal" style={{'--d': '330ms'} as React.CSSProperties}>
           <Button label={t('hero.cta1')} variant="primary" size="lg" href="#works" />
+          {walk && <Button label={t('walk.open')} variant="secondary" size="lg" onClick={() => open({type: 'walk'})} />}
           {instagram && (
-            <Button label={handle} variant="secondary" size="lg" href={instagram} target="_blank" rel="noopener" />
+            <Button label={handle} variant={walk ? 'ghost' : 'secondary'} size="lg" href={instagram} target="_blank" rel="noopener" />
           )}
         </div>
       </div>

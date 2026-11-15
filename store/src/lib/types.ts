@@ -63,6 +63,11 @@ export interface Layout {
   worksLayout?: 'grid' | 'single';
   drops?: boolean;
   liveColour?: boolean;
+  /** light on the carpet, works laid down with a glare, marker lines, words
+      arriving one by one (components/Atmosphere.tsx, styles/motion.css) */
+  immersive?: boolean;
+  /** the walk-through, one work per screen (overlays/Walk.tsx) */
+  walkthrough?: boolean;
   hideSections?: SectionKey[];
 }
 

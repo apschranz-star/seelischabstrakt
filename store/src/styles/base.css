@@ -79,13 +79,15 @@ body {
   overflow-x: clip;
 }
 
+/* The system asks for less motion: nothing moves, unless the visitor turned
+   motion on with the shop's own switch (lib/motion.tsx sets data-motion). */
 @media (prefers-reduced-motion: reduce) {
-  html {
+  html:not([data-motion='on']) {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion='on']) *,
+  html:not([data-motion='on']) *::before,
+  html:not([data-motion='on']) *::after {
     animation: none !important;
     transition: none !important;
   }
@@ -181,19 +183,19 @@ div[data-astryx-theme][data-theme] {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ticker {
+  html:not([data-motion='on']) .ticker {
     white-space: normal;
     text-align: center;
-    padding-inline: 16px;
+    padding-inline: 16px 44px;
     line-height: 1.5;
   }
-  .ticker-track {
+  html:not([data-motion='on']) .ticker-track {
     display: block;
   }
-  .ticker-track span[aria-hidden] {
+  html:not([data-motion='on']) .ticker-track span[aria-hidden] {
     display: none;
   }
-  .ticker-track span {
+  html:not([data-motion='on']) .ticker-track span {
     padding: 0;
   }
 }
@@ -328,6 +330,12 @@ section[id],
   flex-wrap: wrap;
   margin-bottom: clamp(24px, 3vw, 40px);
 }
+.sec-tools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
 .sec-title {
   font-family: var(--f-display);
   font-weight: 800;
@@ -371,7 +379,7 @@ html.js body[data-reveal='on'] .reveal.in {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  html.js body[data-reveal='on'] .reveal {
+  html.js:not([data-motion='on']) body[data-reveal='on'] .reveal {
     opacity: 1;
   }
 }

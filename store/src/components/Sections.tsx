@@ -1,5 +1,5 @@
 /* Editions, the about band, what to know before buying, commissions and contact. */
-import {useState, type FormEvent} from 'react';
+import {Children, cloneElement, isValidElement, useState, type CSSProperties, type FormEvent, type ReactNode} from 'react';
 import {Button} from '@astryxdesign/core/Button';
 import {CheckboxInput} from '@astryxdesign/core/CheckboxInput';
 import {Heading} from '@astryxdesign/core/Heading';
@@ -10,6 +10,30 @@ import {richText, safeUrl, useShop} from '../lib/shop';
 import {useUi} from '../lib/ui';
 import {noticeFiles} from '../lib/notice';
 import {Paper} from './Paper';
+import {Scribble} from './Scribble';
+
+/** The lead of the about band, word by word, so that the words can arrive one
+    after another (motion.css). Every word stays text and every space stays a
+    space: screen readers, search and copying see the sentence as it is. */
+function words(nodes: ReactNode[]): ReactNode[] {
+  let n = 0;
+  const walk = (node: ReactNode, key: string): ReactNode => {
+    if (typeof node === 'string')
+      return node.split(/(\s+)/).map((part, j) =>
+        !part ? null : /^\s+$/.test(part) ? (
+          part
+        ) : (
+          <span key={`${key}-${j}`} className="w" style={{'--w': n++} as CSSProperties}>
+            {part}
+          </span>
+        ),
+      );
+    if (isValidElement<{children?: ReactNode}>(node))
+      return cloneElement(node, {key}, Children.map(node.props.children, (c, j) => walk(c, `${key}.${j}`)));
+    return node;
+  };
+  return nodes.map((node, i) => walk(node, String(i)));
+}
 
 export function Editions() {
   const {site, works, t, L, fmt, hidden, soon} = useShop();
@@ -23,6 +47,7 @@ export function Editions() {
           <Heading level={2} className="sec-title">
             {t('prints.title')}
           </Heading>
+          <Scribble variant={1} />
         </div>
         {any && (
           <Text as="p" className="prints-lead">
@@ -61,7 +86,9 @@ export function About() {
     <section className="sec shawl" id="about" tabIndex={-1}>
       <div className="about">
         <div>
-          <Text as="p" className="lead reveal">{richText(L(x.aboutLead))}</Text>
+          <Text as="p" className="lead words reveal">
+            {words(richText(L(x.aboutLead)))}
+          </Text>
           {image && (
             <figure className="portrait reveal">
               <img src={image} alt={L(x.aboutImage?.alt) || site.brand.artist || ''} loading="lazy" decoding="async" />
@@ -109,6 +136,7 @@ export function Buying() {
           <Heading level={2} className="sec-title">
             {t('buy.title')}
           </Heading>
+          <Scribble variant={2} />
         </div>
       </div>
       <div className="know">

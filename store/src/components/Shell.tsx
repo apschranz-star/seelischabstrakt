@@ -5,6 +5,8 @@ import {Icon} from '@astryxdesign/core/Icon';
 import {IconButton} from '@astryxdesign/core/IconButton';
 import {Link} from '@astryxdesign/core/Link';
 import {SegmentedControl, SegmentedControlItem} from '@astryxdesign/core/SegmentedControl';
+import {Switch} from '@astryxdesign/core/Switch';
+import {useMotion} from '../lib/motion';
 import {useShop} from '../lib/shop';
 import {LEGAL_KINDS, useUi} from '../lib/ui';
 import type {Lang, SectionKey} from '../lib/types';
@@ -29,10 +31,29 @@ export function useNav(): NavItem[] {
   return NAV.filter((n) => !n.section || !hidden(n.section));
 }
 
+function PauseIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true" {...props}>
+      <rect x="6" y="5" width="4" height="14" />
+      <rect x="14" y="5" width="4" height="14" />
+    </svg>
+  );
+}
+
+function PlayIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M7 4.5 L19 12 L7 19.5 Z" />
+    </svg>
+  );
+}
+
 /** The yellow band at the very top. It carries the trust line: certificate,
-    shipping, right of withdrawal, payment. */
+    shipping, right of withdrawal, payment. Its end holds the switch that
+    stops everything on the page that moves by itself (lib/motion.tsx). */
 export function Ticker() {
   const {t, hidden, withdrawalDays} = useShop();
+  const {on, set} = useMotion();
   const text = t('trust', {d: withdrawalDays});
   if (hidden('trust') || !text) return null;
   return (
@@ -43,6 +64,15 @@ export function Ticker() {
             {text}
           </span>
         ))}
+      </div>
+      <div className="ticker-ctl">
+        <IconButton
+          label={on ? t('motion.pause') : t('motion.play')}
+          icon={<Icon icon={on ? PauseIcon : PlayIcon} />}
+          variant="ghost"
+          size="sm"
+          onClick={() => set(!on)}
+        />
       </div>
     </div>
   );
@@ -112,6 +142,7 @@ export function Header() {
 
 export function Footer() {
   const {site, t, L} = useShop();
+  const motion = useMotion();
   const b = site.brand;
   const year = new Date().getFullYear();
   const custom = L(site.texts?.copyright);
@@ -129,6 +160,9 @@ export function Footer() {
             Instagram
           </Link>
         )}
+        <div className="foot-motion">
+          <Switch label={t('motion.label')} value={motion.on} onChange={(v) => motion.set(v)} size="sm" />
+        </div>
       </div>
       <nav aria-label={t('legal.nav')}>
         <ul className="legal-links">

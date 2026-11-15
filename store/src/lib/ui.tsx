@@ -1,5 +1,5 @@
 /* Which sheet is open. One at a time: a work, an order, a legal text, the
-   withdrawal form, the contact form or an enlarged photo. The address bar
+   withdrawal form, the contact form, an enlarged photo or the walk-through. The address bar
    follows, so every sheet has a link that can be sent and opened again
    (#work/w11, #imprint, #widerruf ...). */
 import {createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode} from 'react';
@@ -13,6 +13,7 @@ export type Overlay =
   | {type: 'contact'; subject?: string}
   | {type: 'photo'; id: string; index: number}
   | {type: 'menu'}
+  | {type: 'walk'; index?: number}
   | null;
 
 interface Ui {
@@ -39,6 +40,7 @@ function fromHash(hash: string): Overlay {
   if (h.startsWith('work/')) return {type: 'work', id: h.slice(5)};
   if (h === 'widerruf' || h === 'withdraw') return {type: 'withdraw'};
   if (h === 'message' || h === 'nachricht') return {type: 'contact'};
+  if (h === 'rundgang' || h === 'walk') return {type: 'walk'};
   if ((LEGAL_KINDS as string[]).includes(h)) return {type: 'legal', kind: h as LegalKind};
   return null;
 }
@@ -49,6 +51,7 @@ function toHash(o: Overlay): string | null {
   if (o.type === 'legal') return `#${o.kind}`;
   if (o.type === 'withdraw') return '#widerruf';
   if (o.type === 'contact') return '#message';
+  if (o.type === 'walk') return '#rundgang';
   return null; // order, photo, menu: no address of their own
 }
 

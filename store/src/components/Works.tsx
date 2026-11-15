@@ -13,13 +13,16 @@ import {safeUrl, useShop} from '../lib/shop';
 import {useUi} from '../lib/ui';
 import type {Work} from '../lib/types';
 import {NativeSelect} from './NativeSelect';
+import {Scribble} from './Scribble';
 import {Paper} from './Paper';
 
 type Filter = 'all' | 'original' | 'print' | 'available';
 
 export function Works() {
   const {site, works, t, L, hidden, soon} = useShop();
+  const {open} = useUi();
   const [filter, setFilter] = useState<Filter>('all');
+  const walk = site.theme?.layout?.walkthrough !== false && !soon && works.length > 0;
   const emptyText = (key: 'works' | 'filter') =>
     L(site.texts?.empty?.[key]) || t(key === 'filter' ? 'filter.empty' : 'works.empty');
 
@@ -45,15 +48,19 @@ export function Works() {
           <Heading level={2} className="sec-title">
             {t('works.title')}
           </Heading>
+          <Scribble variant={0} />
         </div>
-        {!hidden('filters') && !soon && (
-          <SegmentedControl label={t('filter.label')} value={filter} onChange={(v) => setFilter(v as Filter)} size="sm">
-            <SegmentedControlItem value="all" label={t('filter.all')} />
-            <SegmentedControlItem value="original" label={t('filter.original')} />
-            <SegmentedControlItem value="print" label={t('filter.print')} />
-            <SegmentedControlItem value="available" label={t('filter.available')} />
-          </SegmentedControl>
-        )}
+        <div className="sec-tools">
+          {walk && <Button label={t('walk.short')} variant="secondary" size="sm" onClick={() => open({type: 'walk'})} />}
+          {!hidden('filters') && !soon && (
+            <SegmentedControl label={t('filter.label')} value={filter} onChange={(v) => setFilter(v as Filter)} size="sm">
+              <SegmentedControlItem value="all" label={t('filter.all')} />
+              <SegmentedControlItem value="original" label={t('filter.original')} />
+              <SegmentedControlItem value="print" label={t('filter.print')} />
+              <SegmentedControlItem value="available" label={t('filter.available')} />
+            </SegmentedControl>
+          )}
+        </div>
       </div>
       {shown.length ? (
         <div className="works" aria-live="polite">

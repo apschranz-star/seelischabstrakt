@@ -95,6 +95,7 @@ export function Drops() {
                     decoding="async"
                     style={
                       {
+                        '--k': k,
                         '--z': (1.25 + ((k * 7) % 5) * 0.3).toFixed(2),
                         '--p': `${(k * 37 + 15) % 100}% ${(k * 53 + 25) % 100}%`,
                       } as CSSProperties

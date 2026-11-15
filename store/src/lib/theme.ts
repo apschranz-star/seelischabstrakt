@@ -132,6 +132,7 @@ export function applyTheme(site: Site): void {
   b.density = lay.gridDensity || 'normal';
   b.works = lay.worksLayout || 'grid';
   b.reveal = lay.reveal === false ? 'off' : 'on';
+  b.immersive = lay.immersive === false ? 'off' : 'on';
   /* For styles that have to know whether the ground itself is light or dark. */
   b.ground = luminance(c.ground) > 0.4 ? 'light' : 'dark';
 

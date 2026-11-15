@@ -1,0 +1,437 @@
+/* The immersive layer of the shop: window light on the carpet, pictures laid
+   down onto it, a glare that passes over them, marker lines, words that
+   arrive one by one. All of it is decoration and follows two switches:
+
+     body[data-immersive="on"]   theme.layout.immersive, set in the studio desk
+     html[data-motion="on"]      the visitor's motion switch (lib/motion.tsx)
+
+   Moving parts animate transform and opacity only, so a phone can hand them to
+   its graphics chip. Things that arrive or move use the Astryx motion tokens
+   (--ease-entrance, --ease-move, --duration-*); things that simply live in the
+   room (light, dust, a picture that floats) take the slow time of a room. */
+
+/* The page is its own stacking context, so the light (z-index -1) lies on the
+   carpet and under the content, instead of under the carpet. */
+body {
+  position: relative;
+  z-index: 0;
+}
+
+/* ---------- light on the carpet ---------- */
+.atmos {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+.atmos-lean {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.light {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0;
+  height: 0;
+}
+html[data-motion='on'] .light:not([data-still]) {
+  animation: afternoon 90s ease-in-out infinite alternate;
+}
+@keyframes afternoon {
+  0% {
+    transform: translate3d(-20vw, -6vh, 0) rotate(-3deg);
+  }
+  50% {
+    transform: translate3d(4vw, 5vh, 0) rotate(0.5deg);
+  }
+  100% {
+    transform: translate3d(22vw, -3vh, 0) rotate(3deg);
+  }
+}
+/* four panes of a studio window, thrown slanting across the floor */
+.window {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 64vmax;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.2vmax;
+  translate: -50% -50%;
+  transform: rotate(-12deg) skewX(-26deg);
+  filter: blur(18px);
+}
+.window i {
+  /* kept low on purpose: where the light falls behind text, the text still
+     holds 4.5:1 against the carpet (WCAG 1.4.3) */
+  background: linear-gradient(160deg, rgba(255, 228, 182, 0.16), rgba(255, 206, 148, 0.07));
+}
+.glow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 110vmax;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 196, 132, 0.1),
+    rgba(255, 196, 132, 0.04) 55%,
+    rgba(255, 196, 132, 0) 100%
+  );
+}
+/* dust turning in the light */
+.motes {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 58vmax;
+  height: 44vmax;
+  translate: -50% -50%;
+}
+.motes i {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: rgba(255, 242, 218, 0.95);
+  box-shadow: 0 0 6px 1px rgba(255, 226, 180, 0.5);
+  opacity: 0;
+}
+html[data-motion='on'] .motes i {
+  animation: mote var(--d) linear var(--dl) infinite;
+}
+@keyframes mote {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: var(--o);
+  }
+  50% {
+    transform: translate3d(var(--sx), -7vmax, 0);
+  }
+  82% {
+    opacity: var(--o);
+  }
+  100% {
+    transform: translate3d(calc(var(--sx) * -0.6), -14vmax, 0);
+    opacity: 0;
+  }
+}
+/* the edges of the room fall into shadow; the eye goes to the middle */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(130% 95% at 50% 38%, rgba(12, 3, 3, 0) 52%, rgba(12, 3, 3, 0.36) 100%);
+}
+
+/* ---------- the works, laid onto the carpet ---------- */
+/* a soft shadow under each picture, apart from the tight one at its edge, so
+   the picture can rise and settle without the shadow being recalculated */
+body[data-immersive='on'] .framed::after {
+  content: '';
+  position: absolute;
+  inset: 5% 4% -3%;
+  z-index: -1;
+  background: rgba(8, 2, 2, 0.6);
+  filter: blur(26px);
+  transform: translate3d(0, 22px, 0) scale(0.97);
+  opacity: 0.7;
+  pointer-events: none;
+}
+html[data-motion='on'] body[data-immersive='on'] .work.in .framed {
+  animation:
+    lay-down 1.6s var(--ease-entrance) 0.1s both,
+    hover-float 11s ease-in-out 1.7s infinite;
+}
+html[data-motion='on'] body[data-immersive='on'] .work.in .framed::after {
+  animation:
+    shadow-down 1.6s var(--ease-entrance) 0.1s both,
+    shadow-float 11s ease-in-out 1.7s infinite;
+}
+@keyframes lay-down {
+  from {
+    transform: translate3d(0, -28px, 0) scale(1.05) rotate(calc(var(--tilt, 0deg) - 1.4deg));
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1) rotate(var(--tilt, 0deg));
+  }
+}
+@keyframes hover-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(var(--tilt, 0deg));
+  }
+}
+@keyframes shadow-down {
+  from {
+    transform: translate3d(0, 50px, 0) scale(1.1);
+    opacity: 0.3;
+  }
+  to {
+    transform: translate3d(0, 22px, 0) scale(0.97);
+    opacity: 0.7;
+  }
+}
+@keyframes shadow-float {
+  0%,
+  100% {
+    transform: translate3d(0, 22px, 0) scale(0.97);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate3d(0, 31px, 0) scale(1.01);
+    opacity: 0.56;
+  }
+}
+
+/* a glare that passes once over the picture when it has been laid down, like
+   light over fresh varnish */
+body[data-immersive='on'] .framed .mat {
+  position: relative;
+}
+body[data-immersive='on'] .framed .mat::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+      105deg,
+      rgba(255, 252, 244, 0) 40%,
+      rgba(255, 252, 244, 0.22) 49%,
+      rgba(255, 252, 244, 0.06) 53%,
+      rgba(255, 252, 244, 0) 62%
+    )
+    no-repeat;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  opacity: 0;
+}
+html[data-motion='on'] body[data-immersive='on'] .work.in .framed .mat::after {
+  animation: glare 2.4s var(--ease-move) 1s both;
+}
+@keyframes glare {
+  0% {
+    background-position: 100% 0;
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 0% 0;
+    opacity: 0;
+  }
+}
+
+/* with a mouse: the picture leans toward it and the glare follows (lib/tilt.ts) */
+@media (hover: hover) and (pointer: fine) {
+  body[data-immersive='on'] .framed .mat::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 252, 244, 0.15),
+      rgba(255, 252, 244, 0) 42%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-medium) var(--ease-standard);
+  }
+  html[data-motion='on'] body[data-immersive='on'] .framed .mat:hover::before {
+    opacity: 1;
+  }
+  html[data-motion='on'] body[data-immersive='on'] .framed .mat {
+    transform: perspective(1400px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
+    transition: transform var(--duration-slow) var(--ease-move);
+  }
+}
+
+/* on a touch screen: the picture tilts a little as it passes, as a picture
+   lying on the floor does when one walks by. Driven by the scroll itself,
+   where the browser can do that. */
+@supports (animation-timeline: view()) {
+  @media (hover: none) {
+    html[data-motion='on'] body[data-immersive='on'] .framed .mat {
+      animation: pass linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+@keyframes pass {
+  from {
+    transform: perspective(1200px) rotateX(8deg) scale(0.97);
+  }
+  50% {
+    transform: perspective(1200px) rotateX(0deg) scale(1);
+  }
+  to {
+    transform: perspective(1200px) rotateX(-6deg) scale(0.97);
+  }
+}
+
+/* ---------- marker lines under the headings ---------- */
+.scribble {
+  display: block;
+  width: min(240px, 70%);
+  height: auto;
+  margin-top: 10px;
+  overflow: visible;
+}
+.scribble path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.scribble path + path {
+  stroke-width: 1.7;
+  opacity: 0.7;
+}
+body:not([data-immersive='on']) .scribble {
+  display: none;
+}
+html[data-motion='on'] body[data-immersive='on'] .scribble path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+html[data-motion='on'] body[data-immersive='on'] .in .scribble path {
+  animation: draw 1.1s var(--ease-entrance) 0.35s forwards;
+}
+html[data-motion='on'] body[data-immersive='on'] .in .scribble path + path {
+  animation-duration: 0.8s;
+  animation-delay: 1.15s;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- the about lead, word by word ---------- */
+.words .w {
+  display: inline-block;
+}
+html[data-motion='on'] body[data-immersive='on'] .lead.words.reveal.in {
+  animation: none;
+  opacity: 1;
+}
+html[data-motion='on'] body[data-immersive='on'] .words .w {
+  opacity: 0;
+}
+html[data-motion='on'] body[data-immersive='on'] .words.in .w {
+  animation: word-in 0.9s var(--ease-entrance) calc(var(--w, 0) * 60ms + 120ms) both;
+}
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5em, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- the tiles look slowly ---------- */
+html[data-motion='on'] body[data-immersive='on'] .drop:not(.half) > img {
+  animation: slow-look 28s ease-in-out infinite alternate;
+}
+@keyframes slow-look {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.6%, -1.2%, 0);
+  }
+}
+html[data-motion='on'] body[data-immersive='on'] .mosaic i img {
+  animation: breathe 16s ease-in-out infinite alternate;
+  animation-delay: calc(var(--k, 0) * -1.3s);
+}
+@keyframes breathe {
+  from {
+    transform: scale(var(--z, 1.6));
+  }
+  to {
+    transform: scale(calc(var(--z, 1.6) * 1.08));
+  }
+}
+
+/* ---------- the switch that stops it all ---------- */
+.ticker {
+  position: relative;
+}
+.ticker-ctl {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 22px;
+  background: linear-gradient(90deg, rgba(242, 180, 41, 0), var(--accent) 32%);
+  /* a smaller control than elsewhere, so the band keeps its height; still a
+     target of 28 px (WCAG 2.5.8 asks for 24) */
+  --size-element-sm: 28px;
+}
+.ticker-ctl button,
+.ticker-ctl a {
+  color: var(--frame);
+}
+.foot-motion {
+  margin-left: auto;
+}
+
+html[data-motion='off'] {
+  scroll-behavior: auto;
+}
+html[data-motion='off'] .ticker-track,
+html[data-motion='off'] .light,
+html[data-motion='off'] .framed,
+html[data-motion='off'] .framed::after,
+html[data-motion='off'] .framed .mat,
+html[data-motion='off'] .framed .mat::after,
+html[data-motion='off'] .drop img,
+html[data-motion='off'] .scribble path,
+html[data-motion='off'] .words .w,
+html[data-motion='off'] .reveal,
+html[data-motion='off'] .mark {
+  animation: none !important;
+}
+html[data-motion='off'] .reveal,
+html[data-motion='off'] .words .w {
+  opacity: 1 !important;
+}
+html[data-motion='off'] .ticker {
+  white-space: normal;
+  text-align: center;
+  padding-inline: 16px 44px;
+  line-height: 1.5;
+}
+html[data-motion='off'] .ticker-track {
+  display: block;
+}
+html[data-motion='off'] .ticker-track span[aria-hidden] {
+  display: none;
+}
+html[data-motion='off'] .ticker-track span {
+  padding: 0;
+}
