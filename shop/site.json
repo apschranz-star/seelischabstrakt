@@ -192,41 +192,35 @@
   },
   "texts": {
     "heroLead": {
-      "en": "seelisch: of the soul. abstrakt: with the outside left off. Paintings and drawings from a studio in Vienna. Each exists once.",
-      "de": "Seelisch: was innen ist. Abstrakt: das Äußere weggelassen. Bilder und Zeichnungen aus einem Atelier in Wien. Jedes gibt es einmal."
+      "en": "Original paintings and drawings, sold directly from the studio.",
+      "de": "Originale Bilder und Zeichnungen, direkt aus dem Atelier."
     },
     "heroMeta": {
-      "en": "First works online. More will follow.",
-      "de": "Erste Werke online. Weitere folgen."
+      "en": "More works to follow.",
+      "de": "Weitere Werke folgen."
     },
     "worksKicker": {
-      "en": "The carpet is the wall",
-      "de": "Der Teppich ist die Wand"
+      "en": "Paintings and drawings",
+      "de": "Malerei und Zeichnung"
     },
     "printsLead": {
-      "en": "Each edition is signed and numbered and ships flat from Vienna. Editions are limited per size; a sold-out size will not be reprinted.",
-      "de": "Jede Edition ist signiert und nummeriert und wird flach aus Wien versandt. Die Auflage ist pro Größe limitiert; eine ausverkaufte Größe wird nicht nachgedruckt."
+      "en": "Signed and numbered, limited per size, shipped flat from Vienna. Sold-out sizes are not reprinted.",
+      "de": "Signiert und nummeriert, limitiert je Größe, flach verschickt aus Wien. Ausverkaufte Größen werden nicht nachgedruckt."
     },
     "aboutLead": {
-      "en": "<b>What passes, kept.</b> And the hand left visible in it.",
-      "de": "<b>Was vorbeigeht, aufgehoben.</b> Und die Hand bleibt darin sichtbar."
+      "en": "<b>Alexander Schranz</b> paints and draws in Vienna.",
+      "de": "<b>Alexander Schranz</b> malt und zeichnet in Wien."
     },
     "aboutParagraphs": {
       "en": [
-        "I collect what would otherwise go unnoticed: a face, a gesture, the surface of a thing, a mark somebody left behind. It passes, and I keep it.",
-        "I trust things that show how they were made. A rough edge. Paint standing too thick. A correction that was allowed to stay. I stop before a picture turns smooth, because the hand that made it should still be in it.",
-        "I did not come to painting through an academy. I learned by making, building, selling, repairing, organising, and by starting from zero. That is why a picture is first of all a physical problem to me: one layer, one decision, the next layer, until it holds.",
-        "Small formats matter to me. A small surface forces me to concentrate. Nothing can hide on it, and every mark needs a reason to be there.",
-        "What I look for lies between control and accident, between the part I built and the part that simply arrived.",
-        "A picture does not have to be perfect. It has to be there when you walk into the room."
+        "I paint faces, gestures and surfaces, mostly in small formats.",
+        "I work in layers and stop before the surface gets smooth. Thick paint, rough edges and corrections stay visible.",
+        "I did not study at an academy. I learned by making, selling, repairing and organising, and by starting from zero."
       ],
       "de": [
-        "Ich sammle, was sonst unbemerkt bliebe: ein Gesicht, eine Geste, die Oberfläche eines Dings, eine Spur, die jemand zurückgelassen hat. Es geht vorbei, und ich hebe es auf.",
-        "Ich traue Dingen, denen man ansieht, wie sie gemacht wurden. Eine raue Kante. Farbe, die zu dick steht. Eine Korrektur, die bleiben durfte. Ich höre auf, bevor ein Bild glatt wird, denn die Hand, die es gemacht hat, soll noch darin sein.",
-        "Zur Malerei bin ich nicht über eine Akademie gekommen. Gelernt habe ich beim Machen, Bauen, Verkaufen, Reparieren und Organisieren, und dabei, bei null anzufangen. Darum ist ein Bild für mich zuerst eine handfeste Aufgabe: eine Schicht, eine Entscheidung, die nächste Schicht, bis es hält.",
-        "Kleine Formate sind mir wichtig. Eine kleine Fläche zwingt mich zur Konzentration. Auf ihr kann sich nichts verstecken, und jede Spur braucht einen Grund, da zu sein.",
-        "Was ich suche, liegt zwischen Kontrolle und Zufall, zwischen dem, was ich gebaut habe, und dem, was einfach gekommen ist.",
-        "Ein Bild muss nicht perfekt sein. Es muss da sein, wenn man den Raum betritt."
+        "Ich male Gesichter, Gesten und Oberflächen, meist in kleinen Formaten.",
+        "Ich arbeite in Schichten und höre auf, bevor die Oberfläche glatt wird. Dicke Farbe, raue Kanten und Korrekturen bleiben sichtbar.",
+        "Eine Akademie habe ich nicht besucht. Gelernt habe ich beim Machen, Verkaufen, Reparieren und Organisieren, und indem ich bei null angefangen habe."
       ]
     },
     "facts": [
@@ -273,27 +267,27 @@
     ],
     "commission": {
       "intro": {
-        "en": "A picture made for one wall and for the person who lives with it. From 20 × 20 cm to 100 × 80 cm. It usually takes four to eight weeks.",
-        "de": "Ein Bild für eine bestimmte Wand und für den Menschen, der damit lebt. Von 20 × 20 cm bis 100 × 80 cm. Meist dauert es vier bis acht Wochen."
+        "en": "A picture made for your room, from 20 × 20 to 100 × 80 cm. Usually four to eight weeks.",
+        "de": "Ein Bild für deinen Raum, von 20 × 20 bis 100 × 80 cm. In der Regel vier bis acht Wochen."
       },
       "steps": {
         "en": [
-          "You send a photo of the room and two or three works from this page that stay with you.",
-          "We settle size, direction and price. A deposit of 30 percent starts the work.",
-          "Halfway through you see the picture and can steer once.",
-          "The rest is due when you approve it. Then it ships framed, or you collect it in Vienna."
+          "Send a photo of the room and two or three works from this site that you like.",
+          "We agree on size, direction and price. Work starts with a 30 % deposit.",
+          "Halfway through you see the picture and can ask for one change.",
+          "The rest is due on approval. The picture ships framed, or you collect it in Vienna."
         ],
         "de": [
-          "Du schickst ein Foto vom Raum und zwei, drei Werke von dieser Seite, die bei dir hängen geblieben sind.",
-          "Wir legen Größe, Richtung und Preis fest. Mit 30 Prozent Anzahlung beginnt die Arbeit.",
-          "Auf halbem Weg siehst du das Bild und kannst einmal nachsteuern.",
-          "Der Rest ist fällig, wenn du es freigibst. Dann kommt es gerahmt zu dir, oder du holst es in Wien ab."
+          "Du schickst ein Foto vom Raum und zwei, drei Werke von dieser Seite, die dir gefallen.",
+          "Wir legen Format, Richtung und Preis fest. Mit 30 % Anzahlung beginnt die Arbeit.",
+          "Zur Halbzeit siehst du das Bild und kannst eine Änderung wünschen.",
+          "Der Rest ist bei Freigabe fällig. Das Bild kommt gerahmt zu dir, oder du holst es in Wien ab."
         ]
       }
     },
     "contactIntro": {
-      "en": "Ask about a work, arrange a visit to the studio in Vienna, or ask what several works cost together. I usually answer within a day.",
-      "de": "Frag nach einem Werk, vereinbare einen Besuch im Atelier in Wien oder frag, was mehrere Werke zusammen kosten. Ich antworte meist innerhalb eines Tages."
+      "en": "Questions about a work, a studio visit in Vienna or a price for several works. I usually reply within a day.",
+      "de": "Fragen zu einem Werk, ein Atelierbesuch in Wien oder ein Preis für mehrere Werke. Ich antworte meist innerhalb eines Tages."
     },
     "empty": {
       "works": {
@@ -301,8 +295,8 @@
         "de": "Neue Werke folgen in Kürze."
       },
       "filter": {
-        "en": "Nothing in this selection at the moment.",
-        "de": "In dieser Auswahl gibt es derzeit nichts."
+        "en": "Nothing in this selection right now.",
+        "de": "Derzeit nichts in dieser Auswahl."
       },
       "prints": {
         "en": "Editions are in preparation.",
@@ -327,21 +321,21 @@
         "prints.title": "Editions",
         "prints.kicker": "Giclée prints on archival paper",
         "prints.empty": "Editions are in preparation.",
-        "hero.cta1": "View available works",
+        "hero.cta1": "Available works",
         "footer.person": "About the artist",
-        "lbl.buyOriginal": "Acquire original",
-        "lbl.buyPrint": "Acquire edition",
+        "lbl.buyOriginal": "Buy original",
+        "lbl.buyPrint": "Buy edition",
         "lbl.print": "Edition",
         "lbl.chooseSize": "Edition size",
-        "comm.cta": "Enquire about a commission",
+        "comm.cta": "Request a commission",
         "contact.mail": "Send an email",
-        "notify.text": "One short note when a new work is finished. No newsletter, nothing else.",
+        "notify.text": "One email when a new work is online. No newsletter.",
         "works.empty": "New works will be released soon.",
-        "filter.empty": "Nothing in this selection at the moment.",
-        "trust": "Signed certificate of authenticity · Ships insured from Vienna · {d} days right of withdrawal · Payment by Revolut",
+        "filter.empty": "Nothing in this selection right now.",
+        "trust": "Signed certificate of authenticity · Insured shipping from Vienna · {d}-day right of withdrawal · Payment via Revolut",
         "legal.us": "Buyers in the US",
-        "price.returns": "{d} days right of withdrawal on originals and editions. Only commissions made to your specification are exempt.",
-        "works.note": "Every work here exists once. The price is final and includes the signed certificate of authenticity. Shipping is added when you order."
+        "price.returns": "{d}-day right of withdrawal on originals and editions, except commissions.",
+        "works.note": "Prices are final and include a signed certificate of authenticity. Shipping is added at checkout."
       },
       "de": {
         "nav.works": "Werke",
@@ -354,20 +348,20 @@
         "prints.empty": "Editionen sind in Vorbereitung.",
         "nav.commission": "Auftragswerke",
         "comm.title": "Auftragswerke",
-        "comm.cta": "Auftragswerk anfragen",
+        "comm.cta": "Auftrag anfragen",
         "footer.person": "Über den Künstler",
-        "lbl.buyOriginal": "Original erwerben",
-        "lbl.buyPrint": "Edition erwerben",
+        "lbl.buyOriginal": "Original kaufen",
+        "lbl.buyPrint": "Edition kaufen",
         "lbl.print": "Edition",
         "lbl.chooseSize": "Editionsgröße",
         "notify.title": "Neue Werke per E-Mail",
-        "notify.text": "Eine kurze Nachricht, wenn ein neues Werk fertig ist. Kein Newsletter, sonst nichts.",
+        "notify.text": "Eine E-Mail, wenn ein neues Werk online ist. Kein Newsletter.",
         "works.empty": "Neue Werke folgen in Kürze.",
-        "filter.empty": "In dieser Auswahl gibt es derzeit nichts.",
-        "trust": "Signiertes Echtheitszertifikat · Versichert aus Wien · {d} Tage Widerrufsrecht · Zahlung per Revolut",
+        "filter.empty": "Derzeit nichts in dieser Auswahl.",
+        "trust": "Signiertes Echtheitszertifikat · Versicherter Versand aus Wien · {d} Tage Widerrufsrecht · Zahlung über Revolut",
         "legal.us": "Käufer in den USA",
-        "price.returns": "{d} Tage Widerrufsrecht bei Originalen und Editionen. Ausgenommen sind nur Auftragswerke nach Kundenwunsch.",
-        "works.note": "Jedes Werk hier gibt es einmal. Der Preis ist ein Endpreis, das signierte Echtheitszertifikat ist dabei. Der Versand kommt bei der Bestellung dazu."
+        "price.returns": "{d} Tage Widerrufsrecht bei Originalen und Editionen, ausgenommen Auftragswerke.",
+        "works.note": "Endpreise inklusive signiertem Echtheitszertifikat. Der Versand wird bei der Bestellung berechnet."
       }
     }
   },
